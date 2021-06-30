@@ -103,24 +103,24 @@ class Recaptcha_For_Woocommerce {
 		 * The class responsible for orchestrating the actions and filters of the
 		 * core plugin.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class- recaptcha-for-woocommerce-loader.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-recaptcha-for-woocommerce-loader.php';
 
 		/**
 		 * The class responsible for defining internationalization functionality
 		 * of the plugin.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class- recaptcha-for-woocommerce-i18n.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-recaptcha-for-woocommerce-i18n.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class- recaptcha-for-woocommerce-admin.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-recaptcha-for-woocommerce-admin.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the public-facing
 		 * side of the site.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class- recaptcha-for-woocommerce-public.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-recaptcha-for-woocommerce-public.php';
 
 		$this->loader = new Recaptcha_For_Woocommerce_Loader();
 
