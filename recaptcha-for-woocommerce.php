@@ -35,14 +35,14 @@ if ( ! defined( 'WPINC' ) ) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( ' RECAPTCHA_FOR_WOOCOMMERCE_VERSION', '1.0.0' );
+define( 'RECAPTCHA_FOR_WOOCOMMERCE_VERSION', '1.0.0' );
 
 /**
  * The code that runs during plugin activation.
  * This action is documented in includes/class- recaptcha-for-woocommerce-activator.php
  */
-function activate_ recaptcha_for_woocommerce() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class- recaptcha-for-woocommerce-activator.php';
+function activate_recaptcha_for_woocommerce() {
+	require_once plugin_dir_path( __FILE__ ) . 'includes/class-recaptcha-for-woocommerce-activator.php';
 	Recaptcha_For_Woocommerce_Activator::activate();
 }
 
@@ -50,19 +50,19 @@ function activate_ recaptcha_for_woocommerce() {
  * The code that runs during plugin deactivation.
  * This action is documented in includes/class- recaptcha-for-woocommerce-deactivator.php
  */
-function deactivate_ recaptcha_for_woocommerce() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class- recaptcha-for-woocommerce-deactivator.php';
+function deactivate_recaptcha_for_woocommerce() {
+	require_once plugin_dir_path( __FILE__ ) . 'includes/class-recaptcha-for-woocommerce-deactivator.php';
 	Recaptcha_For_Woocommerce_Deactivator::deactivate();
 }
 
-register_activation_hook( __FILE__, 'activate_ recaptcha_for_woocommerce' );
-register_deactivation_hook( __FILE__, 'deactivate_ recaptcha_for_woocommerce' );
+register_activation_hook( __FILE__, 'activate_recaptcha_for_woocommerce' );
+register_deactivation_hook( __FILE__, 'deactivate_recaptcha_for_woocommerce' );
 
 /**
  * The core plugin class that is used to define internationalization,
  * admin-specific hooks, and public-facing site hooks.
  */
-require plugin_dir_path( __FILE__ ) . 'includes/class- recaptcha-for-woocommerce.php';
+require plugin_dir_path( __FILE__ ) . 'includes/class-recaptcha-for-woocommerce.php';
 
 /**
  * Begins execution of the plugin.
@@ -73,10 +73,10 @@ require plugin_dir_path( __FILE__ ) . 'includes/class- recaptcha-for-woocommerce
  *
  * @since    1.0.0
  */
-function run_ recaptcha_for_woocommerce() {
+function run_recaptcha_for_woocommerce() {
 
 	$plugin = new Recaptcha_For_Woocommerce();
 	$plugin->run();
 
 }
-run_ recaptcha_for_woocommerce();
+run_recaptcha_for_woocommerce();
