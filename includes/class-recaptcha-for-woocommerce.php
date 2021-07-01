@@ -172,7 +172,9 @@ class Recaptcha_For_Woocommerce {
 
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
-
+		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'woo_recaptcha_load_styles_and_js' );
+		$this->loader->add_action( 'login_form', $plugin_public, 'woo_extra_wp_login_form' );
+		$this->loader->add_action( 'register_form', $plugin_public, 'woo_extra_wp_register_form' );
 	}
 
 	/**
