@@ -100,4 +100,10 @@ class Recaptcha_For_Woocommerce_Admin {
 
 	}
 
+	public function woocomm_load_custom_settings_tab( $settings) {
+
+		$settings[] = include plugin_dir_path(__FILE__) . 'includes/Settings.php';
+		return $settings;
+	}
+
 }
