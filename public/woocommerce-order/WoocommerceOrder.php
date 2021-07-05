@@ -641,8 +641,9 @@ class WoocommerceOrder {
 		global $wp;
 		$is_checkout_js_enabled=false;
 		$is_oder_pay_page=false;
-				
-		if (is_product()) {
+
+		if(function_exists('is_product')){
+			if (is_product()) {
 					
 			add_filter('woocommerce_product_review_comment_form_args', array($this,'i13_recapcha_for_review_form'), 10, 1); 
 		} else {
@@ -883,6 +884,7 @@ class WoocommerceOrder {
 				}
 			}
 
+		}
 		}
 		  
 	}

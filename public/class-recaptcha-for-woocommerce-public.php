@@ -146,47 +146,50 @@ class Recaptcha_For_Woocommerce_Public {
 				wp_enqueue_script('i13-woo-captcha');
 			}
 
-			if ('yes' == $is_enabled && ( !is_user_logged_in() || $i13_recapcha_enable_on_payfororder ) && is_checkout() ) {
+			if(function_exists('is_checkout')){
+				if ('yes' == $is_enabled && ( !is_user_logged_in() || $i13_recapcha_enable_on_payfororder ) && is_checkout() ) {
 
-				if ('yes'== $i13_recapcha_no_conflict) {
+					if ('yes'== $i13_recapcha_no_conflict) {
 
-					global $wp_scripts;
+						global $wp_scripts;
 
-					$urls = array( 'google.com/recaptcha', 'gstatic.com/recaptcha' );
+						$urls = array( 'google.com/recaptcha', 'gstatic.com/recaptcha' );
 
-					foreach ( $wp_scripts->queue as $handle ) {
+						foreach ( $wp_scripts->queue as $handle ) {
 
-						foreach ( $urls as $url ) {
-							if (false !== strpos($wp_scripts->registered[ $handle ]->src, $url) && ( 'i13-woo-captcha'!=$handle && 'i13-woo-captcha-v3'!=$handle ) ) {
-								wp_dequeue_script($handle);
-								wp_deregister_script($handle);
-								break;
+							foreach ( $urls as $url ) {
+								if (false !== strpos($wp_scripts->registered[ $handle ]->src, $url) && ( 'i13-woo-captcha'!=$handle && 'i13-woo-captcha-v3'!=$handle ) ) {
+									wp_dequeue_script($handle);
+									wp_deregister_script($handle);
+									break;
+								}
 							}
 						}
 					}
-				}
-							wp_enqueue_script('i13-woo-captcha-explicit');
-			} else if ('yes' == ( $is_enabled_logincheckout || $i13_recapcha_enable_on_payfororder ) && is_user_logged_in() && is_checkout() ) {
+								wp_enqueue_script('i13-woo-captcha-explicit');
+				} else if ('yes' == ( $is_enabled_logincheckout || $i13_recapcha_enable_on_payfororder ) && is_user_logged_in() && is_checkout() ) {
 
-				if ('yes'== $i13_recapcha_no_conflict) {
+					if ('yes'== $i13_recapcha_no_conflict) {
 
-					global $wp_scripts;
+						global $wp_scripts;
 
-					$urls = array( 'google.com/recaptcha', 'gstatic.com/recaptcha' );
+						$urls = array( 'google.com/recaptcha', 'gstatic.com/recaptcha' );
 
-					foreach ( $wp_scripts->queue as $handle ) {
+						foreach ( $wp_scripts->queue as $handle ) {
 
-						foreach ( $urls as $url ) {
-							if (false !== strpos($wp_scripts->registered[ $handle ]->src, $url) && ( 'i13-woo-captcha'!=$handle && 'i13-woo-captcha-v3'!=$handle ) ) {
-								   wp_dequeue_script($handle);
-								   wp_deregister_script($handle);
-								   break;
+							foreach ( $urls as $url ) {
+								if (false !== strpos($wp_scripts->registered[ $handle ]->src, $url) && ( 'i13-woo-captcha'!=$handle && 'i13-woo-captcha-v3'!=$handle ) ) {
+									   wp_dequeue_script($handle);
+									   wp_deregister_script($handle);
+									   break;
+								}
 							}
 						}
 					}
+					wp_enqueue_script('i13-woo-captcha-explicit');
 				}
-				wp_enqueue_script('i13-woo-captcha-explicit');
 			}
+			
 		} else {
 					
 					

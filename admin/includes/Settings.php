@@ -7,7 +7,7 @@ if (!defined('ABSPATH')) {
 
 if (!class_exists('I13_WooCommerce_Settings_Page')) :
 
-	class I13_WooCommerce_Settings_Page extends WC_Settings_Page {
+	class I13_WooCommerce_Settings_Page {
 	
 	
 
@@ -18,15 +18,16 @@ if (!class_exists('I13_WooCommerce_Settings_Page')) :
 			$this->id = 'i13_woo_recaptcha';
 			$this->label = __('reCaptcha', 'recaptcha-for-woocommerce');
 
-			add_filter('woocommerce_settings_tabs_array', array($this, 'add_settings_page'), 20);
-			add_action('woocommerce_settings_' . $this->id, array($this, 'output'));
-			add_action('woocommerce_settings_save_' . $this->id, array($this, 'save'));
+			include 'Wooaction.php';
+			// add_filter('woocommerce_settings_tabs_array', array($this, 'add_settings_page'), 20);
+			// add_action('woocommerce_settings_' . $this->id, array($this, 'output'));
+			// add_action('woocommerce_settings_save_' . $this->id, array($this, 'save'));
 
-			// only add this if you need to add sections for your settings tab
-			add_action('woocommerce_sections_' . $this->id, array($this, 'output_sections'));
-			add_action('woocommerce_admin_field_custom_type', array($this, 'output_custom_type'), 10, 1);
-			add_action('woocommerce_admin_field_custom_type_text', array($this, 'output_custom_type_text'), 10, 1);
-			add_action('woocommerce_admin_field_custom_type_number', array($this, 'output_custom_type_number'), 10, 1);
+			// // only add this if you need to add sections for your settings tab
+			// add_action('woocommerce_sections_' . $this->id, array($this, 'output_sections'));
+			// add_action('woocommerce_admin_field_custom_type', array($this, 'output_custom_type'), 10, 1);
+			// add_action('woocommerce_admin_field_custom_type_text', array($this, 'output_custom_type_text'), 10, 1);
+			// add_action('woocommerce_admin_field_custom_type_number', array($this, 'output_custom_type_number'), 10, 1);
 		}
 				
 				
@@ -1516,20 +1517,14 @@ if (!class_exists('I13_WooCommerce_Settings_Page')) :
 		 *
 		 * @since 1.0
 		 */
-		public function output() {
-
-			global $current_section;
-
-			$settings = $this->get_settings($current_section);
-			WC_Admin_Settings::output_fields($settings);
+		public function output($current) {
+			$settings = $this->get_settings($current);
+			Wooaction::output_fields($settings);
 		}
 
-		public function save() {
-
-			global $current_section;
-
-			$settings = $this->get_settings($current_section);
-			WC_Admin_Settings::save_fields($settings);
+		public function save($current) {
+			$settings = $this->get_settings($current);
+			Wooaction::save_fields($settings);
 		}
 
 	}

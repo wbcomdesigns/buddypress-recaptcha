@@ -122,6 +122,8 @@ class Recaptcha_For_Woocommerce {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-recaptcha-for-woocommerce-public.php';
 
+		/* Enqueue wbcom plugin settings file. */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/wbcom/wbcom-admin-settings.php';
 		// LRL Class Files login, registration and lost password
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/lrl-classes/Login.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/lrl-classes/Regisrtation.php';
@@ -173,7 +175,9 @@ class Recaptcha_For_Woocommerce {
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 
 		//Load setting in woocommerce setting tab
+		$this->loader->add_action( 'admin_menu', $plugin_admin, 'wpc_admin_menu', 100 );
 		$this->loader->add_filter( 'woocommerce_get_settings_pages', $plugin_admin, 'woocomm_load_custom_settings_tab' );
+		$this->loader->add_action( 'admin_init', $plugin_admin, 'wpc_add_admin_register_setting' );
 	}
 
 	/**
