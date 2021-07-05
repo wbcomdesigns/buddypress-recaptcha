@@ -160,13 +160,15 @@ class Recaptcha_For_Woocommerce_Admin {
 	  */
 	public function wpc_add_admin_register_setting() {
 		$this->plugin_settings_tabs[''] = esc_html__('General Settings', 'wb-recaptcha');
-		$this->plugin_settings_tabs['signup'] = esc_html__('Woo Registration', 'wb-recaptcha');
-		$this->plugin_settings_tabs['login'] = esc_html__('Woo Login', 'wb-recaptcha');
-		$this->plugin_settings_tabs['forgotpassword'] = esc_html__('Woo Lost Password', 'wb-recaptcha');
-		$this->plugin_settings_tabs['guestcheckout'] = esc_html__('Woo Checkout', 'wb-recaptcha');
-		$this->plugin_settings_tabs['add_payment_method'] = esc_html__('Woo Add Payment Method', 'wb-recaptcha');
-		$this->plugin_settings_tabs['woo_review'] = esc_html__('Woo Product Review Form', 'wb-recaptcha');
-		$this->plugin_settings_tabs['woo_comments'] = esc_html__('Woo Post Comment Form', 'wb-recaptcha');
+		if(class_exists( 'WooCommerce' )){
+			$this->plugin_settings_tabs['signup'] = esc_html__('Woo Registration', 'wb-recaptcha');
+			$this->plugin_settings_tabs['login'] = esc_html__('Woo Login', 'wb-recaptcha');
+			$this->plugin_settings_tabs['forgotpassword'] = esc_html__('Woo Lost Password', 'wb-recaptcha');
+			$this->plugin_settings_tabs['guestcheckout'] = esc_html__('Woo Checkout', 'wb-recaptcha');
+			$this->plugin_settings_tabs['add_payment_method'] = esc_html__('Woo Add Payment Method', 'wb-recaptcha');
+			$this->plugin_settings_tabs['woo_review'] = esc_html__('Woo Product Review Form', 'wb-recaptcha');
+			$this->plugin_settings_tabs['woo_comments'] = esc_html__('Woo Post Comment Form', 'wb-recaptcha');
+		}		
 		$this->plugin_settings_tabs['wp_login'] = esc_html__('WP Login', 'wb-recaptcha');
 		$this->plugin_settings_tabs['wp_register'] = esc_html__('WP Registration', 'wb-recaptcha');
 		$this->plugin_settings_tabs['wp_lostpassword'] = esc_html__('WP Lost Password', 'wb-recaptcha');
