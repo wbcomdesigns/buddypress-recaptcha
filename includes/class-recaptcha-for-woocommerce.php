@@ -233,9 +233,10 @@ class Recaptcha_For_Woocommerce {
 		$this->loader->add_filter( 'register_post', array($WoocommerceFilter, 'woo_verify_wp_register_captcha'), 10, 3 );
 		$this->loader->add_filter( 'lostpassword_post', array($WoocommerceFilter, 'woo_verify_wp_lostpassword_captcha'), 10, 1 );
 		$this->loader->add_filter( 'wpforms_frontend_recaptcha_noconflict', $WoocommerceFilter, 'woo_remove_no_conflict');
+		
 		$this->loader->add_filter( 'preprocess_comment', $WoocommerceFilter, 'woo_check_review_captcha');
 		$this->loader->add_filter( 'preprocess_comment', $WoocommerceFilter, 'woo_check_comment_captcha');
-
+		
 		//Woocommerce Order
 		$WoocommerceOrder = new WoocommerceOrder();
 		$this->loader->add_action( 'woocommerce_pay_order_before_submit', $WoocommerceOrder, 'woo_extra_checkout_fields_pay_order' );
