@@ -139,6 +139,9 @@ class Recaptcha_For_Woocommerce {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/woocommerce-extra/WoocommerceFilter.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/woocommerce-order/WoocommerceOrder.php';
 
+		// Buddy Press
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/bp-classes/Regisrtationbp.php';
+
 		$this->loader = new Recaptcha_For_Woocommerce_Loader();
 
 	}
@@ -203,11 +206,15 @@ class Recaptcha_For_Woocommerce {
 		$Login = new Login();
 		$Regisrtation = new Regisrtation();
 		$Lostpassword = new Lostpassword();
-		// $this->loader->add_action( 'login_form', $Login, 'woo_extra_wp_login_form');
 		add_action('login_form', array($Login, 'woo_extra_wp_login_form'));
 		add_action( 'register_form', array($Regisrtation, 'woo_extra_wp_register_form' ));
 		add_action( 'lostpassword_form', array($Lostpassword, 'woo_extra_wp_lostpassword_form') );
 
+		// Buddypress
+		$Regisrtationbp = new Regisrtationbp();
+		add_action( 'bp_before_registration_submit_buttons', array($Regisrtationbp, 'woo_extra_wp_register_form' ),36);
+
+		add_action('bp_signup_validate', array($Regisrtationbp,'innovage_validate_user_registration'));
 		// Woocommerce Login registration and lost form
 		$WoocommerceRegister = new WoocommerceRegister();
 		$WoocommerceLogin = new WoocommerceLogin();
