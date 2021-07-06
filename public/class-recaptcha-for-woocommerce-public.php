@@ -123,28 +123,29 @@ class Recaptcha_For_Woocommerce_Public {
 			  $i13_recapcha_enable_on_payfororder = get_option('i13_recapcha_enable_on_payfororder');
 			  $i13_recapcha_no_conflict = get_option('i13_recapcha_no_conflict');
 
+			if(function_exists('is_wc_endpoint_url')){
+				if ('yes' == $is_enabled_on_payment_page && is_user_logged_in() && is_wc_endpoint_url(get_option('woocommerce_myaccount_add_payment_method_endpoint', 'add-payment-method')) ) {
 
-			if ('yes' == $is_enabled_on_payment_page && is_user_logged_in() && is_wc_endpoint_url(get_option('woocommerce_myaccount_add_payment_method_endpoint', 'add-payment-method')) ) {
+					if ('yes'== $i13_recapcha_no_conflict) {
 
-				if ('yes'== $i13_recapcha_no_conflict) {
+						global $wp_scripts;
 
-					global $wp_scripts;
+						$urls = array( 'google.com/recaptcha', 'gstatic.com/recaptcha' );
 
-					$urls = array( 'google.com/recaptcha', 'gstatic.com/recaptcha' );
+						foreach ( $wp_scripts->queue as $handle ) {
 
-					foreach ( $wp_scripts->queue as $handle ) {
-
-						foreach ( $urls as $url ) {
-							if (false !== strpos($wp_scripts->registered[ $handle ]->src, $url) && ( 'i13-woo-captcha'!=$handle && 'i13-woo-captcha-v3'!=$handle ) ) {
-								wp_dequeue_script($handle);
-								wp_deregister_script($handle);
-								break;
+							foreach ( $urls as $url ) {
+								if (false !== strpos($wp_scripts->registered[ $handle ]->src, $url) && ( 'i13-woo-captcha'!=$handle && 'i13-woo-captcha-v3'!=$handle ) ) {
+									wp_dequeue_script($handle);
+									wp_deregister_script($handle);
+									break;
+								}
 							}
 						}
 					}
+					wp_enqueue_script('i13-woo-captcha');
 				}
-				wp_enqueue_script('i13-woo-captcha');
-			}
+			}			
 
 			if(function_exists('is_checkout')){
 				if ('yes' == $is_enabled && ( !is_user_logged_in() || $i13_recapcha_enable_on_payfororder ) && is_checkout() ) {
