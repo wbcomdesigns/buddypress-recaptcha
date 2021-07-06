@@ -658,8 +658,8 @@ if (!class_exists('Wooaction')) :
 					case 'image_width':
 						$value = array();
 						if ( isset( $raw_value['width'] ) ) {
-							$value['width']  = self::wc_clean( $raw_value['width'] );
-							$value['height'] = self::wc_clean( $raw_value['height'] );
+							$value['width']  = Wooaction::wc_clean( $raw_value['width'] );
+							$value['height'] = Wooaction::wc_clean( $raw_value['height'] );
 							$value['crop']   = isset( $raw_value['crop'] ) ? 1 : 0;
 						} else {
 							$value['width']  = $option['default']['width'];
@@ -680,7 +680,7 @@ if (!class_exists('Wooaction')) :
 						$value = wc_parse_relative_date_option( $raw_value );
 						break;
 					default:
-						$value = self::wc_clean( $raw_value );
+						$value = Wooaction::wc_clean( $raw_value );
 						break;
 				}
 
