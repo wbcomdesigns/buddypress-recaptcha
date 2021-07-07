@@ -180,8 +180,72 @@ if (!class_exists('I13_WooCommerce_Settings_Page')) :
 		}
 
 		public function get_settings( $current_section = '') {
+			if ('bb_press_topic' == $current_section) {
 
-			if ('bp_register' == $current_section) {
+				/**
+				 * Filter Plugin Section 2 Settings
+				 *
+				 * @since 1.0.0
+				 * @param array $settings Array of the plugin settings
+				 */
+				 $reCapcha_version = get_option('i13_recapcha_version'); 
+				if ('v2'==strtolower($reCapcha_version)) {
+									
+					$settings = apply_filters(
+						'woocomm_signup', array(
+						'section_title_recpacha_on_bbpress_topic' => array(
+						'name' => __('Recaptcha On BB Press Topic', 'recaptcha-for-woocommerce'),
+						'type' => 'title',
+						'desc' => '',
+						'id' => 'wc_settings_tab_recapcha_bbpress_topic'
+						),
+						'recapcha_enable_on_bbpress_topic' => array(
+						'name' => __('Enable Recaptcha on BB Press Topic', 'recaptcha-for-woocommerce'),
+						'type' => 'checkbox',
+						'id' => 'recapcha_enable_on_bbpress_topic'
+						),
+						'recapcha_bbpress_topic_title' => array(
+						'name' => __('Recaptcha Field Title', 'recaptcha-for-woocommerce'),
+						'type' => 'text',
+						'id' => 'recapcha_bbpress_topic_title',
+						'default' => 'Captcha',
+						),
+						'recapcha_hide_label_bbpress_topic' => array(
+						'name' => __('Hide Label', 'recaptcha-for-woocommerce'),
+						'type' => 'checkbox',
+						'id' => 'recapcha_hide_label_bbpress_topic',
+						'default' => 'no',   
+						'desc' => __('Hide label on form?', 'recaptcha-for-woocommerce')    
+						),    
+						'recapcha_theme_bbpress_topic' => array(
+						'name' => __('Recaptcha Theme', 'recaptcha-for-woocommerce'),
+						'type' => 'radio',
+						'id' => 'recapcha_theme_bbpress_topic',
+						'options' => array('light' => __('Light', 'recaptcha-for-woocommerce'), 'dark' => __('Dark', 'recaptcha-for-woocommerce')),
+						'default' => 'light',
+						),
+						'recapcha_size_bbpress_topic' => array(
+						'name' => __('Recaptcha Size', 'recaptcha-for-woocommerce'),
+						'type' => 'radio',
+						'id' => 'recapcha_size_bbpress_topic',
+						'options' => array('normal' => __('Normal', 'recaptcha-for-woocommerce'), 'compact' => __('Compact', 'recaptcha-for-woocommerce')),
+						'default' => 'normal',
+						),
+						// 'recapcha_disable_submitbtn_bbpress_topic' => array(
+						// 'name' => __('Disable submit button', 'recaptcha-for-woocommerce'),
+						// 'desc' => __('Disable submit button until recaptcha validate.', 'recaptcha-for-woocommerce'),    
+						// 'type' => 'checkbox',
+						// 'id' => 'recapcha_disable_submitbtn_bbpress_topic'
+						// ),      
+						array(
+						'type' => 'sectionend',
+						'id' => 'wc_settings_tab_recapcha_bbpress_topic',
+						)
+						)
+					);
+				}
+			}
+			else if ('bp_register' == $current_section) {
 
 				/**
 				 * Filter Plugin Section 2 Settings
