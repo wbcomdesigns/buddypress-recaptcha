@@ -23,7 +23,7 @@
 class WoocommerceReviewOrder {
 	public function woo_extra_checkout_fields() {
 
-	$reCapcha_version = get_option('i13_recapcha_version'); 
+	$reCapcha_version = get_option('wbc_recapcha_version'); 
 	if (''==$reCapcha_version) {
 	$reCapcha_version='v2';
 	}
@@ -31,23 +31,23 @@ class WoocommerceReviewOrder {
 	if ('v2'== strtolower($reCapcha_version)) {
 
 
-	$disable_submit_btn=get_option('i13_recapcha_disable_submitbtn_guestcheckout');
-	$disable_submit_btn_login_checkout=get_option('i13_recapcha_disable_submitbtn_logincheckout');
-	$i13_recapcha_hide_label_checkout=get_option('i13_recapcha_hide_label_checkout');
-	$captcha_lable = get_option('i13_recapcha_guestcheckout_title');
-	$captcha_lable_ = get_option('i13_recapcha_guestcheckout_title');
-	$refresh_lable = get_option('i13_recapcha_guestcheckout_refresh');
+	$disable_submit_btn=get_option('wbc_recapcha_disable_submitbtn_guestcheckout');
+	$disable_submit_btn_login_checkout=get_option('wbc_recapcha_disable_submitbtn_logincheckout');
+	$wbc_recapcha_hide_label_checkout=get_option('wbc_recapcha_hide_label_checkout');
+	$captcha_lable = get_option('wbc_recapcha_guestcheckout_title');
+	$captcha_lable_ = get_option('wbc_recapcha_guestcheckout_title');
+	$refresh_lable = get_option('wbc_recapcha_guestcheckout_refresh');
 	if ('' == esc_html($refresh_lable)) {
 
 	$refresh_lable=__('Refresh Captcha', 'recaptcha-for-woocommerce');
 	}
 	$site_key = get_option('wc_settings_tab_recapcha_site_key');
-	$theme = get_option('i13_recapcha_guestcheckout_theme');
-	$size = get_option('i13_recapcha_guestcheckout_size');
-	$is_enabled = get_option('i13_recapcha_enable_on_guestcheckout');
-	$is_enabled_logincheckout = get_option('i13_recapcha_enable_on_logincheckout');
-	$i13_recapcha_guest_recpacha_refersh_on_error = get_option('i13_recapcha_guest_recpacha_refersh_on_error');
-	$i13_recapcha_login_recpacha_refersh_on_error = get_option('i13_recapcha_login_recpacha_refersh_on_error');
+	$theme = get_option('wbc_recapcha_guestcheckout_theme');
+	$size = get_option('wbc_recapcha_guestcheckout_size');
+	$is_enabled = get_option('wbc_recapcha_enable_on_guestcheckout');
+	$is_enabled_logincheckout = get_option('wbc_recapcha_enable_on_logincheckout');
+	$wbc_recapcha_guest_recpacha_refersh_on_error = get_option('wbc_recapcha_guest_recpacha_refersh_on_error');
+	$wbc_recapcha_login_recpacha_refersh_on_error = get_option('wbc_recapcha_login_recpacha_refersh_on_error');
 
 	$recapcha_error_msg_captcha_blank = get_option('wc_settings_tab_recapcha_error_msg_captcha_blank');
 	if (''==trim($captcha_lable_)) {
@@ -63,13 +63,13 @@ class WoocommerceReviewOrder {
 	?>
 	<p class="guest-checkout-recaptcha woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
 	<?php 
-	if ('yes'!=$i13_recapcha_hide_label_checkout) :
+	if ('yes'!=$wbc_recapcha_hide_label_checkout) :
 	?>
 	<label for="reg_captcha"><?php echo esc_html(( ''==trim($captcha_lable) )? __('Captcha', 'recaptcha-for-woocommerce') :esc_html($captcha_lable)); ?>&nbsp;<span class="required">*</span></label>
 	<?php 
 	endif; 
 	?>
-	<div id="g-recaptcha-checkout-i13" name="g-recaptcha" class="g-recaptcha-" data-callback="verifyCallback_add_guestcheckout"  data-sitekey="<?php echo esc_html($site_key); ?>" data-theme="<?php echo esc_html($theme); ?>" data-size="<?php echo esc_html($size); ?>"></div>
+	<div id="g-recaptcha-checkout-wbc" name="g-recaptcha" class="g-recaptcha-" data-callback="verifyCallback_add_guestcheckout"  data-sitekey="<?php echo esc_html($site_key); ?>" data-theme="<?php echo esc_html($theme); ?>" data-size="<?php echo esc_html($size); ?>"></div>
 	<div id='refresh_captcha' style="width:100%;padding-top:5px"> 
 	<a href="javascript:grecaptcha.reset(myCaptcha);" style="clear:both"><?php echo esc_html($refresh_lable); ?></a>
 	</div>    
@@ -101,7 +101,7 @@ class WoocommerceReviewOrder {
 
 	<?php if ('yes'==trim($disable_submit_btn)) : ?>
 	try{
-	myCaptcha=grecaptcha.render('g-recaptcha-checkout-i13', {
+	myCaptcha=grecaptcha.render('g-recaptcha-checkout-wbc', {
 	'sitekey': '<?php echo esc_html($site_key); ?>',
 	'callback' : verifyCallback_add_guestcheckout
 	});
@@ -111,7 +111,7 @@ class WoocommerceReviewOrder {
 	<?php else : ?>
 
 	try{
-	myCaptcha=grecaptcha.render('g-recaptcha-checkout-i13', {
+	myCaptcha=grecaptcha.render('g-recaptcha-checkout-wbc', {
 	'sitekey': '<?php echo esc_html($site_key); ?>',
 												'callback' : verifyCallback_add_guestcheckout
 	});
@@ -125,7 +125,7 @@ class WoocommerceReviewOrder {
 	if (typeof (grecaptcha.render) !== 'undefined' && window.myCaptcha === null) {
 
 	try{
-	myCaptcha=grecaptcha.render('g-recaptcha-checkout-i13', {
+	myCaptcha=grecaptcha.render('g-recaptcha-checkout-wbc', {
 	'sitekey': '<?php echo esc_html($site_key); ?>',
 	'callback' : verifyCallback_add_guestcheckout
 	});
@@ -159,7 +159,7 @@ class WoocommerceReviewOrder {
 	}
 
 	};
-	<?php if ('yes'==$i13_recapcha_guest_recpacha_refersh_on_error) : ?>                                                                                                     
+	<?php if ('yes'==$wbc_recapcha_guest_recpacha_refersh_on_error) : ?>                                                                                                     
 	jQuery('body').on('checkout_error', function(){
 	grecaptcha.reset(window.myCaptcha); 
 		  <?php if ('yes'==trim($disable_submit_btn)) : ?>
@@ -232,13 +232,13 @@ class WoocommerceReviewOrder {
 	?>
 	<p class="login-checkout-captcha woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
 	<?php 
-	if ('yes'!=$i13_recapcha_hide_label_checkout) :
+	if ('yes'!=$wbc_recapcha_hide_label_checkout) :
 	?>
 	<label for="reg_captcha"><?php echo esc_html(( ''==trim($captcha_lable) )? __('Captcha', 'recaptcha-for-woocommerce') :esc_html($captcha_lable)); ?>&nbsp;<span class="required">*</span></label>
 	<?php 
 	endif; 
 	?>
-	<div id="g-recaptcha-checkout-i13" name="g-recaptcha" class="g-recaptcha-" data-callback="verifyCallback_add_logincheckout"   data-sitekey="<?php echo esc_html($site_key); ?>" data-theme="<?php echo esc_html($theme); ?>" data-size="<?php echo esc_html($size); ?>"></div>
+	<div id="g-recaptcha-checkout-wbc" name="g-recaptcha" class="g-recaptcha-" data-callback="verifyCallback_add_logincheckout"   data-sitekey="<?php echo esc_html($site_key); ?>" data-theme="<?php echo esc_html($theme); ?>" data-size="<?php echo esc_html($size); ?>"></div>
 	<div id='refresh_captcha' style="width:100%;padding-top:5px"> <a href="javascript:grecaptcha.reset(myCaptcha);"><?php echo esc_html($refresh_lable); ?></a></div>
 
 	</p>
@@ -268,7 +268,7 @@ class WoocommerceReviewOrder {
 	if (typeof (grecaptcha.render) !== 'undefined' && myCaptcha === null) {
 
 	try{
-	myCaptcha=grecaptcha.render('g-recaptcha-checkout-i13', {
+	myCaptcha=grecaptcha.render('g-recaptcha-checkout-wbc', {
 	'sitekey': '<?php echo esc_html($site_key); ?>',
 	'callback' : verifyCallback_add_logincheckout
 	});
@@ -281,7 +281,7 @@ class WoocommerceReviewOrder {
 	if (typeof (grecaptcha.render) !== 'undefined' && myCaptcha === null) {
 
 	try{
-	myCaptcha=grecaptcha.render('g-recaptcha-checkout-i13', {
+	myCaptcha=grecaptcha.render('g-recaptcha-checkout-wbc', {
 	'sitekey': '<?php echo esc_html($site_key); ?>',
 	'callback' : verifyCallback_add_logincheckout
 	});
@@ -316,7 +316,7 @@ class WoocommerceReviewOrder {
 	};
 
 	   
-	<?php if ('yes'==$i13_recapcha_login_recpacha_refersh_on_error) : ?>                                                                                                     
+	<?php if ('yes'==$wbc_recapcha_login_recpacha_refersh_on_error) : ?>                                                                                                     
 			jQuery('body').on('checkout_error', function(){
 
 	myCaptcha=grecaptcha.reset(myCaptcha);
@@ -358,8 +358,8 @@ class WoocommerceReviewOrder {
 	} else {
 
 
-	$is_enabled = get_option('i13_recapcha_enable_on_guestcheckout');
-	$is_enabled_logincheckout = get_option('i13_recapcha_enable_on_logincheckout');
+	$is_enabled = get_option('wbc_recapcha_enable_on_guestcheckout');
+	$is_enabled_logincheckout = get_option('wbc_recapcha_enable_on_logincheckout');
 
 	if (( 'yes' == $is_enabled && !is_user_logged_in() ) || ( 'yes' == $is_enabled_logincheckout && is_user_logged_in() )) {
 
@@ -368,21 +368,21 @@ class WoocommerceReviewOrder {
 
 
 	$site_key = get_option('wc_settings_tab_recapcha_site_key_v3');
-	$i13_recapcha_checkout_action_v3 = get_option('i13_recapcha_checkout_action_v3');
-	$i13_recapcha_wp_disable_to_woo_checkout = get_option('i13_recapcha_wp_disable_submit_token_generation_v3_woo_checkout');
-	if (''==$i13_recapcha_checkout_action_v3) {
+	$wbc_recapcha_checkout_action_v3 = get_option('wbc_recapcha_checkout_action_v3');
+	$wbc_recapcha_wp_disable_to_woo_checkout = get_option('wbc_recapcha_wp_disable_submit_token_generation_v3_woo_checkout');
+	if (''==$wbc_recapcha_checkout_action_v3) {
 
-	$i13_recapcha_checkout_action_v3='checkout';
+	$wbc_recapcha_checkout_action_v3='checkout';
 	}
 
 
-	if (''==$i13_recapcha_wp_disable_to_woo_checkout) {
+	if (''==$wbc_recapcha_wp_disable_to_woo_checkout) {
 
-	$i13_recapcha_wp_disable_to_woo_checkout='no';
+	$wbc_recapcha_wp_disable_to_woo_checkout='no';
 	}
 
 	?>
-	<input type="hidden" value="" name="i13_checkout_token" id="i13_checkout_token"/>
+	<input type="hidden" value="" name="wbc_checkout_token" id="wbc_checkout_token"/>
 	<script type="text/javascript">
 
 	<?php $intval_guest_checkout= uniqid('interval_'); ?>
@@ -395,9 +395,9 @@ class WoocommerceReviewOrder {
 
 	grecaptcha.ready(function () {
 
-	grecaptcha.execute('<?php echo esc_html($site_key); ?>', { action: '<?php echo esc_html($i13_recapcha_checkout_action_v3); ?>' }).then(function (token) {
+	grecaptcha.execute('<?php echo esc_html($site_key); ?>', { action: '<?php echo esc_html($wbc_recapcha_checkout_action_v3); ?>' }).then(function (token) {
 
-	var recaptchaResponse = document.getElementById('i13_checkout_token');
+	var recaptchaResponse = document.getElementById('wbc_checkout_token');
 	recaptchaResponse.value = token;
 	}, function (reason) {
 
@@ -405,15 +405,15 @@ class WoocommerceReviewOrder {
 	});
 
 
-					<?php if ('no'==$i13_recapcha_wp_disable_to_woo_checkout) : ?>  
+					<?php if ('no'==$wbc_recapcha_wp_disable_to_woo_checkout) : ?>  
 				  
 	var checkout_form = jQuery('form.checkout');
 
 	/*checkout_form.on('checkout_place_order', function () {
 
-	grecaptcha.execute('<?php echo esc_html($site_key); ?>', { action: '<?php echo esc_html($i13_recapcha_checkout_action_v3); ?>' }).then(function (token) {
+	grecaptcha.execute('<?php echo esc_html($site_key); ?>', { action: '<?php echo esc_html($wbc_recapcha_checkout_action_v3); ?>' }).then(function (token) {
 
-	var recaptchaResponse = document.getElementById('i13_checkout_token');
+	var recaptchaResponse = document.getElementById('wbc_checkout_token');
 	recaptchaResponse.value = token;
 
 	}, function (reason) {
@@ -424,9 +424,9 @@ class WoocommerceReviewOrder {
 
 	jQuery(document).on('updated_checkout', function () {
 
-	grecaptcha.execute('<?php echo esc_html($site_key); ?>', { action: '<?php echo esc_html($i13_recapcha_checkout_action_v3); ?>' }).then(function (token) {
+	grecaptcha.execute('<?php echo esc_html($site_key); ?>', { action: '<?php echo esc_html($wbc_recapcha_checkout_action_v3); ?>' }).then(function (token) {
 
-	var recaptchaResponse = document.getElementById('i13_checkout_token');
+	var recaptchaResponse = document.getElementById('wbc_checkout_token');
 	recaptchaResponse.value = token;
 
 	}, function (reason) {
@@ -435,9 +435,9 @@ class WoocommerceReviewOrder {
 	});
 	jQuery(document).on('checkout_error', function () {
 
-	grecaptcha.execute('<?php echo esc_html($site_key); ?>', { action: '<?php echo esc_html($i13_recapcha_checkout_action_v3); ?>' }).then(function (token) {
+	grecaptcha.execute('<?php echo esc_html($site_key); ?>', { action: '<?php echo esc_html($wbc_recapcha_checkout_action_v3); ?>' }).then(function (token) {
 
-	var recaptchaResponse = document.getElementById('i13_checkout_token');
+	var recaptchaResponse = document.getElementById('wbc_checkout_token');
 	recaptchaResponse.value = token;
 
 	}, function (reason) {
@@ -449,9 +449,9 @@ class WoocommerceReviewOrder {
 
 										if(jQuery(".woocommerce-error").is(":visible") || jQuery(".woocommerce_error").is(":visible")){
 
-												grecaptcha.execute('<?php echo esc_html($site_key); ?>', { action: '<?php echo esc_html($i13_recapcha_checkout_action_v3); ?>' }).then(function (token) {
+												grecaptcha.execute('<?php echo esc_html($site_key); ?>', { action: '<?php echo esc_html($wbc_recapcha_checkout_action_v3); ?>' }).then(function (token) {
 
-													var recaptchaResponse = document.getElementById('i13_checkout_token');
+													var recaptchaResponse = document.getElementById('wbc_checkout_token');
 													recaptchaResponse.value = token;
 
 												  }, function (reason) {
@@ -462,9 +462,9 @@ class WoocommerceReviewOrder {
 									 });
 	jQuery(document).on('payment_method_selected', function () {
 
-	grecaptcha.execute('<?php echo esc_html($site_key); ?>', { action: '<?php echo esc_html($i13_recapcha_checkout_action_v3); ?>' }).then(function (token) {
+	grecaptcha.execute('<?php echo esc_html($site_key); ?>', { action: '<?php echo esc_html($wbc_recapcha_checkout_action_v3); ?>' }).then(function (token) {
 
-	var recaptchaResponse = document.getElementById('i13_checkout_token');
+	var recaptchaResponse = document.getElementById('wbc_checkout_token');
 	recaptchaResponse.value = token;
 
 	}, function (reason) {
@@ -477,9 +477,9 @@ class WoocommerceReviewOrder {
 							
 									setInterval(function() {
 
-								grecaptcha.execute('<?php echo esc_html($site_key); ?>', { action: '<?php echo esc_html($i13_recapcha_checkout_action_v3); ?>' }).then(function (token) {
+								grecaptcha.execute('<?php echo esc_html($site_key); ?>', { action: '<?php echo esc_html($wbc_recapcha_checkout_action_v3); ?>' }).then(function (token) {
 
-									var recaptchaResponse = document.getElementById('i13_checkout_token');
+									var recaptchaResponse = document.getElementById('wbc_checkout_token');
 									recaptchaResponse.value = token;
 								});
 

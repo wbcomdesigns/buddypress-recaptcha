@@ -23,7 +23,7 @@
 class WoocommerceLostpassword {
 	public function woo_extra_lostpassword_fields() {
 
-	$reCapcha_version = get_option('i13_recapcha_version'); 
+	$reCapcha_version = get_option('wbc_recapcha_version'); 
 	if (''==$reCapcha_version) {
 	$reCapcha_version='v2';
 	}
@@ -31,15 +31,15 @@ class WoocommerceLostpassword {
 	if ('v2'== strtolower($reCapcha_version)) {
 
 
-	$disable_submit_btn=get_option('i13_recapcha_disable_submitbtn_woo_lostpassword');
-	$i13_recapcha_hide_label_lostpassword=get_option('i13_recapcha_hide_label_lostpassword');
-	$captcha_lable = get_option('i13_recapcha_lostpassword_title');
+	$disable_submit_btn=get_option('wbc_recapcha_disable_submitbtn_woo_lostpassword');
+	$wbc_recapcha_hide_label_lostpassword=get_option('wbc_recapcha_hide_label_lostpassword');
+	$captcha_lable = get_option('wbc_recapcha_lostpassword_title');
 	$captcha_lable_ = $captcha_lable;
 	$site_key = get_option('wc_settings_tab_recapcha_site_key');
-	$theme = get_option('i13_recapcha_lostpassword_theme');
-	$size = get_option('i13_recapcha_lostpassword_size');
-	$is_enabled = get_option('i13_recapcha_enable_on_lostpassword');
-	$i13_recapcha_no_conflict = get_option('i13_recapcha_no_conflict');
+	$theme = get_option('wbc_recapcha_lostpassword_theme');
+	$size = get_option('wbc_recapcha_lostpassword_size');
+	$is_enabled = get_option('wbc_recapcha_enable_on_lostpassword');
+	$wbc_recapcha_no_conflict = get_option('wbc_recapcha_no_conflict');
 
 	$recapcha_error_msg_captcha_blank = get_option('wc_settings_tab_recapcha_error_msg_captcha_blank');
 	if (''==trim($captcha_lable_)) {
@@ -50,7 +50,7 @@ class WoocommerceLostpassword {
 
 	if ('yes' == $is_enabled) {
 
-	if ('yes'== $i13_recapcha_no_conflict) {
+	if ('yes'== $wbc_recapcha_no_conflict) {
 
 	global $wp_scripts;
 
@@ -59,7 +59,7 @@ class WoocommerceLostpassword {
 	foreach ( $wp_scripts->queue as $handle ) {
 
 	foreach ( $urls as $url ) {
-	if (false !== strpos($wp_scripts->registered[ $handle ]->src, $url) && ( 'i13-woo-captcha'!=$handle && 'i13-woo-captcha-v3'!=$handle ) ) {
+	if (false !== strpos($wp_scripts->registered[ $handle ]->src, $url) && ( 'wbc-woo-captcha'!=$handle && 'wbc-woo-captcha-v3'!=$handle ) ) {
 	wp_dequeue_script($handle);
 	wp_deregister_script($handle);
 	break;
@@ -68,17 +68,17 @@ class WoocommerceLostpassword {
 	}
 	}
 	wp_enqueue_script('jquery');
-	wp_enqueue_script('i13-woo-captcha');
+	wp_enqueue_script('wbc-woo-captcha');
 	?>
 	<p class="woo-lost-password-captcha woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
 	<?php 
-	if ('yes'!=$i13_recapcha_hide_label_lostpassword) :
+	if ('yes'!=$wbc_recapcha_hide_label_lostpassword) :
 	?>
 	<label for="lostpassword_captcha"><?php echo esc_html(( ''==trim($captcha_lable) )? __('Captcha', 'recaptcha-for-woocommerce') :esc_html($captcha_lable)); ?>&nbsp;<span class="required">*</span></label>
 	<?php 
 	endif; 
 	?>
-	<div name="g-recaptcha-lostpassword-i13" class="g-recaptcha" data-callback="verifyCallback_woo_lostpassword"  data-sitekey="<?php echo esc_html($site_key); ?>" data-theme="<?php echo esc_html($theme); ?>" data-size="<?php echo esc_html($size); ?>"></div>
+	<div name="g-recaptcha-lostpassword-wbc" class="g-recaptcha" data-callback="verifyCallback_woo_lostpassword"  data-sitekey="<?php echo esc_html($site_key); ?>" data-theme="<?php echo esc_html($theme); ?>" data-size="<?php echo esc_html($size); ?>"></div>
 
 
 	</p>
@@ -138,12 +138,12 @@ class WoocommerceLostpassword {
 	} else {
 
 
-	$is_enabled = get_option('i13_recapcha_enable_on_lostpassword');
-	$i13_recapcha_no_conflict = get_option('i13_recapcha_no_conflict_v3');
-	$i13_generation_v3_woo_fpass=get_option('i13_recapcha_wp_disable_submit_token_generation_v3_woo_fpass');
+	$is_enabled = get_option('wbc_recapcha_enable_on_lostpassword');
+	$wbc_recapcha_no_conflict = get_option('wbc_recapcha_no_conflict_v3');
+	$wbc_generation_v3_woo_fpass=get_option('wbc_recapcha_wp_disable_submit_token_generation_v3_woo_fpass');
 	if ('yes' == $is_enabled) {
 
-	if ('yes'== $i13_recapcha_no_conflict) {
+	if ('yes'== $wbc_recapcha_no_conflict) {
 
 	global $wp_scripts;
 
@@ -152,7 +152,7 @@ class WoocommerceLostpassword {
 	foreach ( $wp_scripts->queue as $handle ) {
 
 	foreach ( $urls as $url ) {
-	if (false !== strpos($wp_scripts->registered[ $handle ]->src, $url) && ( 'i13-woo-captcha'!=$handle && 'i13-woo-captcha-v3'!=$handle ) ) {
+	if (false !== strpos($wp_scripts->registered[ $handle ]->src, $url) && ( 'wbc-woo-captcha'!=$handle && 'wbc-woo-captcha-v3'!=$handle ) ) {
 	wp_dequeue_script($handle);
 	wp_deregister_script($handle);
 	break;
@@ -161,20 +161,20 @@ class WoocommerceLostpassword {
 	}
 	}
 	wp_enqueue_script('jquery');
-	wp_enqueue_script('i13-woo-captcha-v3');
+	wp_enqueue_script('wbc-woo-captcha-v3');
 
 	$site_key = get_option('wc_settings_tab_recapcha_site_key_v3');
-	$i13_recapcha_lostpassword_action_v3 = get_option('i13_recapcha_lostpassword_action_v3');
-	if (''==trim($i13_recapcha_lostpassword_action_v3)) {
+	$wbc_recapcha_lostpassword_action_v3 = get_option('wbc_recapcha_lostpassword_action_v3');
+	if (''==trim($wbc_recapcha_lostpassword_action_v3)) {
 
-	$i13_recapcha_lostpassword_action_v3='forgot_password';
+	$wbc_recapcha_lostpassword_action_v3='forgot_password';
 	}
-	if (''==trim($$i13_generation_v3_woo_fpass)) {
+	if (''==trim($$wbc_generation_v3_woo_fpass)) {
 
-	$i13_generation_v3_woo_fpass='no';
+	$wbc_generation_v3_woo_fpass='no';
 	}
 	?>
-	<input type="hidden" value="" name="i13_recaptcha_lost_password_token" id="i13_recaptcha_lost_password_token"/>
+	<input type="hidden" value="" name="wbc_recaptcha_lost_password_token" id="wbc_recaptcha_lost_password_token"/>
 	<script type="text/javascript">
 
 	<?php $intval_lost_pass= uniqid('interval_'); ?>
@@ -187,22 +187,22 @@ class WoocommerceLostpassword {
 
 	grecaptcha.ready(function () {
 
-	grecaptcha.execute('<?php echo esc_html($site_key); ?>', { action: '<?php echo esc_html($i13_recapcha_lostpassword_action_v3); ?>' }).then(function (token) {
+	grecaptcha.execute('<?php echo esc_html($site_key); ?>', { action: '<?php echo esc_html($wbc_recapcha_lostpassword_action_v3); ?>' }).then(function (token) {
 
-	var recaptchaResponse = document.getElementById('i13_recaptcha_lost_password_token');
+	var recaptchaResponse = document.getElementById('wbc_recaptcha_lost_password_token');
 	recaptchaResponse.value = token;
 	});
 	});
 
 
 
-						<?php if ('yes'==$i13_generation_v3_woo_fpass) : ?>
+						<?php if ('yes'==$wbc_generation_v3_woo_fpass) : ?>
 						
 							   setInterval(function() {
 									
-								grecaptcha.execute('<?php echo esc_html($site_key); ?>', { action: '<?php echo esc_html($i13_recapcha_lostpassword_action_v3); ?>' }).then(function (token) {
+								grecaptcha.execute('<?php echo esc_html($site_key); ?>', { action: '<?php echo esc_html($wbc_recapcha_lostpassword_action_v3); ?>' }).then(function (token) {
 
-									var recaptchaResponse = document.getElementById('i13_recaptcha_lost_password_token');
+									var recaptchaResponse = document.getElementById('wbc_recaptcha_lost_password_token');
 									recaptchaResponse.value = token;
 								});
 
@@ -212,9 +212,9 @@ class WoocommerceLostpassword {
 							jQuery('.woocommerce-ResetPassword').on('submit', function (e) {
 										 var frm = this;
 										 e.preventDefault();
-										 grecaptcha.execute('<?php echo esc_html($site_key); ?>', { action: '<?php echo esc_html($i13_recapcha_lostpassword_action_v3); ?>' }).then(function (token) {
+										 grecaptcha.execute('<?php echo esc_html($site_key); ?>', { action: '<?php echo esc_html($wbc_recapcha_lostpassword_action_v3); ?>' }).then(function (token) {
 
-										  var recaptchaResponse = document.getElementById('i13_recaptcha_lost_password_token');
+										  var recaptchaResponse = document.getElementById('wbc_recaptcha_lost_password_token');
 										   recaptchaResponse.value = token;
 
 										  frm.submit();

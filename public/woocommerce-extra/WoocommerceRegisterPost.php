@@ -23,7 +23,7 @@
 class WoocommerceRegisterPost {
 	public function woocomm_validate_signup_captcha( $username, $email, $validation_errors) {
 		
-		$reCapcha_version = get_option('i13_recapcha_version'); 
+		$reCapcha_version = get_option('wbc_recapcha_version'); 
 		if (''==$reCapcha_version) {
 			$reCapcha_version='v2';
 		}
@@ -32,11 +32,11 @@ class WoocommerceRegisterPost {
 				
 			
 			$secret_key = get_option('wc_settings_tab_recapcha_secret_key');
-			$is_enabled = get_option('i13_recapcha_enable_on_signup');
+			$is_enabled = get_option('wbc_recapcha_enable_on_signup');
 			$recapcha_error_msg_captcha_blank = get_option('wc_settings_tab_recapcha_error_msg_captcha_blank');
 			$recapcha_error_msg_captcha_no_response = get_option('wc_settings_tab_recapcha_error_msg_captcha_no_response');
 			$recapcha_error_msg_captcha_invalid = get_option('wc_settings_tab_recapcha_error_msg_captcha_invalid');
-			$captcha_lable = get_option('i13_recapcha_signup_title');
+			$captcha_lable = get_option('wbc_recapcha_signup_title');
 			if (''==trim($captcha_lable)) {
 					
 				$captcha_lable='recaptcha';
@@ -102,22 +102,22 @@ class WoocommerceRegisterPost {
 			}
 		} else {
 						
-			$i13_recapcha_signup_score_threshold_v3 = get_option('i13_recapcha_signup_score_threshold_v3');
-			if (''==$i13_recapcha_signup_score_threshold_v3) {
+			$wbc_recapcha_signup_score_threshold_v3 = get_option('wbc_recapcha_signup_score_threshold_v3');
+			if (''==$wbc_recapcha_signup_score_threshold_v3) {
 
-				$i13_recapcha_signup_score_threshold_v3='0.5';
+				$wbc_recapcha_signup_score_threshold_v3='0.5';
 			}
-			$i13_recapcha_signup_action_v3 = get_option('i13_recapcha_signup_action_v3');
-			if (''==$i13_recapcha_signup_action_v3) {
+			$wbc_recapcha_signup_action_v3 = get_option('wbc_recapcha_signup_action_v3');
+			if (''==$wbc_recapcha_signup_action_v3) {
 
-				$i13_recapcha_signup_action_v3='signup';
+				$wbc_recapcha_signup_action_v3='signup';
 			}
 
-			$recapcha_error_msg_captcha_blank = get_option('i13_recapcha_error_msg_captcha_blank_v3');
-			$recapcha_error_msg_captcha_no_response = get_option('i13_recapcha_error_msg_captcha_no_response_v3');
-			$recapcha_error_msg_captcha_invalid = get_option('i13_recapcha_error_msg_v3_invalid_captcha');
+			$recapcha_error_msg_captcha_blank = get_option('wbc_recapcha_error_msg_captcha_blank_v3');
+			$recapcha_error_msg_captcha_no_response = get_option('wbc_recapcha_error_msg_captcha_no_response_v3');
+			$recapcha_error_msg_captcha_invalid = get_option('wbc_recapcha_error_msg_v3_invalid_captcha');
 			$secret_key = get_option('wc_settings_tab_recapcha_secret_key_v3');
-			$is_enabled = get_option('i13_recapcha_enable_on_wpregister');
+			$is_enabled = get_option('wbc_recapcha_enable_on_wpregister');
 			$nonce_value = isset($_POST['_wpnonce']) ? sanitize_text_field(wp_unslash($_POST['_wpnonce'])) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.NonceVerification.NoNonceVerification
 			$nonce_value = isset($_POST['woocommerce-register-nonce']) ? sanitize_text_field(wp_unslash($_POST['woocommerce-register-nonce'])) : $nonce_value; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.NonceVerification.NoNonceVerification
 
@@ -125,9 +125,9 @@ class WoocommerceRegisterPost {
 
 						
 
-				if (isset($_POST['i13_recaptcha_register_token']) && !empty($_POST['i13_recaptcha_register_token'])) {
+				if (isset($_POST['wbc_recaptcha_register_token']) && !empty($_POST['wbc_recaptcha_register_token'])) {
 					// Google reCAPTCHA API secret key 
-					$response = sanitize_text_field($_POST['i13_recaptcha_register_token']);
+					$response = sanitize_text_field($_POST['wbc_recaptcha_register_token']);
 
 					// Verify the reCAPTCHA response 
 					$verifyResponse = wp_remote_post(
@@ -165,7 +165,7 @@ class WoocommerceRegisterPost {
 
 
 
-							if ($responseData->score < $i13_recapcha_signup_score_threshold_v3 || $responseData->action!=$i13_recapcha_signup_action_v3) {
+							if ($responseData->score < $wbc_recapcha_signup_score_threshold_v3 || $responseData->action!=$wbc_recapcha_signup_action_v3) {
 
 								if (''==trim($recapcha_error_msg_captcha_invalid)) {
 
