@@ -24,7 +24,7 @@ class WoocommerceProcessLoginErrors {
 	public function woocomm_validate_login_captcha( $validation_errors, $username, $password) {
 
 		
-		$reCapcha_version = get_option('i13_recapcha_version'); 
+		$reCapcha_version = get_option('wbc_recapcha_version'); 
 		if (''==$reCapcha_version) {
 			$reCapcha_version='v2';
 		}
@@ -35,7 +35,7 @@ class WoocommerceProcessLoginErrors {
 			$recapcha_error_msg_captcha_no_response = get_option('wc_settings_tab_recapcha_error_msg_captcha_no_response');
 			$recapcha_error_msg_captcha_invalid = get_option('wc_settings_tab_recapcha_error_msg_captcha_invalid');
 
-			$captcha_lable = get_option('i13_recapcha_login_title');
+			$captcha_lable = get_option('wbc_recapcha_login_title');
 			if (''==trim($captcha_lable)) {
 					
 				$captcha_lable='recaptcha';
@@ -45,7 +45,7 @@ class WoocommerceProcessLoginErrors {
 			$recapcha_error_msg_captcha_invalid = str_replace('[recaptcha]', $captcha_lable, $recapcha_error_msg_captcha_invalid);
 
 			$secret_key = get_option('wc_settings_tab_recapcha_secret_key');
-			$is_enabled = get_option('i13_recapcha_enable_on_login');
+			$is_enabled = get_option('wbc_recapcha_enable_on_login');
 
 			$nonce_value = '';
 			if (isset($_REQUEST['woocommerce-login-nonce']) || isset($_REQUEST['_wpnonce'])) {
@@ -112,22 +112,22 @@ class WoocommerceProcessLoginErrors {
 				
 		} else {
 
-			$i13_recapcha_login_score_threshold_v3 = get_option('i13_recapcha_login_score_threshold_v3');
-			if (''==$i13_recapcha_login_score_threshold_v3) {
+			$wbc_recapcha_login_score_threshold_v3 = get_option('wbc_recapcha_login_score_threshold_v3');
+			if (''==$wbc_recapcha_login_score_threshold_v3) {
 
-				$i13_recapcha_login_score_threshold_v3='0.5';
+				$wbc_recapcha_login_score_threshold_v3='0.5';
 			}
-			$i13_recapcha_login_action_v3 = get_option('i13_recapcha_login_action_v3');
-			if (''==$i13_recapcha_login_action_v3) {
+			$wbc_recapcha_login_action_v3 = get_option('wbc_recapcha_login_action_v3');
+			if (''==$wbc_recapcha_login_action_v3) {
 
-				$i13_recapcha_login_action_v3='login';
+				$wbc_recapcha_login_action_v3='login';
 			}
 
-			$recapcha_error_msg_captcha_blank = get_option('i13_recapcha_error_msg_captcha_blank_v3');
-			$recapcha_error_msg_captcha_no_response = get_option('i13_recapcha_error_msg_captcha_no_response_v3');
-			$recapcha_error_msg_captcha_invalid = get_option('i13_recapcha_error_msg_v3_invalid_captcha');
+			$recapcha_error_msg_captcha_blank = get_option('wbc_recapcha_error_msg_captcha_blank_v3');
+			$recapcha_error_msg_captcha_no_response = get_option('wbc_recapcha_error_msg_captcha_no_response_v3');
+			$recapcha_error_msg_captcha_invalid = get_option('wbc_recapcha_error_msg_v3_invalid_captcha');
 			$secret_key = get_option('wc_settings_tab_recapcha_secret_key_v3');
-			$is_enabled = get_option('i13_recapcha_enable_on_login');
+			$is_enabled = get_option('wbc_recapcha_enable_on_login');
 			$nonce_value = '';
 			if (isset($_REQUEST['woocommerce-login-nonce']) || isset($_REQUEST['_wpnonce'])) {
 
@@ -145,9 +145,9 @@ class WoocommerceProcessLoginErrors {
 
 						
 
-				if (isset($_POST['i13_recaptcha_login_token']) && !empty($_POST['i13_recaptcha_login_token'])) {
+				if (isset($_POST['wbc_recaptcha_login_token']) && !empty($_POST['wbc_recaptcha_login_token'])) {
 					// Google reCAPTCHA API secret key 
-					$response = sanitize_text_field($_POST['i13_recaptcha_login_token']);
+					$response = sanitize_text_field($_POST['wbc_recaptcha_login_token']);
 
 					// Verify the reCAPTCHA response 
 					$verifyResponse = wp_remote_post(
@@ -185,7 +185,7 @@ class WoocommerceProcessLoginErrors {
 
 													
 
-							if ($responseData->score < $i13_recapcha_login_score_threshold_v3 || $responseData->action!=$i13_recapcha_login_action_v3) {
+							if ($responseData->score < $wbc_recapcha_login_score_threshold_v3 || $responseData->action!=$wbc_recapcha_login_action_v3) {
 
 								if (''==trim($recapcha_error_msg_captcha_invalid)) {
 

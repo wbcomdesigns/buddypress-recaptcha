@@ -270,19 +270,19 @@ class Recaptcha_For_Woocommerce {
 			add_filter('script_loader_tag', array($plugin_public,'google_recaptcha_defer_parsing_of_js'), 10);
 		}
 
-		$reCapcha_version = get_option('i13_recapcha_version'); 
+		$reCapcha_version = get_option('wbc_recapcha_version'); 
 		if (''==$reCapcha_version) {
 			$reCapcha_version='v2';
 		}
 
 		if ('v2'== strtolower($reCapcha_version)) {					
-			$i13_recapcha_custom_wp_login_form_login=get_option('i13_recapcha_custom_wp_login_form_login');
-			if ('yes'==$i13_recapcha_custom_wp_login_form_login) {
+			$wbc_recapcha_custom_wp_login_form_login=get_option('wbc_recapcha_custom_wp_login_form_login');
+			if ('yes'==$wbc_recapcha_custom_wp_login_form_login) {
 				add_filter('login_form_middle', array($WoocommerceLogin, 'woo_extra_login_fields'), 10, 2);
 			}
 		} else {
-			$i13_recapcha__v3_custom_wp_login_form_login=get_option('i13_recapcha__v3_custom_wp_login_form_login');
-			if ('yes'==$i13_recapcha__v3_custom_wp_login_form_login) {
+			$wbc_recapcha__v3_custom_wp_login_form_login=get_option('wbc_recapcha__v3_custom_wp_login_form_login');
+			if ('yes'==$wbc_recapcha__v3_custom_wp_login_form_login) {
 				add_filter('login_form_middle', array($WoocommerceLogin, 'woo_extra_login_fields'), 10, 2);
 			}					
 		}

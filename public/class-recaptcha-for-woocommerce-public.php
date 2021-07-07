@@ -101,33 +101,33 @@ class Recaptcha_For_Woocommerce_Public {
 
 	public function woo_recaptcha_load_styles_and_js() {
 
-		$reCapcha_version = get_option('i13_recapcha_version'); 
+		$reCapcha_version = get_option('wbc_recapcha_version'); 
 		if (''==$reCapcha_version) {
 			$reCapcha_version='v2';
 		}
 			 
 		if ('v2'== strtolower($reCapcha_version)) {
-								$i13_recapcha_v2_lang=esc_html(get_option('i13_recapcha_v2_lang')); 
-			//wp_register_style('i13-woo-styles', plugins_url('/public/css/styles.css', __FILE__), array(), '1.0');
-			if (''!=$i13_recapcha_v2_lang) {
+								$wbc_recapcha_v2_lang=esc_html(get_option('wbc_recapcha_v2_lang')); 
+			//wp_register_style('wbc-woo-styles', plugins_url('/public/css/styles.css', __FILE__), array(), '1.0');
+			if (''!=$wbc_recapcha_v2_lang) {
 									
-				wp_register_script('i13-woo-captcha', 'https://www.google.com/recaptcha/api.js?from=i13_recaptcha&hl=' . $i13_recapcha_v2_lang, array(), '1.0');
-				wp_register_script('i13-woo-captcha-explicit', 'https://www.google.com/recaptcha/api.js?from=i13_recaptcha&render=explicit&hl=' . $i13_recapcha_v2_lang, array(), '2.0');
+				wp_register_script('wbc-woo-captcha', 'https://www.google.com/recaptcha/api.js?from=wbc_recaptcha&hl=' . $wbc_recapcha_v2_lang, array(), '1.0');
+				wp_register_script('wbc-woo-captcha-explicit', 'https://www.google.com/recaptcha/api.js?from=wbc_recaptcha&render=explicit&hl=' . $wbc_recapcha_v2_lang, array(), '2.0');
 			} else {
-				 wp_register_script('i13-woo-captcha', 'https://www.google.com/recaptcha/api.js?from=i13_recaptcha', array(), '1.0');
-				 wp_register_script('i13-woo-captcha-explicit', 'https://www.google.com/recaptcha/api.js?from=i13_recaptcha&render=explicit', array(), '2.0');
+				 wp_register_script('wbc-woo-captcha', 'https://www.google.com/recaptcha/api.js?from=wbc_recaptcha', array(), '1.0');
+				 wp_register_script('wbc-woo-captcha-explicit', 'https://www.google.com/recaptcha/api.js?from=wbc_recaptcha&render=explicit', array(), '2.0');
 			}
-			$is_enabled = get_option('i13_recapcha_enable_on_guestcheckout');
-			  $is_enabled_on_payment_page = get_option('i13_recapcha_enable_on_addpaymentmethod');
+			$is_enabled = get_option('wbc_recapcha_enable_on_guestcheckout');
+			  $is_enabled_on_payment_page = get_option('wbc_recapcha_enable_on_addpaymentmethod');
 
-			  $is_enabled_logincheckout = get_option('i13_recapcha_enable_on_logincheckout');
-			  $i13_recapcha_enable_on_payfororder = get_option('i13_recapcha_enable_on_payfororder');
-			  $i13_recapcha_no_conflict = get_option('i13_recapcha_no_conflict');
+			  $is_enabled_logincheckout = get_option('wbc_recapcha_enable_on_logincheckout');
+			  $wbc_recapcha_enable_on_payfororder = get_option('wbc_recapcha_enable_on_payfororder');
+			  $wbc_recapcha_no_conflict = get_option('wbc_recapcha_no_conflict');
 
 			if(function_exists('is_wc_endpoint_url')){
 				if ('yes' == $is_enabled_on_payment_page && is_user_logged_in() && is_wc_endpoint_url(get_option('woocommerce_myaccount_add_payment_method_endpoint', 'add-payment-method')) ) {
 
-					if ('yes'== $i13_recapcha_no_conflict) {
+					if ('yes'== $wbc_recapcha_no_conflict) {
 
 						global $wp_scripts;
 
@@ -136,7 +136,7 @@ class Recaptcha_For_Woocommerce_Public {
 						foreach ( $wp_scripts->queue as $handle ) {
 
 							foreach ( $urls as $url ) {
-								if (false !== strpos($wp_scripts->registered[ $handle ]->src, $url) && ( 'i13-woo-captcha'!=$handle && 'i13-woo-captcha-v3'!=$handle ) ) {
+								if (false !== strpos($wp_scripts->registered[ $handle ]->src, $url) && ( 'wbc-woo-captcha'!=$handle && 'wbc-woo-captcha-v3'!=$handle ) ) {
 									wp_dequeue_script($handle);
 									wp_deregister_script($handle);
 									break;
@@ -144,14 +144,14 @@ class Recaptcha_For_Woocommerce_Public {
 							}
 						}
 					}
-					wp_enqueue_script('i13-woo-captcha');
+					wp_enqueue_script('wbc-woo-captcha');
 				}
 			}			
 
 			if(function_exists('is_checkout')){
-				if ('yes' == $is_enabled && ( !is_user_logged_in() || $i13_recapcha_enable_on_payfororder ) && is_checkout() ) {
+				if ('yes' == $is_enabled && ( !is_user_logged_in() || $wbc_recapcha_enable_on_payfororder ) && is_checkout() ) {
 
-					if ('yes'== $i13_recapcha_no_conflict) {
+					if ('yes'== $wbc_recapcha_no_conflict) {
 
 						global $wp_scripts;
 
@@ -160,7 +160,7 @@ class Recaptcha_For_Woocommerce_Public {
 						foreach ( $wp_scripts->queue as $handle ) {
 
 							foreach ( $urls as $url ) {
-								if (false !== strpos($wp_scripts->registered[ $handle ]->src, $url) && ( 'i13-woo-captcha'!=$handle && 'i13-woo-captcha-v3'!=$handle ) ) {
+								if (false !== strpos($wp_scripts->registered[ $handle ]->src, $url) && ( 'wbc-woo-captcha'!=$handle && 'wbc-woo-captcha-v3'!=$handle ) ) {
 									wp_dequeue_script($handle);
 									wp_deregister_script($handle);
 									break;
@@ -168,10 +168,10 @@ class Recaptcha_For_Woocommerce_Public {
 							}
 						}
 					}
-								wp_enqueue_script('i13-woo-captcha-explicit');
-				} else if ('yes' == ( $is_enabled_logincheckout || $i13_recapcha_enable_on_payfororder ) && is_user_logged_in() && is_checkout() ) {
+								wp_enqueue_script('wbc-woo-captcha-explicit');
+				} else if ('yes' == ( $is_enabled_logincheckout || $wbc_recapcha_enable_on_payfororder ) && is_user_logged_in() && is_checkout() ) {
 
-					if ('yes'== $i13_recapcha_no_conflict) {
+					if ('yes'== $wbc_recapcha_no_conflict) {
 
 						global $wp_scripts;
 
@@ -180,7 +180,7 @@ class Recaptcha_For_Woocommerce_Public {
 						foreach ( $wp_scripts->queue as $handle ) {
 
 							foreach ( $urls as $url ) {
-								if (false !== strpos($wp_scripts->registered[ $handle ]->src, $url) && ( 'i13-woo-captcha'!=$handle && 'i13-woo-captcha-v3'!=$handle ) ) {
+								if (false !== strpos($wp_scripts->registered[ $handle ]->src, $url) && ( 'wbc-woo-captcha'!=$handle && 'wbc-woo-captcha-v3'!=$handle ) ) {
 									   wp_dequeue_script($handle);
 									   wp_deregister_script($handle);
 									   break;
@@ -188,7 +188,7 @@ class Recaptcha_For_Woocommerce_Public {
 							}
 						}
 					}
-					wp_enqueue_script('i13-woo-captcha-explicit');
+					wp_enqueue_script('wbc-woo-captcha-explicit');
 				}
 			}
 			
@@ -196,17 +196,17 @@ class Recaptcha_For_Woocommerce_Public {
 					
 					
 			$site_key = get_option('wc_settings_tab_recapcha_site_key_v3');
-			wp_register_script('i13-woo-captcha-v3', 'https://www.google.com/recaptcha/api.js?from=i13_recaptcha&render=' . esc_html($site_key), array('jquery'), '1.0');
-			$is_enabled = get_option('i13_recapcha_enable_on_guestcheckout');
-			$is_enabled_on_payment_page = get_option('i13_recapcha_enable_on_addpaymentmethod');
-			$is_enabled_logincheckout = get_option('i13_recapcha_enable_on_logincheckout');
-			$i13_recapcha_enable_on_payfororder = get_option('i13_recapcha_enable_on_payfororder');
-			$i13_recapcha_no_conflict = get_option('i13_recapcha_no_conflict_v3');
+			wp_register_script('wbc-woo-captcha-v3', 'https://www.google.com/recaptcha/api.js?from=wbc_recaptcha&render=' . esc_html($site_key), array('jquery'), '1.0');
+			$is_enabled = get_option('wbc_recapcha_enable_on_guestcheckout');
+			$is_enabled_on_payment_page = get_option('wbc_recapcha_enable_on_addpaymentmethod');
+			$is_enabled_logincheckout = get_option('wbc_recapcha_enable_on_logincheckout');
+			$wbc_recapcha_enable_on_payfororder = get_option('wbc_recapcha_enable_on_payfororder');
+			$wbc_recapcha_no_conflict = get_option('wbc_recapcha_no_conflict_v3');
 
 
 			if ('yes' == $is_enabled_on_payment_page && is_user_logged_in() && is_wc_endpoint_url(get_option('woocommerce_myaccount_add_payment_method_endpoint', 'add-payment-method')) ) {
 
-				if ('yes'== $i13_recapcha_no_conflict) {
+				if ('yes'== $wbc_recapcha_no_conflict) {
 
 					global $wp_scripts;
 
@@ -215,7 +215,7 @@ class Recaptcha_For_Woocommerce_Public {
 					foreach ( $wp_scripts->queue as $handle ) {
 
 						foreach ( $urls as $url ) {
-							if (false !== strpos($wp_scripts->registered[ $handle ]->src, $url) && ( 'i13-woo-captcha'!=$handle && 'i13-woo-captcha-v3'!=$handle ) ) {
+							if (false !== strpos($wp_scripts->registered[ $handle ]->src, $url) && ( 'wbc-woo-captcha'!=$handle && 'wbc-woo-captcha-v3'!=$handle ) ) {
 								wp_dequeue_script($handle);
 								wp_deregister_script($handle);
 								break;
@@ -223,12 +223,12 @@ class Recaptcha_For_Woocommerce_Public {
 						}
 					}
 				}
-				wp_enqueue_script('i13-woo-captcha-v3');
+				wp_enqueue_script('wbc-woo-captcha-v3');
 			}
 
-			if ('yes' == $is_enabled && ( !is_user_logged_in() || $i13_recapcha_enable_on_payfororder ) && is_checkout() ) {
+			if ('yes' == $is_enabled && ( !is_user_logged_in() || $wbc_recapcha_enable_on_payfororder ) && is_checkout() ) {
 
-				if ('yes'== $i13_recapcha_no_conflict) {
+				if ('yes'== $wbc_recapcha_no_conflict) {
 
 					global $wp_scripts;
 
@@ -237,7 +237,7 @@ class Recaptcha_For_Woocommerce_Public {
 					foreach ( $wp_scripts->queue as $handle ) {
 
 						foreach ( $urls as $url ) {
-							if (false !== strpos($wp_scripts->registered[ $handle ]->src, $url) && ( 'i13-woo-captcha'!=$handle && 'i13-woo-captcha-v3'!=$handle ) ) {
+							if (false !== strpos($wp_scripts->registered[ $handle ]->src, $url) && ( 'wbc-woo-captcha'!=$handle && 'wbc-woo-captcha-v3'!=$handle ) ) {
 								wp_dequeue_script($handle);
 								wp_deregister_script($handle);
 								break;
@@ -245,10 +245,10 @@ class Recaptcha_For_Woocommerce_Public {
 						}
 					}
 				}
-							wp_enqueue_script('i13-woo-captcha-v3');
-			} else if ('yes' == ( $is_enabled_logincheckout || $i13_recapcha_enable_on_payfororder ) && is_user_logged_in() && is_checkout() ) {
+							wp_enqueue_script('wbc-woo-captcha-v3');
+			} else if ('yes' == ( $is_enabled_logincheckout || $wbc_recapcha_enable_on_payfororder ) && is_user_logged_in() && is_checkout() ) {
 
-				if ('yes'== $i13_recapcha_no_conflict) {
+				if ('yes'== $wbc_recapcha_no_conflict) {
 
 					global $wp_scripts;
 
@@ -257,7 +257,7 @@ class Recaptcha_For_Woocommerce_Public {
 					foreach ( $wp_scripts->queue as $handle ) {
 
 						foreach ( $urls as $url ) {
-							if (false !== strpos($wp_scripts->registered[ $handle ]->src, $url) && ( 'i13-woo-captcha'!=$handle && 'i13-woo-captcha-v3'!=$handle ) ) {
+							if (false !== strpos($wp_scripts->registered[ $handle ]->src, $url) && ( 'wbc-woo-captcha'!=$handle && 'wbc-woo-captcha-v3'!=$handle ) ) {
 								   wp_dequeue_script($handle);
 								   wp_deregister_script($handle);
 								   break;
@@ -265,7 +265,7 @@ class Recaptcha_For_Woocommerce_Public {
 						}
 					}
 				}
-				wp_enqueue_script('i13-woo-captcha-v3');
+				wp_enqueue_script('wbc-woo-captcha-v3');
 			}
 					
 					
@@ -277,7 +277,7 @@ class Recaptcha_For_Woocommerce_Public {
 	}
 
 	public function google_recaptcha_defer_parsing_of_js( $url ) {					
-		if (strpos($url, 'https://www.google.com/recaptcha/api.js?from=i13_recaptcha')!==false ) {
+		if (strpos($url, 'https://www.google.com/recaptcha/api.js?from=wbc_recaptcha')!==false ) {
 			return str_replace(' src', ' defer src', $url);
 		}
 		return $url;    
@@ -294,6 +294,6 @@ class Recaptcha_For_Woocommerce_Public {
 	public function woo_load_lang_for_woo_recaptcha() {
 
 		load_plugin_textdomain('recaptcha-for-woocommerce', false, basename(dirname(__FILE__)) . '/languages/');
-		//add_filter('map_meta_cap', array($this, 'map_i13_woo_map_woo_product_slider_meta_caps'), 10, 4);
+		//add_filter('map_meta_cap', array($this, 'map_wbc_woo_map_woo_product_slider_meta_caps'), 10, 4);
 	}
 }

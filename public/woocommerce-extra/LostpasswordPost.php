@@ -23,7 +23,7 @@
 class LostpasswordPost {
 	public function woocomm_validate_lostpassword_captcha( $validation_errors) {
 
-		$reCapcha_version = get_option('i13_recapcha_version'); 
+		$reCapcha_version = get_option('wbc_recapcha_version'); 
 		if (''==$reCapcha_version) {
 			$reCapcha_version='v2';
 		}
@@ -31,12 +31,12 @@ class LostpasswordPost {
 		if ('v2'== strtolower($reCapcha_version)) {
 
 			$secret_key = get_option('wc_settings_tab_recapcha_secret_key');
-			$is_enabled = get_option('i13_recapcha_enable_on_lostpassword');
+			$is_enabled = get_option('wbc_recapcha_enable_on_lostpassword');
 			$recapcha_error_msg_captcha_blank = get_option('wc_settings_tab_recapcha_error_msg_captcha_blank');
 			$recapcha_error_msg_captcha_no_response = get_option('wc_settings_tab_recapcha_error_msg_captcha_no_response');
 			$recapcha_error_msg_captcha_invalid = get_option('wc_settings_tab_recapcha_error_msg_captcha_invalid');
 
-			$captcha_lable = get_option('i13_recapcha_lostpassword_title');
+			$captcha_lable = get_option('wbc_recapcha_lostpassword_title');
 			if (''==trim($captcha_lable)) {
 					
 				$captcha_lable='recaptcha';
@@ -111,22 +111,22 @@ class LostpasswordPost {
 				
 		} else {
 
-			$i13_recapcha_lostpassword_score_threshold_v3 = get_option('i13_recapcha_lostpassword_score_threshold_v3');
-			if (''==$i13_recapcha_lostpassword_score_threshold_v3) {
+			$wbc_recapcha_lostpassword_score_threshold_v3 = get_option('wbc_recapcha_lostpassword_score_threshold_v3');
+			if (''==$wbc_recapcha_lostpassword_score_threshold_v3) {
 
-				$i13_recapcha_lostpassword_score_threshold_v3='0.5';
+				$wbc_recapcha_lostpassword_score_threshold_v3='0.5';
 			}
-			$i13_recapcha_lostpassword_action_v3 = get_option('i13_recapcha_lostpassword_action_v3');
-			if (''==$i13_recapcha_lostpassword_action_v3) {
+			$wbc_recapcha_lostpassword_action_v3 = get_option('wbc_recapcha_lostpassword_action_v3');
+			if (''==$wbc_recapcha_lostpassword_action_v3) {
 
-				$i13_recapcha_lostpassword_action_v3='forgot_password';
+				$wbc_recapcha_lostpassword_action_v3='forgot_password';
 			}
 
-			$recapcha_error_msg_captcha_blank = get_option('i13_recapcha_error_msg_captcha_blank_v3');
-			$recapcha_error_msg_captcha_no_response = get_option('i13_recapcha_error_msg_captcha_no_response_v3');
-			$recapcha_error_msg_captcha_invalid = get_option('i13_recapcha_error_msg_v3_invalid_captcha');
+			$recapcha_error_msg_captcha_blank = get_option('wbc_recapcha_error_msg_captcha_blank_v3');
+			$recapcha_error_msg_captcha_no_response = get_option('wbc_recapcha_error_msg_captcha_no_response_v3');
+			$recapcha_error_msg_captcha_invalid = get_option('wbc_recapcha_error_msg_v3_invalid_captcha');
 			$secret_key = get_option('wc_settings_tab_recapcha_secret_key_v3');
-			$is_enabled = get_option('i13_recapcha_enable_on_lostpassword');
+			$is_enabled = get_option('wbc_recapcha_enable_on_lostpassword');
 			$nonce_value = '';
 			if (isset($_REQUEST['woocommerce-lost-password-nonce']) || isset($_REQUEST['_wpnonce'])) {
 
@@ -143,9 +143,9 @@ class LostpasswordPost {
 
 						
 
-				if (isset($_POST['i13_recaptcha_lost_password_token']) && !empty($_POST['i13_recaptcha_lost_password_token'])) {
+				if (isset($_POST['wbc_recaptcha_lost_password_token']) && !empty($_POST['wbc_recaptcha_lost_password_token'])) {
 					// Google reCAPTCHA API secret key 
-					$response = sanitize_text_field($_POST['i13_recaptcha_lost_password_token']);
+					$response = sanitize_text_field($_POST['wbc_recaptcha_lost_password_token']);
 
 					// Verify the reCAPTCHA response 
 					$verifyResponse = wp_remote_post(
@@ -181,7 +181,7 @@ class LostpasswordPost {
 							}
 						} else {
 
-							if ($responseData->score < $i13_recapcha_lostpassword_score_threshold_v3 || $responseData->action!=$i13_recapcha_lostpassword_action_v3) {
+							if ($responseData->score < $wbc_recapcha_lostpassword_score_threshold_v3 || $responseData->action!=$wbc_recapcha_lostpassword_action_v3) {
 															
 								if (''==trim($recapcha_error_msg_captcha_invalid)) {
 
