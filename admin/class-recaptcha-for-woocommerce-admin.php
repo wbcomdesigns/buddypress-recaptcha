@@ -172,6 +172,8 @@ class Recaptcha_For_Woocommerce_Admin {
 
 		$this->plugin_settings_tabs['bp_register'] = esc_html__('BP Registration', 'wb-recaptcha');
 
+		$this->plugin_settings_tabs['bb_press_topic'] = esc_html__('BB Press Topic', 'wb-recaptcha');
+
 		register_setting( 'wpc_general_settings', 'wpc_general_settings' );
 		add_settings_section( 'wpc-general', ' ', array( $this, 'wpc_general_settings_content' ), 'wpc-general' ); 
 	} 
