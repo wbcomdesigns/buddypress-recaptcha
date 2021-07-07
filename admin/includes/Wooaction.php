@@ -1,20 +1,20 @@
 <?php
 
 // Exit if accessed directly
-if (!defined('ABSPATH')) {
+if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-if (!class_exists('Wooaction')) :
+if ( ! class_exists( 'Wooaction' ) ) :
 
 	class Wooaction {
-	
-	
 
-		// Your class and your code / logic 
+
+
+		// Your class and your code / logic
 
 		public function __construct() {
-			
+
 		}
 
 		public static function output_fields( $options ) {
@@ -658,8 +658,8 @@ if (!class_exists('Wooaction')) :
 					case 'image_width':
 						$value = array();
 						if ( isset( $raw_value['width'] ) ) {
-							$value['width']  = Wooaction::wc_clean( $raw_value['width'] );
-							$value['height'] = Wooaction::wc_clean( $raw_value['height'] );
+							$value['width']  = self::wc_clean( $raw_value['width'] );
+							$value['height'] = self::wc_clean( $raw_value['height'] );
 							$value['crop']   = isset( $raw_value['crop'] ) ? 1 : 0;
 						} else {
 							$value['width']  = $option['default']['width'];
@@ -680,7 +680,7 @@ if (!class_exists('Wooaction')) :
 						$value = wc_parse_relative_date_option( $raw_value );
 						break;
 					default:
-						$value = Wooaction::wc_clean( $raw_value );
+						$value = self::wc_clean( $raw_value );
 						break;
 				}
 
@@ -744,12 +744,12 @@ if (!class_exists('Wooaction')) :
 			return true;
 		}
 
-		function wc_clean( $var ) { 
-		  if ( is_array( $var ) ) { 
-		      return array_map( 'wc_clean', $var ); 
-		  } else { 
-		      return is_scalar( $var ) ? sanitize_text_field( $var ) : $var; 
-		  } 
+		function wc_clean( $var ) {
+			if ( is_array( $var ) ) {
+				return array_map( 'wc_clean', $var );
+			} else {
+				return is_scalar( $var ) ? sanitize_text_field( $var ) : $var;
+			}
 		}
 
 	}
