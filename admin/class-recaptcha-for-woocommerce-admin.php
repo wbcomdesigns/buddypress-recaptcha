@@ -170,9 +170,12 @@ class Recaptcha_For_Woocommerce_Admin {
 		$this->plugin_settings_tabs['wp_register'] = esc_html__('WP Registration', 'wb-recaptcha');
 		$this->plugin_settings_tabs['wp_lostpassword'] = esc_html__('WP Lost Password', 'wb-recaptcha');
 
-		$this->plugin_settings_tabs['bp_register'] = esc_html__('BP Registration', 'wb-recaptcha');
-
-		$this->plugin_settings_tabs['bb_press_topic'] = esc_html__('BB Press Topic', 'wb-recaptcha');
+		if(class_exists('BuddyPress')){
+			$this->plugin_settings_tabs['bp_register'] = esc_html__('BP Registration', 'wb-recaptcha');
+		}
+		if(class_exists('bbPress')){
+			$this->plugin_settings_tabs['bb_press_topic'] = esc_html__('BB Press Topic', 'wb-recaptcha');
+		}
 
 		register_setting( 'wpc_general_settings', 'wpc_general_settings' );
 		add_settings_section( 'wpc-general', ' ', array( $this, 'wpc_general_settings_content' ), 'wpc-general' ); 
