@@ -172,7 +172,7 @@ class Recaptcha_For_Woocommerce_Admin {
 				<?php $this->wpc_plugin_settings_tabs(); ?>
 				<form method="post" id="wbrecaptcha" action="" enctype="multipart/form-data">
 				<?php
-				if ( wp_verify_nonce( $_POST ) ) {
+				if ( $_POST ) {
 					$wbc_woo_commerce_settings_page->save( $current );
 				}
 				$wbc_woo_commerce_settings_page->output( $current );
@@ -247,7 +247,7 @@ class Recaptcha_For_Woocommerce_Admin {
 			$tab_html .= '<a id="' . $edd_tab . '" class="nav-tab ' . $class . '" href="admin.php?page=' . $page . '&tab=' . $edd_tab . '"><span class="dashicons ' . $tab_name['icon'] . '"></span>&nbsp;' . $tab_name['name'] . '</a>';
 		}
 		$tab_html .= '</h2></div>';
-		echo esc_html( $tab_html );
+		echo $tab_html;
 	}
 
 	/**
