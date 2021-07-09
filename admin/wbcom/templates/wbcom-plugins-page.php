@@ -1,3 +1,13 @@
+<?php
+/**
+ * Template Class Doc Comment
+ *
+ * @package plugin page
+ * Template Class.
+ */
+
+?>
+
 <div class="wrap">
 	<?php echo do_shortcode( '[wbcom_admin_setting_header]' ); ?>
 	<?php
@@ -10,11 +20,11 @@
 		<div class="reign-demos-inner-wrapper">
 			<?php
 			foreach ( $free_plugins as $key => $plugin_details ) {
-				if ( 'not_installed' == $plugin_details['status'] ) {
+				if ( 'not_installed' === $plugin_details['status'] ) {
 					$plugin_btn_text = esc_html__( 'Install', 'woo-pincode-checker' );
 					$toggle_class    = 'fas fa-toggle-off';
 					$plugin_action   = 'install_plugin';
-				} elseif ( 'installed' == $plugin_details['status'] ) {
+				} elseif ( 'installed' === $plugin_details['status'] ) {
 					$plugin_btn_text = esc_html__( 'Activate', 'woo-pincode-checker' );
 					$toggle_class    = 'fas fa-toggle-off';
 					$plugin_action   = 'activate_plugin';
@@ -37,8 +47,8 @@
 						<input type="hidden" class="plugin-action" name="plugin-action" value="<?php echo esc_attr( $plugin_action ); ?>">
 						<div class="activation_button_wrap">
 							<a href="" class="wbcom-plugin-action-button wb_btn wb_btn_default" >
-								<i class="<?php echo $toggle_class; ?>"></i>
-								<?php echo $plugin_btn_text; ?>
+								<i class="<?php echo esc_html( $toggle_class ); ?>"></i>
+								<?php echo esc_html( $plugin_btn_text ); ?>
 								<i class="fas fa-spinner fa-pulse" style="display:none"></i>
 							</a>
 						</div>

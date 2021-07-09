@@ -1,3 +1,12 @@
+<?php
+/**
+ * Template Class Doc Comment
+ *
+ * @package licence page
+ * Template Class.
+ */
+
+?>
 <div class="wrap">
 	<?php echo do_shortcode( '[wbcom_admin_setting_header]' ); ?>
 	<h1 class="wbcom-plugin-heading"><?php esc_html_e( 'Plugin License Settings', 'woo-pincode' ); ?></h1>
