@@ -266,7 +266,7 @@ frm.submit();
 		global $bp;
 		$disable_submit_btn = get_option( 'wbc_recapcha_enable_on_signup_bp' );
 
-		if ( 'yes' === $disable_submit_btn && wp_verify_nonce( $_POST ) && empty( $_POST['g-recaptcha-response'] ) ) {
+		if ( 'yes' === $disable_submit_btn && empty( $_POST['g-recaptcha-response'] ) ) {
 			$bp->signup->errors['accept_tos'] = __( 'reCaptcha token is invalid' . $disable_submit_btn, 'buddypress' );
 		}
 		return;
@@ -383,7 +383,7 @@ frm.submit();
 		$remoteip  = isset( $_SERVER['REMOTE_ADDR'] ) ? $_SERVER['REMOTE_ADDR'] : '';
 		$verify    = false;
 
-		if ( false === $response && wp_verify_nonce( $_POST ) ) {
+		if ( false === $response ) {
 			$response = isset( $_POST['g-recaptcha-response'] ) ? $_POST['g-recaptcha-response'] : '';
 		}
 
@@ -444,7 +444,7 @@ frm.submit();
 	 */
 	public function bbp_new_verify( $forum_id ) {
 		$is_enabled = get_option( 'recapcha_enable_on_bbpress_topic' );
-		if ( 'yes' === $is_enabled && wp_verify_nonce( $_POST ) && empty( $_POST['g-recaptcha-response'] ) ) {
+		if ( 'yes' === $is_enabled && empty( $_POST['g-recaptcha-response'] ) ) {
 			bbp_add_error( 'anr_error', 'reCaptcha is required' );
 		}
 		if ( ! $this->verify() ) {
@@ -461,7 +461,7 @@ frm.submit();
 	 */
 	public function bbp_reply_verify( $topic_id = '', $forum_id = '' ) {
 		$is_enabled = get_option( 'recapcha_enable_on_bbpress_topic' );
-		if ( 'yes' === $is_enabled && wp_verify_nonce( $_POST ) && empty( $_POST['g-recaptcha-response'] ) ) {
+		if ( 'yes' === $is_enabled && empty( $_POST['g-recaptcha-response'] ) ) {
 			bbp_add_error( 'anr_error', 'reCaptcha is required' );
 		}
 		if ( ! $this->verify() ) {
