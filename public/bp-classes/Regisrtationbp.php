@@ -23,13 +23,14 @@
 class Regisrtationbp {
 
 
+
 	public function woo_extra_wp_register_form() {
 
 		$reCapcha_version = get_option( 'wbc_recapcha_version' );
-		if ( '' == $reCapcha_version ) {
+		if ( '' === $reCapcha_version ) {
 			$reCapcha_version = 'v2';
 		}
-		if ( 'v2' == strtolower( $reCapcha_version ) ) {
+		if ( 'v2' === strtolower( $reCapcha_version ) ) {
 			$disable_submit_btn                 = get_option( 'wbc_recapcha_disable_submitbtn_woo_signup_bp' );
 			$wbc_recapcha_hide_label_wpregister = get_option( 'wbc_recapcha_hide_label_signup_bp' );
 			$captcha_lable                      = get_option( 'wbc_recapcha_signup_title_bp' );
@@ -85,7 +86,7 @@ class Regisrtationbp {
 
 <script type="text/javascript">
 
-var myCaptcha = null;    
+var myCaptcha = null;
 				<?php $intval_signup = uniqid( 'interval_' ); ?>
 
 var <?php echo esc_html( $intval_signup ); ?> = setInterval(function() {
@@ -100,42 +101,42 @@ clearInterval(<?php echo esc_html( $intval_signup ); ?>);
 			  jQuery('#wp-submit').attr("title", "<?php echo esc_html( __( 'Recaptcha is a required field.', 'recaptcha-for-woocommerce' ) ); ?>");
 	<?php else : ?>
 					jQuery('#wp-submit').attr("title", "<?php echo esc_html( $recapcha_error_msg_captcha_blank ); ?>");
-	<?php endif; ?>    
+	<?php endif; ?>
 				<?php endif; ?>
 
 
-}    
-}, 100);    
+}
+}, 100);
 
 
 var verifyCallback_wp_register = function(response) {
 
 if(response.length!==0){
 
-				<?php if ( 'yes' == trim( $disable_submit_btn ) ) : ?> 
+				<?php if ( 'yes' == trim( $disable_submit_btn ) ) : ?>
 jQuery('#wp-submit').removeAttr("title");
 jQuery('#wp-submit').attr("disabled", false);
-				<?php endif; ?> 
+				<?php endif; ?>
 
-if (typeof woo_wp_register_captcha_verified === "function") { 
+if (typeof woo_wp_register_captcha_verified === "function") {
 
 woo_wp_register_captcha_verified(response);
-}  
+}
 }
 
 
-};  
+};
 
 
 
-</script>        
-				<?php if ( 'compact' != $size ) : ?>                                       
+</script>
+				<?php if ( 'compact' != $size ) : ?>
 <style type="text/css">
 [name="g-recaptcha-wp-register-wbc"]{
 transform:scale(0.89);-webkit-transform:scale(0.89);transform-origin:0 0;-webkit-transform-origin:0 0;
 }
-</style>  
-				<?php endif; ?>                                                        
+</style>
+				<?php endif; ?>
 				<?php
 
 			}
@@ -211,7 +212,7 @@ var recaptchaResponse = document.getElementById('wbc_recaptcha_wp_register_token
 recaptchaResponse.value = token;
 });
 
-}, 40 * 1000); 
+}, 40 * 1000);
 
 <?php else : ?>
 jQuery('#registerform').on('submit', function (e) {
@@ -238,9 +239,9 @@ frm.submit();
 
 
 
-}    
+}
 
-}, 100);   
+}, 100);
 
 
 
@@ -326,7 +327,7 @@ frm.submit();
 				$this->anr_recaptcha_domain()
 			);
 		}
-			return $field;
+		return $field;
 	}
 
 	function anr_recaptcha_domain() {
@@ -362,20 +363,20 @@ frm.submit();
 			return $last_verify;
 		}
 
-			$url = apply_filters( 'anr_google_verify_url', sprintf( 'https://www.%s/recaptcha/api/siteverify', anr_recaptcha_domain() ) );
+		$url = apply_filters( 'anr_google_verify_url', sprintf( 'https://www.%s/recaptcha/api/siteverify', anr_recaptcha_domain() ) );
 
-			// make a POST request to the Google reCAPTCHA Server
-			$request = wp_remote_post(
-				$url,
-				array(
-					'timeout' => 10,
-					'body'    => array(
-						'secret'   => $secre_key,
-						'response' => $response,
-						'remoteip' => $remoteip,
-					),
-				)
-			);
+		// make a POST request to the Google reCAPTCHA Server
+		$request = wp_remote_post(
+			$url,
+			array(
+				'timeout' => 10,
+				'body'    => array(
+					'secret'   => $secre_key,
+					'response' => $response,
+					'remoteip' => $remoteip,
+				),
+			)
+		);
 
 		// get the request response body
 		$request_body = wp_remote_retrieve_body( $request );
@@ -386,9 +387,9 @@ frm.submit();
 		$result = json_decode( $request_body, true );
 		if ( isset( $result['success'] ) && true == $result['success'] ) {
 			if ( 'v3' === get_option( 'wbc_recapcha_version' ) ) {
-				   $score  = isset( $result['score'] ) ? $result['score'] : 0;
-				   $action = isset( $result['action'] ) ? $result['action'] : '';
-				   $verify = anr_get_option( 'score', '0.5' ) <= $score && 'advanced_nocaptcha_recaptcha' == $action;
+				$score  = isset( $result['score'] ) ? $result['score'] : 0;
+				$action = isset( $result['action'] ) ? $result['action'] : '';
+				$verify = anr_get_option( 'score', '0.5' ) <= $score && 'advanced_nocaptcha_recaptcha' == $action;
 			} else {
 				$verify = true;
 			}
