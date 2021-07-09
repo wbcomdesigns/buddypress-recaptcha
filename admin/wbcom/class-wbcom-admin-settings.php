@@ -1,4 +1,9 @@
 <?php
+/**
+ * Exit if accessed directly.
+ *
+ * @package Exit if accessed directly.
+ */
 
 defined( 'ABSPATH' ) || exit;
 
@@ -22,13 +27,20 @@ if ( ! class_exists( 'Wbcom_Admin_Settings' ) ) {
 			add_shortcode( 'wbcom_admin_setting_header', array( $this, 'wbcom_admin_setting_header_html' ) );
 			add_action( 'admin_menu', array( $this, 'wbcom_admin_additional_pages' ), 999 );
 			add_action( 'admin_enqueue_scripts', array( $this, 'wbcom_enqueue_admin_scripts' ) );
-			// add_action( 'wp_ajax_wbcom_manage_plugin_installation', array( $this, 'wbcom_do_plugin_action' ) );
 		}
 
+		/**
+		 * Template Class Doc Comment
+
+		 * Template Class.
+		 */
 		public function wbcom_admin_setting_header_html() {
 			$page = filter_input( INPUT_GET, 'page' ) ? filter_input( INPUT_GET, 'page' ) : 'wbcom-themes-page';
 
-			$plugin_active = $theme_active = $support_active = $settings_active = '';
+			$settings_active = '';
+			$support_active  = $settings_active;
+			$theme_active    = $support_active;
+			$plugin_active   = $theme_active;
 			switch ( $page ) {
 
 				case 'wbcom-plugins-page':
@@ -50,32 +62,32 @@ if ( ! class_exists( 'Wbcom_Admin_Settings' ) ) {
 			<div id="wb_admin_header" class="wp-clearfix">
 
 				<div id="wb_admin_logo">
-					<img src="<?php echo plugin_dir_url( __FILE__ ) . '/assets/imgs/logowbcom.png'; ?>">
+					<img src="<?php echo esc_html( plugin_dir_url( __FILE__ ) . '/assets/imgs/logowbcom.png' ); ?>">
 					<div class="wb_admin_right"></div>
 				</div>
 
 				<nav id="wb_admin_nav">
 					<ul>
 						<li class="wb_admin_nav_item <?php echo esc_attr( $settings_active ); ?>">
-							<a href="<?php echo get_admin_url() . 'admin.php?page=wbcomplugins'; ?>" id="wb_admin_nav_trigger_settings">
+							<a href="<?php echo esc_html( get_admin_url() . 'admin.php?page=wbcomplugins' ); ?>" id="wb_admin_nav_trigger_settings">
 								<i class="fas fa-sliders-h"></i>
 								<h4><?php esc_html_e( 'Settings', 'woo-pincode-checker' ); ?></h4>
 							</a>
 						</li>
 						<li class="wb_admin_nav_item <?php echo esc_attr( $plugin_active ); ?>">
-							<a href="<?php echo get_admin_url() . 'admin.php?page=wbcom-plugins-page'; ?>" id="wb_admin_nav_trigger_extensions">
+							<a href="<?php echo esc_html( get_admin_url() . 'admin.php?page=wbcom-plugins-page' ); ?>" id="wb_admin_nav_trigger_extensions">
 								<i class="fas fa-th"></i>
 								<h4><?php esc_html_e( 'Components', 'woo-pincode-checker' ); ?></h4>
 							</a>
 						</li>
 						<li class="wb_admin_nav_item <?php echo esc_attr( $theme_active ); ?>">
-							<a href="<?php echo get_admin_url() . 'admin.php?page=wbcom-themes-page'; ?>" id="wb_admin_nav_trigger_themes">
+							<a href="<?php echo esc_html( get_admin_url() . 'admin.php?page=wbcom-themes-page' ); ?>" id="wb_admin_nav_trigger_themes">
 								<i class="fas fa-magic"></i>
 								<h4><?php esc_html_e( 'Themes', 'woo-pincode-checker' ); ?></h4>
 							</a>
 						</li>
 						<li class="wb_admin_nav_item <?php echo esc_attr( $support_active ); ?>">
-							<a href="<?php echo get_admin_url() . 'admin.php?page=wbcom-support-page'; ?>" id="wb_admin_nav_trigger_support">
+							<a href="<?php echo esc_html( get_admin_url() . 'admin.php?page=wbcom-support-page' ); ?>" id="wb_admin_nav_trigger_support">
 								<i class="fas fa-question-circle"></i>
 								<h4><?php esc_html_e( 'Support', 'woo-pincode-checker' ); ?></h4>
 							</a>
@@ -158,7 +170,7 @@ if ( ! class_exists( 'Wbcom_Admin_Settings' ) ) {
 		 */
 		public function wbcom_enqueue_admin_scripts() {
 			if ( ! wp_style_is( 'font-awesome', 'enqueued' ) ) {
-				wp_enqueue_style( 'font-awesome', '//use.fontawesome.com/releases/v5.5.0/css/all.css' );
+				wp_enqueue_style( 'font-awesome', '//use.fontawesome.com/releases/v5.5.0/css/all.css', array(), '1.0' );
 			}
 
 			if ( ! wp_script_is( 'wbcom-admin-setting-js', 'enqueued' ) ) {
@@ -184,7 +196,7 @@ if ( ! class_exists( 'Wbcom_Admin_Settings' ) ) {
 			}
 
 			if ( ! wp_style_is( 'wbcom-admin-setting-css', 'enqueued' ) ) {
-				wp_enqueue_style( 'wbcom-admin-setting-css', plugin_dir_url( __FILE__ ) . 'assets/css/wbcom-admin-setting.css' );
+				wp_enqueue_style( 'wbcom-admin-setting-css', plugin_dir_url( __FILE__ ) . 'assets/css/wbcom-admin-setting.css', array(), '11.11' );
 			}
 
 			if ( function_exists( 'get_current_screen' ) ) {
@@ -197,10 +209,10 @@ if ( ! class_exists( 'Wbcom_Admin_Settings' ) ) {
 						wp_enqueue_script( 'jquery-ui-sortable' );
 					}
 					if ( ! wp_script_is( 'woo-sell-services-selectize-js', 'enqueued' ) ) {
-						wp_enqueue_script( 'woo-sell-services-selectize-js', plugins_url() . '/woo-pincode-checker/admin/js/selectize.min.js', array( 'jquery' ), '', false );
+						wp_enqueue_script( 'woo-sell-services-selectize-js', plugins_url() . '/woo-pincode-checker/admin/js/selectize.min.js', array( 'jquery' ), '10.10', false );
 					}
 					if ( ! wp_style_is( 'woo-sell-services-selectize-css', 'enqueued' ) ) {
-						wp_enqueue_style( 'woo-sell-services-selectize-css', plugins_url() . '/woo-pincode-checker/admin/css/selectize.css', array(), '', 'all' );
+						wp_enqueue_style( 'woo-sell-services-selectize-css', plugins_url() . '/woo-pincode-checker/admin/css/selectize.css', array(), '10.10', 'all' );
 					}
 				}
 			}
@@ -459,7 +471,7 @@ if ( ! class_exists( 'Wbcom_Admin_Settings' ) ) {
 			// }
 			// } else {
 			// return 'not_installed';
-			// }
+			// }.
 		}
 
 		/**
@@ -469,7 +481,7 @@ if ( ! class_exists( 'Wbcom_Admin_Settings' ) ) {
 		 * @access public
 		 * @param  string $slug Plugin's slug.
 		 */
-		function wbcom_is_plugin_installed( $slug ) {
+		public function wbcom_is_plugin_installed( $slug ) {
 			if ( ! function_exists( 'get_plugins' ) ) {
 				require_once ABSPATH . 'wp-admin/includes/plugin.php';
 			}
@@ -485,6 +497,11 @@ if ( ! class_exists( 'Wbcom_Admin_Settings' ) ) {
 
 	}
 
+	/**
+	 * Template Class Doc Comment
+	 *
+	 * Template Class.
+	 */
 	function instantiate_wbcom_plugin_manager() {
 		new Wbcom_Admin_Settings();
 	}
