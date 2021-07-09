@@ -22,15 +22,18 @@
  */
 class Regisrtationbp {
 
-
-
+	/**
+	 * Template Class Doc Comment
+	 *
+	 * Template Class.
+	 */
 	public function woo_extra_wp_register_form() {
 
-		$reCapcha_version = get_option( 'wbc_recapcha_version' );
-		if ( '' === $reCapcha_version ) {
-			$reCapcha_version = 'v2';
+		$re_capcha_version = get_option( 'wbc_recapcha_version' );
+		if ( '' === $re_capcha_version ) {
+			$re_capcha_version = 'v2';
 		}
-		if ( 'v2' === strtolower( $reCapcha_version ) ) {
+		if ( 'v2' === strtolower( $re_capcha_version ) ) {
 			$disable_submit_btn                 = get_option( 'wbc_recapcha_disable_submitbtn_woo_signup_bp' );
 			$wbc_recapcha_hide_label_wpregister = get_option( 'wbc_recapcha_hide_label_signup_bp' );
 			$captcha_lable                      = get_option( 'wbc_recapcha_signup_title_bp' );
@@ -41,15 +44,15 @@ class Regisrtationbp {
 			$is_enabled                         = get_option( 'wbc_recapcha_enable_on_signup_bp' );
 			$wbc_recapcha_no_conflict           = get_option( 'wbc_recapcha_no_conflict' );
 			$recapcha_error_msg_captcha_blank   = get_option( 'wc_settings_tab_recapcha_error_msg_captcha_blank' );
-			if ( '' == trim( $captcha_lable_ ) ) {
+			if ( '' === trim( $captcha_lable_ ) ) {
 
 				$captcha_lable_ = 'recaptcha';
 			}
 			$recapcha_error_msg_captcha_blank = str_replace( '[recaptcha]', ucfirst( $captcha_lable_ ), $recapcha_error_msg_captcha_blank );
 
-			if ( 'yes' == $is_enabled ) {
+			if ( 'yes' === $is_enabled ) {
 
-				if ( 'yes' == $wbc_recapcha_no_conflict ) {
+				if ( 'yes' === $wbc_recapcha_no_conflict ) {
 
 					global $wp_scripts;
 
@@ -72,9 +75,9 @@ class Regisrtationbp {
 <input type="hidden" autocomplete="off" name="wp-register-nonce" value="<?php echo esc_html( wp_create_nonce( 'wp-register-nonce' ) ); ?>" />
 <p class="wp_register_captcha">
 				<?php
-				if ( 'yes' != $wbc_recapcha_hide_label_wpregister ) :
+				if ( 'yes' !== $wbc_recapcha_hide_label_wpregister ) :
 					?>
-<label for="g-recaptcha-wp-register-wbc"><?php echo esc_html( ( '' == trim( $captcha_lable ) ) ? __( 'Captcha', 'recaptcha-for-woocommerce' ) : esc_html( $captcha_lable ) ); ?>&nbsp;</label>
+<label for="g-recaptcha-wp-register-wbc"><?php echo esc_html( ( '' === trim( $captcha_lable ) ) ? __( 'Captcha', 'recaptcha-for-woocommerce' ) : esc_html( $captcha_lable ) ); ?>&nbsp;</label>
 					<?php
 				endif;
 				?>
@@ -94,11 +97,11 @@ var <?php echo esc_html( $intval_signup ); ?> = setInterval(function() {
 if(document.readyState === 'complete') {
 
 clearInterval(<?php echo esc_html( $intval_signup ); ?>);
-				<?php if ( 'yes' == trim( $disable_submit_btn ) ) : ?>
+				<?php if ( 'yes' === trim( $disable_submit_btn ) ) : ?>
 
 	jQuery('#wp-submit').attr("disabled", true);
-					<?php if ( '' == $recapcha_error_msg_captcha_blank ) : ?>
-			  jQuery('#wp-submit').attr("title", "<?php echo esc_html( __( 'Recaptcha is a required field.', 'recaptcha-for-woocommerce' ) ); ?>");
+					<?php if ( '' === $recapcha_error_msg_captcha_blank ) : ?>
+			jQuery('#wp-submit').attr("title", "<?php echo esc_html( __( 'Recaptcha is a required field.', 'recaptcha-for-woocommerce' ) ); ?>");
 	<?php else : ?>
 					jQuery('#wp-submit').attr("title", "<?php echo esc_html( $recapcha_error_msg_captcha_blank ); ?>");
 	<?php endif; ?>
@@ -113,7 +116,7 @@ var verifyCallback_wp_register = function(response) {
 
 if(response.length!==0){
 
-				<?php if ( 'yes' == trim( $disable_submit_btn ) ) : ?>
+				<?php if ( 'yes' === trim( $disable_submit_btn ) ) : ?>
 jQuery('#wp-submit').removeAttr("title");
 jQuery('#wp-submit').attr("disabled", false);
 				<?php endif; ?>
@@ -130,7 +133,7 @@ woo_wp_register_captcha_verified(response);
 
 
 </script>
-				<?php if ( 'compact' != $size ) : ?>
+				<?php if ( 'compact' !== $size ) : ?>
 <style type="text/css">
 [name="g-recaptcha-wp-register-wbc"]{
 transform:scale(0.89);-webkit-transform:scale(0.89);transform-origin:0 0;-webkit-transform-origin:0 0;
@@ -145,9 +148,9 @@ transform:scale(0.89);-webkit-transform:scale(0.89);transform-origin:0 0;-webkit
 			$is_enabled                          = get_option( 'wbc_recapcha_enable_on_signup_bp' );
 			$wbc_recapcha_no_conflict            = get_option( 'wbc_recapcha_no_conflict_v3' );
 			$wbc_recapcha_wp_disable_wp_register = get_option( 'wbc_recapcha_wp_disable_submit_token_generation_v3_woo_signup_bp' );
-			if ( 'yes' == $is_enabled ) {
+			if ( 'yes' === $is_enabled ) {
 
-				if ( 'yes' == $wbc_recapcha_no_conflict ) {
+				if ( 'yes' === $wbc_recapcha_no_conflict ) {
 
 					global $wp_scripts;
 
@@ -156,7 +159,7 @@ transform:scale(0.89);-webkit-transform:scale(0.89);transform-origin:0 0;-webkit
 					foreach ( $wp_scripts->queue as $handle ) {
 
 						foreach ( $urls as $url ) {
-							if ( false !== strpos( $wp_scripts->registered[ $handle ]->src, $url ) && ( 'wbc-woo-captcha' != $handle && 'wbc-woo-captcha-v3' != $handle ) ) {
+							if ( false !== strpos( $wp_scripts->registered[ $handle ]->src, $url ) && ( 'wbc-woo-captcha' !== $handle && 'wbc-woo-captcha-v3' != $handle ) ) {
 								wp_dequeue_script( $handle );
 								wp_deregister_script( $handle );
 								break;
@@ -169,12 +172,12 @@ transform:scale(0.89);-webkit-transform:scale(0.89);transform-origin:0 0;-webkit
 
 				$site_key                                  = get_option( 'wc_settings_tab_recapcha_site_key_v3' );
 				$wbc_recapcha_wp_register_method_action_v3 = get_option( 'wbc_recapcha_wp_register_method_action_v3' );
-				if ( '' == trim( $wbc_recapcha_wp_register_method_action_v3 ) ) {
+				if ( '' === trim( $wbc_recapcha_wp_register_method_action_v3 ) ) {
 
 					$wbc_recapcha_wp_register_method_action_v3 = 'wp_registration';
 				}
 
-				if ( '' == trim( $wbc_recapcha_wp_disable_wp_register ) ) {
+				if ( '' === trim( $wbc_recapcha_wp_disable_wp_register ) ) {
 
 					$wbc_recapcha_wp_disable_wp_register = 'no';
 				}
@@ -202,7 +205,7 @@ recaptchaResponse.value = token;
 });
 });
 
-				<?php if ( 'yes' == $wbc_recapcha_wp_disable_wp_register ) : ?>
+				<?php if ( 'yes' === $wbc_recapcha_wp_disable_wp_register ) : ?>
 
 setInterval(function() {
 
@@ -254,41 +257,64 @@ frm.submit();
 		do_action( 'bp_accept_tos_errors' );
 	}
 
-
-	function innovage_validate_user_registration() {
+	/**
+	 * Template Class Doc Comment
+	 *
+	 * Template Class.
+	 */
+	public function innovage_validate_user_registration() {
 		global $bp;
 		$disable_submit_btn = get_option( 'wbc_recapcha_enable_on_signup_bp' );
 
-		if ( $disable_submit_btn == 'yes' && empty( $_POST['g-recaptcha-response'] ) ) {
+		if ( 'yes' === $disable_submit_btn && wp_verify_nonce( $_POST ) && empty( $_POST['g-recaptcha-response'] ) ) {
 			$bp->signup->errors['accept_tos'] = __( 'reCaptcha token is invalid' . $disable_submit_btn, 'buddypress' );
 		}
 		return;
 	}
 
-	function form_field() {
+	/**
+	 * Template Class Doc Comment
+	 * Template Class.
+	 */
+	public function form_field() {
 		$is_enabled = get_option( 'recapcha_enable_on_bbpress_topic' );
-		if ( $is_enabled == 'yes' ) {
+		if ( 'yes' === $is_enabled ) {
 			$lable      = get_option( 'recapcha_bbpress_topic_title' );
 			$hide_lable = get_option( 'recapcha_hide_label_bbpress_topic' );
-			if ( ! empty( $lable ) and $hide_lable != 'yes' ) {
-				echo $lable;
+			if ( ! empty( $lable ) && 'yes' !== $hide_lable ) {
+				echo esc_html( $lable );
 			}
-			echo $this->form_field_return();
+			echo esc_html( $this->form_field_return() );
 		}
 	}
 
-	function form_field_bp() {
-		echo $this->form_field_return();
+	/**
+	 * Template Class Doc Comment
+	 *
+	 * Template Class.
+	 */
+	public function form_field_bp() {
+		echo esc_html( $this->form_field_return() );
 		$this->v2_checkbox_script();
 	}
-	function form_field_return( $return = '' ) {
-		// $ip = $_SERVER['REMOTE_ADDR'];
-		// if ( in_array( $ip, array_filter( explode( '\n', anr_get_option( 'whitelisted_ips' ) ) ) ) ) {
-		// return $return;
-		// }
+
+	/**
+	 * Template Class Doc Comment
+	 *
+	 * Template Class.
+	 *
+	 * @param array $return The position of the current token.
+	 */
+	public function form_field_return( $return = '' ) {
 		return $return . $this->captcha_form_field();
 	}
-	function captcha_form_field() {
+
+	/**
+	 * Template Class Doc Comment
+	 *
+	 * Template Class.
+	 */
+	public function captcha_form_field() {
 		$version  = get_option( 'wbc_recapcha_version' );
 		$site_key = get_option( 'wc_settings_tab_recapcha_site_key' );
 		$number   = 0;
@@ -330,13 +356,23 @@ frm.submit();
 		return $field;
 	}
 
-	function anr_recaptcha_domain() {
-		// $domain = anr_get_option( 'recaptcha_domain', 'google.com' );
+	/**
+	 * Template Class Doc Comment
+	 *
+	 * Template Class.
+	 */
+	public function anr_recaptcha_domain() {
 		$domain = 'google.com';
 		return apply_filters( 'anr_recaptcha_domain', $domain );
 	}
 
-	function verify( $response = false ) {
+	/**
+	 * Template Class Doc Comment
+	 *
+	 * @param array $response The position of the current token
+	 * Template Class.
+	 */
+	public function verify( $response = false ) {
 		static $last_verify = null;
 
 		if ( is_user_logged_in() ) {
@@ -344,14 +380,14 @@ frm.submit();
 		}
 
 		$secre_key = trim( get_option( 'wc_settings_tab_recapcha_secret_key' ) );
-		$remoteip  = $_SERVER['REMOTE_ADDR'];
+		$remoteip  = isset( $_SERVER['REMOTE_ADDR'] ) ? $_SERVER['REMOTE_ADDR'] : '';
 		$verify    = false;
 
-		if ( false === $response ) {
+		if ( false === $response && wp_verify_nonce( $_POST ) ) {
 			$response = isset( $_POST['g-recaptcha-response'] ) ? $_POST['g-recaptcha-response'] : '';
 		}
 
-		if ( ! $secre_key ) { // if $secre_key is not set
+		if ( ! $secre_key ) { // if $secre_key is not set.
 			return true;
 		}
 
@@ -365,7 +401,7 @@ frm.submit();
 
 		$url = apply_filters( 'anr_google_verify_url', sprintf( 'https://www.%s/recaptcha/api/siteverify', anr_recaptcha_domain() ) );
 
-		// make a POST request to the Google reCAPTCHA Server
+		// make a POST request to the Google reCAPTCHA Server.
 		$request = wp_remote_post(
 			$url,
 			array(
@@ -378,18 +414,18 @@ frm.submit();
 			)
 		);
 
-		// get the request response body
+		// get the request response body.
 		$request_body = wp_remote_retrieve_body( $request );
 		if ( ! $request_body ) {
 			return $verify;
 		}
 
 		$result = json_decode( $request_body, true );
-		if ( isset( $result['success'] ) && true == $result['success'] ) {
+		if ( isset( $result['success'] ) && true === $result['success'] ) {
 			if ( 'v3' === get_option( 'wbc_recapcha_version' ) ) {
 				$score  = isset( $result['score'] ) ? $result['score'] : 0;
 				$action = isset( $result['action'] ) ? $result['action'] : '';
-				$verify = anr_get_option( 'score', '0.5' ) <= $score && 'advanced_nocaptcha_recaptcha' == $action;
+				$verify = anr_get_option( 'score', '0.5' ) <= $score && 'advanced_nocaptcha_recaptcha' === $action;
 			} else {
 				$verify = true;
 			}
@@ -400,9 +436,15 @@ frm.submit();
 		return $verify;
 	}
 
-	function bbp_new_verify( $forum_id ) {
+	/**
+	 * Template Class Doc Comment
+	 *
+	 * @param array $forum_id The position of the current token
+	 * Template Class.
+	 */
+	public function bbp_new_verify( $forum_id ) {
 		$is_enabled = get_option( 'recapcha_enable_on_bbpress_topic' );
-		if ( $is_enabled == 'yes' && empty( $_POST['g-recaptcha-response'] ) ) {
+		if ( 'yes' === $is_enabled && wp_verify_nonce( $_POST ) && empty( $_POST['g-recaptcha-response'] ) ) {
 			bbp_add_error( 'anr_error', 'reCaptcha is required' );
 		}
 		if ( ! $this->verify() ) {
@@ -410,9 +452,16 @@ frm.submit();
 		}
 	}
 
-	function bbp_reply_verify( $topic_id = '', $forum_id = '' ) {
+	/**
+	 * Template Class Doc Comment
+	 *
+	 * @param array $topic_id The position of the current token.
+	 * @param array $forum_id The position of the current token.
+	 * Template Class.
+	 */
+	public function bbp_reply_verify( $topic_id = '', $forum_id = '' ) {
 		$is_enabled = get_option( 'recapcha_enable_on_bbpress_topic' );
-		if ( $is_enabled == 'yes' && empty( $_POST['g-recaptcha-response'] ) ) {
+		if ( 'yes' === $is_enabled && wp_verify_nonce( $_POST ) && empty( $_POST['g-recaptcha-response'] ) ) {
 			bbp_add_error( 'anr_error', 'reCaptcha is required' );
 		}
 		if ( ! $this->verify() ) {
@@ -420,7 +469,12 @@ frm.submit();
 		}
 	}
 
-	function v2_checkbox_script() {
+	/**
+	 * Template Class Doc Comment
+	 *
+	 * Template Class.
+	 */
+	public function v2_checkbox_script() {
 		?>
 			<script type="text/javascript" async defer>
 				var anr_onloadCallback = function() {
