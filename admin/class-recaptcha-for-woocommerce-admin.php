@@ -261,7 +261,7 @@ class Recaptcha_For_Woocommerce_Admin {
 	 */
 	public function wpc_general_settings_content() {
 		// require_once 'partials/woo-pincode-checker-admin-display.php';
-		include plugin_dir_path( __FILE__ ) . 'includes/Settings.php';
+		include plugin_dir_path( __FILE__ ) . 'includes/class-wbc-woocommerce-settings-page.php';
 	}
 
 

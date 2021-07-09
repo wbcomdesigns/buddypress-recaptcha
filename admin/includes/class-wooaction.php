@@ -1,22 +1,37 @@
 <?php
+/**
+ * Exit if accessed directly.
+ *
+ * @package Exit if accessed directly.
+ */
 
-// Exit if accessed directly
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
 if ( ! class_exists( 'Wooaction' ) ) :
 
+	/**
+	 * Exit if accessed directly.
+	 *
+	 * @package Exit if accessed directly.
+	 */
 	class Wooaction {
-
-
-
-		// Your class and your code / logic
-
+		/**
+		 * Template Class Doc Comment
+		 *
+		 * Template Class.
+		 */
 		public function __construct() {
 
 		}
 
+		/**
+		 * Template Class Doc Comment
+		 *
+		 * @param array $options The position of the current token
+		 * Template Class.
+		 */
 		public static function output_fields( $options ) {
 			foreach ( $options as $value ) {
 				if ( ! isset( $value['type'] ) ) {
@@ -114,7 +129,7 @@ if ( ! class_exists( 'Wooaction' ) ) :
 
 						?><tr valign="top">
 							<th scope="row" class="titledesc">
-								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo $tooltip_html; // WPCS: XSS ok. ?></label>
+								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo esc_html( $tooltip_html ); ?></label>
 							</th>
 							<td class="forminp forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?>">
 								<input
@@ -125,8 +140,8 @@ if ( ! class_exists( 'Wooaction' ) ) :
 									value="<?php echo esc_attr( $option_value ); ?>"
 									class="<?php echo esc_attr( $value['class'] ); ?>"
 									placeholder="<?php echo esc_attr( $value['placeholder'] ); ?>"
-									<?php echo implode( ' ', $custom_attributes ); // WPCS: XSS ok. ?>
-									/><?php echo esc_html( $value['suffix'] ); ?> <?php echo $description; // WPCS: XSS ok. ?>
+									<?php echo esc_html( implode( ' ', $custom_attributes ) ); ?>
+									/><?php echo esc_html( $value['suffix'] ); ?> <?php echo esc_html( $description ); ?>
 							</td>
 						</tr>
 						<?php
@@ -139,7 +154,7 @@ if ( ! class_exists( 'Wooaction' ) ) :
 						?>
 						<tr valign="top">
 							<th scope="row" class="titledesc">
-								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo $tooltip_html; // WPCS: XSS ok. ?></label>
+								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo esc_html( $tooltip_html ); ?></label>
 							</th>
 							<td class="forminp forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?>">&lrm;
 								<span class="colorpickpreview" style="background: <?php echo esc_attr( $option_value ); ?>">&nbsp;</span>
@@ -152,8 +167,8 @@ if ( ! class_exists( 'Wooaction' ) ) :
 									value="<?php echo esc_attr( $option_value ); ?>"
 									class="<?php echo esc_attr( $value['class'] ); ?>colorpick"
 									placeholder="<?php echo esc_attr( $value['placeholder'] ); ?>"
-									<?php echo implode( ' ', $custom_attributes ); // WPCS: XSS ok. ?>
-									/>&lrm; <?php echo $description; // WPCS: XSS ok. ?>
+									<?php echo esc_html( implode( ' ', $custom_attributes ) ); ?>
+									/>&lrm; <?php echo esc_html( $description ); ?>
 									<div id="colorPickerDiv_<?php echo esc_attr( $value['id'] ); ?>" class="colorpickdiv" style="z-index: 100;background:#eee;border:1px solid #ccc;position:absolute;display:none;"></div>
 							</td>
 						</tr>
@@ -167,10 +182,10 @@ if ( ! class_exists( 'Wooaction' ) ) :
 						?>
 						<tr valign="top">
 							<th scope="row" class="titledesc">
-								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo $tooltip_html; // WPCS: XSS ok. ?></label>
+								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo esc_html( $tooltip_html ); ?></label>
 							</th>
 							<td class="forminp forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?>">
-								<?php echo $description; // WPCS: XSS ok. ?>
+								<?php echo esc_html( $description ); ?>
 
 								<textarea
 									name="<?php echo esc_attr( $value['id'] ); ?>"
@@ -178,8 +193,8 @@ if ( ! class_exists( 'Wooaction' ) ) :
 									style="<?php echo esc_attr( $value['css'] ); ?>"
 									class="<?php echo esc_attr( $value['class'] ); ?>"
 									placeholder="<?php echo esc_attr( $value['placeholder'] ); ?>"
-									<?php echo implode( ' ', $custom_attributes ); // WPCS: XSS ok. ?>
-									><?php echo esc_textarea( $option_value ); // WPCS: XSS ok. ?></textarea>
+									<?php echo esc_html( implode( ' ', $custom_attributes ) ); ?>
+									><?php echo esc_textarea( $option_value ); ?></textarea>
 							</td>
 						</tr>
 						<?php
@@ -193,7 +208,7 @@ if ( ! class_exists( 'Wooaction' ) ) :
 						?>
 						<tr valign="top">
 							<th scope="row" class="titledesc">
-								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo $tooltip_html; // WPCS: XSS ok. ?></label>
+								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo esc_html( $tooltip_html ); ?></label>
 							</th>
 							<td class="forminp forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?>">
 								<select
@@ -201,7 +216,7 @@ if ( ! class_exists( 'Wooaction' ) ) :
 									id="<?php echo esc_attr( $value['id'] ); ?>"
 									style="<?php echo esc_attr( $value['css'] ); ?>"
 									class="<?php echo esc_attr( $value['class'] ); ?>"
-									<?php echo implode( ' ', $custom_attributes ); // WPCS: XSS ok. ?>
+									<?php echo esc_html( implode( ' ', $custom_attributes ) ); ?>
 									<?php echo 'multiselect' === $value['type'] ? 'multiple="multiple"' : ''; ?>
 									>
 									<?php
@@ -221,7 +236,7 @@ if ( ! class_exists( 'Wooaction' ) ) :
 										<?php
 									}
 									?>
-								</select> <?php echo $description; // WPCS: XSS ok. ?>
+								</select> <?php echo esc_html( $description ); ?>
 							</td>
 						</tr>
 						<?php
@@ -234,11 +249,11 @@ if ( ! class_exists( 'Wooaction' ) ) :
 						?>
 						<tr valign="top">
 							<th scope="row" class="titledesc">
-								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo $tooltip_html; // WPCS: XSS ok. ?></label>
+								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo esc_html( $tooltip_html ); ?></label>
 							</th>
 							<td class="forminp forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?>">
 								<fieldset>
-									<?php echo $description; // WPCS: XSS ok. ?>
+									<?php echo esc_html( $description ); ?>
 									<ul>
 									<?php
 									foreach ( $value['options'] as $key => $val ) {
@@ -250,7 +265,7 @@ if ( ! class_exists( 'Wooaction' ) ) :
 												type="radio"
 												style="<?php echo esc_attr( $value['css'] ); ?>"
 												class="<?php echo esc_attr( $value['class'] ); ?>"
-												<?php echo implode( ' ', $custom_attributes ); // WPCS: XSS ok. ?>
+												<?php echo esc_html( implode( ' ', $custom_attributes ) ); ?>
 												<?php checked( $key, $option_value ); ?>
 												/> <?php echo esc_html( $val ); ?></label>
 										</li>
@@ -313,9 +328,9 @@ if ( ! class_exists( 'Wooaction' ) ) :
 									class="<?php echo esc_attr( isset( $value['class'] ) ? $value['class'] : '' ); ?>"
 									value="1"
 									<?php checked( $option_value, 'yes' ); ?>
-									<?php echo implode( ' ', $custom_attributes ); // WPCS: XSS ok. ?>
-								/> <?php echo $description; // WPCS: XSS ok. ?>
-							</label> <?php echo $tooltip_html; // WPCS: XSS ok. ?>
+									<?php echo esc_html( implode( ' ', $custom_attributes ) ); ?>
+								/> <?php echo esc_html( $description ); ?>
+							</label> <?php echo esc_html( $tooltip_html ); ?>
 						<?php
 
 						if ( ! isset( $value['checkboxgroup'] ) || 'end' === $value['checkboxgroup'] ) {
@@ -349,13 +364,13 @@ if ( ! class_exists( 'Wooaction' ) ) :
 						?>
 						<tr valign="top">
 							<th scope="row" class="titledesc">
-							<label><?php echo esc_html( $value['title'] ); ?> <?php echo $tooltip_html . $disabled_message; // WPCS: XSS ok. ?></label>
+							<label><?php echo esc_html( $value['title'] ); ?> <?php echo esc_html( $tooltip_html . $disabled_message ); ?></label>
 						</th>
 							<td class="forminp image_width_settings">
 
-								<input name="<?php echo esc_attr( $value['id'] ); ?>[width]" <?php echo $disabled_attr; // WPCS: XSS ok. ?> id="<?php echo esc_attr( $value['id'] ); ?>-width" type="text" size="3" value="<?php echo esc_attr( $width ); ?>" /> &times; <input name="<?php echo esc_attr( $value['id'] ); ?>[height]" <?php echo $disabled_attr; // WPCS: XSS ok. ?> id="<?php echo esc_attr( $value['id'] ); ?>-height" type="text" size="3" value="<?php echo esc_attr( $height ); ?>" />px
+								<input name="<?php echo esc_attr( $value['id'] ); ?>[width]" <?php echo esc_html( $disabled_attr ); ?> id="<?php echo esc_attr( $value['id'] ); ?>-width" type="text" size="3" value="<?php echo esc_attr( $width ); ?>" /> &times; <input name="<?php echo esc_attr( $value['id'] ); ?>[height]" <?php echo $disabled_attr; // WPCS: XSS ok. ?> id="<?php echo esc_attr( $value['id'] ); ?>-height" type="text" size="3" value="<?php echo esc_attr( $height ); ?>" />px
 
-								<label><input name="<?php echo esc_attr( $value['id'] ); ?>[crop]" <?php echo $disabled_attr; // WPCS: XSS ok. ?> id="<?php echo esc_attr( $value['id'] ); ?>-crop" type="checkbox" value="1" <?php checked( 1, $crop ); ?> /> <?php esc_html_e( 'Hard crop?', 'woocommerce' ); ?></label>
+								<label><input name="<?php echo esc_attr( $value['id'] ); ?>[crop]" <?php echo esc_html( $disabled_attr ); ?> id="<?php echo esc_attr( $value['id'] ); ?>-crop" type="checkbox" value="1" <?php checked( 1, $crop ); ?> /> <?php esc_html_e( 'Hard crop?', 'woocommerce' ); ?></label>
 
 								</td>
 						</tr>
@@ -383,10 +398,10 @@ if ( ! class_exists( 'Wooaction' ) ) :
 						?>
 						<tr valign="top" class="single_select_page">
 							<th scope="row" class="titledesc">
-								<label><?php echo esc_html( $value['title'] ); ?> <?php echo $tooltip_html; // WPCS: XSS ok. ?></label>
+								<label><?php echo esc_html( $value['title'] ); ?> <?php echo esc_html( $tooltip_html ); ?></label>
 							</th>
 							<td class="forminp">
-								<?php echo str_replace( ' id=', " data-placeholder='" . esc_attr__( 'Select a page&hellip;', 'woocommerce' ) . "' style='" . $value['css'] . "' class='" . $value['class'] . "' id=", wp_dropdown_pages( $args ) ); // WPCS: XSS ok. ?> <?php echo $description; // WPCS: XSS ok. ?>
+								<?php echo str_replace( ' id=', " data-placeholder='" . esc_attr__( 'Select a page&hellip;', 'woocommerce' ) . "' style='" . $value['css'] . "' class='" . $value['class'] . "' id=", wp_dropdown_pages( $args ) ); // WPCS: XSS ok. ?> <?php echo esc_html( $description ); // WPCS: XSS ok. ?>
 							</td>
 						</tr>
 						<?php
@@ -448,11 +463,11 @@ if ( ! class_exists( 'Wooaction' ) ) :
 						?>
 						<tr valign="top">
 							<th scope="row" class="titledesc">
-								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo $tooltip_html; // WPCS: XSS ok. ?></label>
+								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo esc_html( $tooltip_html ); // WPCS: XSS ok. ?></label>
 							</th>
 							<td class="forminp"><select name="<?php echo esc_attr( $value['id'] ); ?>" style="<?php echo esc_attr( $value['css'] ); ?>" data-placeholder="<?php esc_attr_e( 'Choose a country / region&hellip;', 'woocommerce' ); ?>" aria-label="<?php esc_attr_e( 'Country / Region', 'woocommerce' ); ?>" class="wc-enhanced-select">
 								<?php WC()->countries->country_dropdown_options( $country, $state ); ?>
-							</select> <?php echo $description; // WPCS: XSS ok. ?>
+							</select> <?php echo esc_html( $description ); ?>
 							</td>
 						</tr>
 						<?php
@@ -472,7 +487,7 @@ if ( ! class_exists( 'Wooaction' ) ) :
 						?>
 						<tr valign="top">
 							<th scope="row" class="titledesc">
-								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo $tooltip_html; // WPCS: XSS ok. ?></label>
+								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo esc_html( $tooltip_html ); // WPCS: XSS ok. ?></label>
 							</th>
 							<td class="forminp">
 								<select multiple="multiple" name="<?php echo esc_attr( $value['id'] ); ?>[]" style="width:350px" data-placeholder="<?php esc_attr_e( 'Choose countries / regions&hellip;', 'woocommerce' ); ?>" aria-label="<?php esc_attr_e( 'Country / Region', 'woocommerce' ); ?>" class="wc-enhanced-select">
@@ -483,7 +498,7 @@ if ( ! class_exists( 'Wooaction' ) ) :
 										}
 									}
 									?>
-								</select> <?php echo ( $description ) ? $description : ''; // WPCS: XSS ok. ?> <br /><a class="select_all button" href="#"><?php esc_html_e( 'Select all', 'woocommerce' ); ?></a> <a class="select_none button" href="#"><?php esc_html_e( 'Select none', 'woocommerce' ); ?></a>
+								</select> <?php echo ( $description ) ? esc_html( $description ) : ''; ?> <br /><a class="select_all button" href="#"><?php esc_html_e( 'Select all', 'woocommerce' ); ?></a> <a class="select_none button" href="#"><?php esc_html_e( 'Select none', 'woocommerce' ); ?></a>
 							</td>
 						</tr>
 						<?php
@@ -501,7 +516,7 @@ if ( ! class_exists( 'Wooaction' ) ) :
 						?>
 						<tr valign="top">
 							<th scope="row" class="titledesc">
-								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo $tooltip_html; // WPCS: XSS ok. ?></label>
+								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo esc_html( $tooltip_html ); ?></label>
 							</th>
 							<td class="forminp">
 							<input
@@ -514,7 +529,7 @@ if ( ! class_exists( 'Wooaction' ) ) :
 									placeholder="<?php echo esc_attr( $value['placeholder'] ); ?>"
 									step="1"
 									min="1"
-									<?php echo implode( ' ', $custom_attributes ); // WPCS: XSS ok. ?>
+									<?php echo esc_html( implode( ' ', $custom_attributes ) ); ?>
 								/>&nbsp;
 								<select name="<?php echo esc_attr( $value['id'] ); ?>[unit]" style="width: auto;">
 									<?php
@@ -522,7 +537,7 @@ if ( ! class_exists( 'Wooaction' ) ) :
 										echo '<option value="' . esc_attr( $value ) . '"' . selected( $option_value['unit'], $value, false ) . '>' . esc_html( $label ) . '</option>';
 									}
 									?>
-								</select> <?php echo ( $description ) ? $description : ''; // WPCS: XSS ok. ?>
+								</select> <?php echo ( esc_html( $description ) ) ? esc_html( $description ) : ''; ?>
 							</td>
 						</tr>
 						<?php
@@ -580,6 +595,12 @@ if ( ! class_exists( 'Wooaction' ) ) :
 			return ( null === $option_value ) ? $default : $option_value;
 		}
 
+		/**
+		 * Template Class Doc Comment
+		 *
+		 * @param array $value The position of the current token
+		 * Template Class.
+		 */
 		public static function get_field_description( $value ) {
 			$description  = '';
 			$tooltip_html = '';
@@ -613,9 +634,16 @@ if ( ! class_exists( 'Wooaction' ) ) :
 			);
 		}
 
+		/**
+		 * Template Class Doc Comment
+		 *
+		 * @param array $options The position of the current token.
+		 * @param array $data The position of the current token.
+		 * Template Class.
+		 */
 		public static function save_fields( $options, $data = null ) {
 			if ( is_null( $data ) ) {
-				$data = $_POST; // WPCS: input var okay, CSRF ok.
+				$data = wp_verify_nonce( $_POST );
 			}
 			if ( empty( $data ) ) {
 				return false;
@@ -744,7 +772,13 @@ if ( ! class_exists( 'Wooaction' ) ) :
 			return true;
 		}
 
-		function wc_clean( $var ) {
+		/**
+		 * Template Class Doc Comment
+		 *
+		 * @param array $var The position of the current token
+		 * Template Class.
+		 */
+		public function wc_clean( $var ) {
 			if ( is_array( $var ) ) {
 				return array_map( 'wc_clean', $var );
 			} else {
