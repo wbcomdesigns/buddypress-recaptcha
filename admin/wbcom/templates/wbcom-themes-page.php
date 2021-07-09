@@ -1,3 +1,13 @@
+<?php
+/**
+ * Template Class Doc Comment
+ *
+ * @package theme page
+ * Template Class.
+ */
+
+?>
+
 <div class="wrap">
 	<?php echo do_shortcode( '[wbcom_admin_setting_header]' ); ?>
 	<div class="reign-demos-wrapper">
@@ -6,7 +16,7 @@
 			<div class="wbcom-demo-importer">
 				<div class="container">
 					<div class="wbcom-image-wrapper">
-						<img src="<?php echo plugins_url() . '/woo-pincode-checker/admin/wbcom/assets/imgs/reign.jpg'; ?>" alt="Avatar" class="image" style="width:100%">
+						<img src="<?php echo esc_html( plugins_url() . '/woo-pincode-checker/admin/wbcom/assets/imgs/reign.jpg' ); ?>" alt="Avatar" class="image" style="width:100%">
 					</div>
 					<div class="wbcom-demo-title">
 						<h2><?php esc_html_e( 'REIGN Community', 'woo-pincode' ); ?></h2>
@@ -32,9 +42,9 @@
 			<div class="wbcom-demo-importer">
 				<div class="container">
 					<div class="wbcom-image-wrapper">
-						<img src="<?php echo plugins_url() . '/woo-pincode-checker/admin/wbcom/assets/imgs/learnmate.jpg'; ?>" alt="Avatar" class="image" style="width:100%">
+						<img src="<?php echo esc_html( plugins_url() . '/woo-pincode-checker/admin/wbcom/assets/imgs/learnmate.jpg' ); ?>" alt="Avatar" class="image" style="width:100%">
 					</div>
-					
+
 					<div class="wbcom-demo-title">
 						<h2><?php esc_html_e( 'Learnmate', 'woo-pincode' ); ?></h2>
 						<ul class="wbcom_theme_features_list">
@@ -59,7 +69,7 @@
 			<div class="wbcom-demo-importer">
 				<div class="container">
 					<div class="wbcom-image-wrapper">
-						<img src="<?php echo plugins_url() . '/woo-pincode-checker/admin/wbcom/assets/imgs/storemate.jpg'; ?>" alt="Avatar" class="image" style="width:100%">
+						<img src="<?php echo esc_html( plugins_url() . '/woo-pincode-checker/admin/wbcom/assets/imgs/storemate.jpg' ); ?>" alt="Avatar" class="image" style="width:100%">
 					</div>
 					<div class="wbcom-demo-title">
 						<h2><?php esc_html_e( 'ShopMate Dokan', 'woo-pincode' ); ?></h2>
@@ -83,7 +93,7 @@
 			<div class="wbcom-demo-importer">
 				<div class="container">
 					<div class="wbcom-image-wrapper">
-						<img src="<?php echo plugins_url() . '/woo-pincode-checker/admin/wbcom/assets/imgs/jobmate.jpg'; ?>" alt="Avatar" class="image" style="width:100%">
+						<img src="<?php echo esc_html( plugins_url() . '/woo-pincode-checker/admin/wbcom/assets/imgs/jobmate.jpg' ); ?>" alt="Avatar" class="image" style="width:100%">
 					</div>
 					<div class="wbcom-demo-title">
 						<h2><?php esc_html_e( 'Jobmate Theme', 'woo-pincode' ); ?></h2>

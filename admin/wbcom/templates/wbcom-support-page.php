@@ -1,3 +1,13 @@
+<?php
+/**
+ * Template Class Doc Comment
+ *
+ * @package support page
+ * Template Class.
+ */
+
+?>
+
 <div class="wrap">
 	<?php echo do_shortcode( '[wbcom_admin_setting_header]' ); ?>
 	<h4 class="wbcom-plugin-heading"><?php esc_html_e( 'Support', 'woo-pincode' ); ?></h4>
