@@ -2,10 +2,13 @@
 /**
  *
  * This file is used for rendering and saving plugin welcome settings.
+ *
+ * @package Exit if accessed directly.
  */
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
-	// Exit if accessed directly
+	// Exit if accessed directly.
 }
 ?>
 
@@ -18,9 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 		</div><!-- .wbcom-welcome-head -->
 
 		<div class="wbcom-welcome-content">
-			
 			<div class="wbcom-video-link-wrapper">
-				
 			</div>
 
 			<div class="wbcom-welcome-support-info">
