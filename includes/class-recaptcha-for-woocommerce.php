@@ -177,7 +177,7 @@ class Recaptcha_For_Woocommerce {
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 
-		//Load setting in woocommerce setting tab
+		// Load setting in woocommerce setting tab
 		$this->loader->add_action( 'admin_menu', $plugin_admin, 'wpc_admin_menu', 100 );
 		$this->loader->add_filter( 'woocommerce_get_settings_pages', $plugin_admin, 'woocomm_load_custom_settings_tab' );
 		$this->loader->add_action( 'admin_init', $plugin_admin, 'wpc_add_admin_register_setting' );
@@ -197,12 +197,12 @@ class Recaptcha_For_Woocommerce {
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 
-		//Load style, js language
+		// Load style, js language
 		add_action( 'plugins_loaded', array( $plugin_public, 'woo_load_lang_for_woo_recaptcha' ) );
 		add_action( 'wp_enqueue_scripts', array( $plugin_public, 'woo_recaptcha_load_styles_and_js' ), 9999 );
 		add_action( 'login_enqueue_scripts', array( $plugin_public, 'woo_recaptcha_load_styles_and_js' ), 9999 );
 
-		//Login, registration lost password
+		// Login, registration lost password
 		$Login        = new Login();
 		$Regisrtation = new Regisrtation();
 		$Lostpassword = new Lostpassword();
@@ -232,7 +232,7 @@ class Recaptcha_For_Woocommerce {
 		add_action( 'woocommerce_login_form', array( $WoocommerceLogin, 'woo_extra_login_fields' ) );
 		add_action( 'woocommerce_lostpassword_form', array( $WoocommerceLostpassword, 'woo_extra_lostpassword_fields' ) );
 
-		//Woocommerce extra
+		// Woocommerce extra
 		$WoocommerceReviewOrder             = new WoocommerceReviewOrder();
 		$WoocommerceRegisterPost            = new WoocommerceRegisterPost();
 		$LostpasswordPost                   = new LostpasswordPost();
@@ -244,7 +244,7 @@ class Recaptcha_For_Woocommerce {
 		add_action( 'woocommerce_process_login_errors', array( $WoocommerceProcessLoginErrors, 'woocomm_validate_login_captcha' ), 10, 3 );
 		add_action( 'woocommerce_after_checkout_validation', array( $WoocommerceAfterCheckoutValidation, 'woocomm_validate_checkout_captcha' ), 10, 2 );
 
-		//Woocommerce Filter
+		// Woocommerce Filter
 		$WoocommerceFilter = new WoocommerceFilter();
 		add_filter( 'wp_authenticate_user', array( $WoocommerceFilter, 'woo_wp_verify_login_captcha' ), 10, 2 );
 		add_filter( 'register_post', array( $WoocommerceFilter, 'woo_verify_wp_register_captcha' ), 10, 3 );
@@ -254,7 +254,7 @@ class Recaptcha_For_Woocommerce {
 		add_filter( 'preprocess_comment', array( $WoocommerceFilter, 'woo_check_review_captcha' ) );
 		add_filter( 'preprocess_comment', array( $WoocommerceFilter, 'woo_check_comment_captcha' ) );
 
-		//Woocommerce Order
+		// Woocommerce Order
 		$WoocommerceOrder = new WoocommerceOrder();
 		add_action( 'woocommerce_pay_order_before_submit', array( $WoocommerceOrder, 'woo_extra_checkout_fields_pay_order' ) );
 		add_action( 'woocommerce_before_pay_action', array( $WoocommerceOrder, 'woo_verify_pay_order_captcha' ) );
@@ -262,7 +262,7 @@ class Recaptcha_For_Woocommerce {
 		add_action( 'wp', array( $WoocommerceOrder, 'woo_verify_add_payment_method' ) );
 		add_action( 'woocommerce_before_add_to_cart_quantity', array( $WoocommerceOrder, 'woocommerce_payment_request_btn_captcha' ) );
 
-		//Extra actions
+		// Extra actions
 		if ( $plugin_public->isIEBrowser() ) {
 			add_action( 'wp_head', array( $plugin_public, 'add_header_metadata_for_IE' ) );
 			add_action( 'login_head', array( $plugin_public, 'add_header_metadata_for_IE' ) );

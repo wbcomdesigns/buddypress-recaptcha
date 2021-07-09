@@ -73,7 +73,7 @@ if ( ! class_exists( 'I13_WooCommerce_Settings_Page' ) ) :
 		}
 
 		public function output_custom_type( $value ) {
-			//you can output the custom type in any format you'd like
+			// you can output the custom type in any format you'd like
 			?>
 						 <tr valign="top">
 							<th scope="row" class="titledesc" style="padding-top:0px;padding-bottom: 0px">
