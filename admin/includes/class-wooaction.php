@@ -643,7 +643,7 @@ if ( ! class_exists( 'Wooaction' ) ) :
 		 */
 		public static function save_fields( $options, $data = null ) {
 			if ( is_null( $data ) ) {
-				$data = wp_verify_nonce( $_POST );
+				$data = $_POST;
 			}
 			if ( empty( $data ) ) {
 				return false;
