@@ -28,7 +28,7 @@ if ( ! class_exists( 'Wbc_WooCommerce_Settings_Page' ) ) :
 			$this->id    = 'wbc_woo_recaptcha';
 			$this->label = __( 'reCaptcha', 'recaptcha-for-woocommerce' );
 
-			include 'Wooaction.php';
+			include 'class-wooaction.php';
 		}
 
 		/**
