@@ -51,7 +51,7 @@ class Recaptcha_For_Woocommerce_Admin {
 
 		$this->plugin_name = $plugin_name;
 		$this->version     = $version;
-		include plugin_dir_path( __FILE__ ) . 'includes/Settings.php';
+		include plugin_dir_path( __FILE__ ) . 'includes/class-wbc-woocommerce-settings-page.php';
 	}
 
 	/**
@@ -122,11 +122,11 @@ class Recaptcha_For_Woocommerce_Admin {
 	}
 
 	public function wpc_admin_settings_page_welcome() {
-		 $I13_WooCommerce_Settings_Page = new I13_WooCommerce_Settings_Page();
+		 $Wbc_WooCommerce_Settings_Page = new Wbc_WooCommerce_Settings_Page();
 		$current                        = ( filter_input( INPUT_GET, 'tab' ) !== null ) ? filter_input( INPUT_GET, 'tab' ) : 'wpc-general';
 
 		?>
-	
+
 		 <div class="wrap">
 			<div class="ess-admin-header">
 				<?php echo do_shortcode( '[wbcom_admin_setting_header]' ); ?>
@@ -143,11 +143,11 @@ class Recaptcha_For_Woocommerce_Admin {
 	}
 
 	public function wpc_admin_settings_page() {
-		$I13_WooCommerce_Settings_Page = new I13_WooCommerce_Settings_Page();
+		$Wbc_WooCommerce_Settings_Page = new Wbc_WooCommerce_Settings_Page();
 		$current                       = ( filter_input( INPUT_GET, 'tab' ) !== null ) ? filter_input( INPUT_GET, 'tab' ) : 'wpc-general';
 
 		?>
-	
+
 		 <div class="wrap">
 			<div class="ess-admin-header">
 				<?php echo do_shortcode( '[wbcom_admin_setting_header]' ); ?>
@@ -160,9 +160,9 @@ class Recaptcha_For_Woocommerce_Admin {
 				<form method="post" id="wbrecaptcha" action="" enctype="multipart/form-data">
 				<?php
 				if ( $_POST ) {
-					$I13_WooCommerce_Settings_Page->save( $current );
+					$Wbc_WooCommerce_Settings_Page->save( $current );
 				}
-				$I13_WooCommerce_Settings_Page->output( $current );
+				$Wbc_WooCommerce_Settings_Page->output( $current );
 				// settings_fields( $current );
 				// do_settings_sections( $current );
 				?>
