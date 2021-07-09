@@ -1,5 +1,4 @@
 <?php
-
 /**
  * The admin-specific functionality of the plugin.
  *
@@ -100,9 +99,13 @@ class Recaptcha_For_Woocommerce_Admin {
 
 	}
 
+	/**
+	 * Template Class Doc Comment
+	 *
+	 * @param array $settings The position of the current token
+	 * Template Class.
+	 */
 	public function woocomm_load_custom_settings_tab( $settings ) {
-
-		// $settings[] = include plugin_dir_path(__FILE__) . 'includes/Settings.php';
 		return $settings;
 	}
 
@@ -121,13 +124,18 @@ class Recaptcha_For_Woocommerce_Admin {
 		add_submenu_page( 'wbcomplugins', esc_html__( 'WB Recaptcha', 'wb-recaptcha' ), esc_html__( 'WB Recaptcha', 'wb-recaptcha' ), 'manage_options', 'wb-recaptcha', array( $this, 'wpc_admin_settings_page' ) );
 	}
 
+	/**
+	 * Template Class Doc Comment
+	 *
+	 * Template Class.
+	 */
 	public function wpc_admin_settings_page_welcome() {
-		 $Wbc_WooCommerce_Settings_Page = new Wbc_WooCommerce_Settings_Page();
+		$wbc_woo_commerce_settings_page = new Wbc_WooCommerce_Settings_Page();
 		$current                        = ( filter_input( INPUT_GET, 'tab' ) !== null ) ? filter_input( INPUT_GET, 'tab' ) : 'wpc-general';
 
 		?>
 
-		 <div class="wrap">
+		<div class="wrap">
 			<div class="ess-admin-header">
 				<?php echo do_shortcode( '[wbcom_admin_setting_header]' ); ?>
 				<h1 class="wbcom-plugin-heading">
@@ -138,17 +146,22 @@ class Recaptcha_For_Woocommerce_Admin {
 				<?php $this->wpc_plugin_settings_tabs_wbcom(); ?>
 				<?php include 'wbcom-welcome-page.php'; ?>
 			</div>
-		 </div>
+		</div>
 		<?php
 	}
 
+	/**
+	 * Template Class Doc Comment
+	 *
+	 * Template Class.
+	 */
 	public function wpc_admin_settings_page() {
-		$Wbc_WooCommerce_Settings_Page = new Wbc_WooCommerce_Settings_Page();
-		$current                       = ( filter_input( INPUT_GET, 'tab' ) !== null ) ? filter_input( INPUT_GET, 'tab' ) : 'wpc-general';
+		$wbc_woo_commerce_settings_page = new Wbc_WooCommerce_Settings_Page();
+		$current                        = ( filter_input( INPUT_GET, 'tab' ) !== null ) ? filter_input( INPUT_GET, 'tab' ) : 'wpc-general';
 
 		?>
 
-		 <div class="wrap">
+		<div class="wrap">
 			<div class="ess-admin-header">
 				<?php echo do_shortcode( '[wbcom_admin_setting_header]' ); ?>
 				<h1 class="wbcom-plugin-heading">
@@ -159,17 +172,15 @@ class Recaptcha_For_Woocommerce_Admin {
 				<?php $this->wpc_plugin_settings_tabs(); ?>
 				<form method="post" id="wbrecaptcha" action="" enctype="multipart/form-data">
 				<?php
-				if ( $_POST ) {
-					$Wbc_WooCommerce_Settings_Page->save( $current );
+				if ( wp_verify_nonce( $_POST ) ) {
+					$wbc_woo_commerce_settings_page->save( $current );
 				}
-				$Wbc_WooCommerce_Settings_Page->output( $current );
-				// settings_fields( $current );
-				// do_settings_sections( $current );
+				$wbc_woo_commerce_settings_page->output( $current );
 				?>
 					<button name="save" class="button-primary woocommerce-save-button" type="submit" value="Save changes">Save changes</button>
 				</form>
 			</div>
-		 </div>
+		</div>
 		<?php
 	}
 
@@ -223,7 +234,7 @@ class Recaptcha_For_Woocommerce_Admin {
 		add_settings_section( 'wpc-general', ' ', array( $this, 'wpc_general_settings_content' ), 'wpc-general' );
 	}
 	/**
-	 * add tab in setting page
+	 * Add tab in setting page
 	 */
 	public function wpc_plugin_settings_tabs() {
 		$current = ( filter_input( INPUT_GET, 'tab' ) !== null ) ? filter_input( INPUT_GET, 'tab' ) : 'wpc-general';
@@ -236,14 +247,18 @@ class Recaptcha_For_Woocommerce_Admin {
 			$tab_html .= '<a id="' . $edd_tab . '" class="nav-tab ' . $class . '" href="admin.php?page=' . $page . '&tab=' . $edd_tab . '"><span class="dashicons ' . $tab_name['icon'] . '"></span>&nbsp;' . $tab_name['name'] . '</a>';
 		}
 		$tab_html .= '</h2></div>';
-		echo $tab_html;
+		echo esc_html( $tab_html );
 	}
 
+	/**
+	 * Template Class Doc Comment
+	 *
+	 * Template Class.
+	 */
 	public function wpc_plugin_settings_tabs_wbcom() {
 		$current = ( filter_input( INPUT_GET, 'tab' ) !== null ) ? filter_input( INPUT_GET, 'tab' ) : 'wpc-general';
 
-		$tab_html = '<div class="wbcom-tabs-section"><h2 class="nav-tab-wrapper">';
-		// Page
+		$tab_html                                    = '<div class="wbcom-tabs-section"><h2 class="nav-tab-wrapper">';
 		$plugin_settings_tabs['wpc-general']['name'] = esc_html__( 'General', 'wbcomplugins' );
 		$plugin_settings_tabs['wpc-general']['icon'] = 'dashicons-admin-home';
 
@@ -253,14 +268,13 @@ class Recaptcha_For_Woocommerce_Admin {
 			$tab_html .= '<a id="' . $edd_tab . '" class="nav-tab ' . $class . '" href="admin.php?page=' . $page . '&tab=' . $edd_tab . '"><span class="dashicons ' . $tab_name['icon'] . '"></span>&nbsp;' . $tab_name['name'] . '</a>';
 		}
 		$tab_html .= '</h2></div>';
-		echo $tab_html;
+		echo esc_html( $tab_html );
 	}
 
 	/**
 	 * Get general settings html.
 	 */
 	public function wpc_general_settings_content() {
-		// require_once 'partials/woo-pincode-checker-admin-display.php';
 		include plugin_dir_path( __FILE__ ) . 'includes/class-wbc-woocommerce-settings-page.php';
 	}
 
