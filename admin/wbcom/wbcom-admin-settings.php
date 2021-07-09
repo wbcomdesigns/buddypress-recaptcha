@@ -22,7 +22,7 @@ if ( ! class_exists( 'Wbcom_Admin_Settings' ) ) {
 			add_shortcode( 'wbcom_admin_setting_header', array( $this, 'wbcom_admin_setting_header_html' ) );
 			add_action( 'admin_menu', array( $this, 'wbcom_admin_additional_pages' ), 999 );
 			add_action( 'admin_enqueue_scripts', array( $this, 'wbcom_enqueue_admin_scripts' ) );
-			//add_action( 'wp_ajax_wbcom_manage_plugin_installation', array( $this, 'wbcom_do_plugin_action' ) );
+			// add_action( 'wp_ajax_wbcom_manage_plugin_installation', array( $this, 'wbcom_do_plugin_action' ) );
 		}
 
 		public function wbcom_admin_setting_header_html() {
@@ -452,13 +452,13 @@ if ( ! class_exists( 'Wbcom_Admin_Settings' ) ) {
 		public function wbcom_plugin_status( $slug ) {
 			return 'activated';
 			// if ( $this->wbcom_is_plugin_installed( $slug ) ) {
-			// 	if ( $this->wbcom_is_plugin_active( $slug ) ) {
-			// 		return 'activated';
-			// 	} else {
-			// 		return 'installed';
-			// 	}
+			// if ( $this->wbcom_is_plugin_active( $slug ) ) {
+			// return 'activated';
 			// } else {
-			// 	return 'not_installed';
+			// return 'installed';
+			// }
+			// } else {
+			// return 'not_installed';
 			// }
 		}
 
