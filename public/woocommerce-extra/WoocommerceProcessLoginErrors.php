@@ -1,5 +1,4 @@
 <?php
-
 /**
  * The public-facing functionality of the plugin.
  *
@@ -21,21 +20,30 @@
  * @author     Wbcom Designs <admin@wbcomdesigns.com>
  */
 class WoocommerceProcessLoginErrors {
+
+	/**
+	 * Template Class Doc Comment
+	 *
+	 * @param array $validation_errors The position of the current token.
+	 * @param array $username The position of the current token.
+	 * @param array $password The position of the current token.
+	 * Template Class.
+	 */
 	public function woocomm_validate_login_captcha( $validation_errors, $username, $password ) {
 
-		$reCapcha_version = get_option( 'wbc_recapcha_version' );
-		if ( '' == $reCapcha_version ) {
-			$reCapcha_version = 'v2';
+		$re_capcha_version = get_option( 'wbc_recapcha_version' );
+		if ( '' === $re_capcha_version ) {
+			$re_capcha_version = 'v2';
 		}
 
-		if ( 'v2' == strtolower( $reCapcha_version ) ) {
+		if ( 'v2' === strtolower( $re_capcha_version ) ) {
 
 			$recapcha_error_msg_captcha_blank       = get_option( 'wc_settings_tab_recapcha_error_msg_captcha_blank' );
 			$recapcha_error_msg_captcha_no_response = get_option( 'wc_settings_tab_recapcha_error_msg_captcha_no_response' );
 			$recapcha_error_msg_captcha_invalid     = get_option( 'wc_settings_tab_recapcha_error_msg_captcha_invalid' );
 
 			$captcha_lable = get_option( 'wbc_recapcha_login_title' );
-			if ( '' == trim( $captcha_lable ) ) {
+			if ( '' === trim( $captcha_lable ) ) {
 
 				$captcha_lable = 'recaptcha';
 			}
@@ -57,25 +65,25 @@ class WoocommerceProcessLoginErrors {
 					$nonce_value = sanitize_text_field( $_REQUEST['_wpnonce'] );
 				}
 			}
-			if ( 'yes' == $is_enabled && isset( $_POST['username'] ) ) {
+			if ( 'yes' === $is_enabled && isset( $_POST['username'] ) ) {
 
 				if ( wp_verify_nonce( $nonce_value, 'woocommerce-login' ) ) {
 					if ( isset( $_POST['g-recaptcha-response'] ) && ! empty( $_POST['g-recaptcha-response'] ) ) {
-						// Google reCAPTCHA API secret key
+						// Google reCAPTCHA API secret key.
 						$response = sanitize_text_field( $_POST['g-recaptcha-response'] );
 
-						// Verify the reCAPTCHA response
-						$verifyResponse = wp_remote_get( 'https://www.google.com/recaptcha/api/siteverify?secret=' . $secret_key . '&response=' . $response, array( 'timeout' => 30 ) );
+						// Verify the reCAPTCHA response.
+						$verify_response = wp_remote_get( 'https://www.google.com/recaptcha/api/siteverify?secret=' . $secret_key . '&response=' . $response, array( 'timeout' => 30 ) );
 
-						if ( is_array( $verifyResponse ) && ! is_wp_error( $verifyResponse ) && isset( $verifyResponse['body'] ) ) {
+						if ( is_array( $verify_response ) && ! is_wp_error( $verify_response ) && isset( $verify_response['body'] ) ) {
 
-							// Decode json data
-							$responseData = json_decode( $verifyResponse['body'] );
+							// Decode json data.
+							$response_data = json_decode( $verify_response['body'] );
 
-							// If reCAPTCHA response is valid
-							if ( ! $responseData->success ) {
+							// If reCAPTCHA response is valid.
+							if ( ! $response_data->success ) {
 
-								if ( '' == trim( $recapcha_error_msg_captcha_invalid ) ) {
+								if ( '' === trim( $recapcha_error_msg_captcha_invalid ) ) {
 
 									$validation_errors->add( 'g-recaptcha_error', __( 'Invalid recaptcha.', 'recaptcha-for-woocommerce' ) );
 								} else {
@@ -84,7 +92,7 @@ class WoocommerceProcessLoginErrors {
 							}
 						} else {
 
-							if ( '' == trim( $recapcha_error_msg_captcha_no_response ) ) {
+							if ( '' === trim( $recapcha_error_msg_captcha_no_response ) ) {
 
 								$validation_errors->add( 'g-recaptcha_error', __( 'Could not get response from recaptcha server.', 'recaptcha-for-woocommerce' ) );
 							} else {
@@ -93,9 +101,9 @@ class WoocommerceProcessLoginErrors {
 						}
 					} else {
 
-						if ( '' == trim( $recapcha_error_msg_captcha_blank ) ) {
+						if ( '' === trim( $recapcha_error_msg_captcha_blank ) ) {
 
-							 $validation_errors->add( 'g-recaptcha_error', __( 'Recaptcha is a required field.', 'recaptcha-for-woocommerce' ) );
+							$validation_errors->add( 'g-recaptcha_error', __( 'Recaptcha is a required field.', 'recaptcha-for-woocommerce' ) );
 						} else {
 							$validation_errors->add( 'g-recaptcha_error', $recapcha_error_msg_captcha_blank );
 						}
@@ -108,12 +116,12 @@ class WoocommerceProcessLoginErrors {
 		} else {
 
 			$wbc_recapcha_login_score_threshold_v3 = get_option( 'wbc_recapcha_login_score_threshold_v3' );
-			if ( '' == $wbc_recapcha_login_score_threshold_v3 ) {
+			if ( '' === $wbc_recapcha_login_score_threshold_v3 ) {
 
 				$wbc_recapcha_login_score_threshold_v3 = '0.5';
 			}
 			$wbc_recapcha_login_action_v3 = get_option( 'wbc_recapcha_login_action_v3' );
-			if ( '' == $wbc_recapcha_login_action_v3 ) {
+			if ( '' === $wbc_recapcha_login_action_v3 ) {
 
 				$wbc_recapcha_login_action_v3 = 'login';
 			}
@@ -134,14 +142,14 @@ class WoocommerceProcessLoginErrors {
 					$nonce_value = sanitize_text_field( $_REQUEST['_wpnonce'] );
 				}
 			}
-			if ( 'yes' == $is_enabled && isset( $_POST['username'] ) && wp_verify_nonce( $nonce_value, 'woocommerce-login' ) ) {
+			if ( 'yes' === $is_enabled && isset( $_POST['username'] ) && wp_verify_nonce( $nonce_value, 'woocommerce-login' ) ) {
 
 				if ( isset( $_POST['wbc_recaptcha_login_token'] ) && ! empty( $_POST['wbc_recaptcha_login_token'] ) ) {
-					// Google reCAPTCHA API secret key
+					// Google reCAPTCHA API secret key.
 					$response = sanitize_text_field( $_POST['wbc_recaptcha_login_token'] );
 
-					// Verify the reCAPTCHA response
-					$verifyResponse = wp_remote_post(
+					// Verify the reCAPTCHA response.
+					$verify_response = wp_remote_post(
 						'https://www.google.com/recaptcha/api/siteverify',
 						array(
 							'method'  => 'POST',
@@ -154,17 +162,17 @@ class WoocommerceProcessLoginErrors {
 						)
 					);
 
-					if ( is_array( $verifyResponse ) && ! is_wp_error( $verifyResponse ) && isset( $verifyResponse['body'] ) ) {
+					if ( is_array( $verify_response ) && ! is_wp_error( $verify_response ) && isset( $verify_response['body'] ) ) {
 
-								 // Decode json data
-								 $responseData = json_decode( $verifyResponse['body'] );
+							// Decode json data.
+							$response_data = json_decode( $verify_response['body'] );
 
-								 // If reCAPTCHA response is valid
-						if ( ! $responseData->success ) {
+							// If reCAPTCHA response is valid.
+						if ( ! $response_data->success ) {
 
-							if ( '' == trim( $recapcha_error_msg_captcha_invalid ) ) {
+							if ( '' === trim( $recapcha_error_msg_captcha_invalid ) ) {
 
-								 $validation_errors->add( 'g-recaptcha_error', __( 'Google reCAPTCHA verification failed, please try again later.', 'recaptcha-for-woocommerce' ) );
+								$validation_errors->add( 'g-recaptcha_error', __( 'Google reCAPTCHA verification failed, please try again later.', 'recaptcha-for-woocommerce' ) );
 
 							} else {
 								$validation_errors->add( 'g-recaptcha_error', $recapcha_error_msg_captcha_invalid );
@@ -172,9 +180,9 @@ class WoocommerceProcessLoginErrors {
 							}
 						} else {
 
-							if ( $responseData->score < $wbc_recapcha_login_score_threshold_v3 || $responseData->action != $wbc_recapcha_login_action_v3 ) {
+							if ( $response_data->score < $wbc_recapcha_login_score_threshold_v3 || $response_data->action !== $wbc_recapcha_login_action_v3 ) {
 
-								if ( '' == trim( $recapcha_error_msg_captcha_invalid ) ) {
+								if ( '' === trim( $recapcha_error_msg_captcha_invalid ) ) {
 
 									$validation_errors->add( 'g-recaptcha_error', __( 'Google reCAPTCHA verification failed, please try again later.', 'recaptcha-for-woocommerce' ) );
 
@@ -187,7 +195,7 @@ class WoocommerceProcessLoginErrors {
 						}
 					} else {
 
-						if ( '' == trim( $recapcha_error_msg_captcha_no_response ) ) {
+						if ( '' === trim( $recapcha_error_msg_captcha_no_response ) ) {
 
 							$validation_errors->add( 'g-recaptcha_error', __( 'Could not get response from reCAPTCHA server.', 'recaptcha-for-woocommerce' ) );
 
@@ -199,7 +207,7 @@ class WoocommerceProcessLoginErrors {
 					}
 				} else {
 
-					if ( '' == trim( $recapcha_error_msg_captcha_blank ) ) {
+					if ( '' === trim( $recapcha_error_msg_captcha_blank ) ) {
 
 						$validation_errors->add( 'g-recaptcha_error', __( 'Google reCAPTCHA token is missing.', 'recaptcha-for-woocommerce' ) );
 

@@ -350,7 +350,7 @@ frm.submit();
 							</div>
 						  </div>
 						</noscript>',
-				$this->anr_recaptcha_domain()
+				self::anr_recaptcha_domain()
 			);
 		}
 		return $field;
@@ -512,7 +512,7 @@ frm.submit();
 		if ( $language ) {
 			$lang = '&hl=' . $language;
 		}
-		$google_url = apply_filters( 'anr_v2_checkbox_script_api_src', sprintf( 'https://www.%s/recaptcha/api.js?onload=anr_onloadCallback&render=explicit' . $lang, $this->anr_recaptcha_domain() ), $lang );
+		$google_url = apply_filters( 'anr_v2_checkbox_script_api_src', sprintf( 'https://www.%s/recaptcha/api.js?onload=anr_onloadCallback&render=explicit' . $lang, self::anr_recaptcha_domain() ), $lang );
 		?>
 			<script src="<?php echo esc_url( $google_url ); ?>"
 				async defer>
