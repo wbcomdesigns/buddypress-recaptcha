@@ -88,7 +88,7 @@ if ( ! class_exists( 'Wooaction' ) ) :
 					// Section Titles.
 					case 'title':
 						if ( ! empty( $value['title'] ) ) {
-							echo '<h2>' . esc_html( $value['title'] ) . '</h2>';
+							echo '<h2>' . $value['title'] . '</h2>';
 						}
 						if ( ! empty( $value['desc'] ) ) {
 							echo '<div id="' . esc_attr( sanitize_title( $value['id'] ) ) . '-description">';
@@ -129,7 +129,7 @@ if ( ! class_exists( 'Wooaction' ) ) :
 
 						?><tr valign="top">
 							<th scope="row" class="titledesc">
-								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo esc_html( $tooltip_html ); ?></label>
+								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo $value['title']; ?> <?php echo $tooltip_html; ?></label>
 							</th>
 							<td class="forminp forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?>">
 								<input
@@ -140,8 +140,8 @@ if ( ! class_exists( 'Wooaction' ) ) :
 									value="<?php echo esc_attr( $option_value ); ?>"
 									class="<?php echo esc_attr( $value['class'] ); ?>"
 									placeholder="<?php echo esc_attr( $value['placeholder'] ); ?>"
-									<?php echo esc_html( implode( ' ', $custom_attributes ) ); ?>
-									/><?php echo esc_html( $value['suffix'] ); ?> <?php echo esc_html( $description ); ?>
+									<?php echo implode( ' ', $custom_attributes ); ?>
+									/><?php echo $value['suffix']; ?> <?php echo $description; ?>
 							</td>
 						</tr>
 						<?php
@@ -154,7 +154,7 @@ if ( ! class_exists( 'Wooaction' ) ) :
 						?>
 						<tr valign="top">
 							<th scope="row" class="titledesc">
-								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo esc_html( $tooltip_html ); ?></label>
+								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo $value['title']; ?> <?php echo $tooltip_html; ?></label>
 							</th>
 							<td class="forminp forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?>">&lrm;
 								<span class="colorpickpreview" style="background: <?php echo esc_attr( $option_value ); ?>">&nbsp;</span>
@@ -167,8 +167,8 @@ if ( ! class_exists( 'Wooaction' ) ) :
 									value="<?php echo esc_attr( $option_value ); ?>"
 									class="<?php echo esc_attr( $value['class'] ); ?>colorpick"
 									placeholder="<?php echo esc_attr( $value['placeholder'] ); ?>"
-									<?php echo esc_html( implode( ' ', $custom_attributes ) ); ?>
-									/>&lrm; <?php echo esc_html( $description ); ?>
+									<?php echo implode( ' ', $custom_attributes ); ?>
+									/>&lrm; <?php echo $description; ?>
 									<div id="colorPickerDiv_<?php echo esc_attr( $value['id'] ); ?>" class="colorpickdiv" style="z-index: 100;background:#eee;border:1px solid #ccc;position:absolute;display:none;"></div>
 							</td>
 						</tr>
@@ -182,10 +182,10 @@ if ( ! class_exists( 'Wooaction' ) ) :
 						?>
 						<tr valign="top">
 							<th scope="row" class="titledesc">
-								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo esc_html( $tooltip_html ); ?></label>
+								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo $value['title']; ?> <?php echo $tooltip_html; ?></label>
 							</th>
 							<td class="forminp forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?>">
-								<?php echo esc_html( $description ); ?>
+								<?php echo $description; ?>
 
 								<textarea
 									name="<?php echo esc_attr( $value['id'] ); ?>"
@@ -193,7 +193,7 @@ if ( ! class_exists( 'Wooaction' ) ) :
 									style="<?php echo esc_attr( $value['css'] ); ?>"
 									class="<?php echo esc_attr( $value['class'] ); ?>"
 									placeholder="<?php echo esc_attr( $value['placeholder'] ); ?>"
-									<?php echo esc_html( implode( ' ', $custom_attributes ) ); ?>
+									<?php echo implode( ' ', $custom_attributes ); ?>
 									><?php echo esc_textarea( $option_value ); ?></textarea>
 							</td>
 						</tr>
@@ -208,7 +208,7 @@ if ( ! class_exists( 'Wooaction' ) ) :
 						?>
 						<tr valign="top">
 							<th scope="row" class="titledesc">
-								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo esc_html( $tooltip_html ); ?></label>
+								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo $value['title']; ?> <?php echo $tooltip_html; ?></label>
 							</th>
 							<td class="forminp forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?>">
 								<select
@@ -216,7 +216,7 @@ if ( ! class_exists( 'Wooaction' ) ) :
 									id="<?php echo esc_attr( $value['id'] ); ?>"
 									style="<?php echo esc_attr( $value['css'] ); ?>"
 									class="<?php echo esc_attr( $value['class'] ); ?>"
-									<?php echo esc_html( implode( ' ', $custom_attributes ) ); ?>
+									<?php echo implode( ' ', $custom_attributes ); ?>
 									<?php echo 'multiselect' === $value['type'] ? 'multiple="multiple"' : ''; ?>
 									>
 									<?php
@@ -232,11 +232,11 @@ if ( ! class_exists( 'Wooaction' ) ) :
 											}
 
 											?>
-										><?php echo esc_html( $val ); ?></option>
+										><?php echo $val; ?></option>
 										<?php
 									}
 									?>
-								</select> <?php echo esc_html( $description ); ?>
+								</select> <?php echo $description; ?>
 							</td>
 						</tr>
 						<?php
@@ -249,11 +249,11 @@ if ( ! class_exists( 'Wooaction' ) ) :
 						?>
 						<tr valign="top">
 							<th scope="row" class="titledesc">
-								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo esc_html( $tooltip_html ); ?></label>
+								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo $value['title']; ?> <?php echo $tooltip_html; ?></label>
 							</th>
 							<td class="forminp forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?>">
 								<fieldset>
-									<?php echo esc_html( $description ); ?>
+									<?php echo $description; ?>
 									<ul>
 									<?php
 									foreach ( $value['options'] as $key => $val ) {
@@ -265,9 +265,9 @@ if ( ! class_exists( 'Wooaction' ) ) :
 												type="radio"
 												style="<?php echo esc_attr( $value['css'] ); ?>"
 												class="<?php echo esc_attr( $value['class'] ); ?>"
-												<?php echo esc_html( implode( ' ', $custom_attributes ) ); ?>
+												<?php echo implode( ' ', $custom_attributes ); ?>
 												<?php checked( $key, $option_value ); ?>
-												/> <?php echo esc_html( $val ); ?></label>
+												/> <?php echo $val; ?></label>
 										</li>
 										<?php
 									}
@@ -303,7 +303,7 @@ if ( ! class_exists( 'Wooaction' ) ) :
 						if ( ! isset( $value['checkboxgroup'] ) || 'start' === $value['checkboxgroup'] ) {
 							?>
 								<tr valign="top" class="<?php echo esc_attr( implode( ' ', $visibility_class ) ); ?>">
-									<th scope="row" class="titledesc"><?php echo esc_html( $value['title'] ); ?></th>
+									<th scope="row" class="titledesc"><?php echo $value['title']; ?></th>
 									<td class="forminp forminp-checkbox">
 										<fieldset>
 							<?php
@@ -315,7 +315,7 @@ if ( ! class_exists( 'Wooaction' ) ) :
 
 						if ( ! empty( $value['title'] ) ) {
 							?>
-								<legend class="screen-reader-text"><span><?php echo esc_html( $value['title'] ); ?></span></legend>
+								<legend class="screen-reader-text"><span><?php echo $value['title']; ?></span></legend>
 							<?php
 						}
 
@@ -328,9 +328,9 @@ if ( ! class_exists( 'Wooaction' ) ) :
 									class="<?php echo esc_attr( isset( $value['class'] ) ? $value['class'] : '' ); ?>"
 									value="1"
 									<?php checked( $option_value, 'yes' ); ?>
-									<?php echo esc_html( implode( ' ', $custom_attributes ) ); ?>
-								/> <?php echo esc_html( $description ); ?>
-							</label> <?php echo esc_html( $tooltip_html ); ?>
+									<?php echo implode( ' ', $custom_attributes ); ?>
+								/> <?php echo $description; ?>
+							</label> <?php echo $tooltip_html; ?>
 						<?php
 
 						if ( ! isset( $value['checkboxgroup'] ) || 'end' === $value['checkboxgroup'] ) {
@@ -364,13 +364,13 @@ if ( ! class_exists( 'Wooaction' ) ) :
 						?>
 						<tr valign="top">
 							<th scope="row" class="titledesc">
-							<label><?php echo esc_html( $value['title'] ); ?> <?php echo esc_html( $tooltip_html . $disabled_message ); ?></label>
+							<label><?php echo $value['title']; ?> <?php echo esc_html( $tooltip_html . $disabled_message ); ?></label>
 						</th>
 							<td class="forminp image_width_settings">
 
-								<input name="<?php echo esc_attr( $value['id'] ); ?>[width]" <?php echo esc_html( $disabled_attr ); ?> id="<?php echo esc_attr( $value['id'] ); ?>-width" type="text" size="3" value="<?php echo esc_attr( $width ); ?>" /> &times; <input name="<?php echo esc_attr( $value['id'] ); ?>[height]" <?php echo $disabled_attr; // WPCS: XSS ok. ?> id="<?php echo esc_attr( $value['id'] ); ?>-height" type="text" size="3" value="<?php echo esc_attr( $height ); ?>" />px
+								<input name="<?php echo esc_attr( $value['id'] ); ?>[width]" <?php echo $disabled_attr; ?> id="<?php echo esc_attr( $value['id'] ); ?>-width" type="text" size="3" value="<?php echo esc_attr( $width ); ?>" /> &times; <input name="<?php echo esc_attr( $value['id'] ); ?>[height]" <?php echo $disabled_attr; // WPCS: XSS ok. ?> id="<?php echo esc_attr( $value['id'] ); ?>-height" type="text" size="3" value="<?php echo esc_attr( $height ); ?>" />px
 
-								<label><input name="<?php echo esc_attr( $value['id'] ); ?>[crop]" <?php echo esc_html( $disabled_attr ); ?> id="<?php echo esc_attr( $value['id'] ); ?>-crop" type="checkbox" value="1" <?php checked( 1, $crop ); ?> /> <?php esc_html_e( 'Hard crop?', 'woocommerce' ); ?></label>
+								<label><input name="<?php echo esc_attr( $value['id'] ); ?>[crop]" <?php echo $disabled_attr; ?> id="<?php echo esc_attr( $value['id'] ); ?>-crop" type="checkbox" value="1" <?php checked( 1, $crop ); ?> /> <?php esc_html_e( 'Hard crop?', 'woocommerce' ); ?></label>
 
 								</td>
 						</tr>
@@ -398,10 +398,10 @@ if ( ! class_exists( 'Wooaction' ) ) :
 						?>
 						<tr valign="top" class="single_select_page">
 							<th scope="row" class="titledesc">
-								<label><?php echo esc_html( $value['title'] ); ?> <?php echo esc_html( $tooltip_html ); ?></label>
+								<label><?php echo $value['title']; ?> <?php echo $tooltip_html; ?></label>
 							</th>
 							<td class="forminp">
-								<?php echo str_replace( ' id=', " data-placeholder='" . esc_attr__( 'Select a page&hellip;', 'woocommerce' ) . "' style='" . $value['css'] . "' class='" . $value['class'] . "' id=", wp_dropdown_pages( $args ) ); // WPCS: XSS ok. ?> <?php echo esc_html( $description ); // WPCS: XSS ok. ?>
+								<?php echo str_replace( ' id=', " data-placeholder='" . esc_attr__( 'Select a page&hellip;', 'woocommerce' ) . "' style='" . $value['css'] . "' class='" . $value['class'] . "' id=", wp_dropdown_pages( $args ) ); // WPCS: XSS ok. ?> <?php echo $description; // WPCS: XSS ok. ?>
 							</td>
 						</tr>
 						<?php
@@ -423,7 +423,7 @@ if ( ! class_exists( 'Wooaction' ) ) :
 						?>
 						<tr valign="top" class="single_select_page">
 							<th scope="row" class="titledesc">
-								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo $tooltip_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></label>
+								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo $value['title']; ?> <?php echo $tooltip_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></label>
 							</th>
 							<td class="forminp forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?>">
 								<select
@@ -463,11 +463,11 @@ if ( ! class_exists( 'Wooaction' ) ) :
 						?>
 						<tr valign="top">
 							<th scope="row" class="titledesc">
-								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo esc_html( $tooltip_html ); // WPCS: XSS ok. ?></label>
+								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo $value['title']; ?> <?php echo $tooltip_html; // WPCS: XSS ok. ?></label>
 							</th>
 							<td class="forminp"><select name="<?php echo esc_attr( $value['id'] ); ?>" style="<?php echo esc_attr( $value['css'] ); ?>" data-placeholder="<?php esc_attr_e( 'Choose a country / region&hellip;', 'woocommerce' ); ?>" aria-label="<?php esc_attr_e( 'Country / Region', 'woocommerce' ); ?>" class="wc-enhanced-select">
 								<?php WC()->countries->country_dropdown_options( $country, $state ); ?>
-							</select> <?php echo esc_html( $description ); ?>
+							</select> <?php echo $description; ?>
 							</td>
 						</tr>
 						<?php
@@ -487,18 +487,18 @@ if ( ! class_exists( 'Wooaction' ) ) :
 						?>
 						<tr valign="top">
 							<th scope="row" class="titledesc">
-								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo esc_html( $tooltip_html ); // WPCS: XSS ok. ?></label>
+								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo $value['title']; ?> <?php echo $tooltip_html; // WPCS: XSS ok. ?></label>
 							</th>
 							<td class="forminp">
 								<select multiple="multiple" name="<?php echo esc_attr( $value['id'] ); ?>[]" style="width:350px" data-placeholder="<?php esc_attr_e( 'Choose countries / regions&hellip;', 'woocommerce' ); ?>" aria-label="<?php esc_attr_e( 'Country / Region', 'woocommerce' ); ?>" class="wc-enhanced-select">
 									<?php
 									if ( ! empty( $countries ) ) {
 										foreach ( $countries as $key => $val ) {
-											echo '<option value="' . esc_attr( $key ) . '"' . wc_selected( $key, $selections ) . '>' . esc_html( $val ) . '</option>'; // WPCS: XSS ok.
+											echo '<option value="' . esc_attr( $key ) . '"' . wc_selected( $key, $selections ) . '>' . $val . '</option>'; // WPCS: XSS ok.
 										}
 									}
 									?>
-								</select> <?php echo ( $description ) ? esc_html( $description ) : ''; ?> <br /><a class="select_all button" href="#"><?php esc_html_e( 'Select all', 'woocommerce' ); ?></a> <a class="select_none button" href="#"><?php esc_html_e( 'Select none', 'woocommerce' ); ?></a>
+								</select> <?php echo ( $description ) ? $description : ''; ?> <br /><a class="select_all button" href="#"><?php esc_html_e( 'Select all', 'woocommerce' ); ?></a> <a class="select_none button" href="#"><?php esc_html_e( 'Select none', 'woocommerce' ); ?></a>
 							</td>
 						</tr>
 						<?php
@@ -516,7 +516,7 @@ if ( ! class_exists( 'Wooaction' ) ) :
 						?>
 						<tr valign="top">
 							<th scope="row" class="titledesc">
-								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo esc_html( $tooltip_html ); ?></label>
+								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo $value['title']; ?> <?php echo $tooltip_html; ?></label>
 							</th>
 							<td class="forminp">
 							<input
@@ -529,15 +529,15 @@ if ( ! class_exists( 'Wooaction' ) ) :
 									placeholder="<?php echo esc_attr( $value['placeholder'] ); ?>"
 									step="1"
 									min="1"
-									<?php echo esc_html( implode( ' ', $custom_attributes ) ); ?>
+									<?php echo implode( ' ', $custom_attributes ); ?>
 								/>&nbsp;
 								<select name="<?php echo esc_attr( $value['id'] ); ?>[unit]" style="width: auto;">
 									<?php
 									foreach ( $periods as $value => $label ) {
-										echo '<option value="' . esc_attr( $value ) . '"' . selected( $option_value['unit'], $value, false ) . '>' . esc_html( $label ) . '</option>';
+										echo '<option value="' . esc_attr( $value ) . '"' . selected( $option_value['unit'], $value, false ) . '>' . $label . '</option>';
 									}
 									?>
-								</select> <?php echo ( esc_html( $description ) ) ? esc_html( $description ) : ''; ?>
+								</select> <?php echo ( $description ) ? $description : ''; ?>
 							</td>
 						</tr>
 						<?php

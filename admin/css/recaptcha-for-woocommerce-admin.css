@@ -170,6 +170,7 @@
 .wrap .wbcom-admin-settings-page h2.nav-tab-wrapper,
 .wbcom-admin-settings-page h1.nav-tab-wrapper {
     width: 250px;
+    height: 100%;
     padding-top: 0;
     padding-bottom: 100px;
     margin: 0;
@@ -784,7 +785,7 @@
 /* License style : End */
 
 /* Welcome Page : Start */
-.wbcom-welcome-title { 
+.wbcom-welcome-title {
     font-size: 23px;
     font-weight: 600;
     margin: 0;

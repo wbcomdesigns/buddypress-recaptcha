@@ -119,6 +119,7 @@ class Recaptcha_For_Woocommerce_Admin {
 		/* add sub menu in wnplugin setting page */
 		if ( empty( $GLOBALS['admin_page_hooks']['wbcomplugins'] ) ) {
 			add_menu_page( esc_html__( 'WB Plugins', 'wb-recaptcha' ), esc_html__( 'WB Plugins', 'wb-recaptcha' ), 'manage_options', 'wbcomplugins', array( $this, 'wpc_admin_settings_page_welcome' ), 'dashicons-lightbulb', 59 );
+			add_submenu_page( 'wbcomplugins', esc_html__( 'General', 'wb-recaptcha' ), esc_html__( 'General', 'wb-recaptcha' ), 'manage_options', 'wbcomplugins' );
 		}
 
 		add_submenu_page( 'wbcomplugins', esc_html__( 'WB Recaptcha', 'wb-recaptcha' ), esc_html__( 'WB Recaptcha', 'wb-recaptcha' ), 'manage_options', 'wb-recaptcha', array( $this, 'wpc_admin_settings_page' ) );
