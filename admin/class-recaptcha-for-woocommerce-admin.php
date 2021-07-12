@@ -268,7 +268,7 @@ class Recaptcha_For_Woocommerce_Admin {
 			$tab_html .= '<a id="' . $edd_tab . '" class="nav-tab ' . $class . '" href="admin.php?page=' . $page . '&tab=' . $edd_tab . '"><span class="dashicons ' . $tab_name['icon'] . '"></span>&nbsp;' . $tab_name['name'] . '</a>';
 		}
 		$tab_html .= '</h2></div>';
-		echo esc_html( $tab_html );
+		echo $tab_html;
 	}
 
 	/**
