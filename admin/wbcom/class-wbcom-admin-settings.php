@@ -106,30 +106,30 @@ if ( ! class_exists( 'Wbcom_Admin_Settings' ) ) {
 		 * @access public
 		 */
 		public function wbcom_admin_additional_pages() {
-			add_submenu_page(
-				'wbcomplugins',
-				esc_html__( 'Components', 'woo-pincode-checker' ),
-				esc_html__( 'Components', 'woo-pincode-checker' ),
-				'manage_options',
-				'wbcom-plugins-page',
-				array( $this, 'wbcom_plugins_submenu_page_callback' )
-			);
-			add_submenu_page(
-				'wbcomplugins',
-				esc_html__( 'Themes', 'woo-pincode-checker' ),
-				esc_html__( 'Themes', 'woo-pincode-checker' ),
-				'manage_options',
-				'wbcom-themes-page',
-				array( $this, 'wbcom_themes_submenu_page_callback' )
-			);
-			add_submenu_page(
-				'wbcomplugins',
-				esc_html__( 'Support', 'woo-pincode-checker' ),
-				esc_html__( 'Support', 'woo-pincode-checker' ),
-				'manage_options',
-				'wbcom-support-page',
-				array( $this, 'wbcom_support_submenu_page_callback' )
-			);
+			// add_submenu_page(
+			// 'wbcomplugins',
+			// esc_html__( 'Components', 'woo-pincode-checker' ),
+			// esc_html__( 'Components', 'woo-pincode-checker' ),
+			// 'manage_options',
+			// 'wbcom-plugins-page',
+			// array( $this, 'wbcom_plugins_submenu_page_callback' )
+			// );
+			// add_submenu_page(
+			// 'wbcomplugins',
+			// esc_html__( 'Themes', 'woo-pincode-checker' ),
+			// esc_html__( 'Themes', 'woo-pincode-checker' ),
+			// 'manage_options',
+			// 'wbcom-themes-page',
+			// array( $this, 'wbcom_themes_submenu_page_callback' )
+			// );
+			// add_submenu_page(
+			// 'wbcomplugins',
+			// esc_html__( 'Support', 'woo-pincode-checker' ),
+			// esc_html__( 'Support', 'woo-pincode-checker' ),
+			// 'manage_options',
+			// 'wbcom-support-page',
+			// array( $this, 'wbcom_support_submenu_page_callback' )
+			// );
 		}
 
 		/**
