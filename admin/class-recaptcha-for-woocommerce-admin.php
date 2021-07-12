@@ -263,6 +263,15 @@ class Recaptcha_For_Woocommerce_Admin {
 		$plugin_settings_tabs['wpc-general']['name'] = esc_html__( 'General', 'wbcomplugins' );
 		$plugin_settings_tabs['wpc-general']['icon'] = 'dashicons-admin-home';
 
+		$plugin_settings_tabs['wpc-criteria']['name'] = esc_html__( 'Criteria', 'wbcomplugins' );
+		$plugin_settings_tabs['wpc-criteria']['icon'] = 'dashicons-leftright';
+
+		$plugin_settings_tabs['wpc-shortcode']['name'] = esc_html__( 'Shortcode', 'wbcomplugins' );
+		$plugin_settings_tabs['wpc-shortcode']['icon'] = 'dashicons-leftright';
+
+		$plugin_settings_tabs['wpc-display']['name'] = esc_html__( 'Display', 'wbcomplugins' );
+		$plugin_settings_tabs['wpc-display']['icon'] = 'dashicons-leftright';
+
 		foreach ( $plugin_settings_tabs as $edd_tab => $tab_name ) {
 			$class     = ( $edd_tab === $current ) ? 'nav-tab-active' : '';
 			$page      = 'wbcomplugins';
