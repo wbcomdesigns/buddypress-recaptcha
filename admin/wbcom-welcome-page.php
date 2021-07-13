@@ -16,8 +16,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<div class="wbcom-welcome-main-wrapper">
 		<div class="wbcom-welcome-head">
 			<h2 class="wbcom-welcome-title"><?php esc_html_e( 'Wbcom Designs - ReCaptcha', 'wb-recaptcha' ); ?></h2>
-			<p class="wbcom-welcome-description"><?php esc_html_e( 'BuddyPress Activity Social Share plugin allows users to share activity “Post Updates” to their social networking profiles.', 'buddypress-share' ); ?></p>
-			<p class="wbcom-welcome-description"><?php esc_html_e( 'This plugin adds the option ‘Share’ to BuddyPress Activity in post updates section parallel to the ‘Comment’, ‘Favorite’ and ‘Delete’ option.', 'buddypress-share' ); ?></p>
+			<p class="wbcom-welcome-description"><?php esc_html_e( 'reCaptcha for WooCommerce plugin allows users to check “User is authorised not a robot”.', 'wb-recaptcha' ); ?></p>
+			<p class="wbcom-welcome-description"><?php esc_html_e( 'This plugin provide to check reCaptch in WP Login page, WP Registration, WP Lost Password, WooCommerce Login, WooCommerce Registration, WooCommerce Lost Password, WooCommerce Order Page, BuddyPress Registration, BBPress Topic And Replay pages', 'wb-recaptcha' ); ?></p>
 		</div><!-- .wbcom-welcome-head -->
 
 		<div class="wbcom-welcome-content">
@@ -25,8 +25,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 			</div>
 
 			<div class="wbcom-welcome-support-info">
-				<h3><?php esc_html_e( 'Help &amp; Support Resources', 'buddypress-share' ); ?></h3>
-				<p><?php esc_html_e( 'Here are all the resources you may need to get help from us. Documentation is usually the best place to start. Should you require help anytime, our customer care team is available to assist you at the support center.', 'buddypress-share' ); ?></p>
+				<h3><?php esc_html_e( 'Help &amp; Support Resources', 'reCaptch for woocommerce' ); ?></h3>
+				<p><?php esc_html_e( 'Here are all the resources you may need to get help from us. Documentation is usually the best place to start. Should you require help anytime, our customer care team is available to assist you at the support center.', 'wb-recaptcha' ); ?></p>
 				<hr>
 
 				<div class="three-col">

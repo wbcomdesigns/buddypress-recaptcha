@@ -136,7 +136,6 @@ class Recaptcha_For_Woocommerce_Admin {
 	public function wpc_admin_settings_page_welcome() {
 		$wbc_woo_commerce_settings_page = new Wbc_WooCommerce_Settings_Page();
 		$current                        = ( filter_input( INPUT_GET, 'tab' ) !== null ) ? filter_input( INPUT_GET, 'tab' ) : 'wpc-general';
-
 		?>
 
 		<div class="wrap">
@@ -263,8 +262,11 @@ class Recaptcha_For_Woocommerce_Admin {
 	 * Template Class.
 	 */
 	public function wpc_plugin_settings_tabs_wbcom() {
-		$current = ( filter_input( INPUT_GET, 'tab' ) !== null ) ? filter_input( INPUT_GET, 'tab' ) : 'wpc-welcome';
-
+		$page    = ( filter_input( INPUT_GET, 'page' ) !== null ) ? filter_input( INPUT_GET, 'page' ) : 'wb-recaptcha';
+		$current = ( filter_input( INPUT_GET, 'tab' ) !== null ) ? filter_input( INPUT_GET, 'tab' ) : 'wpc-general';
+		if ( $page === 'wb-recaptcha' && filter_input( INPUT_GET, 'tab' ) === null ) {
+			$current = 'wpc-welcome';
+		}
 		$tab_html = '<div class="wbcom-tabs-section"><h2 class="nav-tab-wrapper">';
 		// $plugin_settings_tabs['wpc-welcome']['name'] = esc_html__( 'Welcome', 'wbcomplugins' );
 		// $plugin_settings_tabs['wpc-welcome']['icon'] = 'dashicons-admin-home';
