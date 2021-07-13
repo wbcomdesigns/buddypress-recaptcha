@@ -65,9 +65,9 @@ class WoocommerceOrder {
 			endif;
 				?>
 	<div id="g-recaptcha-checkout-wbc" name="g-recaptcha" class="g-recaptcha-" data-callback="verifyCallback_add_guestcheckout"  data-sitekey="<?php echo esc_html( $site_key ); ?>" data-theme="<?php echo esc_html( $theme ); ?>" data-size="<?php echo esc_html( $size ); ?>"></div>
-	<div id='refresh_captcha' style="width:100%;padding-top:5px"> 
+	<div id='refresh_captcha' style="width:100%;padding-top:5px">
 	<a href="javascript:grecaptcha.reset(myCaptcha);" style="clear:both"><?php echo esc_html( $refresh_lable ); ?></a>
-	</div>    
+	</div>
 
 	</p>
 	<script type="text/javascript">
@@ -86,7 +86,7 @@ class WoocommerceOrder {
 	jQuery("#place_order").attr("title", "<?php echo esc_html( __( 'Recaptcha is a required field.', 'recaptcha-for-woocommerce' ) ); ?>");
 	<?php else : ?>
 	jQuery("#place_order").attr("title", "<?php echo esc_html( $recapcha_error_msg_captcha_blank ); ?>");
-	<?php endif; ?>    
+	<?php endif; ?>
 	<?php endif; ?>
 
 
@@ -112,7 +112,7 @@ class WoocommerceOrder {
 	}catch(error){}
 	<?php endif; ?>
 
-	}       
+	}
 
 	jQuery(document).on('updated_checkout', function () {
 
@@ -130,29 +130,29 @@ class WoocommerceOrder {
 
 
 
-	}    
-	}, 100); 
+	}
+	}, 100);
 
 
 
 
 	var verifyCallback_add_guestcheckout = function(response) {
 
-	if(response.length!==0){ 
+	if(response.length!==0){
 
 				<?php if ( 'yes' == trim( $disable_submit_btn ) ) : ?>
 	jQuery("#place_order").removeAttr("title");
 	jQuery("#place_order").attr("disabled", false);
-	<?php endif; ?>   
+	<?php endif; ?>
 
-	if (typeof woo_guest_checkout_recaptcha_verified === "function") { 
+	if (typeof woo_guest_checkout_recaptcha_verified === "function") {
 
 	woo_guest_checkout_recaptcha_verified(response);
 	}
 	}
 
 	};
-									  
+
 
 
 	</script>
@@ -250,7 +250,7 @@ class WoocommerceOrder {
 			recaptchaResponse.value = token;
 
 		  }, function (reason) {
-			
+
 		  });
 	}
 
@@ -268,7 +268,7 @@ class WoocommerceOrder {
 	});
 	});
 
-				<?php if ( 'yes' == $wbc_recapcha_wp_disable_to_woo_checkout ) : ?>  
+				<?php if ( 'yes' == $wbc_recapcha_wp_disable_to_woo_checkout ) : ?>
 
 	setInterval(function() {
 
@@ -278,7 +278,7 @@ class WoocommerceOrder {
 	recaptchaResponse.value = token;
 	});
 
-	}, 40 * 1000); 
+	}, 40 * 1000);
 
 	<?php else : ?>
 
@@ -302,9 +302,9 @@ class WoocommerceOrder {
 
 
 
-	}    
+	}
 
-	}, 100);   
+	}, 100);
 
 
 
@@ -601,8 +601,8 @@ class WoocommerceOrder {
 				add_filter( 'woocommerce_product_review_comment_form_args', array( $this, 'recapcha_for_review_form' ), 10, 1 );
 			} else {
 
-				add_action( 'comment_form_logged_in_after', array( $this, 'woo_add_comment_form_captcha' ) );
-				add_action( 'comment_form_after_fields', array( $this, 'woo_add_comment_form_captcha' ) );
+				add_action( 'comment_form_logged_in_after', array( 'WoocommerceOrder', 'woo_add_comment_form_captcha' ) );
+				add_action( 'comment_form_after_fields', array( 'WoocommerceOrder', 'woo_add_comment_form_captcha' ) );
 			}
 
 			if ( is_page( wc_get_page_id( 'checkout' ) ) && 0 < get_query_var( 'order-pay' ) && isset( $_GET['pay_for_order'], $_GET['key'] ) ) {
@@ -614,7 +614,7 @@ class WoocommerceOrder {
 			$is_add_payment_method = ( $page_id && is_page( $page_id ) && ( isset( $wp->query_vars['payment-methods'] ) || isset( $wp->query_vars['add-payment-method'] ) ) );
 			if ( version_compare( $woocommerce->version, '4.3', '>=' ) ) {
 
-				add_action( 'woocommerce_add_payment_method_form_bottom', array( $this, 'wbc_woo_add_payment_method_new' ) );
+				add_action( 'woocommerce_add_payment_method_form_bottom', array( 'WoocommerceOrder', 'wbc_woo_add_payment_method_new' ) );
 			} else {
 
 				add_action( 'wp_footer', array( $this, 'wbc_woo_add_payment_method' ) );
@@ -890,9 +890,9 @@ class WoocommerceOrder {
 										?>
 						<label for="reg_captcha"><?php echo esc_html( ( '' == trim( $captcha_lable ) ) ? __( 'Captcha', 'recaptcha-for-woocommerce' ) : esc_html( $captcha_lable ) ); ?>&nbsp;<span class="required">*</span></label><?php endif; ?>
 							<div id="g-recaptcha-checkout-wbc" name="g-recaptcha" class="g-recaptcha-" data-callback="verifyCallback_add_guestcheckout"  data-sitekey="<?php echo esc_html( $site_key ); ?>" data-theme="<?php echo esc_html( $theme ); ?>" data-size="<?php echo esc_html( $size ); ?>"></div>
-													<div id='refresh_captcha' style="width:100%;padding-top:5px"> 
+													<div id='refresh_captcha' style="width:100%;padding-top:5px">
 															<a href="javascript:grecaptcha.reset(myCaptcha);" style="clear:both"><?php echo esc_html( $refresh_lable ); ?></a>
-													</div>    
+													</div>
 
 							</p>
 							<script type="text/javascript">
@@ -921,7 +921,7 @@ class WoocommerceOrder {
 
 																	   }catch(error){}
 
-													   }       
+													   }
 
 
 												 jQuery(document).ajaxSend(function( event, jqxhr, settings ) {
@@ -936,16 +936,16 @@ class WoocommerceOrder {
 
 
 
-									   }    
-								}, 100); 
+									   }
+								}, 100);
 
 
 								   var verifyCallback_add_guestcheckout = function(response) {
 
-										   if(response.length!==0){ 
+										   if(response.length!==0){
 
 												   window.recap_val= response;
-												   if (typeof woo_guest_checkout_recaptcha_verified === "function") { 
+												   if (typeof woo_guest_checkout_recaptcha_verified === "function") {
 
 															 woo_guest_checkout_recaptcha_verified(response);
 													 }
@@ -954,7 +954,7 @@ class WoocommerceOrder {
 											 }
 
 									 };
-									  
+
 
 
 
@@ -994,7 +994,7 @@ class WoocommerceOrder {
 
 							</p>
 							<script type="text/javascript">
-										var myCaptcha = null;   
+										var myCaptcha = null;
 										var recap_val='';
 										<?php $intval_login_checkout = uniqid( 'interval_' ); ?>
 
@@ -1014,7 +1014,7 @@ class WoocommerceOrder {
 																					   });
 																			   }catch(error){}
 
-															   }       
+															   }
 
 															jQuery(document).ajaxSend(function( event, jqxhr, settings ) {
 
@@ -1024,18 +1024,18 @@ class WoocommerceOrder {
 
 
 
-														});       
+														});
 
-											   }    
-										}, 100); 
+											   }
+										}, 100);
 
 
 								   var verifyCallback_add_logincheckout = function(response) {
 
-											if(response.length!==0){ 
+											if(response.length!==0){
 
 														   window.recap_val= response;
-														   if (typeof woo_login_checkout_recaptcha_verified === "function") { 
+														   if (typeof woo_login_checkout_recaptcha_verified === "function") {
 
 																	 woo_login_checkout_recaptcha_verified(response);
 															 }
@@ -1152,9 +1152,9 @@ class WoocommerceOrder {
 
 																								  });
 
-																				}    
+																				}
 
-																		}, 100);   
+																		}, 100);
 
 
 
@@ -1225,7 +1225,7 @@ class WoocommerceOrder {
 					<?php
 			endif;
 				?>
-	<style>  #g-recaptcha-comment-wbc{margin-bottom: 10px;}</style>      
+	<style>  #g-recaptcha-comment-wbc{margin-bottom: 10px;}</style>
 	<div id="g-recaptcha-comment-wbc" name="g-recaptcha-comment-wbc" class="g-recaptcha" data-callback="verifyCallback_woo_comment" data-sitekey="<?php echo esc_html( $site_key ); ?>" data-theme="<?php echo esc_html( $theme ); ?>" data-size="<?php echo esc_html( $size ); ?>"></div>
 
 
@@ -1249,30 +1249,30 @@ class WoocommerceOrder {
 	jQuery('#commentform').find('#submit').attr("title", "<?php echo esc_html( __( 'Recaptcha is a required field.', 'recaptcha-for-woocommerce' ) ); ?>");
 	<?php else : ?>
 	jQuery('#commentform').find('#submit').attr("title", "<?php echo esc_html( $recapcha_error_msg_captcha_blank ); ?>");
-	<?php endif; ?>    
+	<?php endif; ?>
 
-	<?php endif; ?>        
-	}    
-	}, 100);    
+	<?php endif; ?>
+	}
+	}, 100);
 
 
 	var verifyCallback_woo_comment = function(response) {
 
-	if(response.length!==0){ 
+	if(response.length!==0){
 				<?php if ( 'yes' == trim( $disable_submit_btn ) ) : ?>
 	jQuery('#commentform').find('#submit').removeAttr("title");
 	jQuery('#commentform').find('#submit').attr("disabled", false);
-	<?php endif; ?>    
+	<?php endif; ?>
 
 
-	if (typeof woo_comment_captcha_verified === "function") { 
+	if (typeof woo_comment_captcha_verified === "function") {
 
 	woo_comment_captcha_verified(response);
 	}
 
 	}
 
-	};  
+	};
 
 
 
@@ -1356,7 +1356,7 @@ class WoocommerceOrder {
 	recaptchaResponse.value = token;
 	});
 
-	}, 40 * 1000); 
+	}, 40 * 1000);
 	<?php else : ?>
 	jQuery('#commentform').on('submit', function (e) {
 	var frm = this;
@@ -1373,9 +1373,9 @@ class WoocommerceOrder {
 	});
 	<?php endif; ?>
 
-	}    
+	}
 
-	}, 100);   
+	}, 100);
 
 
 
@@ -1472,30 +1472,30 @@ class WoocommerceOrder {
 		jQuery('#review_form').find('#submit').attr("title", "<?php echo esc_html( __( 'Recaptcha is a required field.', 'recaptcha-for-woocommerce' ) ); ?>");
 		<?php else : ?>
 		jQuery('#review_form').find('#submit').attr("title", "<?php echo esc_html( $recapcha_error_msg_captcha_blank ); ?>");
-		<?php endif; ?>    
+		<?php endif; ?>
 
-		<?php endif; ?>        
-		}    
-		}, 100);    
+		<?php endif; ?>
+		}
+		}, 100);
 
 
 		var verifyCallback_woo_review = function(response) {
 
-		if(response.length!==0){ 
+		if(response.length!==0){
 				<?php if ( 'yes' == trim( $disable_submit_btn ) ) : ?>
 				jQuery('#review_form').find('#submit').removeAttr("title");
 				jQuery('#review_form').find('#submit').attr("disabled", false);
-		<?php endif; ?>    
+		<?php endif; ?>
 
 
-				if (typeof woo_review_captcha_verified === "function") { 
+				if (typeof woo_review_captcha_verified === "function") {
 
 						 woo_review_captcha_verified(response);
 				 }
 
 		}
 
-		};  
+		};
 
 
 
@@ -1571,14 +1571,14 @@ class WoocommerceOrder {
 
 				<?php if ( 'yes' == $wbc_token_generation_v3_woo_review ) : ?>
 				setInterval(function() {
-						
+
 					grecaptcha.execute('<?php echo esc_html( $site_key ); ?>', { action: '<?php echo esc_html( $wbc_recapcha_review_action_v3 ); ?>' }).then(function (token) {
 
 						var recaptchaResponse = document.getElementById('wbc_recaptcha_review_token');
 						recaptchaResponse.value = token;
 					});
 
-				}, 40 * 1000); 
+				}, 40 * 1000);
 		   <?php else : ?>
 			jQuery('#commentform').on('submit', function (e) {
 						 var frm = this;
@@ -1587,7 +1587,7 @@ class WoocommerceOrder {
 
 						  var recaptchaResponse = document.getElementById('wbc_recaptcha_review_token');
 						   recaptchaResponse.value = token;
-							
+
 																																	HTMLFormElement.prototype.submit.call(frm);
 						 }, function (reason) {
 
@@ -1595,9 +1595,9 @@ class WoocommerceOrder {
 				 });
 		   <?php endif; ?>
 
-		}    
+		}
 
-		}, 100);   
+		}, 100);
 
 
 
