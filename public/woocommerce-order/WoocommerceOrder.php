@@ -594,15 +594,15 @@ class WoocommerceOrder {
 		global $wp;
 		$is_checkout_js_enabled = false;
 		$is_oder_pay_page       = false;
-
+		$WoocommerceOrder       = new WoocommerceOrder();
 		if ( function_exists( 'is_product' ) ) {
 			if ( is_product() ) {
 
-				add_filter( 'woocommerce_product_review_comment_form_args', array( $this, 'recapcha_for_review_form' ), 10, 1 );
+				add_filter( 'woocommerce_product_review_comment_form_args', array( $WoocommerceOrder, 'recapcha_for_review_form' ), 10, 1 );
 			} else {
 
-				add_action( 'comment_form_logged_in_after', array( 'WoocommerceOrder', 'woo_add_comment_form_captcha' ) );
-				add_action( 'comment_form_after_fields', array( 'WoocommerceOrder', 'woo_add_comment_form_captcha' ) );
+				add_action( 'comment_form_logged_in_after', array( $WoocommerceOrder, 'woo_add_comment_form_captcha' ) );
+				add_action( 'comment_form_after_fields', array( $WoocommerceOrder, 'woo_add_comment_form_captcha' ) );
 			}
 
 			if ( is_page( wc_get_page_id( 'checkout' ) ) && 0 < get_query_var( 'order-pay' ) && isset( $_GET['pay_for_order'], $_GET['key'] ) ) {
@@ -614,10 +614,10 @@ class WoocommerceOrder {
 			$is_add_payment_method = ( $page_id && is_page( $page_id ) && ( isset( $wp->query_vars['payment-methods'] ) || isset( $wp->query_vars['add-payment-method'] ) ) );
 			if ( version_compare( $woocommerce->version, '4.3', '>=' ) ) {
 
-				add_action( 'woocommerce_add_payment_method_form_bottom', array( 'WoocommerceOrder', 'wbc_woo_add_payment_method_new' ) );
+				add_action( 'woocommerce_add_payment_method_form_bottom', array( $WoocommerceOrder, 'wbc_woo_add_payment_method_new' ) );
 			} else {
 
-				add_action( 'wp_footer', array( $this, 'wbc_woo_add_payment_method' ) );
+				add_action( 'wp_footer', array( $WoocommerceOrder, 'wbc_woo_add_payment_method' ) );
 			}
 			$reCapcha_version = get_option( 'wbc_recapcha_version' );
 			if ( '' == $reCapcha_version ) {
@@ -637,7 +637,7 @@ class WoocommerceOrder {
 
 			if ( $is_checkout_js_enabled ) {
 
-				add_action( 'wc_elavon_converge_credit_card_payment_form_end', array( $this, 'wbc_trigger_woo_recaptcha_action_for_recaptcha' ) );
+				add_action( 'wc_elavon_converge_credit_card_payment_form_end', array( $WoocommerceOrder, 'wbc_trigger_woo_recaptcha_action_for_recaptcha' ) );
 			}
 
 			if ( 'v2' == strtolower( $reCapcha_version ) ) {
