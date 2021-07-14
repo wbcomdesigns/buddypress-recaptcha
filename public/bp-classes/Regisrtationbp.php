@@ -89,36 +89,31 @@ class Regisrtationbp {
 
 <script type="text/javascript">
 
-var myCaptcha = null;
+jQuery(document).ready(function(){
+	var myCaptcha = null;
 				<?php $intval_signup = uniqid( 'interval_' ); ?>
 
-var <?php echo esc_html( $intval_signup ); ?> = setInterval(function() {
+	var <?php echo esc_html( $intval_signup ); ?> = setInterval(function() {
 
-if(document.readyState === 'complete') {
+	clearInterval(<?php echo esc_html( $intval_signup ); ?>);
+					<?php if ( 'yes' === trim( $disable_submit_btn ) ) : ?>
+					jQuery('#submit').attr("disabled", true);
+					console.log('close');
+						<?php if ( '' === $recapcha_error_msg_captcha_blank ) : ?>
+				jQuery('#submit').attr("title", "<?php echo esc_html( __( 'Recaptcha is a required field.', 'recaptcha-for-woocommerce' ) ); ?>");
+		<?php else : ?>
+						jQuery('#submit').attr("title", "<?php echo esc_html( $recapcha_error_msg_captcha_blank ); ?>");
+		<?php endif; ?>
+					<?php endif; ?>
 
-clearInterval(<?php echo esc_html( $intval_signup ); ?>);
-				<?php if ( 'yes' === trim( $disable_submit_btn ) ) : ?>
-
-	jQuery('#wp-submit').attr("disabled", true);
-					<?php if ( '' === $recapcha_error_msg_captcha_blank ) : ?>
-			jQuery('#wp-submit').attr("title", "<?php echo esc_html( __( 'Recaptcha is a required field.', 'recaptcha-for-woocommerce' ) ); ?>");
-	<?php else : ?>
-					jQuery('#wp-submit').attr("title", "<?php echo esc_html( $recapcha_error_msg_captcha_blank ); ?>");
-	<?php endif; ?>
-				<?php endif; ?>
-
-
-}
-}, 100);
-
+	}, 500);
+});
 
 var verifyCallback_wp_register = function(response) {
-
 if(response.length!==0){
-
 				<?php if ( 'yes' === trim( $disable_submit_btn ) ) : ?>
-jQuery('#wp-submit').removeAttr("title");
-jQuery('#wp-submit').attr("disabled", false);
+				jQuery('#submit').removeAttr("disabled");
+				jQuery('#submit').removeAttr("title");
 				<?php endif; ?>
 
 if (typeof woo_wp_register_captcha_verified === "function") {
@@ -282,9 +277,9 @@ frm.submit();
 			$lable      = get_option( 'recapcha_bbpress_topic_title' );
 			$hide_lable = get_option( 'recapcha_hide_label_bbpress_topic' );
 			if ( ! empty( $lable ) && 'yes' !== $hide_lable ) {
-				echo esc_html( $lable );
+				echo $lable;
 			}
-			echo esc_html( $this->form_field_return() );
+			echo $this->form_field_return();
 		}
 	}
 
@@ -294,8 +289,9 @@ frm.submit();
 	 * Template Class.
 	 */
 	public function form_field_bp() {
-		echo esc_html( $this->form_field_return() );
-		$this->v2_checkbox_script();
+		echo $this->form_field_return();
+		$Regisrtationbp = new Regisrtationbp();
+		$Regisrtationbp->v2_checkbox_script();
 	}
 
 	/**
@@ -512,7 +508,8 @@ frm.submit();
 		if ( $language ) {
 			$lang = '&hl=' . $language;
 		}
-		$google_url = apply_filters( 'anr_v2_checkbox_script_api_src', sprintf( 'https://www.%s/recaptcha/api.js?onload=anr_onloadCallback&render=explicit' . $lang, self::anr_recaptcha_domain() ), $lang );
+		$Regisrtationbp = new Regisrtationbp();
+		$google_url     = apply_filters( 'anr_v2_checkbox_script_api_src', sprintf( 'https://www.%s/recaptcha/api.js?onload=anr_onloadCallback&render=explicit' . $lang, $Regisrtationbp->anr_recaptcha_domain() ), $lang );
 		?>
 			<script src="<?php echo esc_url( $google_url ); ?>"
 				async defer>
