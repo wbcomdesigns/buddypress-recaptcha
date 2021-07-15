@@ -213,13 +213,13 @@ class Recaptcha_For_Woocommerce {
 		$Regisrtationbp = new Regisrtationbp();
 		add_action( 'bp_before_registration_submit_buttons', array( $Regisrtationbp, 'woo_extra_wp_register_form' ), 36 );
 		add_action( 'bp_signup_validate', array( $Regisrtationbp, 'woo_extra_wp_register_form' ) );
-		// add_action( 'bp_activity_entry_comments', array('Regisrtationbp', 'form_field_bp' ));
-		// add_action( 'bp_activity_post_form_options', array('Regisrtationbp', 'form_field_bp' ));
+		// add_action( 'bp_activity_entry_comments', array( $Regisrtationbp, 'form_field_bp' ) );
+		// add_action( 'bp_activity_post_form_options', array( $Regisrtationbp, 'form_field_bp' ) );
 
 		$Regisrtationbp = new Regisrtationbp();
 		add_action( 'bbp_theme_before_topic_form_submit_wrapper', array( $Regisrtationbp, 'form_field' ), 99 );
 		add_action( 'bbp_new_topic_pre_extras', array( $Regisrtationbp, 'bbp_new_verify' ) );
-		add_action( 'bbp_theme_before_reply_form_submit_wrapper', array( $Regisrtationbp, 'form_field' ), 99 );
+		add_action( 'bbp_theme_before_reply_form_submit_wrapper', array( $Regisrtationbp, 'form_field_replay' ), 99 );
 		add_action( 'bbp_new_reply_pre_extras', array( $Regisrtationbp, 'bbp_reply_verify' ) );
 		add_action( 'wp_enqueue_scripts', array( $Regisrtationbp, 'v2_checkbox_script' ) );
 
