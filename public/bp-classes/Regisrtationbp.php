@@ -285,6 +285,22 @@ frm.submit();
 
 	/**
 	 * Template Class Doc Comment
+	 * Template Class.
+	 */
+	public function form_field_replay() {
+		$is_enabled = get_option( 'recapcha_enable_on_bbpress_replay' );
+		if ( 'yes' === $is_enabled ) {
+			$lable      = get_option( 'recapcha_bbpress_replay_title' );
+			$hide_lable = get_option( 'recapcha_hide_label_bbpress_replay' );
+			if ( ! empty( $lable ) && 'yes' !== $hide_lable ) {
+				echo $lable;
+			}
+			echo $this->form_field_return();
+		}
+	}
+
+	/**
+	 * Template Class Doc Comment
 	 *
 	 * Template Class.
 	 */

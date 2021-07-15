@@ -238,6 +238,9 @@ class Recaptcha_For_Woocommerce_Admin {
 		if ( class_exists( 'bbPress' ) ) {
 			$this->plugin_settings_tabs['bb_press_topic']['name'] = esc_html__( 'BB Press Topic', 'wb-recaptcha' );
 			$this->plugin_settings_tabs['bb_press_topic']['icon'] = 'dashicons-editor-paste-text';
+
+			$this->plugin_settings_tabs['bb_press_replay']['name'] = esc_html__( 'BB Press Replay', 'wb-recaptcha' );
+			$this->plugin_settings_tabs['bb_press_replay']['icon'] = 'dashicons-editor-paste-text';
 		}
 	}
 	/**
