@@ -94,14 +94,13 @@ class WoocommerceFilter {
 				}
 			}
 		} else {
-
 			$wbc_recapcha_wp_login_score_threshold_v3 = get_option( 'wbc_recapcha_wp_login_score_threshold_v3' );
-			if ( '' === $wbc_recapcha_wp_login_score_threshold_v3 ) {
+			if ( empty($wbc_recapcha_wp_login_score_threshold_v3) ) {
 
 				$wbc_recapcha_wp_login_score_threshold_v3 = '0.5';
 			}
 			$wbc_recapcha_wp_login_action_v3 = get_option( 'wbc_recapcha_wp_login_action_v3' );
-			if ( '' === $wbc_recapcha_wp_login_action_v3 ) {
+			if ( empty($wbc_recapcha_wp_login_action_v3) ) {
 
 				$wbc_recapcha_wp_login_action_v3 = 'wp_login';
 			}
@@ -147,11 +146,9 @@ class WoocommerceFilter {
 								return new WP_Error( 'Captcha Invalid', '<strong>' . __( 'ERROR:', 'recaptcha-for-woocommerce' ) . '</strong> ' . $recapcha_error_msg_captcha_invalid );
 							}
 						} else {
-
 							if ( $response_data->score < $wbc_recapcha_wp_login_score_threshold_v3 || $response_data->action !== $wbc_recapcha_wp_login_action_v3 ) {
 
 								if ( '' === trim( $recapcha_error_msg_captcha_invalid ) ) {
-
 									return new WP_Error( 'Captcha Invalid', '<strong>' . __( 'ERROR:', 'recaptcha-for-woocommerce' ) . '</strong> ' . __( 'Google reCAPTCHA verification failed, please try again later.', 'recaptcha-for-woocommerce' ) );
 								} else {
 									return new WP_Error( 'Captcha Invalid', '<strong>' . __( 'ERROR:', 'recaptcha-for-woocommerce' ) . '</strong> ' . $recapcha_error_msg_captcha_invalid );
@@ -376,7 +373,7 @@ class WoocommerceFilter {
 
 		if ( 'v2' === strtolower( $re_capcha_version ) ) {
 
-			$secret_key = get_option( 'wc_settings_tab_recapcha_secret_key' );
+			$secret_key = get_option( 'wc_settings_tab_recapcha_secret_key_v3' );
 			$is_enabled = get_option( 'wbc_recapcha_enable_on_wplostpassword' );
 
 			$recapcha_error_msg_captcha_blank       = get_option( 'wc_settings_tab_recapcha_error_msg_captcha_blank' );
@@ -385,7 +382,7 @@ class WoocommerceFilter {
 			$nonce_value                            = isset( $_POST['wp-lostpassword-nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['wp-lostpassword-nonce'] ) ) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.NonceVerification.NoNonceVerification
 
 			$captcha_lable = get_option( 'wbc_recapcha_wplostpassword_title' );
-			if ( '' === trim( $captcha_lable ) ) {
+			if ( !empty(trim( $captcha_lable )) ) {
 
 				$captcha_lable = 'captcha';
 			}
@@ -393,8 +390,7 @@ class WoocommerceFilter {
 			$recapcha_error_msg_captcha_no_response = str_replace( '[recaptcha]', $captcha_lable, $recapcha_error_msg_captcha_no_response );
 			$recapcha_error_msg_captcha_invalid     = str_replace( '[recaptcha]', $captcha_lable, $recapcha_error_msg_captcha_invalid );
 
-			if ( 'yes' === $is_enabled && isset( $_POST['wp-lostpassword-nonce'] ) && ! empty( $_POST['wp-lostpassword-nonce'] ) ) {
-
+			if ( 'yes' === $is_enabled && isset( $_POST['wp-lostpassword-nonce'] ) && ! empty( $_POST['wp-lostpassword-nonce'] ) ) {	
 				if ( wp_verify_nonce( $nonce_value, 'wp-lostpassword-nonce' ) ) {
 					if ( isset( $_POST['g-recaptcha-response'] ) && ! empty( $_POST['g-recaptcha-response'] ) ) {
 						// Google reCAPTCHA API secret key.
@@ -442,14 +438,13 @@ class WoocommerceFilter {
 				}
 			}
 		} else {
-
 			$wbc_recapcha_wp_lost_password_score_threshold_v3 = get_option( 'wbc_recapcha_wp_lost_password_score_threshold_v3' );
-			if ( '' === $wbc_recapcha_wp_lost_password_score_threshold_v3 ) {
+			if ( empty($wbc_recapcha_wp_lost_password_score_threshold_v3) ) {
 
 				$wbc_recapcha_wp_lost_password_score_threshold_v3 = '0.5';
 			}
 			$wbc_recapcha_wp_lost_password_method_action_v3 = get_option( 'wbc_recapcha_wp_lost_password_method_action_v3' );
-			if ( '' === $wbc_recapcha_wp_lost_password_method_action_v3 ) {
+			if ( empty($wbc_recapcha_wp_lost_password_method_action_v3) ) {
 
 				$wbc_recapcha_wp_lost_password_method_action_v3 = 'wp_forgot_password';
 			}
@@ -459,11 +454,17 @@ class WoocommerceFilter {
 							$recapcha_error_msg_captcha_invalid     = get_option( 'wbc_recapcha_error_msg_v3_invalid_captcha' );
 							$secret_key                             = get_option( 'wc_settings_tab_recapcha_secret_key_v3' );
 							$is_enabled                             = get_option( 'wbc_recapcha_enable_on_wplostpassword' );
-							$nonce_value                            = isset( $_POST['wp-lostpassword-nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['wp-lostpassword-nonce'] ) ) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.NonceVerification.NoNonceVerification
-							$varify_none                            = wp_verify_nonce( $nonce_value, 'wp-lostpassword-nonce' );
-			if ( 'yes' === $is_enabled && isset( $_POST['wp-lostpassword-nonce'] ) && wp_verify_nonce( $nonce_value, 'wp-lostpassword-nonce' ) ) {
-
-				if ( isset( $_POST['wbc_recaptcha_token'] ) && ! empty( $_POST['wbc_recaptcha_token'] ) ) {
+							if(empty($_POST['wp-lostpassword-nonce'])){
+								$nonce_value                            = isset( $_POST['woocommerce-lost-password-nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['wp-lostpassword-nonce'] ) ) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.NonceVerification.NoNonceVerification
+								$varify_none                            = wp_verify_nonce( $nonce_value, 'woocommerce-lost-password-nonce' );	
+							}else{
+								$nonce_value                            = isset( $_POST['wp-lostpassword-nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['wp-lostpassword-nonce'] ) ) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.NonceVerification.NoNonceVerification
+								$varify_none                            = wp_verify_nonce( $nonce_value, 'wp-lostpassword-nonce' );	
+							}
+							
+			
+			if ( 'yes' == $is_enabled ) {
+				if ( isset( $_POST['wbc_recaptcha_token'] ) && !empty( $_POST['wbc_recaptcha_token'] ) ) {
 					// Google reCAPTCHA API secret key.
 					$response = sanitize_text_field( $_POST['wbc_recaptcha_token'] );
 
@@ -484,52 +485,16 @@ class WoocommerceFilter {
 					if ( is_array( $verify_response ) && ! is_wp_error( $verify_response ) && isset( $verify_response['body'] ) ) {
 						// Decode json data.
 						$response_data = json_decode( $verify_response['body'] );
-
 						// If reCAPTCHA response is valid.
-						if ( ! $response_data->success ) {
-
-							if ( '' === trim( $recapcha_error_msg_captcha_invalid ) ) {
+						if ( !$response_data->success ) {
+							if ( empty(trim( $recapcha_error_msg_captcha_invalid )) ) {
 								$validation_errors->add( 'g-recaptcha_error', '<strong>' . __( 'ERROR:', 'recaptcha-for-woocommerce' ) . '</strong> ' . __( 'Google reCAPTCHA verification failed, please try again later.', 'recaptcha-for-woocommerce' ) );
 							} else {
 								$validation_errors->add( 'g-recaptcha_error', '<strong>' . __( 'ERROR:', 'recaptcha-for-woocommerce' ) . '</strong> ' . $recapcha_error_msg_captcha_invalid );
 							}
-						} else {
-
-							if ( $response_data->score < $wbc_recapcha_wp_lost_password_score_threshold_v3 || $response_data->action !== $wbc_recapcha_wp_lost_password_method_action_v3 ) {
-
-								if ( '' === trim( $recapcha_error_msg_captcha_invalid ) ) {
-
-									$validation_errors->add( 'g-recaptcha_error', '<strong>' . __( 'ERROR:', 'recaptcha-for-woocommerce' ) . '</strong> ' . __( 'Google reCAPTCHA verification failed, please try again later.', 'recaptcha-for-woocommerce' ) );
-
-								} else {
-
-									$validation_errors->add( 'g-recaptcha_error', '<strong>' . __( 'ERROR:', 'recaptcha-for-woocommerce' ) . '</strong> ' . $recapcha_error_msg_captcha_invalid );
-
-								}
-							}
-						}
-					} else {
-
-						if ( '' === trim( $recapcha_error_msg_captcha_no_response ) ) {
-
-							$validation_errors->add( 'g-recaptcha_error', '<strong>' . __( 'ERROR:', 'recaptcha-for-woocommerce' ) . '</strong> ' . __( 'Could not get response from reCAPTCHA server.', 'recaptcha-for-woocommerce' ) );
-
-						} else {
-
-							$validation_errors->add( 'g-recaptcha_error', '<strong>' . __( 'ERROR:', 'recaptcha-for-woocommerce' ) . '</strong> ' . $recapcha_error_msg_captcha_no_response );
-
-						}
-					}
-				} else {
-
-					if ( '' === trim( $recapcha_error_msg_captcha_blank ) ) {
-
-						$validation_errors->add( 'g-recaptcha_error', '<strong>' . __( 'ERROR:', 'recaptcha-for-woocommerce' ) . '</strong> ' . __( 'Google reCAPTCHA token is missing.', 'recaptcha-for-woocommerce' ) );
-
-					} else {
-
-						$validation_errors->add( 'g-recaptcha_error', '<strong>' . __( 'ERROR:', 'recaptcha-for-woocommerce' ) . '</strong> ' . $recapcha_error_msg_captcha_blank );
-
+						}else{
+							$validation_errors->remove( 'g-recaptcha_error');
+						} 
 					}
 				}
 			}

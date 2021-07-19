@@ -161,16 +161,16 @@ class WoocommerceLostpassword {
 
 				$site_key                            = get_option( 'wc_settings_tab_recapcha_site_key_v3' );
 				$wbc_recapcha_lostpassword_action_v3 = get_option( 'wbc_recapcha_lostpassword_action_v3' );
-				if ( '' == trim( $wbc_recapcha_lostpassword_action_v3 ) ) {
+				if ( empty(trim( $wbc_recapcha_lostpassword_action_v3 )) ) {
 
 					$wbc_recapcha_lostpassword_action_v3 = 'forgot_password';
 				}
-				if ( '' == trim( $$wbc_generation_v3_woo_fpass ) ) {
+				if ( empty(trim( $$wbc_generation_v3_woo_fpass ))) {
 
 					$wbc_generation_v3_woo_fpass = 'no';
 				}
 				?>
-	<input type="hidden" value="" name="wbc_recaptcha_lost_password_token" id="wbc_recaptcha_lost_password_token"/>
+	<input type="hidden" value="" name="wbc_recaptcha_token" id="wbc_recaptcha_token"/>
 	<script type="text/javascript">
 
 				<?php $intval_lost_pass = uniqid( 'interval_' ); ?>
@@ -185,7 +185,7 @@ class WoocommerceLostpassword {
 
 	grecaptcha.execute('<?php echo esc_html( $site_key ); ?>', { action: '<?php echo esc_html( $wbc_recapcha_lostpassword_action_v3 ); ?>' }).then(function (token) {
 
-	var recaptchaResponse = document.getElementById('wbc_recaptcha_lost_password_token');
+	var recaptchaResponse = document.getElementById('wbc_recaptcha_token');
 	recaptchaResponse.value = token;
 	});
 	});
@@ -198,7 +198,7 @@ class WoocommerceLostpassword {
 									
 								grecaptcha.execute('<?php echo esc_html( $site_key ); ?>', { action: '<?php echo esc_html( $wbc_recapcha_lostpassword_action_v3 ); ?>' }).then(function (token) {
 
-									var recaptchaResponse = document.getElementById('wbc_recaptcha_lost_password_token');
+									var recaptchaResponse = document.getElementById('wbc_recaptcha_token');
 									recaptchaResponse.value = token;
 								});
 
@@ -210,7 +210,7 @@ class WoocommerceLostpassword {
 										 e.preventDefault();
 										 grecaptcha.execute('<?php echo esc_html( $site_key ); ?>', { action: '<?php echo esc_html( $wbc_recapcha_lostpassword_action_v3 ); ?>' }).then(function (token) {
 
-										  var recaptchaResponse = document.getElementById('wbc_recaptcha_lost_password_token');
+										  var recaptchaResponse = document.getElementById('wbc_recaptcha_token');
 										   recaptchaResponse.value = token;
 
 										  frm.submit();
