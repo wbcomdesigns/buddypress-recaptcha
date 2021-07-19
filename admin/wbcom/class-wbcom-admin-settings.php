@@ -463,15 +463,15 @@ if ( ! class_exists( 'Wbcom_Admin_Settings' ) ) {
 		 */
 		public function wbcom_plugin_status( $slug ) {
 			return 'activated';
-			// if ( $this->wbcom_is_plugin_installed( $slug ) ) {
-			// if ( $this->wbcom_is_plugin_active( $slug ) ) {
-			// return 'activated';
-			// } else {
-			// return 'installed';
-			// }
-			// } else {
-			// return 'not_installed';
-			// }.
+			if ( $this->wbcom_is_plugin_installed( $slug ) ) {
+			if ( $this->wbcom_is_plugin_active( $slug ) ) {
+			return 'activated';
+			} else {
+			return 'installed';
+			}
+			} else {
+			return 'not_installed';
+			}
 		}
 
 		/**
