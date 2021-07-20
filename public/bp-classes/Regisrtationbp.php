@@ -262,7 +262,7 @@ frm.submit();
 		$disable_submit_btn = get_option( 'wbc_recapcha_enable_on_signup_bp' );
 
 		if ( 'yes' === $disable_submit_btn && empty( $_POST['g-recaptcha-response'] ) ) {
-			$bp->signup->errors['accept_tos'] = __( 'reCaptcha token is invalid' . $disable_submit_btn, 'buddypress' );
+			$bp->signup->errors['accept_tos'] = __( 'reCaptcha token is invalid', 'buddypress' );
 		}
 		return;
 	}
