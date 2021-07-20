@@ -3,7 +3,10 @@
  * included in this file.
  */
  #wbrecaptcha{
-	margin-left: 10px;
+    padding:50px;
+ }
+ .button-primary{
+    margin-top: 15px !important;
  }
  .wbcom-admin-settings-page{
 	background: #fff !important;
