@@ -260,10 +260,36 @@ frm.submit();
 	public function innovage_validate_user_registration() {
 		global $bp;
 		$disable_submit_btn = get_option( 'wbc_recapcha_enable_on_signup_bp' );
+		$re_capcha_version = get_option( 'wbc_recapcha_version' );
+		$wbc_recapcha_enable_on_signup_bp = get_option( 'wbc_recapcha_enable_on_signup_bp' );
+		if($wbc_recapcha_enable_on_signup_bp == 'yes'){
+			if($re_capcha_version !== 'v2')
+			{	
+				$secret_key = get_option( 'wc_settings_tab_recapcha_secret_key_v3' );
+				$response = sanitize_text_field( $_POST['wbc_recaptcha_wp_register_token'] );
+				$verify_response = wp_remote_post(
+							'https://www.google.com/recaptcha/api/siteverify',
+							array(
+								'method'  => 'POST',
+								'timeout' => 45,
+								'body'    => array(
+									'secret'   => $secret_key,
+									'response' => $response,
+								),
 
-		if ( 'yes' === $disable_submit_btn && empty( $_POST['g-recaptcha-response'] ) ) {
-			$bp->signup->errors['accept_tos'] = __( 'reCaptcha token is invalid', 'buddypress' );
+							)
+						);
+				$response_data = json_decode( $verify_response['body'] );
+				if(!$response_data->success){
+					$bp->signup->errors['accept_tos'] = __( 'reCaptcha token is invalid', 'buddypress' );
+				}
+			}else{
+				if ( 'yes' === $disable_submit_btn && empty( $_POST['g-recaptcha-response'] ) ) {
+					$bp->signup->errors['accept_tos'] = __( 'reCaptcha token is invalid', 'buddypress' );
+				}	
+			}
 		}
+				
 		return;
 	}
 
