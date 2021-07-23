@@ -329,7 +329,7 @@ if ( ! class_exists( 'Wooaction' ) ) :
 									value="1"
 									<?php checked( $option_value, 'yes' ); ?>
 									<?php echo implode( ' ', $custom_attributes ); ?>
-								/> <?php echo $description; ?>
+                                                                        /> <p class="description"><?php echo $description; ?></p>
 							</label> <?php echo $tooltip_html; ?>
 						<?php
 

@@ -2,11 +2,12 @@
 >>> TABLE OF CONTENTS:
 ----------------------------------------------------------------
 # Admin Tabs
+# Admin Tab Content
 --------------------------------------------------------------*/
 
 
 /*--------------------------------------------------------------
-# Admin Tabs
+# Admin Tab Section 
 --------------------------------------------------------------*/
 
 .rfw-tabs-section .nav-tab-wrapper ul li a.nav-tab span.dashicons {
@@ -27,4 +28,15 @@
     text-align: center;
     transition: color 0.1s ease-in;
     margin-right: 8px;
+}
+
+/*--------------------------------------------------------------
+# Admin Tab Content 
+--------------------------------------------------------------*/
+.rfw-tab-content input[type="text"] {
+    width: 100%;
+}
+
+.rfw-tab-content .woocommerce-save-button {
+    margin-top: 15px;
 }
