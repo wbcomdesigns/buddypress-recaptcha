@@ -80,3 +80,16 @@ function run_recaptcha_for_woocommerce() {
 
 }
 run_recaptcha_for_woocommerce();
+
+/**
+ * redirect to plugin settings page after activated
+ */
+
+add_action( 'activated_plugin', 'wb_recaptcha_activation_redirect_settings' );
+function wb_recaptcha_activation_redirect_settings( $plugin ){
+
+	if( $plugin == plugin_basename( __FILE__ ) ) {
+		wp_redirect( admin_url( 'admin.php?page=wb-recaptcha' ) ) ;
+		exit;
+	}
+}

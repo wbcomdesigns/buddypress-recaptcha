@@ -122,7 +122,7 @@ class Recaptcha_For_Woocommerce_Admin {
 			add_submenu_page( 'wbcomplugins', esc_html__( 'General', 'wb-recaptcha' ), esc_html__( 'General', 'wb-recaptcha' ), 'manage_options', 'wbcomplugins' );
 		}
 
-		add_submenu_page( 'wbcomplugins', esc_html__( 'WB Recaptcha', 'wb-recaptcha' ), esc_html__( 'WB Recaptcha', 'wb-recaptcha' ), 'manage_options', 'wb-recaptcha', array( $this, 'wpc_admin_settings_page' ) );
+		add_submenu_page( 'wbcomplugins', esc_html__( 'WB reCaptcha', 'wb-recaptcha' ), esc_html__( 'WB reCaptcha', 'wb-recaptcha' ), 'manage_options', 'wb-recaptcha', array( $this, 'wpc_admin_settings_page' ) );
 
 		// register_setting( 'wpc_general_settings', 'wb-recaptcha' );
 		// add_settings_section( 'wpc-general', ' ', array( $this, 'wpc_general_settings_content' ), 'wb-recaptcha' );
@@ -143,7 +143,7 @@ class Recaptcha_For_Woocommerce_Admin {
 			<div class="ess-admin-header">
 				<?php echo do_shortcode( '[wbcom_admin_setting_header]' ); ?>
 				<h1 class="wbcom-plugin-heading">
-					<?php esc_html_e( 'WB Recaptcha', 'wb-recaptcha' ); ?>
+					<?php esc_html_e( 'WB reCaptcha', 'wb-recaptcha' ); ?>
 				</h1>
 			</div>
 			<div class="wbcom-admin-settings-page">
@@ -169,24 +169,29 @@ class Recaptcha_For_Woocommerce_Admin {
 		?>
 
 		<div class="wrap">
+                    <hr class="wp-header-end">
+                    <div class="wbcom-wrap">
 			<div class="ess-admin-header">
 				<?php echo do_shortcode( '[wbcom_admin_setting_header]' ); ?>
 				<h1 class="wbcom-plugin-heading">
-					<?php esc_html_e( 'WB Recaptcha', 'wb-recaptcha' ); ?>
+					<?php esc_html_e( 'WB reCaptcha', 'wb-recaptcha' ); ?>
 				</h1>
 			</div>
 			<div class="wbcom-admin-settings-page">
-				<?php $this->wpc_plugin_settings_tabs(); ?>
-				<form method="post" id="wbrecaptcha" action="" enctype="multipart/form-data">
-				<?php
-				if ( $_POST ) {
-					$wbc_woo_commerce_settings_page->save( $current );
-				}
-				$wbc_woo_commerce_settings_page->output( $current );
-				?>
-					<button name="save" class="button-primary woocommerce-save-button" type="submit" value="Save changes">Save changes</button>
-				</form>
-			</div>
+                            <?php $this->wpc_plugin_settings_tabs(); ?>
+                            <div class="wbcom-tab-content wpc-tab-content">
+                                <form method="post" id="wbrecaptcha" action="" enctype="multipart/form-data">
+                                <?php
+                                if ( $_POST ) {
+                                        $wbc_woo_commerce_settings_page->save( $current );
+                                }
+                                $wbc_woo_commerce_settings_page->output( $current );
+                                ?>
+                                        <button name="save" class="button-primary woocommerce-save-button" type="submit" value="Save changes">Save changes</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
 		</div>
 		<?php
 	}
@@ -249,14 +254,14 @@ class Recaptcha_For_Woocommerce_Admin {
 	public function wpc_plugin_settings_tabs() {
 		$current = ( filter_input( INPUT_GET, 'tab' ) !== null ) ? filter_input( INPUT_GET, 'tab' ) : 'wpc-general';
 
-		$tab_html = '<div class="wbcom-tabs-section"><h2 class="nav-tab-wrapper">';
+		$tab_html = '<div class="wbcom-tabs-section wpc-tabs-section"><div class="nav-tab-wrapper"><div class="wb-responsive-menu"><span>' . esc_html( 'Menu' ) . '</span><input class="wb-toggle-btn" type="checkbox" id="wb-toggle-btn"><label class="wb-toggle-icon" for="wb-toggle-btn"><span class="wb-icon-bars"></span></label></div><ul>';
 
 		foreach ( $this->plugin_settings_tabs as $edd_tab => $tab_name ) {
 			$class     = ( $edd_tab === $current ) ? 'nav-tab-active' : '';
 			$page      = 'wb-recaptcha';
-			$tab_html .= '<a id="' . $edd_tab . '" class="nav-tab ' . $class . '" href="admin.php?page=' . $page . '&tab=' . $edd_tab . '"><span class="dashicons ' . $tab_name['icon'] . '"></span>&nbsp;' . $tab_name['name'] . '</a>';
+			$tab_html .= '<li><a id="' . $edd_tab . '" class="nav-tab ' . $class . '" href="admin.php?page=' . $page . '&tab=' . $edd_tab . '"><span class="dashicons ' . $tab_name['icon'] . '"></span>&nbsp;' . $tab_name['name'] . '</a></li>';
 		}
-		$tab_html .= '</h2></div>';
+		$tab_html .= '</div></ul></div>';
 		echo $tab_html;
 	}
 
