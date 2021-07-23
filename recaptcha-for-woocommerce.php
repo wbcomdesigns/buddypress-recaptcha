@@ -30,6 +30,26 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
+if( ! defined( 'RFW_PLUGIN_VERSION' ) ) {
+	define( 'RFW_PLUGIN_VERSION', '1.0.0' );
+}
+
+if ( ! defined( 'RFW_PLUGIN_FILE' ) ) {
+	define( 'RFW_PLUGIN_FILE', __FILE__ );
+}
+
+if ( ! defined( 'RFW_PLUGIN_BASENAME' ) ) {
+	define( 'RFW_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
+}
+
+if ( ! defined( 'RFW_PLUGIN_URL' ) ) {
+	define( 'RFW_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
+}
+
+if ( ! defined( 'RFW_PLUGIN_PATH' ) ) {
+	define( 'RFW_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
+}
+
 /**
  * Currently plugin version.
  * Start at version 1.0.0 and use SemVer - https://semver.org
