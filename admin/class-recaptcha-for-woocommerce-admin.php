@@ -244,10 +244,10 @@ class Recaptcha_For_Woocommerce_Admin {
 			$this->plugin_settings_tabs['bp_register']['icon'] = 'dashicons-buddicons-buddypress-logo';
 		}
 		if ( class_exists( 'bbPress' ) ) {
-			$this->plugin_settings_tabs['bb_press_topic']['name'] = esc_html__( 'BB Press Topic', 'recaptcha-for-woocommerce' );
+			$this->plugin_settings_tabs['bb_press_topic']['name'] = esc_html__( 'bbPress Topic', 'recaptcha-for-woocommerce' );
 			$this->plugin_settings_tabs['bb_press_topic']['icon'] = 'dashicons-editor-paste-text';
 
-			$this->plugin_settings_tabs['bb_press_replay']['name'] = esc_html__( 'BB Press Reply', 'recaptcha-for-woocommerce' );
+			$this->plugin_settings_tabs['bb_press_replay']['name'] = esc_html__( 'bbPress Reply', 'recaptcha-for-woocommerce' );
 			$this->plugin_settings_tabs['bb_press_replay']['icon'] = 'dashicons-editor-paste-text';
 		}
 	}
