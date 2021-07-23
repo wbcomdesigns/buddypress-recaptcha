@@ -89,7 +89,7 @@ add_action( 'activated_plugin', 'wb_recaptcha_activation_redirect_settings' );
 function wb_recaptcha_activation_redirect_settings( $plugin ){
 
 	if( $plugin == plugin_basename( __FILE__ ) ) {
-		wp_redirect( admin_url( 'admin.php?page=wb-recaptcha' ) ) ;
+		wp_redirect( admin_url( 'admin.php?page=recaptcha-for-woocommerce' ) ) ;
 		exit;
 	}
 }
