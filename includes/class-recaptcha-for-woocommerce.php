@@ -177,9 +177,9 @@ class Recaptcha_For_Woocommerce {
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 
 		// Load setting in woocommerce setting tab.
-		$this->loader->add_action( 'admin_menu', $plugin_admin, 'wpc_admin_menu', 100 );
+		$this->loader->add_action( 'admin_menu', $plugin_admin, 'rfw_admin_menu', 100 );
 		$this->loader->add_filter( 'woocommerce_get_settings_pages', $plugin_admin, 'woocomm_load_custom_settings_tab' );
-		$this->loader->add_action( 'admin_init', $plugin_admin, 'wpc_add_admin_register_setting' );
+		$this->loader->add_action( 'admin_init', $plugin_admin, 'rfw_add_admin_register_setting' );
 	}
 
 	/**
