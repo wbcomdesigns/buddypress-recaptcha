@@ -95,7 +95,7 @@ class WoocommerceRegister {
 
 	jQuery('button[name$="register"]').attr("disabled", true);
 					<?php if ( '' == $recapcha_error_msg_captcha_blank ) : ?>
-	jQuery('button[name$="register"]').attr("title", "<?php echo esc_html( __( 'Recaptcha is a required field.', 'recaptcha-for-woocommerce' ) ); ?>");
+	jQuery('button[name$="register"]').attr("title", "<?php echo esc_html( __( 'reCaptcha is a required field.', 'recaptcha-for-woocommerce' ) ); ?>");
 	<?php else : ?>
 	jQuery('button[name$="register"]').attr("title", "<?php echo esc_html( $recapcha_error_msg_captcha_blank ); ?>");
 	<?php endif; ?>    

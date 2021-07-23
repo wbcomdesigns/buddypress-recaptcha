@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<div class="wbcom-welcome-head">
 			<h2 class="wbcom-welcome-title"><?php esc_html_e( 'Wbcom Designs - reCaptcha', 'recaptcha-for-woocommerce' ); ?></h2>
 			<p class="wbcom-welcome-description"><?php esc_html_e( 'reCaptcha for WooCommerce plugin allows users to check “User is authorised not a robot”.', 'recaptcha-for-woocommerce' ); ?></p>
-			<p class="wbcom-welcome-description"><?php esc_html_e( 'This plugin provide to check reCaptch in WP Login page, WP Registration, WP Lost Password, WooCommerce Login, WooCommerce Registration, WooCommerce Lost Password, WooCommerce Order Page, BuddyPress Registration, BBPress Topic And Replay pages', 'recaptcha-for-woocommerce' ); ?></p>
+			<p class="wbcom-welcome-description"><?php esc_html_e( 'This plugin provide to check reCaptcha in WP Login page, WP Registration, WP Lost Password, WooCommerce Login, WooCommerce Registration, WooCommerce Lost Password, WooCommerce Order Page, BuddyPress Registration, BBPress Topic And Replay pages', 'recaptcha-for-woocommerce' ); ?></p>
 		</div><!-- .wbcom-welcome-head -->
 
 		<div class="wbcom-welcome-content">

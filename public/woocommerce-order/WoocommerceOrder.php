@@ -83,7 +83,7 @@ class WoocommerceOrder {
 				<?php if ( 'yes' == trim( $disable_submit_btn ) ) : ?>
 	jQuery("#place_order").attr("disabled", true);
 					<?php if ( '' == $recapcha_error_msg_captcha_blank ) : ?>
-	jQuery("#place_order").attr("title", "<?php echo esc_html( __( 'Recaptcha is a required field.', 'recaptcha-for-woocommerce' ) ); ?>");
+	jQuery("#place_order").attr("title", "<?php echo esc_html( __( 'reCaptcha is a required field.', 'recaptcha-for-woocommerce' ) ); ?>");
 	<?php else : ?>
 	jQuery("#place_order").attr("title", "<?php echo esc_html( $recapcha_error_msg_captcha_blank ); ?>");
 	<?php endif; ?>
@@ -416,7 +416,7 @@ class WoocommerceOrder {
 
 							if ( '' == trim( $recapcha_error_msg_captcha_blank ) ) {
 
-								wc_add_notice( __( 'Recaptcha is a required field.', 'recaptcha-for-woocommerce' ), 'error' );
+								wc_add_notice( __( 'reCaptcha is a required field.', 'recaptcha-for-woocommerce' ), 'error' );
 								return;
 
 							} else {
@@ -710,7 +710,7 @@ class WoocommerceOrder {
 
 									if ( '' == trim( $recapcha_error_msg_captcha_blank ) ) {
 
-										return wc_add_notice( __( 'Recaptcha is a required field.', 'recaptcha-for-woocommerce' ), 'error' );
+										return wc_add_notice( __( 'reCaptcha is a required field.', 'recaptcha-for-woocommerce' ), 'error' );
 
 									} else {
 										return wc_add_notice( $recapcha_error_msg_captcha_blank, 'error' );
@@ -1246,7 +1246,7 @@ class WoocommerceOrder {
 				<?php if ( 'yes' == trim( $disable_submit_btn ) ) : ?>
 	jQuery('#commentform').find('#submit').attr("disabled", true);
 					<?php if ( '' == $recapcha_error_msg_captcha_blank ) : ?>
-	jQuery('#commentform').find('#submit').attr("title", "<?php echo esc_html( __( 'Recaptcha is a required field.', 'recaptcha-for-woocommerce' ) ); ?>");
+	jQuery('#commentform').find('#submit').attr("title", "<?php echo esc_html( __( 'reCaptcha is a required field.', 'recaptcha-for-woocommerce' ) ); ?>");
 	<?php else : ?>
 	jQuery('#commentform').find('#submit').attr("title", "<?php echo esc_html( $recapcha_error_msg_captcha_blank ); ?>");
 	<?php endif; ?>
@@ -1469,7 +1469,7 @@ class WoocommerceOrder {
 				<?php if ( 'yes' == trim( $disable_submit_btn ) ) : ?>
 		jQuery('#review_form').find('#submit').attr("disabled", true);
 					<?php if ( '' == $recapcha_error_msg_captcha_blank ) : ?>
-		jQuery('#review_form').find('#submit').attr("title", "<?php echo esc_html( __( 'Recaptcha is a required field.', 'recaptcha-for-woocommerce' ) ); ?>");
+		jQuery('#review_form').find('#submit').attr("title", "<?php echo esc_html( __( 'reCaptcha is a required field.', 'recaptcha-for-woocommerce' ) ); ?>");
 		<?php else : ?>
 		jQuery('#review_form').find('#submit').attr("title", "<?php echo esc_html( $recapcha_error_msg_captcha_blank ); ?>");
 		<?php endif; ?>
