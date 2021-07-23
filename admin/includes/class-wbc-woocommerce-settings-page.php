@@ -806,7 +806,7 @@ if ( ! class_exists( 'Wbc_WooCommerce_Settings_Page' ) ) :
 						'wbcwoocomm_guestcheckout_settings',
 						array(
 							'section_title_recpacha_on_guestcheckout' => array(
-								'name' => __( 'reCaptcha on Checkout', 'recaptcha-for-woocommerce' ),
+								'name' => __( 'reCaptcha On Checkout', 'recaptcha-for-woocommerce' ),
 								'type' => 'title',
 								'desc' => '',
 								'id'   => 'wc_settings_tab_recapcha_guestcheckout',
@@ -922,7 +922,7 @@ if ( ! class_exists( 'Wbc_WooCommerce_Settings_Page' ) ) :
 						'wbcwoocomm_guestcheckout_settings',
 						array(
 							'section_title_recpacha_on_guestcheckout' => array(
-								'name' => __( 'reCaptcha on Checkout', 'recaptcha-for-woocommerce' ),
+								'name' => __( 'reCaptcha On Checkout', 'recaptcha-for-woocommerce' ),
 								'type' => 'title',
 								'desc' => '',
 								'id'   => 'wc_settings_tab_recapcha_guestcheckout',
@@ -1427,7 +1427,7 @@ if ( ! class_exists( 'Wbc_WooCommerce_Settings_Page' ) ) :
 						'wbcwoocomm_woo_review_settings',
 						array(
 							'section_title_recpacha_on_woo_review' => array(
-								'name' => __( 'reCaptcha on product review form', 'recaptcha-for-woocommerce' ),
+								'name' => __( 'reCaptcha On Product Review Form', 'recaptcha-for-woocommerce' ),
 								'type' => 'title',
 								'desc' => '',
 								'id'   => 'wc_settings_tab_recapcha_woo_review',
@@ -1488,7 +1488,7 @@ if ( ! class_exists( 'Wbc_WooCommerce_Settings_Page' ) ) :
 						'wbcwoocomm_woo_review_settings',
 						array(
 							'section_title_recpacha_on_woo_review' => array(
-								'name' => __( 'reCaptcha on product review form', 'recaptcha-for-woocommerce' ),
+								'name' => __( 'reCaptcha On Product Review Form', 'recaptcha-for-woocommerce' ),
 								'type' => 'title',
 								'desc' => '',
 								'id'   => 'wc_settings_tab_recapcha_woo_review',
@@ -1535,7 +1535,7 @@ if ( ! class_exists( 'Wbc_WooCommerce_Settings_Page' ) ) :
 						'wbcwoocomm_woo_comment_settings',
 						array(
 							'section_title_recpacha_on_woo_comment' => array(
-								'name' => __( 'reCaptcha on comment form', 'recaptcha-for-woocommerce' ),
+								'name' => __( 'reCaptcha On Comment Form', 'recaptcha-for-woocommerce' ),
 								'type' => 'title',
 								'desc' => '',
 								'id'   => 'wc_settings_tab_recapcha_woo_comment',
@@ -1597,7 +1597,7 @@ if ( ! class_exists( 'Wbc_WooCommerce_Settings_Page' ) ) :
 						'wbcwoocomm_woo_comment_settings',
 						array(
 							'section_title_recpacha_on_woo_comment' => array(
-								'name' => __( 'reCaptcha on comment form', 'recaptcha-for-woocommerce' ),
+								'name' => __( 'reCaptcha On Comment Form', 'recaptcha-for-woocommerce' ),
 								'type' => 'title',
 								'desc' => '',
 								'id'   => 'wc_settings_tab_recapcha_woo_comment',
@@ -1703,7 +1703,7 @@ if ( ! class_exists( 'Wbc_WooCommerce_Settings_Page' ) ) :
 							'desc'    => __( 'This message shown when google detect abusive, invalid, spam, bot etc traffic', 'recaptcha-for-woocommerce' ),
 						),
 						'wbc_recapcha_error_msg_captcha_blank_v3' => array(
-							'name'    => __( 'Error message recaptcha blank', 'recaptcha-for-woocommerce' ),
+							'name'    => __( 'Error message reCaptcha blank', 'recaptcha-for-woocommerce' ),
 							'type'    => 'text',
 							'id'      => 'wbc_recapcha_error_msg_captcha_blank_v3',
 							'default' => 'Google reCAPTCHA token is missing',
@@ -1717,7 +1717,7 @@ if ( ! class_exists( 'Wbc_WooCommerce_Settings_Page' ) ) :
 
 						),
 						'wbc_recapcha_error_msg_captcha_blank' => array(
-							'name'    => __( 'Error message recaptcha blank', 'recaptcha-for-woocommerce' ),
+							'name'    => __( 'Error message reCaptcha blank', 'recaptcha-for-woocommerce' ),
 							'type'    => 'text',
 							'id'      => 'wc_settings_tab_recapcha_error_msg_captcha_blank',
 							'default' => '[recaptcha] is a required field.',
