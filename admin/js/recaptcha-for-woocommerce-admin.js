@@ -68,7 +68,7 @@
 			$( 'input[type=radio][name=wbc_recapcha_version]' ).change(
 				function() {
 					var vals   = $( this ).val();
-					var txtmsg = 'Recaptcha V3 does not show any challenge like I am not robot etc. ReCaptcha V3 uses a behind-the-scenes scoring system to detect abusive traffic, and lets you decide the minimum passing score. Please note that there is no user interaction shown in reRecapcha V3 meaning that no recaptcha challenge is shown to solve.';
+					var txtmsg = 'reCaptcha V3 does not show any challenge like I am not robot etc. reCaptcha V3 uses a behind-the-scenes scoring system to detect abusive traffic, and lets you decide the minimum passing score. Please note that there is no user interaction shown in reRecapcha V3 meaning that no recaptcha challenge is shown to solve.';
 					hideshowfield( vals );
 					if (vals == 'v3') {
 						alert( txtmsg );

@@ -100,7 +100,7 @@ jQuery(document).ready(function(){
 					jQuery('#submit').attr("disabled", true);
 					console.log('close');
 						<?php if ( '' === $recapcha_error_msg_captcha_blank ) : ?>
-				jQuery('#submit').attr("title", "<?php echo esc_html( __( 'Recaptcha is a required field.', 'recaptcha-for-woocommerce' ) ); ?>");
+				jQuery('#submit').attr("title", "<?php echo esc_html( __( 'reCaptcha is a required field.', 'recaptcha-for-woocommerce' ) ); ?>");
 		<?php else : ?>
 						jQuery('#submit').attr("title", "<?php echo esc_html( $recapcha_error_msg_captcha_blank ); ?>");
 		<?php endif; ?>

@@ -100,7 +100,7 @@ clearInterval(<?php echo esc_html( $intval_signup ); ?>);
 
 	jQuery('#wp-submit').attr("disabled", true);
 					<?php if ( '' === $recapcha_error_msg_captcha_blank ) : ?>
-			jQuery('#wp-submit').attr("title", "<?php echo esc_html( __( 'Recaptcha is a required field.', 'recaptcha-for-woocommerce' ) ); ?>");
+			jQuery('#wp-submit').attr("title", "<?php echo esc_html( __( 'reCaptcha is a required field.', 'recaptcha-for-woocommerce' ) ); ?>");
 	<?php else : ?>
 					jQuery('#wp-submit').attr("title", "<?php echo esc_html( $recapcha_error_msg_captcha_blank ); ?>");
 	<?php endif; ?>

@@ -103,7 +103,7 @@ class WoocommerceProcessLoginErrors {
 
 						if ( '' === trim( $recapcha_error_msg_captcha_blank ) ) {
 
-							$validation_errors->add( 'g-recaptcha_error', __( 'Recaptcha is a required field.', 'recaptcha-for-woocommerce' ) );
+							$validation_errors->add( 'g-recaptcha_error', __( 'reCaptcha is a required field.', 'recaptcha-for-woocommerce' ) );
 						} else {
 							$validation_errors->add( 'g-recaptcha_error', $recapcha_error_msg_captcha_blank );
 						}

@@ -87,7 +87,7 @@ class WoocommerceFilter {
 
 					if ( '' === trim( $recapcha_error_msg_captcha_blank ) ) {
 
-						return new WP_Error( 'Captcha Invalid', '<strong>' . __( 'ERROR:', 'recaptcha-for-woocommerce' ) . '</strong> ' . __( 'Recaptcha is a required field.', 'recaptcha-for-woocommerce' ) );
+						return new WP_Error( 'Captcha Invalid', '<strong>' . __( 'ERROR:', 'recaptcha-for-woocommerce' ) . '</strong> ' . __( 'reCaptcha is a required field.', 'recaptcha-for-woocommerce' ) );
 					} else {
 						return new WP_Error( 'Captcha Invalid', '<strong>' . __( 'ERROR:', 'recaptcha-for-woocommerce' ) . '</strong> ' . $recapcha_error_msg_captcha_blank );
 					}
@@ -250,7 +250,7 @@ class WoocommerceFilter {
 
 					if ( '' === trim( $recapcha_error_msg_captcha_blank ) ) {
 
-										$validation_errors->add( 'g-recaptcha_error', '<strong>' . __( 'ERROR:', 'recaptcha-for-woocommerce' ) . '</strong> ' . __( 'Recaptcha is a required field.', 'recaptcha-for-woocommerce' ) );
+										$validation_errors->add( 'g-recaptcha_error', '<strong>' . __( 'ERROR:', 'recaptcha-for-woocommerce' ) . '</strong> ' . __( 'reCaptcha is a required field.', 'recaptcha-for-woocommerce' ) );
 					} else {
 										$validation_errors->add( 'g-recaptcha_error', '<strong>' . __( 'ERROR:', 'recaptcha-for-woocommerce' ) . '</strong> ' . $recapcha_error_msg_captcha_blank );
 					}
@@ -427,7 +427,7 @@ class WoocommerceFilter {
 
 						if ( '' === trim( $recapcha_error_msg_captcha_blank ) ) {
 
-							$validation_errors->add( 'g-recaptcha_error', '<strong>' . __( 'ERROR:', 'recaptcha-for-woocommerce' ) . '</strong> ' . __( 'Recaptcha is a required field.', 'recaptcha-for-woocommerce' ) );
+							$validation_errors->add( 'g-recaptcha_error', '<strong>' . __( 'ERROR:', 'recaptcha-for-woocommerce' ) . '</strong> ' . __( 'reCaptcha is a required field.', 'recaptcha-for-woocommerce' ) );
 						} else {
 							$validation_errors->add( 'g-recaptcha_error', '<strong>' . __( 'ERROR:', 'recaptcha-for-woocommerce' ) . '</strong> ' . $recapcha_error_msg_captcha_blank );
 						}
@@ -597,7 +597,7 @@ class WoocommerceFilter {
 
 						if ( '' === trim( $recapcha_error_msg_captcha_blank ) ) {
 
-								wp_die( esc_html__( 'Recaptcha is a required field.', 'recaptcha-for-woocommerce' ) );
+								wp_die( esc_html__( 'reCaptcha is a required field.', 'recaptcha-for-woocommerce' ) );
 								exit;
 
 						} else {
@@ -801,7 +801,7 @@ class WoocommerceFilter {
 
 						if ( '' === trim( $recapcha_error_msg_captcha_blank ) ) {
 
-								wp_die( esc_html__( 'Recaptcha is a required field.', 'recaptcha-for-woocommerce' ) );
+								wp_die( esc_html__( 'reCaptcha is a required field.', 'recaptcha-for-woocommerce' ) );
 								exit;
 
 						} else {
