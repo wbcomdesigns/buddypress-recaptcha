@@ -232,7 +232,7 @@ if ( ! class_exists( 'Wbcom_Admin_Settings' ) ) {
 					'description' => esc_html__( 'It also allows you to upload your own custom font to your site and use them using custom css.', 'woo-sell-services' ),
 					'status'      => $this->wbcom_plugin_status( 'custom-font-uploader' ),
 					'wp_url'      => 'https://wordpress.org/plugins/custom-font-uploader/',
-					'icon'        => 'fas fa-2x fa-upload',
+					'icon'        => 'fas fa-upload',
 				),
 				'1'  => array(
 					'name'        => esc_html__( 'BuddyPress Activity Filter', 'recaptcha-for-woocommerce' ),
@@ -240,7 +240,7 @@ if ( ! class_exists( 'Wbcom_Admin_Settings' ) ) {
 					'description' => esc_html__( 'Admin can set default and customised activities to be listed on front-end.', 'woo-sell-services' ),
 					'status'      => $this->wbcom_plugin_status( 'bp-activity-filter' ),
 					'wp_url'      => 'https://wordpress.org/plugins/bp-activity-filter/',
-					'icon'        => 'fas fa-2x fa-filter',
+					'icon'        => 'fas fa-filter',
 				),
 				'2'  => array(
 					'name'        => esc_html__( 'BuddyPress Activity Social Share', 'recaptcha-for-woocommerce' ),
@@ -248,7 +248,7 @@ if ( ! class_exists( 'Wbcom_Admin_Settings' ) ) {
 					'description' => esc_html__( 'This plugin allows anyone easily share BuddyPress Activites on major social media (Facebook, Twitter, Google+, Linkedin ).', 'recaptcha-for-woocommerce' ),
 					'status'      => $this->wbcom_plugin_status( 'bp-activity-social-share' ),
 					'wp_url'      => 'https://wordpress.org/plugins/bp-activity-social-share/',
-					'icon'        => 'fas fa-2x fa-share-alt',
+					'icon'        => 'fas fa-share-alt',
 				),
 				'3'  => array(
 					'name'        => esc_html__( 'BuddyPress Create Group Type', 'recaptcha-for-woocommerce' ),
@@ -256,7 +256,7 @@ if ( ! class_exists( 'Wbcom_Admin_Settings' ) ) {
 					'description' => esc_html__( 'It will help to create group type for BuddyPress Groups.', 'recaptcha-for-woocommerce' ),
 					'status'      => $this->wbcom_plugin_status( 'bp-create-group-type' ),
 					'wp_url'      => 'https://wordpress.org/plugins/bp-create-group-type/',
-					'icon'        => 'fas fa-2x fa-sitemap',
+					'icon'        => 'fas fa-sitemap',
 				),
 				'4'  => array(
 					'name'        => esc_html__( 'BuddyPress Member Reviews', 'recaptcha-for-woocommerce' ),
@@ -264,7 +264,7 @@ if ( ! class_exists( 'Wbcom_Admin_Settings' ) ) {
 					'description' => esc_html__( 'This plugin allows only site members to add reviews to the buddypress members on the site and even rate the member’s profile out of 5 points with multiple review criteria.', 'recaptcha-for-woocommerce' ),
 					'status'      => $this->wbcom_plugin_status( 'bp-user-profile-reviews' ),
 					'wp_url'      => 'https://wordpress.org/plugins/bp-user-profile-reviews/',
-					'icon'        => 'fas fa-2x fa-user',
+					'icon'        => 'fas fa-user',
 				),
 				'5'  => array(
 					'name'        => esc_html__( 'BuddyPress Group Reviews', 'recaptcha-for-woocommerce' ),
@@ -272,7 +272,7 @@ if ( ! class_exists( 'Wbcom_Admin_Settings' ) ) {
 					'description' => esc_html__( 'This plugin allows the BuddyPress Members to give reviews to the BuddyPress groups on the site. The review form allows the users to give text review, even rate the group on the basis of multiple criterias.', 'recaptcha-for-woocommerce' ),
 					'status'      => $this->wbcom_plugin_status( 'review-buddypress-groups' ),
 					'wp_url'      => 'https://wordpress.org/plugins/review-buddypress-groups/',
-					'icon'        => 'fas fa-2x fa-users',
+					'icon'        => 'fas fa-users',
 				),
 				'6'  => array(
 					'name'        => esc_html__( 'BuddyPress Favorite Notification', 'recaptcha-for-woocommerce' ),
@@ -280,7 +280,7 @@ if ( ! class_exists( 'Wbcom_Admin_Settings' ) ) {
 					'description' => esc_html__( 'BuddyPress Favorite Notification adds a notification for BuddyPress activity.', 'recaptcha-for-woocommerce' ),
 					'status'      => $this->wbcom_plugin_status( 'bp-favorite-notification' ),
 					'wp_url'      => 'https://wordpress.org/plugins/bp-favorite-notification/',
-					'icon'        => 'fas fa-2x fa-bell',
+					'icon'        => 'fas fa-bell',
 				),
 				'7'  => array(
 					'name'        => esc_html__( 'Custom Email Options', 'recaptcha-for-woocommerce' ),
@@ -288,7 +288,7 @@ if ( ! class_exists( 'Wbcom_Admin_Settings' ) ) {
 					'description' => esc_html__( 'Override default email options of Worpdress.', 'recaptcha-for-woocommerce' ),
 					'status'      => $this->wbcom_plugin_status( 'custom-email-options' ),
 					'wp_url'      => 'https://wordpress.org/plugins/custom-email-options/',
-					'icon'        => 'fas fa-2x fa-at',
+					'icon'        => 'fas fa-at',
 				),
 				'8'  => array(
 					'name'        => esc_html__( 'BuddyPress Checkins', 'recaptcha-for-woocommerce' ),
@@ -296,7 +296,7 @@ if ( ! class_exists( 'Wbcom_Admin_Settings' ) ) {
 					'description' => esc_html__( 'This plugin allows BuddyPress members to share their location when they are posting activities, you can add places where you visited, nearby locations based on google places.', 'recaptcha-for-woocommerce' ),
 					'status'      => $this->wbcom_plugin_status( 'bp-check-in' ),
 					'wp_url'      => 'https://wordpress.org/plugins/bp-check-in/',
-					'icon'        => 'fas fa-2x fa-map-marker-alt',
+					'icon'        => 'fas fa-map-marker-alt',
 				),
 				'9'  => array(
 					'name'        => esc_html__( 'BuddyPress Job Manager', 'recaptcha-for-woocommerce' ),
@@ -304,7 +304,7 @@ if ( ! class_exists( 'Wbcom_Admin_Settings' ) ) {
 					'description' => esc_html__( 'Incorporates BuddyPress with the WP Job Manager plugin by creating specific tabs in employer’s and candidate’s profiles.', 'recaptcha-for-woocommerce' ),
 					'status'      => $this->wbcom_plugin_status( 'bp-job-manager' ),
 					'wp_url'      => 'https://wordpress.org/plugins/bp-job-manager/',
-					'icon'        => 'fas fa-2x fa-briefcase',
+					'icon'        => 'fas fa-briefcase',
 				),
 				'10' => array(
 					'name'        => esc_html__( 'BuddyPress user ToDo List', 'recaptcha-for-woocommerce' ),
@@ -312,7 +312,7 @@ if ( ! class_exists( 'Wbcom_Admin_Settings' ) ) {
 					'description' => esc_html__( 'This plugin allows you to create your personal task list with timestamp. You can mark them complete when you are done with them. It will also send reminder when you have any overdue task.', 'recaptcha-for-woocommerce' ),
 					'status'      => $this->wbcom_plugin_status( 'bp-user-to-do-list' ),
 					'wp_url'      => 'https://wordpress.org/plugins/bp-user-to-do-list/',
-					'icon'        => 'fas fa-2x fa-list-ol',
+					'icon'        => 'fas fa-list-ol',
 				),
 				'11' => array(
 					'name'        => esc_html__( 'Shortcodes for BuddyPress', 'recaptcha-for-woocommerce' ),
@@ -320,7 +320,7 @@ if ( ! class_exists( 'Wbcom_Admin_Settings' ) ) {
 					'description' => esc_html__( 'This plugin will add an extended feature to the big name “BuddyPress” that will generate Shortcode for Listing Activity Streams , Members and Groups on any post/page in website.', 'recaptcha-for-woocommerce' ),
 					'status'      => $this->wbcom_plugin_status( 'shortcodes-for-buddypress' ),
 					'wp_url'      => 'https://wordpress.org/plugins/shortcodes-for-buddypress/',
-					'icon'        => 'fas fa-2x fa-code',
+					'icon'        => 'fas fa-code',
 				),
 				'12' => array(
 					'name'        => esc_html__( 'Woo Open Graph', 'recaptcha-for-woocommerce' ),
@@ -328,7 +328,7 @@ if ( ! class_exists( 'Wbcom_Admin_Settings' ) ) {
 					'description' => esc_html__( 'This plugin will add an extended feature to the big name “WooCommerce” that will adds well executed and accurate Open Graph Meta Tags to your site with title,description and WooCommerce featured image.', 'recaptcha-for-woocommerce' ),
 					'status'      => $this->wbcom_plugin_status( 'woo-open-graph' ),
 					'wp_url'      => 'https://wordpress.org/plugins/woo-open-graph/',
-					'icon'        => 'fas fa-2x fa-chart-bar',
+					'icon'        => 'fas fa-chart-bar',
 				),
 				'13' => array(
 					'name'        => esc_html__( 'BuddyPress Lock', 'recaptcha-for-woocommerce' ),
@@ -336,7 +336,7 @@ if ( ! class_exists( 'Wbcom_Admin_Settings' ) ) {
 					'description' => esc_html__( 'This plugin allows the administrator to lock the certain parts of their site. It help to create private BuddyPress community by locking certain BuddyPress Components, WordPress Pages, Custom Post Types for public view without using any membership plugin.', 'recaptcha-for-woocommerce' ),
 					'status'      => $this->wbcom_plugin_status( 'lock-my-bp' ),
 					'wp_url'      => 'https://wordpress.org/plugins/lock-my-bp/',
-					'icon'        => 'fas fa-2x fa-lock',
+					'icon'        => 'fas fa-lock',
 				),
 				'14' => array(
 					'name'        => esc_html__( 'Woo Audio Preview', 'recaptcha-for-woocommerce' ),
@@ -344,7 +344,7 @@ if ( ! class_exists( 'Wbcom_Admin_Settings' ) ) {
 					'description' => esc_html__( 'This plugin Allows playing the audio files in sample mode to prevent unauthorized downloading of the audio files. It helps to display sample files at single product page.', 'recaptcha-for-woocommerce' ),
 					'status'      => $this->wbcom_plugin_status( 'woo-audio-preview' ),
 					'wp_url'      => 'https://wordpress.org/plugins/woo-audio-preview/',
-					'icon'        => 'fas fa-2x fa-volume-up',
+					'icon'        => 'fas fa-volume-up',
 				),
 				'15' => array(
 					'name'        => esc_html__( 'WordPress System Log', 'recaptcha-for-woocommerce' ),
@@ -352,7 +352,7 @@ if ( ! class_exists( 'Wbcom_Admin_Settings' ) ) {
 					'description' => esc_html__( 'This plugin helps administrators of the site see their environment on which the site is currently running that includes WordPress environment, tha database it requires, Server Environment and the plugins installed and activated on the site.', 'recaptcha-for-woocommerce' ),
 					'status'      => $this->wbcom_plugin_status( 'wp-system-log' ),
 					'wp_url'      => 'https://wordpress.org/plugins/wp-system-log/',
-					'icon'        => 'fas fa-2x fa-file-alt',
+					'icon'        => 'fas fa-file-alt',
 				),
 				'16' => array(
 					'name'        => esc_html__( 'BP Post From Anywhere', 'recaptcha-for-woocommerce' ),
@@ -360,7 +360,7 @@ if ( ! class_exists( 'Wbcom_Admin_Settings' ) ) {
 					'description' => esc_html__( 'This plugin will generate shortcode and widgets for post updates section for activities so you can post update from anywhere, it might be sidebar, some page or any template file.', 'recaptcha-for-woocommerce' ),
 					'status'      => $this->wbcom_plugin_status( 'bp-post-from-anywhere' ),
 					'wp_url'      => 'https://wordpress.org/plugins/bp-post-from-anywhere/',
-					'icon'        => 'fas fa-2x fa-edit',
+					'icon'        => 'fas fa-edit',
 				),
 				'17' => array(
 					'name'        => esc_html__( 'Woo Document Preview', 'recaptcha-for-woocommerce' ),
@@ -368,7 +368,7 @@ if ( ! class_exists( 'Wbcom_Admin_Settings' ) ) {
 					'description' => esc_html__( 'This will allow you to add document preview at single product page. Which helps to offer more better idea when you are selling ebooks, pdf or some documents.', 'recaptcha-for-woocommerce' ),
 					'status'      => $this->wbcom_plugin_status( 'woo-document-preview' ),
 					'wp_url'      => 'https://wordpress.org/plugins/woo-document-preview/',
-					'icon'        => 'fas fa-2x fa-file',
+					'icon'        => 'fas fa-file',
 				),
 				'18' => array(
 					'name'        => esc_html__( 'WordPress Media Category', 'recaptcha-for-woocommerce' ),
@@ -376,7 +376,7 @@ if ( ! class_exists( 'Wbcom_Admin_Settings' ) ) {
 					'description' => esc_html__( 'This plugin helps administrators of the site categorize their wordpress media.', 'recaptcha-for-woocommerce' ),
 					'status'      => $this->wbcom_plugin_status( 'media-category' ),
 					'wp_url'      => 'https://wordpress.org/plugins/media-category/',
-					'icon'        => 'fas fa-2x fa-images',
+					'icon'        => 'fas fa-images',
 				),
 				'19' => array(
 					'name'        => esc_html__( 'Woo Price Quotes', 'recaptcha-for-woocommerce' ),
@@ -384,7 +384,7 @@ if ( ! class_exists( 'Wbcom_Admin_Settings' ) ) {
 					'description' => esc_html__( 'This plugin helps in quoting the products that admin wishes to hide its purchasing details.', 'recaptcha-for-woocommerce' ),
 					'status'      => $this->wbcom_plugin_status( 'woo-price-quote-inquiry' ),
 					'wp_url'      => 'https://wordpress.org/plugins/woo-price-quote-inquiry/',
-					'icon'        => 'fas fa-2x fa-dollar-sign',
+					'icon'        => 'fas fa-dollar-sign',
 				),
 				'20' => array(
 					'name'        => esc_html__( 'EDD Service Extended', 'recaptcha-for-woocommerce' ),
@@ -392,7 +392,7 @@ if ( ! class_exists( 'Wbcom_Admin_Settings' ) ) {
 					'description' => esc_html__( 'This plugin helps administrators of the site categorize their wordpress media.', 'recaptcha-for-woocommerce' ),
 					'status'      => $this->wbcom_plugin_status( 'edd-service-extended' ),
 					'wp_url'      => 'https://wordpress.org/plugins/edd-service-extended/',
-					'icon'        => 'fab fa-2x fa-product-hunt',
+					'icon'        => 'fab fa-product-hunt',
 				),
 				'21' => array(
 					'name'        => esc_html__( 'WB Ads Rotator with Split Test', 'recaptcha-for-woocommerce' ),
@@ -400,7 +400,7 @@ if ( ! class_exists( 'Wbcom_Admin_Settings' ) ) {
 					'description' => esc_html__( 'This plugin is designed for the SPLIT TESTING, you can check performance of your ads layout and on the basis of them you can select one of them for your regular use.', 'recaptcha-for-woocommerce' ),
 					'status'      => $this->wbcom_plugin_status( 'wb-ads-rotator-with-split-test' ),
 					'wp_url'      => 'https://wordpress.org/plugins/wb-ads-rotator-with-split-test/',
-					'icon'        => 'fas fa-2x fa-ad',
+					'icon'        => 'fab fa-adversal',
 				),
 			);
 			return $free_plugins;
@@ -418,37 +418,37 @@ if ( ! class_exists( 'Wbcom_Admin_Settings' ) ) {
 					'name'         => esc_html__( 'BuddyPress Moderation Pro', 'recaptcha-for-woocommerce' ),
 					'description'  => esc_html__( 'BuddyPress Community Moderation offers a solution for site owners to keep their communities straight. With community policing strategy, members of the community have an option for moderation sitewide by attaching flags to content created within the various components.', 'recaptcha-for-woocommerce' ),
 					'download_url' => 'https://wbcomdesigns.com/downloads/buddypress-moderation-pro/',
-					'icon'         => 'fas fa-2x fa-exclamation-triangle',
+					'icon'         => 'fas fa-exclamation-triangle',
 				),
 				'1' => array(
 					'name'         => esc_html__( 'BuddyPress Polls', 'recaptcha-for-woocommerce' ),
 					'description'  => esc_html__( 'Use BuddyPress Polls plugin to create polls inside the activity, let your user response to your polls. Members can create pools like activities, easily votes on them.', 'recaptcha-for-woocommerce' ),
 					'download_url' => 'https://wbcomdesigns.com/downloads/buddypress-polls/',
-					'icon'         => 'fas fa-2x fa-poll',
+					'icon'         => 'fas fa-poll',
 				),
 				'2' => array(
 					'name'         => esc_html__( 'BuddyPress Resume Manager', 'recaptcha-for-woocommerce' ),
 					'description'  => esc_html__( 'BuddyPress Resume Manager adds a separate BuddyPress Resume menu at a user’s BuddyPress Profile Page to display individual member resume. We have added predefined fields for the resumes and site admin and enable and disable them.', 'recaptcha-for-woocommerce' ),
 					'download_url' => 'https://wbcomdesigns.com/downloads/buddypress-resume-manager/',
-					'icon'         => 'fas fa-2x fa-file',
+					'icon'         => 'fas fa-file',
 				),
 				'3' => array(
 					'name'         => esc_html__( 'BuddyPress Profanity', 'recaptcha-for-woocommerce' ),
 					'description'  => esc_html__( 'Use BuddyPress Profanity plugin to censor content in your community! Easily Censor all the unwanted words in activities, private messages contents by specifying a list of keywords to be filtered.', 'recaptcha-for-woocommerce' ),
 					'download_url' => 'https://wbcomdesigns.com/downloads/buddypress-profanity/',
-					'icon'         => 'fab fa-2x fa-galactic-republic',
+					'icon'         => 'fab fa-galactic-republic',
 				),
 				'4' => array(
 					'name'         => esc_html__( 'BuddyPress Private Community Pro', 'recaptcha-for-woocommerce' ),
 					'description'  => esc_html__( 'This plugin offers a lockdown for BuddyPress Component and will ask users to log in go further to check profile or any other protected details.', 'recaptcha-for-woocommerce' ),
 					'download_url' => 'https://wbcomdesigns.com/downloads/buddypress-private-community-pro/',
-					'icon'         => 'fas fa-2x fa-user-lock',
+					'icon'         => 'fas fa-user-lock',
 				),
 				'5' => array(
 					'name'         => esc_html__( 'BuddyPress Profile Pro', 'recaptcha-for-woocommerce' ),
 					'description'  => esc_html__( 'This plugin gives you the power to extend BuddyPress Profiles with repeater fields and groups. You can easily add multiple field groups and display them at member’s profile.', 'recaptcha-for-woocommerce' ),
 					'download_url' => 'https://wbcomdesigns.com/downloads/buddypress-profile-pro/',
-					'icon'         => 'far fa-2x fa-user-circle',
+					'icon'         => 'far fa-user-circle',
 				),
 			);
 			return $paid_plugins;
