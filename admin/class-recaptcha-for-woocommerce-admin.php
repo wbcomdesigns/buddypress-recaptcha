@@ -118,7 +118,7 @@ class Recaptcha_For_Woocommerce_Admin {
 
 		/* add sub menu in wnplugin setting page */
 		if ( empty( $GLOBALS['admin_page_hooks']['wbcomplugins'] ) ) {
-			add_menu_page( esc_html__( 'WB Plugins', 'recaptcha-for-woocommerce' ), esc_html__( 'WB Plugins', 'recaptcha-for-woocommerce' ), 'manage_options', 'wbcomplugins', array( $this, 'rfw_admin_settings_page_welcome' ), 'dashicons-lightbulb', 59 );
+			add_menu_page( esc_html__( 'WB Plugins', 'recaptcha-for-woocommerce' ), esc_html__( 'WB Plugins', 'recaptcha-for-woocommerce' ), 'manage_options', 'wbcomplugins', array( $this, 'rfw_admin_settings_page' ), 'dashicons-lightbulb', 59 );
 			add_submenu_page( 'wbcomplugins', esc_html__( 'General', 'recaptcha-for-woocommerce' ), esc_html__( 'General', 'recaptcha-for-woocommerce' ), 'manage_options', 'wbcomplugins' );
 		}
 
@@ -133,68 +133,40 @@ class Recaptcha_For_Woocommerce_Admin {
 	 *
 	 * Template Class.
 	 */
-	public function rfw_admin_settings_page_welcome() {
-		$wbc_woo_commerce_settings_page = new Wbc_WooCommerce_Settings_Page();
-		$current                        = ( filter_input( INPUT_GET, 'tab' ) !== null ) ? filter_input( INPUT_GET, 'tab' ) : 'rfw-general';
-
-		?>
-
-		<div class="wrap">
-                    <hr class="wp-header-end">
-                    <div class="wbcom-wrap">
-			<div class="ess-admin-header">
-				<?php echo do_shortcode( '[wbcom_admin_setting_header]' ); ?>
-				<h1 class="wbcom-plugin-heading">
-					<?php esc_html_e( 'WB reCaptcha', 'recaptcha-for-woocommerce' ); ?>
-				</h1>
-			</div>
-			<div class="wbcom-admin-settings-page">
-				<?php $this->rfw_plugin_settings_tabs_wbcom(); ?>
-				<?php include 'wbcom-welcome-page.php'; ?>
-			</div>
-                    </div>
-		</div>
-		<?php
-	}
-
-	/**
-	 * Template Class Doc Comment
-	 *
-	 * Template Class.
-	 */
 	public function rfw_admin_settings_page() {
 		$wbc_woo_commerce_settings_page = new Wbc_WooCommerce_Settings_Page();
 		$current                        = ( filter_input( INPUT_GET, 'tab' ) !== null ) ? filter_input( INPUT_GET, 'tab' ) : 'rfw-welcome';
-		if ( 'rfw-welcome' == $current ) {
-			self::rfw_admin_settings_page_welcome();
-			exit;
-		}
 		?>
 
 		<div class="wrap">
-                    <hr class="wp-header-end">
-                    <div class="wbcom-wrap">
-			<div class="ess-admin-header">
-				<?php echo do_shortcode( '[wbcom_admin_setting_header]' ); ?>
-				<h1 class="wbcom-plugin-heading">
-					<?php esc_html_e( 'WB reCaptcha', 'recaptcha-for-woocommerce' ); ?>
-				</h1>
+			<hr class="wp-header-end">
+			<div class="wbcom-wrap">
+				<div class="ess-admin-header">
+					<?php echo do_shortcode( '[wbcom_admin_setting_header]' ); ?>
+					<h1 class="wbcom-plugin-heading">
+						<?php esc_html_e( 'WB reCaptcha', 'recaptcha-for-woocommerce' ); ?>
+					</h1>
+				</div>
+				<div class="wbcom-admin-settings-page">
+					<?php $this->rfw_plugin_settings_tabs(); ?>
+					<div class="wbcom-tab-content rfw-tab-content">
+						<?php if ( 'rfw-welcome' == $current ) { ?>
+							<?php include 'wbcom-welcome-page.php'; ?>
+						<?php } else { ?>
+					
+						<form method="post" id="wb-recaptcha" action="" enctype="multipart/form-data">
+							<?php
+							if ( $_POST ) {
+									$wbc_woo_commerce_settings_page->save( $current );
+							}
+							$wbc_woo_commerce_settings_page->output( $current );
+							?>
+							<button name="save" class="button-primary woocommerce-save-button" type="submit" value="Save changes"><?php esc_html_e( 'Save changes', 'recaptcha-for-woocommerce' ); ?></button>
+						</form>
+						<?php } ?>
+					</div>
+				</div>
 			</div>
-			<div class="wbcom-admin-settings-page">
-                            <?php $this->rfw_plugin_settings_tabs(); ?>
-                            <div class="wbcom-tab-content rfw-tab-content">
-                                <form method="post" id="wb-recaptcha" action="" enctype="multipart/form-data">
-                                <?php
-                                if ( $_POST ) {
-                                        $wbc_woo_commerce_settings_page->save( $current );
-                                }
-                                $wbc_woo_commerce_settings_page->output( $current );
-                                ?>
-                                        <button name="save" class="button-primary woocommerce-save-button" type="submit" value="Save changes"><?php esc_html_e( 'Save changes', 'recaptcha-for-woocommerce' ); ?></button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
 		</div>
 		<?php
 	}
@@ -255,42 +227,9 @@ class Recaptcha_For_Woocommerce_Admin {
 	 * Add tab in setting page
 	 */
 	public function rfw_plugin_settings_tabs() {
-		$current = ( filter_input( INPUT_GET, 'tab' ) !== null ) ? filter_input( INPUT_GET, 'tab' ) : 'rfw-general';
-
-		$tab_html = '<div class="wbcom-tabs-section rfw-tabs-section"><div class="nav-tab-wrapper"><div class="wb-responsive-menu"><span>' . esc_html( 'Menu' ) . '</span><input class="wb-toggle-btn" type="checkbox" id="wb-toggle-btn"><label class="wb-toggle-icon" for="wb-toggle-btn"><span class="wb-icon-bars"></span></label></div><ul>';
-
-		foreach ( $this->plugin_settings_tabs as $edd_tab => $tab_name ) {
-			$class     = ( $edd_tab === $current ) ? 'nav-tab-active' : '';
-			$page      = 'recaptcha-for-woocommerce';
-			$tab_html .= '<li><a id="' . $edd_tab . '" class="nav-tab ' . $class . '" href="admin.php?page=' . $page . '&tab=' . $edd_tab . '"><span class="dashicons ' . $tab_name['icon'] . '"></span>&nbsp;' . $tab_name['name'] . '</a></li>';
-		}
-		$tab_html .= '</div></ul></div>';
-		echo $tab_html;
-	}
-
-	/**
-	 * Template Class Doc Comment
-	 *
-	 * Template Class.
-	 */
-	public function rfw_plugin_settings_tabs_wbcom() {
 		$current = ( filter_input( INPUT_GET, 'tab' ) !== null ) ? filter_input( INPUT_GET, 'tab' ) : 'rfw-welcome';
 
 		$tab_html = '<div class="wbcom-tabs-section rfw-tabs-section"><div class="nav-tab-wrapper"><div class="wb-responsive-menu"><span>' . esc_html( 'Menu' ) . '</span><input class="wb-toggle-btn" type="checkbox" id="wb-toggle-btn"><label class="wb-toggle-icon" for="wb-toggle-btn"><span class="wb-icon-bars"></span></label></div><ul>';
-		// $plugin_settings_tabs['rfw-welcome']['name'] = esc_html__( 'Welcome', 'wbcomplugins' );
-		// $plugin_settings_tabs['rfw-welcome']['icon'] = 'dashicons-admin-home';
-		//
-		// $plugin_settings_tabs['rfw-general']['name'] = esc_html__( 'General', 'recaptcha-for-woocommerce' );
-		// $plugin_settings_tabs['rfw-general']['icon'] = 'dashicons-leftright';
-		//
-		// $plugin_settings_tabs['rfw-criteria']['name'] = esc_html__( 'Criteria', 'wbcomplugins' );
-		// $plugin_settings_tabs['rfw-criteria']['icon'] = 'dashicons-leftright';
-		//
-		// $plugin_settings_tabs['rfw-shortcode']['name'] = esc_html__( 'Shortcode', 'wbcomplugins' );
-		// $plugin_settings_tabs['rfw-shortcode']['icon'] = 'dashicons-leftright';
-
-		// $plugin_settings_tabs['rfw-display']['name'] = esc_html__( 'Display', 'wbcomplugins' );
-		// $plugin_settings_tabs['rfw-display']['icon'] = 'dashicons-leftright';
 
 		foreach ( $this->plugin_settings_tabs as $edd_tab => $tab_name ) {
 			$class     = ( $edd_tab === $current ) ? 'nav-tab-active' : '';
