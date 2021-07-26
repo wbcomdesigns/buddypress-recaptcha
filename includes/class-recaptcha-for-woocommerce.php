@@ -276,12 +276,12 @@ class Recaptcha_For_Woocommerce {
 		if ( 'v2' === strtolower( $re_capcha_version ) ) {
 			$wbc_recapcha_custom_wp_login_form_login = get_option( 'wbc_recapcha_custom_wp_login_form_login' );
 			if ( 'yes' === $wbc_recapcha_custom_wp_login_form_login ) {
-				add_filter( 'login_form_middle', array( $woocommerce_login, 'woo_extra_login_fields' ), 10, 2 );
+				add_filter( 'login_form_middle', array( $WoocommerceLogin, 'woo_extra_login_fields' ), 10, 2 );
 			}
 		} else {
 			$wbc_recapcha__v3_custom_wp_login_form_login = get_option( 'wbc_recapcha__v3_custom_wp_login_form_login' );
 			if ( 'yes' === $wbc_recapcha__v3_custom_wp_login_form_login ) {
-				add_filter( 'login_form_middle', array( $woocommerce_login, 'woo_extra_login_fields' ), 10, 2 );
+				add_filter( 'login_form_middle', array( $WoocommerceLogin, 'woo_extra_login_fields' ), 10, 2 );
 			}
 		}
 
