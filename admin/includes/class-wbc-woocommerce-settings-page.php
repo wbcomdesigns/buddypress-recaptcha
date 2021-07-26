@@ -222,13 +222,13 @@ if ( ! class_exists( 'Wbc_WooCommerce_Settings_Page' ) ) :
 						'woocomm_signup',
 						array(
 							'section_title_recpacha_on_bbpress_replay' => array(
-								'name' => __( 'reCaptcha On BB Press Replay', 'recaptcha-for-woocommerce' ),
+								'name' => __( 'reCaptcha On BB Press Reply', 'recaptcha-for-woocommerce' ),
 								'type' => 'title',
 								'desc' => '',
 								'id'   => 'wc_settings_tab_recapcha_bbpress_replay',
 							),
 							'recapcha_enable_on_bbpress_replay' => array(
-								'name' => __( 'Enable reCaptcha on BB Press Replay', 'recaptcha-for-woocommerce' ),
+								'name' => __( 'Enable reCaptcha on BB Press Reply', 'recaptcha-for-woocommerce' ),
 								'type' => 'checkbox',
 								'id'   => 'recapcha_enable_on_bbpress_replay',
 							),
