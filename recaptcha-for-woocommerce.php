@@ -1,5 +1,4 @@
 <?php
-
 /**
  * The plugin bootstrap file
  *
@@ -30,7 +29,12 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-if( ! defined( 'RFW_PLUGIN_VERSION' ) ) {
+/**
+ * Currently plugin version.
+ * Start at version 1.0.0 and use SemVer - https://semver.org
+ * Rename this for your plugin and update it as you release new versions.
+ */
+if ( ! defined( 'RFW_PLUGIN_VERSION' ) ) {
 	define( 'RFW_PLUGIN_VERSION', '1.0.0' );
 }
 
@@ -49,13 +53,6 @@ if ( ! defined( 'RFW_PLUGIN_URL' ) ) {
 if ( ! defined( 'RFW_PLUGIN_PATH' ) ) {
 	define( 'RFW_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
 }
-
-/**
- * Currently plugin version.
- * Start at version 1.0.0 and use SemVer - https://semver.org
- * Rename this for your plugin and update it as you release new versions.
- */
-define( 'RECAPTCHA_FOR_WOOCOMMERCE_VERSION', '1.0.0' );
 
 /**
  * The code that runs during plugin activation.
@@ -85,6 +82,52 @@ register_deactivation_hook( __FILE__, 'deactivate_recaptcha_for_woocommerce' );
 require plugin_dir_path( __FILE__ ) . 'includes/class-recaptcha-for-woocommerce.php';
 
 /**
+ * This Function checks the Woocommerce, BuddyPress and bbpress plugin is active or not.
+ *
+ * @return void
+ */
+function wb_recaptcha_required_plugin_activation_check() {
+	if ( class_exists( 'WooCommerce' ) || function_exists( 'BuddyPress' ) || class_exists( 'bbPress' ) ) {
+		register_activation_hook( __FILE__, 'activate_recaptcha_for_woocommerce' );
+	} else {
+		add_action( 'admin_notices', 'wb_recaptcha_required_plugin_admin_notice' );
+	}
+}
+add_action( 'plugins_loaded', 'wb_recaptcha_required_plugin_activation_check' );
+
+/**
+ * Required plugins admin notice for reCaptcha for WooCommerce.
+ */
+function wb_recaptcha_required_plugin_admin_notice() {
+	$wb_recaptcha   = __( 'reCaptcha for WooCommerce', 'recaptcha-for-woocommerce' );
+	$woo_plugin     = __( 'WooCommerce', 'recaptcha-for-woocommerce' );
+	$bp_plugin      = __( 'BuddyPress', 'recaptcha-for-woocommerce' );
+	$bbpress_plugin = __( 'bbPress', 'recaptcha-for-woocommerce' );
+
+	echo '<div class="error"><p>'
+	/* translators: %1s: reCaptcha for WooCommerce, %2$s: WooCommerce, %3$s: BuddyPress, %4$s: bbPress,    */
+	. sprintf( __( '%1$s is ineffective as it requires %2$s or %3$s or %4$s to be installed and active.', 'recaptcha-for-woocommerce' ), '<strong>' . esc_html( $wb_recaptcha ) . '</strong>', '<strong>' . esc_html( $woo_plugin ) . '</strong>', '<strong>' . esc_html( $bp_plugin ) . '</strong>', '<strong>' . esc_html( $bbpress_plugin ) . '</strong>' )
+	. '</p></div>';
+	if ( isset( $_GET['activate'] ) ) {
+		unset( $_GET['activate'] );
+	}
+}
+
+/**
+ * Redirect to plugin settings page after activated.
+ *
+ * @param string $plugin Get a plugin base url.
+ */
+function wb_recaptcha_activation_redirect_settings( $plugin ) {
+
+	if ( plugin_basename( __FILE__ ) === $plugin ) {
+		wp_safe_redirect( admin_url( 'admin.php?page=recaptcha-for-woocommerce' ) );
+		exit;
+	}
+}
+add_action( 'activated_plugin', 'wb_recaptcha_activation_redirect_settings' );
+
+/**
  * Begins execution of the plugin.
  *
  * Since everything within the plugin is registered via hooks,
@@ -100,16 +143,3 @@ function run_recaptcha_for_woocommerce() {
 
 }
 run_recaptcha_for_woocommerce();
-
-/**
- * redirect to plugin settings page after activated
- */
-
-add_action( 'activated_plugin', 'wb_recaptcha_activation_redirect_settings' );
-function wb_recaptcha_activation_redirect_settings( $plugin ){
-
-	if( $plugin == plugin_basename( __FILE__ ) ) {
-		wp_redirect( admin_url( 'admin.php?page=recaptcha-for-woocommerce' ) ) ;
-		exit;
-	}
-}
