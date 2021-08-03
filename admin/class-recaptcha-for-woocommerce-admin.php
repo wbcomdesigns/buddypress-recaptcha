@@ -149,11 +149,10 @@ class Recaptcha_For_Woocommerce_Admin {
 				</div>
 				<div class="wbcom-admin-settings-page">
 					<?php $this->rfw_plugin_settings_tabs(); ?>
-					<div class="wbcom-tab-content rfw-tab-content">
 						<?php if ( 'rfw-welcome' == $current ) { ?>
 							<?php include 'wbcom-welcome-page.php'; ?>
 						<?php } else { ?>
-					
+					<div class="wbcom-tab-content rfw-tab-content">
 						<form method="post" id="wb-recaptcha" action="" enctype="multipart/form-data">
 							<?php
 							if ( $_POST ) {
@@ -163,9 +162,9 @@ class Recaptcha_For_Woocommerce_Admin {
 							?>
 							<button name="save" class="button-primary woocommerce-save-button" type="submit" value="Save changes"><?php esc_html_e( 'Save changes', 'recaptcha-for-woocommerce' ); ?></button>
 						</form>
+					</div>
 						<?php } ?>
 					</div>
-				</div>
 			</div>
 		</div>
 		<?php
