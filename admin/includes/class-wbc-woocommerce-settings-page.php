@@ -1651,7 +1651,7 @@ if ( ! class_exists( 'Wbc_WooCommerce_Settings_Page' ) ) :
 						'section_title'                   => array(
 							'name' => __( 'reCaptcha Settings', 'recaptcha-for-woocommerce' ),
 							'type' => 'title',
-							'desc' => '<b>' . __( 'Please use this guideline to get <a target="_blank" href="http://blog.wbcwebsolution.com/how-to-get-google-recaptcha-v2-checkbox-keys/"> reCaptcha keys V2 (checkbox) </a> &nbsp;&nbsp;&nbsp;&nbsp; <a target="_blank" href="http://blog.wbcwebsolution.com/how-to-get-google-recaptcha-v3-keys/"> reCaptcha keys V3 </a></b>', 'recaptcha-for-woocommerce' ),
+							'desc' => '<b>' . __( 'Please use this guideline to get <a target="_blank" href="http://blog.i13websolution.com/how-to-get-google-recaptcha-v2-checkbox-keys/"> reCaptcha keys V2 (checkbox) </a> &nbsp;&nbsp;&nbsp;&nbsp; <a target="_blank" href="http://blog.i13websolution.com/how-to-get-google-recaptcha-v3-keys/"> reCaptcha keys V3 </a></b>', 'recaptcha-for-woocommerce' ),
 							'id'   => 'wc_settings_tab_recapcha',
 						),
 
