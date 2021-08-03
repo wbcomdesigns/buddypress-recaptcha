@@ -120,13 +120,12 @@ class Recaptcha_For_Woocommerce_Public {
 				wp_register_script( 'wbc-woo-captcha-explicit', 'https://www.google.com/recaptcha/api.js?from=wbc_recaptcha&render=explicit', array(), '2.0', true );
 			}
 			$is_enabled                         = get_option( 'wbc_recapcha_enable_on_guestcheckout' );
-			$is_enabled_on_payment_page         = get_option( 'wbc_recapcha_enable_on_addpaymentmethod' );
 			$is_enabled_logincheckout           = get_option( 'wbc_recapcha_enable_on_logincheckout' );
 			$wbc_recapcha_enable_on_payfororder = get_option( 'wbc_recapcha_enable_on_payfororder' );
 			$wbc_recapcha_no_conflict           = get_option( 'wbc_recapcha_no_conflict' );
 
 			if ( function_exists( 'is_wc_endpoint_url' ) ) {
-				if ( 'yes' === $is_enabled_on_payment_page && is_user_logged_in() && is_wc_endpoint_url( get_option( 'woocommerce_myaccount_add_payment_method_endpoint', 'add-payment-method' ) ) ) {
+				if ( is_user_logged_in() && is_wc_endpoint_url( get_option( 'woocommerce_myaccount_add_payment_method_endpoint', 'add-payment-method' ) ) ) {
 
 					if ( 'yes' === $wbc_recapcha_no_conflict ) {
 
@@ -197,12 +196,11 @@ class Recaptcha_For_Woocommerce_Public {
 			$site_key = get_option( 'wc_settings_tab_recapcha_site_key_v3' );
 			wp_register_script( 'wbc-woo-captcha-v3', 'https://www.google.com/recaptcha/api.js?from=wbc_recaptcha&render=' . esc_html( $site_key ), array( 'jquery' ), '1.0', true );
 			$is_enabled                         = get_option( 'wbc_recapcha_enable_on_guestcheckout' );
-			$is_enabled_on_payment_page         = get_option( 'wbc_recapcha_enable_on_addpaymentmethod' );
 			$is_enabled_logincheckout           = get_option( 'wbc_recapcha_enable_on_logincheckout' );
 			$wbc_recapcha_enable_on_payfororder = get_option( 'wbc_recapcha_enable_on_payfororder' );
 			$wbc_recapcha_no_conflict           = get_option( 'wbc_recapcha_no_conflict_v3' );
 
-			if ( 'yes' === $is_enabled_on_payment_page && is_user_logged_in() && is_wc_endpoint_url( get_option( 'woocommerce_myaccount_add_payment_method_endpoint', 'add-payment-method' ) ) ) {
+			if ( is_user_logged_in() && is_wc_endpoint_url( get_option( 'woocommerce_myaccount_add_payment_method_endpoint', 'add-payment-method' ) ) ) {
 
 				if ( 'yes' === $wbc_recapcha_no_conflict ) {
 

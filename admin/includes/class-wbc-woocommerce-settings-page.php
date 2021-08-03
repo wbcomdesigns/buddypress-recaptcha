@@ -189,7 +189,6 @@ if ( ! class_exists( 'Wbc_WooCommerce_Settings_Page' ) ) :
 				'login'              => __( 'Woo Login Captcha', 'recaptcha-for-woocommerce' ),
 				'forgotpassword'     => __( 'Woo Lost Password Captcha', 'recaptcha-for-woocommerce' ),
 				'guestcheckout'      => __( 'Woo Checkout Captcha', 'recaptcha-for-woocommerce' ),
-				'add_payment_method' => __( 'Woo Add Payment Method Captcha', 'recaptcha-for-woocommerce' ),
 				'woo_review'         => __( 'Woo Product Review Form Captcha', 'recaptcha-for-woocommerce' ),
 				'woo_comments'       => __( 'Woo Post Comment Form Captcha', 'recaptcha-for-woocommerce' ),
 				'wp_login'           => __( 'WP Login Captcha', 'recaptcha-for-woocommerce' ),
@@ -1091,115 +1090,6 @@ if ( ! class_exists( 'Wbc_WooCommerce_Settings_Page' ) ) :
 							),
 						)
 					);
-				}
-			} elseif ( 'add_payment_method' === $current_section ) {
-
-				$re_capcha_version = get_option( 'wbc_recapcha_version' );
-				if ( 'v2' === strtolower( $re_capcha_version ) ) {
-
-					$settings = apply_filters(
-						'wbcwoocomm_addpaymentmethod_settings',
-						array(
-							'section_title_recpacha_on_addpaymentmethod' => array(
-								'name' => __( 'reCaptcha On Add Payment Method', 'recaptcha-for-woocommerce' ),
-								'type' => 'title',
-								'desc' => '',
-								'id'   => 'wc_settings_tab_recapcha_addpaymentmethod',
-							),
-							'wbc_recapcha_enable_on_addpaymentmethod' => array(
-								'name' => __( 'Enable reCaptcha on Add Payment Method', 'recaptcha-for-woocommerce' ),
-								'type' => 'checkbox',
-								'id'   => 'wbc_recapcha_enable_on_addpaymentmethod',
-							),
-							'wbc_recapcha_addpaymentmethod_title' => array(
-								'name'    => __( 'reCaptcha Field Title', 'recaptcha-for-woocommerce' ),
-								'type'    => 'text',
-								'id'      => 'wbc_recapcha_addpaymentmethod_title',
-								'default' => 'Captcha',
-							),
-							'wbc_recapcha_hide_label_addpayment' => array(
-								'name'    => __( 'Hide Label', 'recaptcha-for-woocommerce' ),
-								'type'    => 'checkbox',
-								'id'      => 'wbc_recapcha_hide_label_addpayment',
-								'default' => 'no',
-								'desc'    => __( 'Hide label on form?', 'recaptcha-for-woocommerce' ),
-							),
-							'wbc_recapcha_addpaymentmethod_theme' => array(
-								'name'    => __( 'reCaptcha Theme', 'recaptcha-for-woocommerce' ),
-								'type'    => 'radio',
-								'id'      => 'wbc_recapcha_addpaymentmethod_theme',
-								'options' => array(
-									'light' => __( 'Light', 'recaptcha-for-woocommerce' ),
-									'dark'  => __( 'Dark', 'recaptcha-for-woocommerce' ),
-								),
-								'default' => 'light',
-							),
-							'wbc_recapcha_addpaymentmethod_size' => array(
-								'name'    => __( 'reCaptcha Size', 'recaptcha-for-woocommerce' ),
-								'type'    => 'radio',
-								'id'      => 'wbc_recapcha_addpaymentmethod_size',
-								'options' => array(
-									'normal'  => __( 'Normal', 'recaptcha-for-woocommerce' ),
-									'compact' => __( 'Compact', 'recaptcha-for-woocommerce' ),
-								),
-								'default' => 'normal',
-							),
-							'wbc_recapcha_disable_submitbtn_paymentmethod' => array(
-								'name' => __( 'Disable submit button', 'recaptcha-for-woocommerce' ),
-								'desc' => __( 'Disable submit button until recaptcha validate.', 'recaptcha-for-woocommerce' ),
-								'type' => 'checkbox',
-								'id'   => 'wbc_recapcha_disable_submitbtn_paymentmethod',
-							),
-							array(
-								'type' => 'sectionend',
-								'id'   => 'wc_settings_tab_recapcha_addpaymentmethod',
-							),
-						)
-					);
-				} else {
-
-					$settings = apply_filters(
-						'wbcwoocomm_addpaymentmethod_settings',
-						array(
-							'section_title_recpacha_on_addpaymentmethod' => array(
-								'name' => __( 'reCaptcha On Add Payment Method Login', 'recaptcha-for-woocommerce' ),
-								'type' => 'title',
-								'desc' => '',
-								'id'   => 'wc_settings_tab_recapcha_addpaymentmethod',
-							),
-							'wbc_recapcha_enable_on_addpaymentmethod' => array(
-								'name' => __( 'Enable reCaptcha on Add Payment Method', 'recaptcha-for-woocommerce' ),
-								'type' => 'checkbox',
-								'id'   => 'wbc_recapcha_enable_on_addpaymentmethod',
-							),
-							'wbc_recapcha_add_payment_method_score_threshold_v3' => array(
-								'name'    => __( 'reCaptcha score threshold', 'recaptcha-for-woocommerce' ),
-								'type'    => 'custom_type_number',
-								'id'      => 'wbc_recapcha_add_payment_method_score_threshold_v3',
-								'default' => '0.5',
-								'desc'    => __( 'Instead of showing a CAPTCHA challenge, reCAPTCHA v3 returns a score so you can choose the most appropriate action for your website. The score is based on interactions with your site and enables you to take an appropriate action for your site. reCaptcha will rank traffic and interactions based on a score of 0.0 to 1.0, with a 1.0 being a good interaction and scores closer to 0.0 indicating a good likelihood that the traffic was generated by bots', 'recaptcha-for-woocommerce' ),
-							),
-							'wbc_recapcha_add_payment_method_action_v3' => array(
-								'name'    => __( 'reCaptcha Action Name', 'recaptcha-for-woocommerce' ),
-								'type'    => 'text',
-								'id'      => 'wbc_recapcha_add_payment_method_action_v3',
-								'default' => 'add_payment_method',
-								'desc'    => __( 'In reCAPTCHA v3, Google introducing a new concept called “Action” —a tag that you can use to define the key steps of your user journey and enable reCAPTCHA to run its risk analysis in context.', 'recaptcha-for-woocommerce' ),
-							),
-							'wbc_recapcha_wp_disable_submit_token_generation_v3_woo_add_pay_method' => array(
-								'name'    => __( 'Disable on the fly reCAPTCHA v3 token generation', 'recaptcha-for-woocommerce' ),
-								'type'    => 'checkbox',
-								'id'      => 'wbc_recapcha_wp_disable_submit_token_generation_v3_woo_add_pay_method',
-								'desc'    => __( 'Use only when there is problem with other plugin that use submit button. For example error like "Google reCAPTCHA token is missing" ', 'recaptcha-for-woocommerce' ),
-								'default' => 'no',
-							),
-							array(
-								'type' => 'sectionend',
-								'id'   => 'wc_settings_tab_recapcha_addpaymentmethod',
-							),
-						)
-					);
-
 				}
 			} elseif ( 'wp_register' === $current_section ) {
 
