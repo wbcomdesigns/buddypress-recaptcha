@@ -201,9 +201,6 @@ class Recaptcha_For_Woocommerce_Admin {
 			$this->plugin_settings_tabs['guestcheckout']['name'] = esc_html__( 'Woo Checkout', 'recaptcha-for-woocommerce' );
 			$this->plugin_settings_tabs['guestcheckout']['icon'] = 'dashicons-cart';
 
-			$this->plugin_settings_tabs['add_payment_method']['name'] = esc_html__( 'Woo Add Payment Method', 'recaptcha-for-woocommerce' );
-			$this->plugin_settings_tabs['add_payment_method']['icon'] = 'dashicons-money-alt';
-
 			$this->plugin_settings_tabs['woo_review']['name'] = esc_html__( 'Woo Product Review Form', 'recaptcha-for-woocommerce' );
 			$this->plugin_settings_tabs['woo_review']['icon'] = 'dashicons-twitch';
 
