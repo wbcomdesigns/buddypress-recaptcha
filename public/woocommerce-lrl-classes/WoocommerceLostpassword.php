@@ -21,14 +21,20 @@
  * @author     Wbcom Designs <admin@wbcomdesigns.com>
  */
 class WoocommerceLostpassword {
+
+	/**
+	 * Function displays the woocommerce lost password captcha.
+	 *
+	 * @return void
+	 */
 	public function woo_extra_lostpassword_fields() {
 
-		$reCapcha_version = get_option( 'wbc_recapcha_version' );
-		if ( '' == $reCapcha_version ) {
-			$reCapcha_version = 'v2';
+		$woo_recaptcha_version = get_option( 'wbc_recapcha_version' );
+		if ( '' == $woo_recaptcha_version ) {
+			$woo_recaptcha_version = 'v2';
 		}
 
-		if ( 'v2' == strtolower( $reCapcha_version ) ) {
+		if ( 'v2' == strtolower( $woo_recaptcha_version ) ) {
 
 			$disable_submit_btn                   = get_option( 'wbc_recapcha_disable_submitbtn_woo_lostpassword' );
 			$wbc_recapcha_hide_label_lostpassword = get_option( 'wbc_recapcha_hide_label_lostpassword' );
@@ -110,20 +116,15 @@ class WoocommerceLostpassword {
 	var verifyCallback_woo_lostpassword = function(response) {
 
 	if(response.length!==0){
-		
-				<?php if ( 'yes' == trim( $disable_submit_btn ) ) : ?>
+		<?php if ( 'yes' == trim( $disable_submit_btn ) ) : ?>
 				jQuery('.woocommerce-Button').removeAttr("title");
 				jQuery('.woocommerce-Button').attr("disabled", false);
 			<?php endif; ?>  
-				
-			   if (typeof woo_lostpassword_captcha_verified === "function") { 
-
-					 woo_lostpassword_captcha_verified(response);
-				 }    
-			
-	  }
-
-	};  
+				if (typeof woo_lostpassword_captcha_verified === "function") { 
+					woo_lostpassword_captcha_verified(response);
+				}    
+			}
+		};  
 
 
 
@@ -161,11 +162,11 @@ class WoocommerceLostpassword {
 
 				$site_key                            = get_option( 'wc_settings_tab_recapcha_site_key_v3' );
 				$wbc_recapcha_lostpassword_action_v3 = get_option( 'wbc_recapcha_lostpassword_action_v3' );
-				if ( empty(trim( $wbc_recapcha_lostpassword_action_v3 )) ) {
+				if ( empty( trim( $wbc_recapcha_lostpassword_action_v3 ) ) ) {
 
 					$wbc_recapcha_lostpassword_action_v3 = 'forgot_password';
 				}
-				if ( empty(trim( $$wbc_generation_v3_woo_fpass ))) {
+				if ( empty( trim( $$wbc_generation_v3_woo_fpass ) ) ) {
 
 					$wbc_generation_v3_woo_fpass = 'no';
 				}
@@ -193,9 +194,7 @@ class WoocommerceLostpassword {
 
 
 						<?php if ( 'yes' == $wbc_generation_v3_woo_fpass ) : ?>
-						
-							   setInterval(function() {
-									
+							setInterval(function() {
 								grecaptcha.execute('<?php echo esc_html( $site_key ); ?>', { action: '<?php echo esc_html( $wbc_recapcha_lostpassword_action_v3 ); ?>' }).then(function (token) {
 
 									var recaptchaResponse = document.getElementById('wbc_recaptcha_token');
@@ -203,21 +202,20 @@ class WoocommerceLostpassword {
 								});
 
 							}, 40 * 1000); 
-						
 						<?php else : ?>
 							jQuery('.woocommerce-ResetPassword').on('submit', function (e) {
-										 var frm = this;
-										 e.preventDefault();
-										 grecaptcha.execute('<?php echo esc_html( $site_key ); ?>', { action: '<?php echo esc_html( $wbc_recapcha_lostpassword_action_v3 ); ?>' }).then(function (token) {
+										var frm = this;
+										e.preventDefault();
+										grecaptcha.execute('<?php echo esc_html( $site_key ); ?>', { action: '<?php echo esc_html( $wbc_recapcha_lostpassword_action_v3 ); ?>' }).then(function (token) {
 
-										  var recaptchaResponse = document.getElementById('wbc_recaptcha_token');
-										   recaptchaResponse.value = token;
+										var recaptchaResponse = document.getElementById('wbc_recaptcha_token');
+										recaptchaResponse.value = token;
 
-										  frm.submit();
-										 }, function (reason) {
+										frm.submit();
+										}, function (reason) {
 
-										 });
-								 });
+										});
+								});
 						<?php endif; ?>         
 
 	}    

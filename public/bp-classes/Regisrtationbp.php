@@ -1,5 +1,4 @@
 <?php
-
 /**
  * The public-facing functionality of the plugin.
  *
@@ -259,37 +258,36 @@ frm.submit();
 	 */
 	public function innovage_validate_user_registration() {
 		global $bp;
-		$disable_submit_btn = get_option( 'wbc_recapcha_enable_on_signup_bp' );
-		$re_capcha_version = get_option( 'wbc_recapcha_version' );
+		$disable_submit_btn               = get_option( 'wbc_recapcha_enable_on_signup_bp' );
+		$re_capcha_version                = get_option( 'wbc_recapcha_version' );
 		$wbc_recapcha_enable_on_signup_bp = get_option( 'wbc_recapcha_enable_on_signup_bp' );
-		if($wbc_recapcha_enable_on_signup_bp == 'yes'){
-			if($re_capcha_version !== 'v2')
-			{	
-				$secret_key = get_option( 'wc_settings_tab_recapcha_secret_key_v3' );
-				$response = sanitize_text_field( $_POST['wbc_recaptcha_wp_register_token'] );
+		if ( 'yes' == $wbc_recapcha_enable_on_signup_bp ) {
+			if ( 'v2' !== $re_capcha_version ) {
+				$secret_key      = get_option( 'wc_settings_tab_recapcha_secret_key_v3' );
+				$response        = sanitize_text_field( wp_unslash( $_POST['wbc_recaptcha_wp_register_token'] ) );
 				$verify_response = wp_remote_post(
-							'https://www.google.com/recaptcha/api/siteverify',
-							array(
-								'method'  => 'POST',
-								'timeout' => 45,
-								'body'    => array(
-									'secret'   => $secret_key,
-									'response' => $response,
-								),
+					'https://www.google.com/recaptcha/api/siteverify',
+					array(
+						'method'  => 'POST',
+						'timeout' => 45,
+						'body'    => array(
+							'secret'   => $secret_key,
+							'response' => $response,
+						),
 
-							)
-						);
+					)
+				);
 				$response_data = json_decode( $verify_response['body'] );
-				if(!$response_data->success){
+				if ( ! $response_data->success ) {
 					$bp->signup->errors['accept_tos'] = __( 'reCaptcha token is invalid', 'buddypress' );
 				}
-			}else{
+			} else {
 				if ( 'yes' === $disable_submit_btn && empty( $_POST['g-recaptcha-response'] ) ) {
 					$bp->signup->errors['accept_tos'] = __( 'reCaptcha token is invalid', 'buddypress' );
-				}	
+				}
 			}
 		}
-				
+
 		return;
 	}
 
@@ -303,7 +301,7 @@ frm.submit();
 			$lable      = get_option( 'recapcha_bbpress_topic_title' );
 			$hide_lable = get_option( 'recapcha_hide_label_bbpress_topic' );
 			if ( ! empty( $lable ) && 'yes' !== $hide_lable ) {
-				echo $lable;
+				echo esc_html( $lable );
 			}
 			echo $this->form_field_return();
 		}
@@ -319,7 +317,7 @@ frm.submit();
 			$lable      = get_option( 'recapcha_bbpress_replay_title' );
 			$hide_lable = get_option( 'recapcha_hide_label_bbpress_replay' );
 			if ( ! empty( $lable ) && 'yes' !== $hide_lable ) {
-				echo $lable;
+				echo esc_html( $lable );
 			}
 			echo $this->form_field_return();
 		}
@@ -332,8 +330,8 @@ frm.submit();
 	 */
 	public function form_field_bp() {
 		echo $this->form_field_return();
-		$Regisrtationbp = new Regisrtationbp();
-		$Regisrtationbp->v2_checkbox_script();
+		$regisrtation_bp = new Regisrtationbp();
+		$regisrtation_bp->v2_checkbox_script();
 	}
 
 	/**
@@ -550,8 +548,8 @@ frm.submit();
 		if ( $language ) {
 			$lang = '&hl=' . $language;
 		}
-		$Regisrtationbp = new Regisrtationbp();
-		$google_url     = apply_filters( 'anr_v2_checkbox_script_api_src', sprintf( 'https://www.%s/recaptcha/api.js?onload=anr_onloadCallback&render=explicit' . $lang, $Regisrtationbp->anr_recaptcha_domain() ), $lang );
+		$regisrtation_bp = new Regisrtationbp();
+		$google_url      = apply_filters( 'anr_v2_checkbox_script_api_src', sprintf( 'https://www.%s/recaptcha/api.js?onload=anr_onloadCallback&render=explicit' . $lang, $regisrtation_bp->anr_recaptcha_domain() ), $lang );
 		?>
 			<script src="<?php echo esc_url( $google_url ); ?>"
 				async defer>

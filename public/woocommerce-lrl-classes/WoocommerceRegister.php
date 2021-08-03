@@ -21,13 +21,19 @@
  * @author     Wbcom Designs <admin@wbcomdesigns.com>
  */
 class WoocommerceRegister {
+
+	/**
+	 * Function displays the woocommerce registration captcha.
+	 *
+	 * @return void
+	 */
 	public function woo_extra_register_fields() {
 
-		$reCapcha_version = get_option( 'wbc_recapcha_version' );
-		if ( '' == $reCapcha_version ) {
-			$reCapcha_version = 'v2';
+		$woo_recaptcha_version = get_option( 'wbc_recapcha_version' );
+		if ( '' == $woo_recaptcha_version ) {
+			$woo_recaptcha_version = 'v2';
 		}
-		if ( 'v2' == strtolower( $reCapcha_version ) ) {
+		if ( 'v2' == strtolower( $woo_recaptcha_version ) ) {
 
 			$disable_submit_btn               = get_option( 'wbc_recapcha_disable_submitbtn_woo_signup' );
 			$wbc_recapcha_hide_label_signup   = get_option( 'wbc_recapcha_hide_label_signup' );
@@ -107,21 +113,20 @@ class WoocommerceRegister {
 	<?php endif; ?>
 
 				var verifyCallback_woo_signup = function(response) {
-
-				   if(response.length!==0){ 
+					if(response.length!==0){ 
 
 						<?php if ( 'yes' == trim( $disable_submit_btn ) ) : ?>
-										 jQuery('button[name$="register"]').removeAttr("title");
-										 jQuery('button[name$="register"]').attr("disabled", false);
+										jQuery('button[name$="register"]').removeAttr("title");
+										jQuery('button[name$="register"]').attr("disabled", false);
 						<?php endif; ?>  
 
 										if (typeof woo_register_recaptcha_verified === "function") { 
 
 												woo_register_recaptcha_verified(response);
 										}
-				   }
+				}
 
-				 };  
+				};  
 
 
 	</script>

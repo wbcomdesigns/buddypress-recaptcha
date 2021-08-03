@@ -38,7 +38,16 @@ class Recaptcha_For_Woocommerce_Admin {
 	 * @var      string    $version    The current version of this plugin.
 	 */
 	private $version;
+
+	/**
+	 * Plugins setting tab of this plugin.
+	 *
+	 * @since    1.0.0
+	 * @access   private
+	 * @var      string    $plugin_settings_tabs  Plugin's admin settings tabs.
+	 */
 	private $plugin_settings_tabs;
+
 	/**
 	 * Initialize the class and set its properties.
 	 *
@@ -149,24 +158,24 @@ class Recaptcha_For_Woocommerce_Admin {
 				</div>
 				<div class="wbcom-admin-settings-page">
 					<?php $this->rfw_plugin_settings_tabs(); ?>
-						<?php if ( 'rfw-welcome' == $current ) { ?>
+						<?php if ( 'rfw-welcome' === $current ) { ?>
 							<?php include 'wbcom-welcome-page.php'; ?>
 						<?php } else { ?>
-					<div class="wbcom-tab-content rfw-tab-content">
-						<form method="post" id="wb-recaptcha" action="" enctype="multipart/form-data">
-							<?php
-							if ( $_POST ) {
-									$wbc_woo_commerce_settings_page->save( $current );
-							}
-							$wbc_woo_commerce_settings_page->output( $current );
-							?>
-							<button name="save" class="button-primary woocommerce-save-button" type="submit" value="Save changes"><?php esc_html_e( 'Save changes', 'recaptcha-for-woocommerce' ); ?></button>
-						</form>
+						<div class="wbcom-tab-content rfw-tab-content">
+							<form method="post" id="wb-recaptcha" action="" enctype="multipart/form-data">
+								<?php
+								if ( $_POST ) {
+										$wbc_woo_commerce_settings_page->save( $current );
+								}
+								$wbc_woo_commerce_settings_page->output( $current );
+								?>
+								<button name="save" class="button-primary woocommerce-save-button" type="submit" value="Save changes"><?php esc_html_e( 'Save changes', 'recaptcha-for-woocommerce' ); ?></button>
+							</form>
+						</div>
+					<?php } ?>
 					</div>
-						<?php } ?>
-					</div>
+				</div>
 			</div>
-		</div>
 		<?php
 	}
 
@@ -236,7 +245,7 @@ class Recaptcha_For_Woocommerce_Admin {
 			$tab_html .= '<li><a id="' . $edd_tab . '" class="nav-tab ' . $class . '" href="admin.php?page=' . $page . '&tab=' . $edd_tab . '"><span class="dashicons ' . $tab_name['icon'] . '"></span>&nbsp;' . $tab_name['name'] . '</a></li>';
 		}
 		$tab_html .= '</div></ul></div>';
-		echo $tab_html;
+		echo wp_kses_post( $tab_html );
 	}
 
 	/**
