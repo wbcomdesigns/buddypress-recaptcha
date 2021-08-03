@@ -1,5 +1,4 @@
 <?php
-
 /**
  * The public-facing functionality of the plugin.
  *
@@ -21,13 +20,19 @@
  * @author     Wbcom Designs <admin@wbcomdesigns.com>
  */
 class WoocommerceLogin {
+
+	/**
+	 * Function displays the woocommerce login captcha.
+	 *
+	 * @return void
+	 */
 	public function woo_extra_login_fields() {
 
-		$reCapcha_version = get_option( 'wbc_recapcha_version' );
-		if ( '' == $reCapcha_version ) {
-			$reCapcha_version = 'v2';
+		$woo_recaptcha_version = get_option( 'wbc_recapcha_version' );
+		if ( '' == $woo_recaptcha_version ) {
+			$woo_recaptcha_version = 'v2';
 		}
-		if ( 'v2' == strtolower( $reCapcha_version ) ) {
+		if ( 'v2' == strtolower( $woo_recaptcha_version ) ) {
 
 			$disable_submit_btn            = get_option( 'wbc_recapcha_disable_submitbtn_woo_login' );
 			$wbc_recapcha_hide_label_login = get_option( 'wbc_recapcha_hide_label_login' );
@@ -96,7 +101,7 @@ class WoocommerceLogin {
 
 		clearInterval(<?php echo esc_html( $intval_signup ); ?>);
 
-														 <?php if ( 'yes' == trim( $disable_submit_btn ) ) : ?>
+														<?php if ( 'yes' == trim( $disable_submit_btn ) ) : ?>
 			jQuery('button[name$="login"]').attr("disabled", true);
 																<?php if ( '' == $recapcha_error_msg_captcha_blank ) : ?>
 				jQuery('button[name$="login"]').attr("title", "<?php echo esc_html( __( 'reCaptcha is a required field.', 'recaptcha-for-woocommerce' ) ); ?>");
@@ -104,7 +109,7 @@ class WoocommerceLogin {
 				jQuery('button[name$="login"]').attr("title", "<?php echo esc_html( $recapcha_error_msg_captcha_blank ); ?>");
 			<?php endif; ?>    
 
-														 <?php endif; ?>        
+													<?php endif; ?>        
 		}    
 	}, 100);    
 
@@ -120,15 +125,12 @@ class WoocommerceLogin {
 
 												if (typeof woo_login_captcha_verified === "function") { 
 
-													 woo_login_captcha_verified(response);
-												 }
+													woo_login_captcha_verified(response);
+												}
 
 											}
 
 									};  
-									
-									
-								  
 	</script>
 
 
@@ -187,56 +189,44 @@ class WoocommerceLogin {
 	clearInterval(<?php echo esc_html( $intval_login ); ?>);
 
 			grecaptcha.ready(function () {
-				
 				grecaptcha.execute('<?php echo esc_html( $site_key ); ?>', { action: '<?php echo esc_html( $wbc_recapcha_login_action_v3 ); ?>' }).then(function (token) {
-				
-					var recaptchaResponse = document.getElementById('wbc_recaptcha_login_token');
+				var recaptchaResponse = document.getElementById('wbc_recaptcha_login_token');
 					recaptchaResponse.value = token;
 				}, function (reason) {
 				  
 				});
 			});
-			
-			
-	  
-													   <?php if ( 'yes' == $wbc_token_generation_v3_woo_login ) : ?>
-															setInterval(function() {
-																	
-																grecaptcha.execute('<?php echo esc_html( $site_key ); ?>', { action: '<?php echo esc_html( $wbc_recapcha_login_action_v3 ); ?>' }).then(function (token) {
+			<?php if ( 'yes' == $wbc_token_generation_v3_woo_login ) : ?>
+						setInterval(function() {
+							grecaptcha.execute('<?php echo esc_html( $site_key ); ?>', { action: '<?php echo esc_html( $wbc_recapcha_login_action_v3 ); ?>' }).then(function (token) {
 
-																	var recaptchaResponse = document.getElementById('wbc_recaptcha_login_token');
-																	recaptchaResponse.value = token;
-																});
+								var recaptchaResponse = document.getElementById('wbc_recaptcha_login_token');
+								recaptchaResponse.value = token;
+							});
 
-															}, 40 * 1000); 
-													   <?php else : ?>
-														jQuery('.woocommerce-form-login').on('submit', function (e) {
-																	 var frm = this;
-																	 e.preventDefault();
-																	 grecaptcha.execute('<?php echo esc_html( $site_key ); ?>', { action: '<?php echo esc_html( $wbc_recapcha_login_action_v3 ); ?>' }).then(function (token) {
+						}, 40 * 1000); 
+			<?php else : ?>
+						jQuery('.woocommerce-form-login').on('submit', function (e) {
+									var frm = this;
+									e.preventDefault();
+									grecaptcha.execute('<?php echo esc_html( $site_key ); ?>', { action: '<?php echo esc_html( $wbc_recapcha_login_action_v3 ); ?>' }).then(function (token) {
 
-																	  submitval=jQuery(".woocommerce-form-login__submit").val();
-																	  var recaptchaResponse = document.getElementById('wbc_recaptcha_login_token');
-																	   recaptchaResponse.value = token;
-																		jQuery('.woocommerce-form-login').prepend('<input type="hidden" name="login" value="' + submitval + '">');
+									submitval=jQuery(".woocommerce-form-login__submit").val();
+									var recaptchaResponse = document.getElementById('wbc_recaptcha_login_token');
+									recaptchaResponse.value = token;
+									jQuery('.woocommerce-form-login').prepend('<input type="hidden" name="login" value="' + submitval + '">');
 
 
-																	  frm.submit();
-																	 }, function (reason) {
+									frm.submit();
+									}, function (reason) {
 
-																	 });
-															 });
-													   <?php endif; ?>
-			
+									});
+							});
+			<?php endif; ?>
 	}    
 
 	}, 100);   
-
-
-
-
-
-	</script>
+</script>
 				<?php
 			}
 		}

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * The public-facing functionality of the plugin.
  *
@@ -21,14 +20,20 @@
  * @author     Wbcom Designs <admin@wbcomdesigns.com>
  */
 class WoocommerceReviewOrder {
+
+	/**
+	 * This Function displays the woocommerce extra checkout field.
+	 *
+	 * @return void
+	 */
 	public function woo_extra_checkout_fields() {
 
-		$reCapcha_version = get_option( 'wbc_recapcha_version' );
-		if ( '' == $reCapcha_version ) {
-			$reCapcha_version = 'v2';
+		$woo_recaptcha_version = get_option( 'wbc_recapcha_version' );
+		if ( '' == $woo_recaptcha_version ) {
+			$woo_recaptcha_version = 'v2';
 		}
 
-		if ( 'v2' == strtolower( $reCapcha_version ) ) {
+		if ( 'v2' == strtolower( $woo_recaptcha_version ) ) {
 
 			$disable_submit_btn                = get_option( 'wbc_recapcha_disable_submitbtn_guestcheckout' );
 			$disable_submit_btn_login_checkout = get_option( 'wbc_recapcha_disable_submitbtn_logincheckout' );
@@ -104,8 +109,6 @@ class WoocommerceReviewOrder {
 	'sitekey': '<?php echo esc_html( $site_key ); ?>',
 	'callback' : verifyCallback_add_guestcheckout
 	});
-										
-										
 	}catch(error){}
 	<?php else : ?>
 
@@ -151,10 +154,10 @@ class WoocommerceReviewOrder {
 																				capchaChecked=true;
 	<?php endif; ?>   
 
-	 if (typeof woo_guest_checkout_recaptcha_verified === "function") { 
+	if (typeof woo_guest_checkout_recaptcha_verified === "function") { 
 
-		   woo_guest_checkout_recaptcha_verified(response);
-	   }
+		woo_guest_checkout_recaptcha_verified(response);
+	}
 	}
 
 	};
@@ -168,15 +171,14 @@ class WoocommerceReviewOrder {
 	<?php else : ?>
 	jQuery("#place_order").attr("title", "<?php echo esc_html( $recapcha_error_msg_captcha_blank ); ?>");
 	<?php endif; ?>    
-		  <?php endif; ?>
+		<?php endif; ?>
 		  
 	});
 
 	jQuery( document ).ajaxComplete(function() {
 
 	if(jQuery(".woocommerce-error").is(":visible") || jQuery(".woocommerce_error").is(":visible")){
-		
-		  grecaptcha.reset(window.myCaptcha); 
+		grecaptcha.reset(window.myCaptcha); 
 					<?php if ( 'yes' == trim( $disable_submit_btn ) ) : ?>
 	jQuery("#place_order").attr("disabled", true);
 						<?php if ( '' == $recapcha_error_msg_captcha_blank ) : ?>
@@ -184,7 +186,7 @@ class WoocommerceReviewOrder {
 	<?php else : ?>
 	jQuery("#place_order").attr("title", "<?php echo esc_html( $recapcha_error_msg_captcha_blank ); ?>");
 	<?php endif; ?>    
-		  <?php endif; ?>
+		<?php endif; ?>
 	}
 
 	});
@@ -194,31 +196,22 @@ class WoocommerceReviewOrder {
 
 		jQuery('#createaccount').on('click',function(){
 			if(jQuery("#place_order").is(":disabled") || capchaChecked==false){
-				
 				setTimeout(function(){ jQuery("#place_order").attr("disabled", true); }, 100);
 
 			}
 		});  
-		
 		jQuery('#account_username').on('keyup',function(){
-			
 			if(jQuery("#place_order").is(":disabled") || capchaChecked==false){
-				
-			   setTimeout(function(){ jQuery("#place_order").attr("disabled", true); }, 300);
+				setTimeout(function(){ jQuery("#place_order").attr("disabled", true); }, 300);
 
 			}
 		});  
 		jQuery('#account_password').on('keyup',function(){
-			
 			if(jQuery("#place_order").is(":disabled") || capchaChecked==false){
-				
-			   setTimeout(function(){ jQuery("#place_order").attr("disabled", true); }, 300);
-
+				setTimeout(function(){ jQuery("#place_order").attr("disabled", true); }, 300);
 			}
 		});  
-
-		
-	<?php endif; ?>
+		<?php endif; ?>
 
 
 	</script>
@@ -299,54 +292,50 @@ class WoocommerceReviewOrder {
 
 				<?php if ( 'yes' == trim( $disable_submit_btn_login_checkout ) ) : ?>
 
-	 jQuery("#place_order").removeAttr("title");
-	 jQuery("#place_order").attr("disabled", false);
+	jQuery("#place_order").removeAttr("title");
+	jQuery("#place_order").attr("disabled", false);
 
 	<?php endif; ?>
 
 	if (typeof woo_login_checkout_recaptcha_verified === "function") { 
 
-		  woo_login_checkout_recaptcha_verified(response);
-	  }
+		woo_login_checkout_recaptcha_verified(response);
+	}
 	}
 
 
 
 	};
 
-	   
 				<?php if ( 'yes' == $wbc_recapcha_login_recpacha_refersh_on_error ) : ?>                                                                                                     
 			jQuery('body').on('checkout_error', function(){
 
 	myCaptcha=grecaptcha.reset(myCaptcha);
 						<?php if ( 'yes' == trim( $disable_submit_btn ) ) : ?>
-								 jQuery("#place_order").attr("disabled", true);
+								jQuery("#place_order").attr("disabled", true);
 							<?php if ( '' == $recapcha_error_msg_captcha_blank ) : ?>
-								  jQuery("#place_order").attr("title", "<?php echo esc_html( __( 'reCaptcha is a required field.', 'recaptcha-for-woocommerce' ) ); ?>");
-						  <?php else : ?>
-								  jQuery("#place_order").attr("title", "<?php echo esc_html( $recapcha_error_msg_captcha_blank ); ?>");
-						  <?php endif; ?>    
+								jQuery("#place_order").attr("title", "<?php echo esc_html( __( 'reCaptcha is a required field.', 'recaptcha-for-woocommerce' ) ); ?>");
+						<?php else : ?>
+								jQuery("#place_order").attr("title", "<?php echo esc_html( $recapcha_error_msg_captcha_blank ); ?>");
+						<?php endif; ?>    
 						<?php endif; ?>
 					  
 
 	});
-				
-				   jQuery( document ).ajaxComplete(function() {
-
+				jQuery( document ).ajaxComplete(function() {
 						if(jQuery(".woocommerce-error").is(":visible") || jQuery(".woocommerce_error").is(":visible")){
-
-							  grecaptcha.reset(window.myCaptcha); 
-							  <?php if ( 'yes' == trim( $disable_submit_btn ) ) : ?>
+							grecaptcha.reset(window.myCaptcha); 
+							<?php if ( 'yes' == trim( $disable_submit_btn ) ) : ?>
 									jQuery("#place_order").attr("disabled", true);
 									<?php if ( '' == $recapcha_error_msg_captcha_blank ) : ?>
-									 jQuery("#place_order").attr("title", "<?php echo esc_html( __( 'reCaptcha is a required field.', 'recaptcha-for-woocommerce' ) ); ?>");
-							 <?php else : ?>
-									 jQuery("#place_order").attr("title", "<?php echo esc_html( $recapcha_error_msg_captcha_blank ); ?>");
-							 <?php endif; ?>    
-							  <?php endif; ?>
+									jQuery("#place_order").attr("title", "<?php echo esc_html( __( 'reCaptcha is a required field.', 'recaptcha-for-woocommerce' ) ); ?>");
+							<?php else : ?>
+									jQuery("#place_order").attr("title", "<?php echo esc_html( $recapcha_error_msg_captcha_blank ); ?>");
+							<?php endif; ?>    
+							<?php endif; ?>
 						}
 
-					 });
+					});
 	<?php endif; ?>   
 
 	</script>
@@ -438,8 +427,7 @@ class WoocommerceReviewOrder {
 
 	});
 	});
-								  
-								   jQuery( document ).ajaxComplete(function() {
+		jQuery( document ).ajaxComplete(function() {
 
 										if(jQuery(".woocommerce-error").is(":visible") || jQuery(".woocommerce_error").is(":visible")){
 
@@ -448,12 +436,11 @@ class WoocommerceReviewOrder {
 													var recaptchaResponse = document.getElementById('wbc_checkout_token');
 													recaptchaResponse.value = token;
 
-												  }, function (reason) {
-													
-												  });
+												}, function (reason) {
+												});
 										}
 
-									 });
+									});
 	jQuery(document).on('payment_method_selected', function () {
 
 	grecaptcha.execute('<?php echo esc_html( $site_key ); ?>', { action: '<?php echo esc_html( $wbc_recapcha_checkout_action_v3 ); ?>' }).then(function (token) {
@@ -466,10 +453,9 @@ class WoocommerceReviewOrder {
 	});
 	});
 								  
-						  <?php else : ?>
+						<?php else : ?>
 						  
-							
-									setInterval(function() {
+							setInterval(function() {
 
 								grecaptcha.execute('<?php echo esc_html( $site_key ); ?>', { action: '<?php echo esc_html( $wbc_recapcha_checkout_action_v3 ); ?>' }).then(function (token) {
 
@@ -479,7 +465,7 @@ class WoocommerceReviewOrder {
 
 								}, 40 * 1000); 
 
-						  <?php endif; ?>
+						<?php endif; ?>
 
 	}    
 

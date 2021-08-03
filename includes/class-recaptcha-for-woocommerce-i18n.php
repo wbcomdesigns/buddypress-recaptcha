@@ -23,7 +23,7 @@
  * @subpackage Recaptcha_For_Woocommerce/includes
  * @author     Wbcom Designs <admin@wbcomdesigns.com>
  */
-class Recaptcha_For_Woocommerce_i18n {
+class Recaptcha_For_Woocommerce_I18n {
 
 
 	/**
