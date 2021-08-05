@@ -7,7 +7,7 @@
 		$free_plugins      = $wbcom_setting_obj->wbcom_all_free_plugins();
 		$paid_plugins      = $wbcom_setting_obj->wbcom_all_paid_plugins();
 		?>
-		<h4 class="wbcom-plugin-heading"><?php esc_html_e( 'Paid Addons', 'recaptcha-for-woocommerce' ); ?></h4>
+		<h4 class="wbcom-plugin-heading"><?php esc_html_e( 'Paid Addons', 'buddypress-recaptcha' ); ?></h4>
 		<div class="reign-demos-wrapper reign-importer-section">
 			<div class="reign-demos-inner-wrapper wbcom-plugins-inner-wrapper">
 				<?php
@@ -26,7 +26,7 @@
 								<div class="activation_button_wrap">
 									<a href="<?php echo esc_url( $plugin_details['download_url'] ); ?>" class="wb_btn wb_btn_default" target="_blank" >
 										<i class="fa fa-eye"></i>
-										<?php esc_html_e( 'View', 'recaptcha-for-woocommerce' ); ?>
+										<?php esc_html_e( 'View', 'buddypress-recaptcha' ); ?>
 									</a>
 								</div>
 							</div>
@@ -35,21 +35,21 @@
 				<?php } ?>
 			</div>
 		</div>
-		<h4 class="wbcom-plugin-heading"><?php esc_html_e( 'Free Addons', 'recaptcha-for-woocommerce' ); ?></h4>
+		<h4 class="wbcom-plugin-heading"><?php esc_html_e( 'Free Addons', 'buddypress-recaptcha' ); ?></h4>
 		<div class="reign-demos-wrapper reign-importer-section">
 			<div class="reign-demos-inner-wrapper wbcom-plugins-inner-wrapper">
 				<?php
 				foreach ( $free_plugins as $key => $plugin_details ) {
 					if ( 'not_installed' == $plugin_details['status'] ) {
-						$plugin_btn_text = esc_html__( 'Install', 'recaptcha-for-woocommerce' );
+						$plugin_btn_text = esc_html__( 'Install', 'buddypress-recaptcha' );
 						$toggle_class    = 'fa fa-toggle-off';
 						$plugin_action   = 'install_plugin';
 					} elseif ( 'installed' == $plugin_details['status'] ) {
-						$plugin_btn_text = esc_html__( 'Activate', 'recaptcha-for-woocommerce' );
+						$plugin_btn_text = esc_html__( 'Activate', 'buddypress-recaptcha' );
 						$toggle_class    = 'fa fa-toggle-off';
 						$plugin_action   = 'activate_plugin';
 					} else {
-						$plugin_btn_text = esc_html__( 'Deactivate', 'recaptcha-for-woocommerce' );
+						$plugin_btn_text = esc_html__( 'Deactivate', 'buddypress-recaptcha' );
 						$toggle_class    = 'fa fa-toggle-on';
 						$plugin_action   = 'deactivate_plugin';
 					}

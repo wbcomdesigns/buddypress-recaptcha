@@ -12,7 +12,7 @@
  * @package           Recaptcha_For_Woocommerce
  *
  * @wordpress-plugin
- * Plugin Name:       reCaptcha for WooCommerce
+ * Plugin Name:       BuddyPress reCaptcha
  * Plugin URI:        https://wbcomdesigns.com/downloads/recaptcha-for-woocommerce/
  * Description:       This is a short description of what the plugin does. It's displayed in the WordPress admin area.
  * Version:           1.0.0
@@ -99,14 +99,14 @@ add_action( 'plugins_loaded', 'wb_recaptcha_required_plugin_activation_check' );
  * Required plugins admin notice for reCaptcha for WooCommerce.
  */
 function wb_recaptcha_required_plugin_admin_notice() {
-	$wb_recaptcha   = __( 'reCaptcha for WooCommerce', 'recaptcha-for-woocommerce' );
-	$woo_plugin     = __( 'WooCommerce', 'recaptcha-for-woocommerce' );
-	$bp_plugin      = __( 'BuddyPress', 'recaptcha-for-woocommerce' );
-	$bbpress_plugin = __( 'bbPress', 'recaptcha-for-woocommerce' );
+	$wb_recaptcha   = __( 'reCaptcha for WooCommerce', 'buddypress-recaptcha' );
+	$woo_plugin     = __( 'WooCommerce', 'buddypress-recaptcha' );
+	$bp_plugin      = __( 'BuddyPress', 'buddypress-recaptcha' );
+	$bbpress_plugin = __( 'bbPress', 'buddypress-recaptcha' );
 
 	echo '<div class="error"><p>'
 	/* translators: %1s: reCaptcha for WooCommerce, %2$s: WooCommerce, %3$s: BuddyPress, %4$s: bbPress,    */
-	. sprintf( __( '%1$s is ineffective as it requires %2$s or %3$s or %4$s to be installed and active.', 'recaptcha-for-woocommerce' ), '<strong>' . esc_html( $wb_recaptcha ) . '</strong>', '<strong>' . esc_html( $woo_plugin ) . '</strong>', '<strong>' . esc_html( $bp_plugin ) . '</strong>', '<strong>' . esc_html( $bbpress_plugin ) . '</strong>' )
+	. sprintf( __( '%1$s is ineffective as it requires %2$s or %3$s or %4$s to be installed and active.', 'buddypress-recaptcha' ), '<strong>' . esc_html( $wb_recaptcha ) . '</strong>', '<strong>' . esc_html( $woo_plugin ) . '</strong>', '<strong>' . esc_html( $bp_plugin ) . '</strong>', '<strong>' . esc_html( $bbpress_plugin ) . '</strong>' )
 	. '</p></div>';
 	if ( isset( $_GET['activate'] ) ) {
 		unset( $_GET['activate'] );

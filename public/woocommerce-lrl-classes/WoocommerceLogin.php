@@ -80,7 +80,7 @@ class WoocommerceLogin {
 				<?php
 				if ( 'yes' != $wbc_recapcha_hide_label_login ) :
 					?>
-	<label for="login_captcha"><?php echo esc_html( ( '' == trim( $captcha_lable ) ) ? __( 'Captcha', 'recaptcha-for-woocommerce' ) : esc_html( $captcha_lable ) ); ?>&nbsp;<span class="required">*</span></label>
+	<label for="login_captcha"><?php echo esc_html( ( '' == trim( $captcha_lable ) ) ? __( 'Captcha', 'buddypress-recaptcha' ) : esc_html( $captcha_lable ) ); ?>&nbsp;<span class="required">*</span></label>
 					<?php
 			endif;
 				?>
@@ -104,7 +104,7 @@ class WoocommerceLogin {
 														<?php if ( 'yes' == trim( $disable_submit_btn ) ) : ?>
 			jQuery('button[name$="login"]').attr("disabled", true);
 																<?php if ( '' == $recapcha_error_msg_captcha_blank ) : ?>
-				jQuery('button[name$="login"]').attr("title", "<?php echo esc_html( __( 'reCaptcha is a required field.', 'recaptcha-for-woocommerce' ) ); ?>");
+				jQuery('button[name$="login"]').attr("title", "<?php echo esc_html( __( 'reCaptcha is a required field.', 'buddypress-recaptcha' ) ); ?>");
 			<?php else : ?>
 				jQuery('button[name$="login"]').attr("title", "<?php echo esc_html( $recapcha_error_msg_captcha_blank ); ?>");
 			<?php endif; ?>    

@@ -127,14 +127,14 @@ class Recaptcha_For_Woocommerce_Admin {
 
 		/* add sub menu in wnplugin setting page */
 		if ( empty( $GLOBALS['admin_page_hooks']['wbcomplugins'] ) ) {
-			add_menu_page( esc_html__( 'WB Plugins', 'recaptcha-for-woocommerce' ), esc_html__( 'WB Plugins', 'recaptcha-for-woocommerce' ), 'manage_options', 'wbcomplugins', array( $this, 'rfw_admin_settings_page' ), 'dashicons-lightbulb', 59 );
-			add_submenu_page( 'wbcomplugins', esc_html__( 'General', 'recaptcha-for-woocommerce' ), esc_html__( 'General', 'recaptcha-for-woocommerce' ), 'manage_options', 'wbcomplugins' );
+			add_menu_page( esc_html__( 'WB Plugins', 'buddypress-recaptcha' ), esc_html__( 'WB Plugins', 'buddypress-recaptcha' ), 'manage_options', 'wbcomplugins', array( $this, 'rfw_admin_settings_page' ), 'dashicons-lightbulb', 59 );
+			add_submenu_page( 'wbcomplugins', esc_html__( 'General', 'buddypress-recaptcha' ), esc_html__( 'General', 'buddypress-recaptcha' ), 'manage_options', 'wbcomplugins' );
 		}
 
-		add_submenu_page( 'wbcomplugins', esc_html__( 'WB reCaptcha', 'recaptcha-for-woocommerce' ), esc_html__( 'WB reCaptcha', 'recaptcha-for-woocommerce' ), 'manage_options', 'recaptcha-for-woocommerce', array( $this, 'rfw_admin_settings_page' ) );
+		add_submenu_page( 'wbcomplugins', esc_html__( 'BuddyPress reCaptcha', 'buddypress-recaptcha' ), esc_html__( 'BuddyPress reCaptcha', 'buddypress-recaptcha' ), 'manage_options', 'buddypress-recaptcha', array( $this, 'rfw_admin_settings_page' ) );
 
-		// register_setting( 'rfw_general_settings', 'recaptcha-for-woocommerce' );
-		// add_settings_section( 'rfw-general', ' ', array( $this, 'rfw_general_settings_content' ), 'recaptcha-for-woocommerce' );
+		// register_setting( 'rfw_general_settings', 'buddypress-recaptcha' );
+		// add_settings_section( 'rfw-general', ' ', array( $this, 'rfw_general_settings_content' ), 'buddypress-recaptcha' );
 	}
 
 	/**
@@ -153,7 +153,7 @@ class Recaptcha_For_Woocommerce_Admin {
 				<div class="ess-admin-header">
 					<?php echo do_shortcode( '[wbcom_admin_setting_header]' ); ?>
 					<h1 class="wbcom-plugin-heading">
-						<?php esc_html_e( 'WB reCaptcha', 'recaptcha-for-woocommerce' ); ?>
+						<?php esc_html_e( 'BuddyPress reCaptcha Settings', 'buddypress-recaptcha' ); ?>
 					</h1>
 				</div>
 				<div class="wbcom-admin-settings-page">
@@ -169,7 +169,7 @@ class Recaptcha_For_Woocommerce_Admin {
 								}
 								$wbc_woo_commerce_settings_page->output( $current );
 								?>
-								<button name="save" class="button-primary woocommerce-save-button" type="submit" value="Save changes"><?php esc_html_e( 'Save changes', 'recaptcha-for-woocommerce' ); ?></button>
+								<button name="save" class="button-primary woocommerce-save-button" type="submit" value="Save changes"><?php esc_html_e( 'Save changes', 'buddypress-recaptcha' ); ?></button>
 							</form>
 						</div>
 					<?php } ?>
@@ -183,48 +183,48 @@ class Recaptcha_For_Woocommerce_Admin {
 	 * Register all settings.
 	 */
 	public function rfw_add_admin_register_setting() {
-		$this->plugin_settings_tabs['rfw-welcome']['name'] = esc_html__( 'Welcome', 'recaptcha-for-woocommerce' );
+		$this->plugin_settings_tabs['rfw-welcome']['name'] = esc_html__( 'Welcome', 'buddypress-recaptcha' );
 		$this->plugin_settings_tabs['rfw-welcome']['icon'] = 'dashicons-admin-home';
 
-		$this->plugin_settings_tabs['rfw-general']['name'] = esc_html__( 'General', 'recaptcha-for-woocommerce' );
+		$this->plugin_settings_tabs['rfw-general']['name'] = esc_html__( 'General', 'buddypress-recaptcha' );
 		$this->plugin_settings_tabs['rfw-general']['icon'] = 'dashicons-admin-generic';
 		if ( class_exists( 'WooCommerce' ) ) {
-			$this->plugin_settings_tabs['signup']['name'] = esc_html__( 'Woo Registration', 'recaptcha-for-woocommerce' );
+			$this->plugin_settings_tabs['signup']['name'] = esc_html__( 'Woo Registration', 'buddypress-recaptcha' );
 			$this->plugin_settings_tabs['signup']['icon'] = 'dashicons-buddicons-buddypress-logo';
 
-			$this->plugin_settings_tabs['login']['name'] = esc_html__( 'Woo Login', 'recaptcha-for-woocommerce' );
+			$this->plugin_settings_tabs['login']['name'] = esc_html__( 'Woo Login', 'buddypress-recaptcha' );
 			$this->plugin_settings_tabs['login']['icon'] = 'dashicons-wordpress';
 
-			$this->plugin_settings_tabs['forgotpassword']['name'] = esc_html__( 'Woo Lost Password', 'recaptcha-for-woocommerce' );
+			$this->plugin_settings_tabs['forgotpassword']['name'] = esc_html__( 'Woo Lost Password', 'buddypress-recaptcha' );
 			$this->plugin_settings_tabs['forgotpassword']['icon'] = 'dashicons-visibility';
 
-			$this->plugin_settings_tabs['guestcheckout']['name'] = esc_html__( 'Woo Checkout', 'recaptcha-for-woocommerce' );
+			$this->plugin_settings_tabs['guestcheckout']['name'] = esc_html__( 'Woo Checkout', 'buddypress-recaptcha' );
 			$this->plugin_settings_tabs['guestcheckout']['icon'] = 'dashicons-cart';
 
-			$this->plugin_settings_tabs['woo_review']['name'] = esc_html__( 'Woo Product Review Form', 'recaptcha-for-woocommerce' );
+			$this->plugin_settings_tabs['woo_review']['name'] = esc_html__( 'Woo Product Review Form', 'buddypress-recaptcha' );
 			$this->plugin_settings_tabs['woo_review']['icon'] = 'dashicons-twitch';
 
-			$this->plugin_settings_tabs['woo_comments']['name'] = esc_html__( 'Woo Post Comment Form', 'recaptcha-for-woocommerce' );
+			$this->plugin_settings_tabs['woo_comments']['name'] = esc_html__( 'Woo Post Comment Form', 'buddypress-recaptcha' );
 			$this->plugin_settings_tabs['woo_comments']['icon'] = 'dashicons-twitch';
 		}
-		$this->plugin_settings_tabs['wp_login']['name'] = esc_html__( 'WP Login', 'recaptcha-for-woocommerce' );
+		$this->plugin_settings_tabs['wp_login']['name'] = esc_html__( 'WP Login', 'buddypress-recaptcha' );
 		$this->plugin_settings_tabs['wp_login']['icon'] = 'dashicons-wordpress';
 
-		$this->plugin_settings_tabs['wp_register']['name'] = esc_html__( 'WP Registration', 'recaptcha-for-woocommerce' );
+		$this->plugin_settings_tabs['wp_register']['name'] = esc_html__( 'WP Registration', 'buddypress-recaptcha' );
 		$this->plugin_settings_tabs['wp_register']['icon'] = 'dashicons-buddicons-buddypress-logo';
 
-		$this->plugin_settings_tabs['wp_lostpassword']['name'] = esc_html__( 'WP Lost Password', 'recaptcha-for-woocommerce' );
+		$this->plugin_settings_tabs['wp_lostpassword']['name'] = esc_html__( 'WP Lost Password', 'buddypress-recaptcha' );
 		$this->plugin_settings_tabs['wp_lostpassword']['icon'] = 'dashicons-visibility';
 
 		if ( class_exists( 'BuddyPress' ) ) {
-			$this->plugin_settings_tabs['bp_register']['name'] = esc_html__( 'BP Registration', 'recaptcha-for-woocommerce' );
+			$this->plugin_settings_tabs['bp_register']['name'] = esc_html__( 'BP Registration', 'buddypress-recaptcha' );
 			$this->plugin_settings_tabs['bp_register']['icon'] = 'dashicons-buddicons-buddypress-logo';
 		}
 		if ( class_exists( 'bbPress' ) ) {
-			$this->plugin_settings_tabs['bb_press_topic']['name'] = esc_html__( 'bbPress Topic', 'recaptcha-for-woocommerce' );
+			$this->plugin_settings_tabs['bb_press_topic']['name'] = esc_html__( 'bbPress Topic', 'buddypress-recaptcha' );
 			$this->plugin_settings_tabs['bb_press_topic']['icon'] = 'dashicons-editor-paste-text';
 
-			$this->plugin_settings_tabs['bb_press_replay']['name'] = esc_html__( 'bbPress Reply', 'recaptcha-for-woocommerce' );
+			$this->plugin_settings_tabs['bb_press_replay']['name'] = esc_html__( 'bbPress Reply', 'buddypress-recaptcha' );
 			$this->plugin_settings_tabs['bb_press_replay']['icon'] = 'dashicons-editor-paste-text';
 		}
 	}
@@ -238,7 +238,7 @@ class Recaptcha_For_Woocommerce_Admin {
 
 		foreach ( $this->plugin_settings_tabs as $edd_tab => $tab_name ) {
 			$class     = ( $edd_tab === $current ) ? 'nav-tab-active' : '';
-			$page      = 'recaptcha-for-woocommerce';
+			$page      = 'buddypress-recaptcha';
 			$tab_html .= '<li><a id="' . $edd_tab . '" class="nav-tab ' . $class . '" href="admin.php?page=' . $page . '&tab=' . $edd_tab . '"><span class="dashicons ' . $tab_name['icon'] . '"></span>&nbsp;' . $tab_name['name'] . '</a></li>';
 		}
 		$tab_html .= '</div></ul></div>';
