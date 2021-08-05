@@ -279,11 +279,11 @@ frm.submit();
 				);
 				$response_data = json_decode( $verify_response['body'] );
 				if ( ! $response_data->success ) {
-					$bp->signup->errors['accept_tos'] = __( 'reCaptcha token is invalid', 'buddypress' );
+					$bp->signup->errors['accept_tos'] = __( 'reCaptcha token is invalid', 'buddypress-recaptcha' );
 				}
 			} else {
 				if ( 'yes' === $disable_submit_btn && empty( $_POST['g-recaptcha-response'] ) ) {
-					$bp->signup->errors['accept_tos'] = __( 'reCaptcha token is invalid', 'buddypress' );
+					$bp->signup->errors['accept_tos'] = __( 'reCaptcha token is invalid', 'buddypress-recaptcha' );
 				}
 			}
 		}
