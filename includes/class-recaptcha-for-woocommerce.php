@@ -211,7 +211,7 @@ class Recaptcha_For_Woocommerce {
 
 		// Buddypress.
 		$regisrtation_bp = new Regisrtationbp();
-		add_action( 'bp_before_registration_submit_buttons', array( $regisrtation_bp, 'woo_extra_wp_register_form' ), 36 );
+		add_action( 'bp_before_registration_submit_buttons', array( $regisrtation_bp, 'woo_extra_bp_register_form' ), 36 );
 		add_action( 'bp_signup_validate', array( $regisrtation_bp, 'innovage_validate_user_registration' ) );
 		// add_action( 'bp_activity_entry_comments', array( $regisrtation_bp, 'form_field_bp' ) );
 		// add_action( 'bp_activity_post_form_options', array( $regisrtation_bp, 'form_field_bp' ) );
