@@ -200,6 +200,9 @@ class Recaptcha_For_Woocommerce_Admin {
 		$this->plugin_settings_tabs['wp_lostpassword']['name'] = esc_html__( 'WP Lost Password', 'buddypress-recaptcha' );
 		$this->plugin_settings_tabs['wp_lostpassword']['icon'] = 'dashicons-visibility';
 
+		$this->plugin_settings_tabs['woo_comments']['name'] = esc_html__( 'Post Comment Form', 'buddypress-recaptcha' );
+		$this->plugin_settings_tabs['woo_comments']['icon'] = 'dashicons-twitch';
+	
 		if ( class_exists( 'BuddyPress' ) ) {
 			$this->plugin_settings_tabs['bp_register']['name'] = esc_html__( 'BP Registration', 'buddypress-recaptcha' );
 			$this->plugin_settings_tabs['bp_register']['icon'] = 'dashicons-buddicons-buddypress-logo';
@@ -227,8 +230,6 @@ class Recaptcha_For_Woocommerce_Admin {
 			$this->plugin_settings_tabs['guestcheckout']['icon'] = 'dashicons-cart';
 
 			
-			$this->plugin_settings_tabs['woo_comments']['name'] = esc_html__( 'Woo Post Comment Form', 'buddypress-recaptcha' );
-			$this->plugin_settings_tabs['woo_comments']['icon'] = 'dashicons-twitch';
 		}
 
 	}
