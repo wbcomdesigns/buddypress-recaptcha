@@ -121,7 +121,7 @@ function wb_recaptcha_required_plugin_admin_notice() {
 function wb_recaptcha_activation_redirect_settings( $plugin ) {
 
 	if ( plugin_basename( __FILE__ ) === $plugin ) {
-		wp_safe_redirect( admin_url( 'admin.php?page=recaptcha-for-woocommerce' ) );
+		wp_safe_redirect( admin_url( 'admin.php?page=buddypress-recaptcha' ) );
 		exit;
 	}
 }

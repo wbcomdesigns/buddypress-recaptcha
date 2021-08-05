@@ -71,7 +71,7 @@ class Recaptcha_For_Woocommerce {
 		} else {
 			$this->version = '1.0.0';
 		}
-		$this->plugin_name = ' recaptcha-for-woocommerce';
+		$this->plugin_name = 'buddypress-recaptcha';
 
 		$this->load_dependencies();
 		$this->set_locale();
