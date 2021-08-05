@@ -188,6 +188,29 @@ class Recaptcha_For_Woocommerce_Admin {
 
 		$this->plugin_settings_tabs['rfw-general']['name'] = esc_html__( 'General', 'buddypress-recaptcha' );
 		$this->plugin_settings_tabs['rfw-general']['icon'] = 'dashicons-admin-generic';
+		
+		$this->plugin_settings_tabs['wp_login']['name'] = esc_html__( 'WP Login', 'buddypress-recaptcha' );
+		$this->plugin_settings_tabs['wp_login']['icon'] = 'dashicons-wordpress';
+
+		$this->plugin_settings_tabs['wp_register']['name'] = esc_html__( 'WP Registration', 'buddypress-recaptcha' );
+		$this->plugin_settings_tabs['wp_register']['icon'] = 'dashicons-buddicons-buddypress-logo';
+
+		$this->plugin_settings_tabs['wp_lostpassword']['name'] = esc_html__( 'WP Lost Password', 'buddypress-recaptcha' );
+		$this->plugin_settings_tabs['wp_lostpassword']['icon'] = 'dashicons-visibility';
+
+		if ( class_exists( 'BuddyPress' ) ) {
+			$this->plugin_settings_tabs['bp_register']['name'] = esc_html__( 'BP Registration', 'buddypress-recaptcha' );
+			$this->plugin_settings_tabs['bp_register']['icon'] = 'dashicons-buddicons-buddypress-logo';
+		}
+		
+		if ( class_exists( 'bbPress' ) ) {
+			$this->plugin_settings_tabs['bb_press_topic']['name'] = esc_html__( 'bbPress Topic', 'buddypress-recaptcha' );
+			$this->plugin_settings_tabs['bb_press_topic']['icon'] = 'dashicons-editor-paste-text';
+
+			$this->plugin_settings_tabs['bb_press_replay']['name'] = esc_html__( 'bbPress Reply', 'buddypress-recaptcha' );
+			$this->plugin_settings_tabs['bb_press_replay']['icon'] = 'dashicons-editor-paste-text';
+		}
+
 		if ( class_exists( 'WooCommerce' ) ) {
 			$this->plugin_settings_tabs['signup']['name'] = esc_html__( 'Woo Registration', 'buddypress-recaptcha' );
 			$this->plugin_settings_tabs['signup']['icon'] = 'dashicons-buddicons-buddypress-logo';
@@ -207,26 +230,7 @@ class Recaptcha_For_Woocommerce_Admin {
 			$this->plugin_settings_tabs['woo_comments']['name'] = esc_html__( 'Woo Post Comment Form', 'buddypress-recaptcha' );
 			$this->plugin_settings_tabs['woo_comments']['icon'] = 'dashicons-twitch';
 		}
-		$this->plugin_settings_tabs['wp_login']['name'] = esc_html__( 'WP Login', 'buddypress-recaptcha' );
-		$this->plugin_settings_tabs['wp_login']['icon'] = 'dashicons-wordpress';
 
-		$this->plugin_settings_tabs['wp_register']['name'] = esc_html__( 'WP Registration', 'buddypress-recaptcha' );
-		$this->plugin_settings_tabs['wp_register']['icon'] = 'dashicons-buddicons-buddypress-logo';
-
-		$this->plugin_settings_tabs['wp_lostpassword']['name'] = esc_html__( 'WP Lost Password', 'buddypress-recaptcha' );
-		$this->plugin_settings_tabs['wp_lostpassword']['icon'] = 'dashicons-visibility';
-
-		if ( class_exists( 'BuddyPress' ) ) {
-			$this->plugin_settings_tabs['bp_register']['name'] = esc_html__( 'BP Registration', 'buddypress-recaptcha' );
-			$this->plugin_settings_tabs['bp_register']['icon'] = 'dashicons-buddicons-buddypress-logo';
-		}
-		if ( class_exists( 'bbPress' ) ) {
-			$this->plugin_settings_tabs['bb_press_topic']['name'] = esc_html__( 'bbPress Topic', 'buddypress-recaptcha' );
-			$this->plugin_settings_tabs['bb_press_topic']['icon'] = 'dashicons-editor-paste-text';
-
-			$this->plugin_settings_tabs['bb_press_replay']['name'] = esc_html__( 'bbPress Reply', 'buddypress-recaptcha' );
-			$this->plugin_settings_tabs['bb_press_replay']['icon'] = 'dashicons-editor-paste-text';
-		}
 	}
 	/**
 	 * Add tab in setting page
