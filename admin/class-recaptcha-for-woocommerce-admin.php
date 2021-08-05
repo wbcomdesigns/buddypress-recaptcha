@@ -169,7 +169,9 @@ class Recaptcha_For_Woocommerce_Admin {
 								}
 								$wbc_woo_commerce_settings_page->output( $current );
 								?>
-								<button name="save" class="button-primary woocommerce-save-button" type="submit" value="Save changes"><?php esc_html_e( 'Save changes', 'buddypress-recaptcha' ); ?></button>
+								<p class="submit">
+									<button name="save" class="button button-primary" type="submit" value="Save changes"><?php esc_html_e( 'Save changes', 'buddypress-recaptcha' ); ?></button>
+								</p>
 							</form>
 						</div>
 					<?php } ?>
