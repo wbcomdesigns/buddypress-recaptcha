@@ -226,9 +226,7 @@ class Recaptcha_For_Woocommerce_Admin {
 			$this->plugin_settings_tabs['guestcheckout']['name'] = esc_html__( 'Woo Checkout', 'buddypress-recaptcha' );
 			$this->plugin_settings_tabs['guestcheckout']['icon'] = 'dashicons-cart';
 
-			$this->plugin_settings_tabs['woo_review']['name'] = esc_html__( 'Woo Product Review Form', 'buddypress-recaptcha' );
-			$this->plugin_settings_tabs['woo_review']['icon'] = 'dashicons-twitch';
-
+			
 			$this->plugin_settings_tabs['woo_comments']['name'] = esc_html__( 'Woo Post Comment Form', 'buddypress-recaptcha' );
 			$this->plugin_settings_tabs['woo_comments']['icon'] = 'dashicons-twitch';
 		}
