@@ -91,7 +91,6 @@
 }
 
 .wrap .wbcom-plugin-heading {
-    display: block !important;
     margin: 0;
     font-size: 32px;
     line-height: initial;
@@ -860,6 +859,32 @@
         min-width: 100% !important;
         max-width: 100% !important;
     }
+}
+
+.nav-tab-wrapper ul li a.nav-tab:before {
+    content: "\f229";
+    font-family: dashicons;
+    display: inline-block;
+    line-height: normal;
+    font-weight: 400;
+    font-style: normal;
+    speak: never;
+    text-decoration: inherit;
+    text-transform: none;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    width: 20px;
+    height: 20px;
+    font-size: 20px;
+    vertical-align: top;
+    text-align: center;
+    transition: color 0.1s ease-in;
+    margin-right: 8px;
+}
+
+.nav-tab-wrapper ul li:first-child a.nav-tab:before {
+    content: "\f102";
 }
 
 /* Welcome Page : End */

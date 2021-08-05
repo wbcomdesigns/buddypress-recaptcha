@@ -40,3 +40,7 @@
 .rfw-tab-content .woocommerce-save-button {
     margin-top: 15px;
 }
+
+.nav-tab-wrapper ul li a.nav-tab:before { 
+display:none;
+}
