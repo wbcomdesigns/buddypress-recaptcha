@@ -1,0 +1,1938 @@
+# Copyright (C) 2021
+# This file is distributed under the same license as the  package.
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-08-05 09:23:15+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2021-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Varun Dubey\n"
+"Language-Team: Wbcom Designs\n"
+"Language: en\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-Country: United States\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: "
+"__;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;_nx_noop:1,2,3c;esc_"
+"attr__;esc_html__;esc_attr_e;esc_html_e;esc_attr_x:1,2c;esc_html_x:1,2c;\n"
+"X-Poedit-Basepath: ../\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-Bookmarks: \n"
+"X-Textdomain-Support: yes\n"
+"X-Generator: grunt-wp-i18n 1.0.3\n"
+
+#: admin/class-recaptcha-for-woocommerce-admin.php:130
+msgid "WB Plugins"
+msgstr ""
+
+#: admin/class-recaptcha-for-woocommerce-admin.php:131
+#: admin/class-recaptcha-for-woocommerce-admin.php:189
+msgid "General"
+msgstr ""
+
+#: admin/class-recaptcha-for-woocommerce-admin.php:134
+msgid "BuddyPress reCaptcha"
+msgstr ""
+
+#: admin/class-recaptcha-for-woocommerce-admin.php:156
+msgid "BuddyPress reCaptcha Settings"
+msgstr ""
+
+#: admin/class-recaptcha-for-woocommerce-admin.php:172
+msgid "Save changes"
+msgstr ""
+
+#: admin/class-recaptcha-for-woocommerce-admin.php:186
+msgid "Welcome"
+msgstr ""
+
+#: admin/class-recaptcha-for-woocommerce-admin.php:192
+msgid "Woo Registration"
+msgstr ""
+
+#: admin/class-recaptcha-for-woocommerce-admin.php:195
+msgid "Woo Login"
+msgstr ""
+
+#: admin/class-recaptcha-for-woocommerce-admin.php:198
+msgid "Woo Lost Password"
+msgstr ""
+
+#: admin/class-recaptcha-for-woocommerce-admin.php:201
+msgid "Woo Checkout"
+msgstr ""
+
+#: admin/class-recaptcha-for-woocommerce-admin.php:204
+msgid "Woo Product Review Form"
+msgstr ""
+
+#: admin/class-recaptcha-for-woocommerce-admin.php:207
+msgid "Woo Post Comment Form"
+msgstr ""
+
+#: admin/class-recaptcha-for-woocommerce-admin.php:210
+msgid "WP Login"
+msgstr ""
+
+#: admin/class-recaptcha-for-woocommerce-admin.php:213
+msgid "WP Registration"
+msgstr ""
+
+#: admin/class-recaptcha-for-woocommerce-admin.php:216
+msgid "WP Lost Password"
+msgstr ""
+
+#: admin/class-recaptcha-for-woocommerce-admin.php:220
+msgid "BP Registration"
+msgstr ""
+
+#: admin/class-recaptcha-for-woocommerce-admin.php:224
+msgid "bbPress Topic"
+msgstr ""
+
+#: admin/class-recaptcha-for-woocommerce-admin.php:227
+msgid "bbPress Reply"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:29
+msgid "reCaptcha"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:60
+#: admin/includes/class-wbc-woocommerce-settings-page.php:430
+#: admin/includes/class-wbc-woocommerce-settings-page.php:545
+#: admin/includes/class-wbc-woocommerce-settings-page.php:660
+#: admin/includes/class-wbc-woocommerce-settings-page.php:775
+#: admin/includes/class-wbc-woocommerce-settings-page.php:957
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1072
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1180
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1288
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1396
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1506
+msgid ""
+"Instead of showing a CAPTCHA challenge, reCAPTCHA v3 returns a score so you "
+"can choose the most appropriate action for your website. The score is based "
+"on interactions with your site and enables you to take an appropriate "
+"action for your site. reCaptcha will rank traffic and interactions based on "
+"a score of 0.0 to 1.0, with a 1.0 being a good interaction and scores "
+"closer to 0.0 indicating a good likelihood that the traffic was generated "
+"by bots"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:80
+msgid "Note :- "
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:118
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1562
+msgid ""
+"reCaptcha V3 does not show any challenge like I am not robot etc. reCaptcha "
+"V3 uses a behind-the-scenes scoring system to detect abusive traffic, and "
+"lets you decide the minimum passing score. Please note that there is no "
+"user interaction shown in reRecapcha V3 meaning that no recaptcha challenge "
+"is shown to solve."
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:187
+msgid "General Settings"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:188
+msgid "Woo Registration Captcha"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:189
+msgid "Woo Login Captcha"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:190
+msgid "Woo Lost Password Captcha"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:191
+msgid "Woo Checkout Captcha"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:192
+msgid "Woo Product Review Form Captcha"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:193
+msgid "Woo Post Comment Form Captcha"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:194
+msgid "WP Login Captcha"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:195
+msgid "WP Registration Captcha"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:196
+msgid "WP Lost Password Captcha"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:224
+msgid "reCaptcha On BB Press Reply"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:230
+msgid "Enable reCaptcha on BB Press Reply"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:235
+#: admin/includes/class-wbc-woocommerce-settings-page.php:300
+#: admin/includes/class-wbc-woocommerce-settings-page.php:365
+#: admin/includes/class-wbc-woocommerce-settings-page.php:480
+#: admin/includes/class-wbc-woocommerce-settings-page.php:589
+#: admin/includes/class-wbc-woocommerce-settings-page.php:710
+#: admin/includes/class-wbc-woocommerce-settings-page.php:830
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1007
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1114
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1223
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1331
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1440
+msgid "reCaptcha Field Title"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:241
+#: admin/includes/class-wbc-woocommerce-settings-page.php:306
+#: admin/includes/class-wbc-woocommerce-settings-page.php:371
+#: admin/includes/class-wbc-woocommerce-settings-page.php:486
+#: admin/includes/class-wbc-woocommerce-settings-page.php:595
+#: admin/includes/class-wbc-woocommerce-settings-page.php:716
+#: admin/includes/class-wbc-woocommerce-settings-page.php:836
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1013
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1120
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1229
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1337
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1446
+msgid "Hide Label"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:245
+#: admin/includes/class-wbc-woocommerce-settings-page.php:310
+#: admin/includes/class-wbc-woocommerce-settings-page.php:375
+#: admin/includes/class-wbc-woocommerce-settings-page.php:490
+#: admin/includes/class-wbc-woocommerce-settings-page.php:599
+#: admin/includes/class-wbc-woocommerce-settings-page.php:720
+#: admin/includes/class-wbc-woocommerce-settings-page.php:840
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1017
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1124
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1233
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1341
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1450
+msgid "Hide label on form?"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:289
+msgid "reCaptcha On BB Press Topic"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:295
+msgid "Enable reCaptcha on BB Press Topic"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:313
+#: admin/includes/class-wbc-woocommerce-settings-page.php:378
+#: admin/includes/class-wbc-woocommerce-settings-page.php:493
+#: admin/includes/class-wbc-woocommerce-settings-page.php:602
+#: admin/includes/class-wbc-woocommerce-settings-page.php:723
+#: admin/includes/class-wbc-woocommerce-settings-page.php:850
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1020
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1127
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1236
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1344
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1453
+msgid "reCaptcha Theme"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:317
+#: admin/includes/class-wbc-woocommerce-settings-page.php:382
+#: admin/includes/class-wbc-woocommerce-settings-page.php:497
+#: admin/includes/class-wbc-woocommerce-settings-page.php:606
+#: admin/includes/class-wbc-woocommerce-settings-page.php:727
+#: admin/includes/class-wbc-woocommerce-settings-page.php:854
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1024
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1131
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1240
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1348
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1457
+msgid "Light"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:318
+#: admin/includes/class-wbc-woocommerce-settings-page.php:383
+#: admin/includes/class-wbc-woocommerce-settings-page.php:498
+#: admin/includes/class-wbc-woocommerce-settings-page.php:607
+#: admin/includes/class-wbc-woocommerce-settings-page.php:728
+#: admin/includes/class-wbc-woocommerce-settings-page.php:855
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1025
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1132
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1241
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1349
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1458
+msgid "Dark"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:323
+#: admin/includes/class-wbc-woocommerce-settings-page.php:388
+#: admin/includes/class-wbc-woocommerce-settings-page.php:503
+#: admin/includes/class-wbc-woocommerce-settings-page.php:612
+#: admin/includes/class-wbc-woocommerce-settings-page.php:733
+#: admin/includes/class-wbc-woocommerce-settings-page.php:860
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1030
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1137
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1246
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1354
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1463
+msgid "reCaptcha Size"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:327
+#: admin/includes/class-wbc-woocommerce-settings-page.php:392
+#: admin/includes/class-wbc-woocommerce-settings-page.php:507
+#: admin/includes/class-wbc-woocommerce-settings-page.php:616
+#: admin/includes/class-wbc-woocommerce-settings-page.php:737
+#: admin/includes/class-wbc-woocommerce-settings-page.php:864
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1034
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1141
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1250
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1358
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1467
+msgid "Normal"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:328
+#: admin/includes/class-wbc-woocommerce-settings-page.php:393
+#: admin/includes/class-wbc-woocommerce-settings-page.php:508
+#: admin/includes/class-wbc-woocommerce-settings-page.php:617
+#: admin/includes/class-wbc-woocommerce-settings-page.php:738
+#: admin/includes/class-wbc-woocommerce-settings-page.php:865
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1035
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1142
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1251
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1359
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1468
+msgid "Compact"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:354
+msgid "reCaptcha On BP Registration Page"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:360
+#: admin/includes/class-wbc-woocommerce-settings-page.php:421
+#: admin/includes/class-wbc-woocommerce-settings-page.php:475
+#: admin/includes/class-wbc-woocommerce-settings-page.php:536
+msgid "Enable reCaptcha on Signup"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:398
+#: admin/includes/class-wbc-woocommerce-settings-page.php:876
+#: admin/includes/class-wbc-woocommerce-settings-page.php:882
+#: admin/includes/class-wbc-woocommerce-settings-page.php:888
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1364
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1473
+msgid "Disable submit button"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:399
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1365
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1474
+msgid "Disable submit button until recaptcha validate."
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:415
+#: admin/includes/class-wbc-woocommerce-settings-page.php:469
+#: admin/includes/class-wbc-woocommerce-settings-page.php:530
+msgid "reCaptcha On Registration Page"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:426
+#: admin/includes/class-wbc-woocommerce-settings-page.php:541
+#: admin/includes/class-wbc-woocommerce-settings-page.php:656
+#: admin/includes/class-wbc-woocommerce-settings-page.php:771
+#: admin/includes/class-wbc-woocommerce-settings-page.php:953
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1068
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1175
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1284
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1392
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1502
+msgid "reCaptcha score threshold"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:433
+#: admin/includes/class-wbc-woocommerce-settings-page.php:548
+#: admin/includes/class-wbc-woocommerce-settings-page.php:663
+#: admin/includes/class-wbc-woocommerce-settings-page.php:778
+#: admin/includes/class-wbc-woocommerce-settings-page.php:960
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1075
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1183
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1291
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1399
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1509
+msgid "reCaptcha Action Name"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:437
+#: admin/includes/class-wbc-woocommerce-settings-page.php:552
+#: admin/includes/class-wbc-woocommerce-settings-page.php:667
+#: admin/includes/class-wbc-woocommerce-settings-page.php:782
+#: admin/includes/class-wbc-woocommerce-settings-page.php:964
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1079
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1187
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1295
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1403
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1513
+msgid ""
+"In reCAPTCHA v3, Google introducing a new concept called “Action” —a tag "
+"that you can use to define the key steps of your user journey and enable "
+"reCAPTCHA to run its risk analysis in context."
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:440
+#: admin/includes/class-wbc-woocommerce-settings-page.php:555
+#: admin/includes/class-wbc-woocommerce-settings-page.php:676
+#: admin/includes/class-wbc-woocommerce-settings-page.php:785
+#: admin/includes/class-wbc-woocommerce-settings-page.php:967
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1082
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1190
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1298
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1406
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1516
+msgid "Disable on the fly reCAPTCHA v3 token generation"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:443
+#: admin/includes/class-wbc-woocommerce-settings-page.php:558
+#: admin/includes/class-wbc-woocommerce-settings-page.php:679
+#: admin/includes/class-wbc-woocommerce-settings-page.php:788
+#: admin/includes/class-wbc-woocommerce-settings-page.php:970
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1085
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1193
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1301
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1409
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1519
+msgid ""
+"Use only when there is problem with other plugin that use submit button. "
+"For example error like \"Google reCAPTCHA token is missing\" "
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:513
+msgid "Disable Register button"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:514
+msgid "Disable Register button until recaptcha validate."
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:578
+#: admin/includes/class-wbc-woocommerce-settings-page.php:645
+msgid "reCaptcha On Login Page"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:584
+#: admin/includes/class-wbc-woocommerce-settings-page.php:651
+msgid "Enable reCaptcha on Login"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:622
+msgid "Disable Log In button"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:623
+msgid "Disable Log In button until recaptcha validate."
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:628
+#: admin/includes/class-wbc-woocommerce-settings-page.php:670
+msgid "Have custom wp login form"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:629
+#: admin/includes/class-wbc-woocommerce-settings-page.php:671
+msgid "Using custom login form with using wp_login_form"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:699
+#: admin/includes/class-wbc-woocommerce-settings-page.php:760
+msgid "reCaptcha On Lost Password Page"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:705
+#: admin/includes/class-wbc-woocommerce-settings-page.php:766
+msgid "Enable reCaptcha on Lost Password"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:743
+msgid "Disable Reset password button"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:744
+msgid "Disable Reset password button until recaptcha validate."
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:808
+#: admin/includes/class-wbc-woocommerce-settings-page.php:924
+msgid "reCaptcha On Checkout"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:814
+#: admin/includes/class-wbc-woocommerce-settings-page.php:930
+msgid "Enable reCaptcha on Guest Checkout"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:819
+#: admin/includes/class-wbc-woocommerce-settings-page.php:935
+msgid "Enable reCaptcha on Login Checkout"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:824
+#: admin/includes/class-wbc-woocommerce-settings-page.php:940
+msgid "Enable reCaptcha on Pay For Order"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:827
+#: admin/includes/class-wbc-woocommerce-settings-page.php:943
+msgid ""
+"WooCommerce allow failed order to pay again. In this case captcha must be "
+"needed to prevent fraud"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:843
+#: admin/includes/class-wbc-woocommerce-settings-page.php:946
+msgid "reCaptcha Validity"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:847
+#: admin/includes/class-wbc-woocommerce-settings-page.php:950
+msgid ""
+"Some payment processor needs more time to process an order. So captcha will "
+"valid for a given number of minutes once reCaptcha is validate. 0 means "
+"require validation on each request. Default value is 3 minute will used if "
+"you leave blank."
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:870
+msgid "reCaptcha Refresh Title"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:877
+msgid "Disable submit button until recaptcha validate for guest checkout."
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:883
+msgid "Disable submit button until recaptcha validate for login checkout."
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:889
+msgid "Disable submit button until recaptcha validate for pay for order."
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:894
+#: admin/includes/class-wbc-woocommerce-settings-page.php:895
+msgid "Refresh captcha on guest checkout error"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:900
+#: admin/includes/class-wbc-woocommerce-settings-page.php:901
+msgid "Refresh captcha on login checkout error"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:907
+#: admin/includes/class-wbc-woocommerce-settings-page.php:974
+msgid "Enable captcha for payment request buttons"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:908
+#: admin/includes/class-wbc-woocommerce-settings-page.php:975
+msgid ""
+"If you have enabled payment request buttons for checkout directly from "
+"product or cart page you can enable captcha. For example Google Pay, Apple "
+"Pay available in stripe."
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:996
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1057
+msgid "reCaptcha On WP Login"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1002
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1063
+msgid "Enable reCaptcha on WP Login"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1040
+msgid "Disable WP Login button"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1041
+msgid "Disable WP Login until recaptcha validate."
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1103
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1164
+msgid "reCaptcha On WP Registration"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1109
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1170
+msgid "Enable reCaptcha on WP Registration"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1147
+msgid "Disable WP Register button"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1148
+msgid "Disable WP Register button until recaptcha validate."
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1212
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1273
+msgid "reCaptcha On WP Lost Password"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1218
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1279
+msgid "Enable reCaptcha on WP Lost Password"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1256
+msgid "Disable Lost Password button"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1257
+msgid "Disable Lost Password button until recaptcha validate."
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1320
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1381
+msgid "reCaptcha On Product Review Form"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1326
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1387
+msgid "Enable reCaptcha on product review form"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1428
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1490
+msgid "reCaptcha On Comment Form"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1435
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1497
+msgid "Enable reCaptcha on comment form"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1542
+msgid "reCaptcha Settings"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1544
+msgid ""
+"Please use this guideline to get <a target=\"_blank\" "
+"href=\"http://blog.i13websolution.com/how-to-get-google-recaptcha-v2-"
+"checkbox-keys/\"> reCaptcha keys V2 (checkbox) </a> "
+"&nbsp;&nbsp;&nbsp;&nbsp; <a target=\"_blank\" "
+"href=\"http://blog.i13websolution.com/how-to-get-google-recaptcha-v3-keys/\""
+"> reCaptcha keys V3 </a></b>"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1549
+msgid "reCaptcha Version"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1553
+msgid "reCaptcha V2 (checkbox)"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1554
+msgid "reCaptcha V3"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1565
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1571
+msgid "Site Key"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1567
+msgid "Get site key from www.google.com/recaptcha"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1573
+msgid "Get reCAPTCHA V3 site key from www.google.com/recaptcha"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1577
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1583
+msgid "Secret Key"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1579
+msgid "Get Secret key from www.google.com/recaptcha"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1585
+msgid "Get reCAPTCHA V3 Secret key from www.google.com/recaptcha"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1589
+msgid "Error message recaptcha verification failed"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1593
+msgid ""
+"This message shown when google detect abusive, invalid, spam, bot etc "
+"traffic"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1596
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1610
+msgid "Error message reCaptcha blank"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1603
+msgid "Error message for can not connect to server"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1614
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1622
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1629
+msgid "[recaptcha] will replaced with captcha field title"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1618
+msgid "Error message for can not connect to server "
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1625
+msgid "Error message for invalid captcha"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1632
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1638
+msgid "No-Conflict Mode"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1635
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1641
+msgid ""
+"When checked, other reCAPTCHA occurrences on this plugin sections like "
+"checkout, registration, login etc are forcefully removed, to prevent "
+"conflicts. Only check if your site is having compatibility issues or "
+"instructed to by support."
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1644
+msgid "Ip or Range of IP"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1648
+msgid ""
+"Useful when you want to not show reCaptcha for certain users/clients. When "
+"requests comes through the above IP or IP range the reCaptcha is not shown "
+"and validation will skipped. for example "
+"123.201.160.11,123.201.160.11-123.201.160.50"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1651
+msgid "Language Code"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1652
+msgid ""
+"Choose language for recaptcha V2 when shown. For example translation of I "
+"am not robot."
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1659
+msgid "Arabic"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1660
+msgid "Afrikaans"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1661
+msgid "Amharic"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1662
+msgid "Armenian"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1663
+msgid "Azerbaijani"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1664
+msgid "Basque"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1665
+msgid "Bengali"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1666
+msgid "Bulgarian"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1667
+msgid "Catalan"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1668
+msgid "Chinese (Hong Kong)"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1669
+msgid "Chinese (Simplified)"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1670
+msgid "Chinese (Traditional)"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1671
+msgid "Croatian"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1672
+msgid "Czech"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1673
+msgid "Danish"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1674
+msgid "Dutch"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1675
+msgid "English (UK)"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1676
+msgid "English (US)"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1677
+msgid "Estonian"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1678
+msgid "Filipino"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1679
+msgid "Finnish"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1680
+msgid "French"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1681
+msgid "French (Canadian)"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1682
+msgid "Galician"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1683
+msgid "Georgian"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1684
+msgid "German"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1685
+msgid "German (Austria)"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1686
+msgid "German (Switzerland)"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1687
+msgid "Greek"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1688
+msgid "Gujarati"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1689
+msgid "Hebrew"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1690
+msgid "Hindi"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1691
+msgid "Hungarain"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1692
+msgid "Icelandic"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1693
+msgid "Indonesian"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1694
+msgid "Italian"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1695
+msgid "Japanese"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1696
+msgid "Kannada"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1697
+msgid "Korean"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1698
+msgid "Laothian"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1699
+msgid "Latvian"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1700
+msgid "Lithuanian"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1701
+msgid "Malay"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1702
+msgid "Malayalam"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1703
+msgid "Marathi"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1704
+msgid "Mongolian"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1705
+msgid "Norwegian"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1706
+msgid "Persian"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1707
+msgid "Polish"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1708
+msgid "Portuguese"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1709
+msgid "Portuguese (Brazil)"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1710
+msgid "Portuguese (Portugal)"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1711
+msgid "Romanian"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1712
+msgid "Russian"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1713
+msgid "Serbian"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1714
+msgid "Sinhalese"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1715
+msgid "Slovak"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1716
+msgid "Slovenian"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1717
+msgid "Spanish"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1718
+msgid "Spanish (Latin America)"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1719
+msgid "Swahili"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1720
+msgid "Swedish"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1721
+msgid "Tamil"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1722
+msgid "Telugu"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1723
+msgid "Thai"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1724
+msgid "Turkish"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1725
+msgid "Ukrainian"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1726
+msgid "Urdu"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1727
+msgid "Vietnamese"
+msgstr ""
+
+#: admin/includes/class-wbc-woocommerce-settings-page.php:1728
+msgid "Zulu"
+msgstr ""
+
+#: admin/includes/class-wooaction.php:361
+msgid ""
+"The settings of this image size have been disabled because its values are "
+"being overwritten by a filter."
+msgstr ""
+
+#: admin/includes/class-wooaction.php:373
+msgid "Hard crop?"
+msgstr ""
+
+#: admin/includes/class-wooaction.php:404
+msgid "Select a page&hellip;"
+msgstr ""
+
+#: admin/includes/class-wooaction.php:418
+#. translators: 1: page name 2: page ID
+msgid "%1$s (ID: %2$s)"
+msgstr ""
+
+#: admin/includes/class-wooaction.php:435
+msgid "Search for a page&hellip;"
+msgstr ""
+
+#: admin/includes/class-wooaction.php:468
+msgid "Choose a country / region&hellip;"
+msgstr ""
+
+#: admin/includes/class-wooaction.php:468
+#: admin/includes/class-wooaction.php:493
+msgid "Country / Region"
+msgstr ""
+
+#: admin/includes/class-wooaction.php:493
+msgid "Choose countries / regions&hellip;"
+msgstr ""
+
+#: admin/includes/class-wooaction.php:501
+msgid "Select all"
+msgstr ""
+
+#: admin/includes/class-wooaction.php:501
+msgid "Select none"
+msgstr ""
+
+#: admin/includes/class-wooaction.php:510
+msgid "Day(s)"
+msgstr ""
+
+#: admin/includes/class-wooaction.php:511
+msgid "Week(s)"
+msgstr ""
+
+#: admin/includes/class-wooaction.php:512
+msgid "Month(s)"
+msgstr ""
+
+#: admin/includes/class-wooaction.php:513
+msgid "Year(s)"
+msgstr ""
+
+#: admin/wbcom/class-wbcom-admin-settings.php:74
+msgid "Settings"
+msgstr ""
+
+#: admin/wbcom/class-wbcom-admin-settings.php:80
+#: admin/wbcom/class-wbcom-admin-settings.php:111
+#: admin/wbcom/class-wbcom-admin-settings.php:112
+msgid "Our Plugins"
+msgstr ""
+
+#: admin/wbcom/class-wbcom-admin-settings.php:86
+#: admin/wbcom/class-wbcom-admin-settings.php:119
+#: admin/wbcom/class-wbcom-admin-settings.php:120
+msgid "Our Themes"
+msgstr ""
+
+#: admin/wbcom/class-wbcom-admin-settings.php:92
+#: admin/wbcom/class-wbcom-admin-settings.php:127
+#: admin/wbcom/class-wbcom-admin-settings.php:128
+#: admin/wbcom/templates/wbcom-support-page.php:5
+msgid "Support"
+msgstr ""
+
+#: admin/wbcom/class-wbcom-admin-settings.php:190
+#: admin/wbcom/templates/wbcom-plugins-page.php:48
+msgid "Activate"
+msgstr ""
+
+#: admin/wbcom/class-wbcom-admin-settings.php:191
+#: admin/wbcom/templates/wbcom-plugins-page.php:52
+msgid "Deactivate"
+msgstr ""
+
+#: admin/wbcom/class-wbcom-admin-settings.php:230
+msgid "Custom Font Uploader"
+msgstr ""
+
+#: admin/wbcom/class-wbcom-admin-settings.php:232
+msgid ""
+"It also allows you to upload your own custom font to your site and use them "
+"using custom css."
+msgstr ""
+
+#: admin/wbcom/class-wbcom-admin-settings.php:238
+msgid "BuddyPress Activity Filter"
+msgstr ""
+
+#: admin/wbcom/class-wbcom-admin-settings.php:240
+msgid "Admin can set default and customised activities to be listed on front-end."
+msgstr ""
+
+#: admin/wbcom/class-wbcom-admin-settings.php:246
+msgid "BuddyPress Activity Social Share"
+msgstr ""
+
+#: admin/wbcom/class-wbcom-admin-settings.php:248
+msgid ""
+"This plugin allows anyone easily share BuddyPress Activites on major social "
+"media (Facebook, Twitter, Google+, Linkedin )."
+msgstr ""
+
+#: admin/wbcom/class-wbcom-admin-settings.php:254
+msgid "BuddyPress Create Group Type"
+msgstr ""
+
+#: admin/wbcom/class-wbcom-admin-settings.php:256
+msgid "It will help to create group type for BuddyPress Groups."
+msgstr ""
+
+#: admin/wbcom/class-wbcom-admin-settings.php:262
+msgid "BuddyPress Member Reviews"
+msgstr ""
+
+#: admin/wbcom/class-wbcom-admin-settings.php:264
+msgid ""
+"This plugin allows only site members to add reviews to the buddypress "
+"members on the site and even rate the member’s profile out of 5 points with "
+"multiple review criteria."
+msgstr ""
+
+#: admin/wbcom/class-wbcom-admin-settings.php:270
+msgid "BuddyPress Group Reviews"
+msgstr ""
+
+#: admin/wbcom/class-wbcom-admin-settings.php:272
+msgid ""
+"This plugin allows the BuddyPress Members to give reviews to the BuddyPress "
+"groups on the site. The review form allows the users to give text review, "
+"even rate the group on the basis of multiple criterias."
+msgstr ""
+
+#: admin/wbcom/class-wbcom-admin-settings.php:278
+msgid "BuddyPress Favorite Notification"
+msgstr ""
+
+#: admin/wbcom/class-wbcom-admin-settings.php:280
+msgid ""
+"BuddyPress Favorite Notification adds a notification for BuddyPress "
+"activity."
+msgstr ""
+
+#: admin/wbcom/class-wbcom-admin-settings.php:286
+msgid "Custom Email Options"
+msgstr ""
+
+#: admin/wbcom/class-wbcom-admin-settings.php:288
+msgid "Override default email options of Worpdress."
+msgstr ""
+
+#: admin/wbcom/class-wbcom-admin-settings.php:294
+msgid "BuddyPress Checkins"
+msgstr ""
+
+#: admin/wbcom/class-wbcom-admin-settings.php:296
+msgid ""
+"This plugin allows BuddyPress members to share their location when they are "
+"posting activities, you can add places where you visited, nearby locations "
+"based on google places."
+msgstr ""
+
+#: admin/wbcom/class-wbcom-admin-settings.php:302
+msgid "BuddyPress Job Manager"
+msgstr ""
+
+#: admin/wbcom/class-wbcom-admin-settings.php:304
+msgid ""
+"Incorporates BuddyPress with the WP Job Manager plugin by creating specific "
+"tabs in employer’s and candidate’s profiles."
+msgstr ""
+
+#: admin/wbcom/class-wbcom-admin-settings.php:310
+msgid "BuddyPress user ToDo List"
+msgstr ""
+
+#: admin/wbcom/class-wbcom-admin-settings.php:312
+msgid ""
+"This plugin allows you to create your personal task list with timestamp. "
+"You can mark them complete when you are done with them. It will also send "
+"reminder when you have any overdue task."
+msgstr ""
+
+#: admin/wbcom/class-wbcom-admin-settings.php:318
+msgid "Shortcodes for BuddyPress"
+msgstr ""
+
+#: admin/wbcom/class-wbcom-admin-settings.php:320
+msgid ""
+"This plugin will add an extended feature to the big name “BuddyPress” that "
+"will generate Shortcode for Listing Activity Streams , Members and Groups "
+"on any post/page in website."
+msgstr ""
+
+#: admin/wbcom/class-wbcom-admin-settings.php:326
+msgid "Woo Open Graph"
+msgstr ""
+
+#: admin/wbcom/class-wbcom-admin-settings.php:328
+msgid ""
+"This plugin will add an extended feature to the big name “WooCommerce” that "
+"will adds well executed and accurate Open Graph Meta Tags to your site with "
+"title,description and WooCommerce featured image."
+msgstr ""
+
+#: admin/wbcom/class-wbcom-admin-settings.php:334
+msgid "BuddyPress Lock"
+msgstr ""
+
+#: admin/wbcom/class-wbcom-admin-settings.php:336
+msgid ""
+"This plugin allows the administrator to lock the certain parts of their "
+"site. It help to create private BuddyPress community by locking certain "
+"BuddyPress Components, WordPress Pages, Custom Post Types for public view "
+"without using any membership plugin."
+msgstr ""
+
+#: admin/wbcom/class-wbcom-admin-settings.php:342
+msgid "Woo Audio Preview"
+msgstr ""
+
+#: admin/wbcom/class-wbcom-admin-settings.php:344
+msgid ""
+"This plugin Allows playing the audio files in sample mode to prevent "
+"unauthorized downloading of the audio files. It helps to display sample "
+"files at single product page."
+msgstr ""
+
+#: admin/wbcom/class-wbcom-admin-settings.php:350
+msgid "WordPress System Log"
+msgstr ""
+
+#: admin/wbcom/class-wbcom-admin-settings.php:352
+msgid ""
+"This plugin helps administrators of the site see their environment on which "
+"the site is currently running that includes WordPress environment, tha "
+"database it requires, Server Environment and the plugins installed and "
+"activated on the site."
+msgstr ""
+
+#: admin/wbcom/class-wbcom-admin-settings.php:358
+msgid "BP Post From Anywhere"
+msgstr ""
+
+#: admin/wbcom/class-wbcom-admin-settings.php:360
+msgid ""
+"This plugin will generate shortcode and widgets for post updates section "
+"for activities so you can post update from anywhere, it might be sidebar, "
+"some page or any template file."
+msgstr ""
+
+#: admin/wbcom/class-wbcom-admin-settings.php:366
+msgid "Woo Document Preview"
+msgstr ""
+
+#: admin/wbcom/class-wbcom-admin-settings.php:368
+msgid ""
+"This will allow you to add document preview at single product page. Which "
+"helps to offer more better idea when you are selling ebooks, pdf or some "
+"documents."
+msgstr ""
+
+#: admin/wbcom/class-wbcom-admin-settings.php:374
+msgid "WordPress Media Category"
+msgstr ""
+
+#: admin/wbcom/class-wbcom-admin-settings.php:376
+#: admin/wbcom/class-wbcom-admin-settings.php:392
+msgid ""
+"This plugin helps administrators of the site categorize their wordpress "
+"media."
+msgstr ""
+
+#: admin/wbcom/class-wbcom-admin-settings.php:382
+msgid "Woo Price Quotes"
+msgstr ""
+
+#: admin/wbcom/class-wbcom-admin-settings.php:384
+msgid ""
+"This plugin helps in quoting the products that admin wishes to hide its "
+"purchasing details."
+msgstr ""
+
+#: admin/wbcom/class-wbcom-admin-settings.php:390
+msgid "EDD Service Extended"
+msgstr ""
+
+#: admin/wbcom/class-wbcom-admin-settings.php:398
+msgid "WB Ads Rotator with Split Test"
+msgstr ""
+
+#: admin/wbcom/class-wbcom-admin-settings.php:400
+msgid ""
+"This plugin is designed for the SPLIT TESTING, you can check performance of "
+"your ads layout and on the basis of them you can select one of them for "
+"your regular use."
+msgstr ""
+
+#: admin/wbcom/class-wbcom-admin-settings.php:418
+msgid "BuddyPress Moderation Pro"
+msgstr ""
+
+#: admin/wbcom/class-wbcom-admin-settings.php:419
+msgid ""
+"BuddyPress Community Moderation offers a solution for site owners to keep "
+"their communities straight. With community policing strategy, members of "
+"the community have an option for moderation sitewide by attaching flags to "
+"content created within the various components."
+msgstr ""
+
+#: admin/wbcom/class-wbcom-admin-settings.php:424
+msgid "BuddyPress Polls"
+msgstr ""
+
+#: admin/wbcom/class-wbcom-admin-settings.php:425
+msgid ""
+"Use BuddyPress Polls plugin to create polls inside the activity, let your "
+"user response to your polls. Members can create pools like activities, "
+"easily votes on them."
+msgstr ""
+
+#: admin/wbcom/class-wbcom-admin-settings.php:430
+msgid "BuddyPress Resume Manager"
+msgstr ""
+
+#: admin/wbcom/class-wbcom-admin-settings.php:431
+msgid ""
+"BuddyPress Resume Manager adds a separate BuddyPress Resume menu at a "
+"user’s BuddyPress Profile Page to display individual member resume. We have "
+"added predefined fields for the resumes and site admin and enable and "
+"disable them."
+msgstr ""
+
+#: admin/wbcom/class-wbcom-admin-settings.php:436
+msgid "BuddyPress Profanity"
+msgstr ""
+
+#: admin/wbcom/class-wbcom-admin-settings.php:437
+msgid ""
+"Use BuddyPress Profanity plugin to censor content in your community! Easily "
+"Censor all the unwanted words in activities, private messages contents by "
+"specifying a list of keywords to be filtered."
+msgstr ""
+
+#: admin/wbcom/class-wbcom-admin-settings.php:442
+msgid "BuddyPress Private Community Pro"
+msgstr ""
+
+#: admin/wbcom/class-wbcom-admin-settings.php:443
+msgid ""
+"This plugin offers a lockdown for BuddyPress Component and will ask users "
+"to log in go further to check profile or any other protected details."
+msgstr ""
+
+#: admin/wbcom/class-wbcom-admin-settings.php:448
+msgid "BuddyPress Profile Pro"
+msgstr ""
+
+#: admin/wbcom/class-wbcom-admin-settings.php:449
+msgid ""
+"This plugin gives you the power to extend BuddyPress Profiles with repeater "
+"fields and groups. You can easily add multiple field groups and display "
+"them at member’s profile."
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-license-page.php:5
+msgid "Plugin License Settings"
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-license-page.php:10
+#: admin/wbcom/templates/wbcom-license-page.php:22
+msgid "Product"
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-license-page.php:11
+#: admin/wbcom/templates/wbcom-license-page.php:23
+msgid "Version"
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-license-page.php:12
+#: admin/wbcom/templates/wbcom-license-page.php:24
+msgid "Key"
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-license-page.php:13
+#: admin/wbcom/templates/wbcom-license-page.php:25
+msgid "Status"
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-license-page.php:14
+#: admin/wbcom/templates/wbcom-license-page.php:26
+msgid "Action"
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-plugins-page.php:10
+msgid "Paid Addons"
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-plugins-page.php:29
+#: admin/wbcom/templates/wbcom-themes-page.php:118
+#: admin/wbcom/templates/wbcom-themes-page.php:139
+msgid "View"
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-plugins-page.php:38
+msgid "Free Addons"
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-plugins-page.php:44
+msgid "Install"
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-support-page.php:7
+msgid "Having any question or issue ?"
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-support-page.php:9
+msgid ""
+"Our team is here to help you out at anytime. If you have any idea about how "
+"we could improve. You can share access to your site on our helpdesk if it "
+"can help getting faster. There are two ways to in touch with us :"
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-support-page.php:21
+msgid "Tickets Support"
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-support-page.php:22
+msgid ""
+"Open a ticket on our helpdesk, we don't guarantee a fast response but "
+"within a week. Except if you've purchased one of our product we'll reply "
+"within 24 hours."
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-support-page.php:26
+msgid "Open a ticket"
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-support-page.php:41
+#: admin/wbcom/templates/wbcom-support-page.php:46
+msgid "Contact Us"
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-support-page.php:42
+msgid ""
+"Create a new thread on our plugin page, participation is open to anyone "
+"from all around the world. We'll be there to help as well but can't "
+"guarantee any delay."
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-themes-page.php:13
+msgid "Reign Theme"
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-themes-page.php:15
+msgid "Multiple Member Directory Layout"
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-themes-page.php:16
+msgid "Multiple Member Header Layout"
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-themes-page.php:17
+msgid "Multiple Group Directory Layout"
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-themes-page.php:18
+msgid "Multiple Group Header Layout"
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-themes-page.php:19
+msgid "BuddyPress Customization Options"
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-themes-page.php:20
+msgid "BuddyPress Extra Widgets"
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-themes-page.php:21
+msgid "Inbuilt Social Profile Module"
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-themes-page.php:24
+#: admin/wbcom/templates/wbcom-themes-page.php:49
+#: admin/wbcom/templates/wbcom-themes-page.php:72
+#: admin/wbcom/templates/wbcom-themes-page.php:94
+msgid "Purchase"
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-themes-page.php:25
+#: admin/wbcom/templates/wbcom-themes-page.php:50
+#: admin/wbcom/templates/wbcom-themes-page.php:73
+#: admin/wbcom/templates/wbcom-themes-page.php:95
+msgid "Preview"
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-themes-page.php:38
+msgid "LearnMate Solution"
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-themes-page.php:40
+msgid "Add Review to your course"
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-themes-page.php:41
+msgid "Course Coming Soon"
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-themes-page.php:42
+#: admin/wbcom/templates/wbcom-themes-page.php:68
+msgid "Grid And List Layout"
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-themes-page.php:43
+msgid "Learndash/LifterLMS Extra Widgets"
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-themes-page.php:44
+msgid "Unparalleled Course Layout"
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-themes-page.php:45
+msgid "Awesome Learndash/LifterLMS Pages"
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-themes-page.php:46
+msgid "Distraction Free Reading"
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-themes-page.php:63
+msgid "StoreMate Solution"
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-themes-page.php:65
+msgid "Dokan Extra Widgets"
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-themes-page.php:66
+msgid "Unique Single Product Page Customization"
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-themes-page.php:67
+msgid "Awesome WooCommerce Pages"
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-themes-page.php:69
+msgid "Automated Mega Menu Support"
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-themes-page.php:86
+msgid "Jobmate Theme"
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-themes-page.php:88
+msgid "Simple live searching and filtering"
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-themes-page.php:89
+msgid "Unique Job listing Page"
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-themes-page.php:90
+msgid "Awesome Resume list Page"
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-themes-page.php:91
+msgid "Outstanding all job maanger pagesLayout"
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-themes-page.php:108
+msgid "BuddyX Theme"
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-themes-page.php:110
+msgid "Responsive BuddyPress Theme"
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-themes-page.php:111
+#: admin/wbcom/templates/wbcom-themes-page.php:134
+msgid "Site Ready In One-Click"
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-themes-page.php:112
+msgid "Members and Groups Layout"
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-themes-page.php:113
+msgid "WooCommerce Ready"
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-themes-page.php:114
+msgid "Supported Muitiple Plugins"
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-themes-page.php:115
+#: admin/wbcom/templates/wbcom-themes-page.php:136
+msgid "Suitable for All Devices"
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-themes-page.php:131
+msgid "KnowX Theme"
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-themes-page.php:133
+msgid "Free WordPress Theme"
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-themes-page.php:135
+msgid "Create Knowledge base"
+msgstr ""
+
+#: admin/wbcom-welcome-page.php:18
+msgid "Wbcom Designs - reCaptcha"
+msgstr ""
+
+#: admin/wbcom-welcome-page.php:19
+msgid "BuddyPress reCaptcha allows users to check “User is authorised not a robot”."
+msgstr ""
+
+#: admin/wbcom-welcome-page.php:20
+msgid ""
+"This plugin provide to check reCaptcha in WP Login page, WP Registration, "
+"WP Lost Password, BuddyPress Registration, WooCommerce Login, WooCommerce "
+"Registration, WooCommerce Lost Password, WooCommerce Order Page, BBPress "
+"Topic And Replay pages"
+msgstr ""
+
+#: admin/wbcom-welcome-page.php:28
+msgid "Help &amp; Support Resources"
+msgstr ""
+
+#: admin/wbcom-welcome-page.php:29
+msgid ""
+"Here are all the resources you may need to get help from us. Documentation "
+"is usually the best place to start. Should you require help anytime, our "
+"customer care team is available to assist you at the support center."
+msgstr ""
+
+#: admin/wbcom-welcome-page.php:35
+msgid "Documentation"
+msgstr ""
+
+#: admin/wbcom-welcome-page.php:36
+msgid ""
+"We have prepared an extensive guide on Wbcom Designs - reCaptcha to learn "
+"all aspects of the plugin. You will find most of your answers here."
+msgstr ""
+
+#: admin/wbcom-welcome-page.php:37
+msgid "Read Documentation"
+msgstr ""
+
+#: admin/wbcom-welcome-page.php:41
+msgid "Support Center"
+msgstr ""
+
+#: admin/wbcom-welcome-page.php:42
+msgid ""
+"We strive to offer the best customer care via our support center. Once your "
+"theme is activated, you can ask us for help anytime."
+msgstr ""
+
+#: admin/wbcom-welcome-page.php:43
+msgid "Get Support"
+msgstr ""
+
+#: admin/wbcom-welcome-page.php:47
+msgid "Got Feedback?"
+msgstr ""
+
+#: admin/wbcom-welcome-page.php:48
+msgid ""
+"We want to hear about your experience with the plugin. We would also love "
+"to hear any suggestions you may for future updates."
+msgstr ""
+
+#: admin/wbcom-welcome-page.php:49
+msgid "Send Feedback"
+msgstr ""
+
+#: buddypress-recaptcha.php:102
+msgid "reCaptcha for WooCommerce"
+msgstr ""
+
+#: buddypress-recaptcha.php:103
+msgid "WooCommerce"
+msgstr ""
+
+#: buddypress-recaptcha.php:104
+msgid "BuddyPress"
+msgstr ""
+
+#: buddypress-recaptcha.php:105
+msgid "bbPress"
+msgstr ""
+
+#: buddypress-recaptcha.php:109
+#. translators: %1s: reCaptcha for WooCommerce, %2$s: WooCommerce, %3$s:
+#. BuddyPress, %4$s: bbPress,
+msgid ""
+"%1$s is ineffective as it requires %2$s or %3$s or %4$s to be installed and "
+"active."
+msgstr ""
+
+#: public/bp-classes/Regisrtationbp.php:79 public/lrl-classes/Login.php:79
+#: public/lrl-classes/Lostpassword.php:81
+#: public/lrl-classes/Regisrtation.php:79
+#: public/woocommerce-extra/WoocommerceReviewOrder.php:72
+#: public/woocommerce-extra/WoocommerceReviewOrder.php:229
+#: public/woocommerce-lrl-classes/WoocommerceLogin.php:83
+#: public/woocommerce-lrl-classes/WoocommerceLostpassword.php:82
+#: public/woocommerce-lrl-classes/WoocommerceRegister.php:82
+#: public/woocommerce-order/WoocommerceOrder.php:68
+#: public/woocommerce-order/WoocommerceOrder.php:674
+#: public/woocommerce-order/WoocommerceOrder.php:774
+#: public/woocommerce-order/WoocommerceOrder.php:1010
+#: public/woocommerce-order/WoocommerceOrder.php:1236
+msgid "Captcha"
+msgstr ""
+
+#: public/bp-classes/Regisrtationbp.php:102 public/lrl-classes/Login.php:97
+#: public/lrl-classes/Lostpassword.php:103
+#: public/lrl-classes/Regisrtation.php:103
+#: public/woocommerce-extra/LostpasswordPost.php:105
+#: public/woocommerce-extra/WoocommerceAfterCheckoutValidation.php:221
+#: public/woocommerce-extra/WoocommerceFilter.php:90
+#: public/woocommerce-extra/WoocommerceFilter.php:253
+#: public/woocommerce-extra/WoocommerceFilter.php:430
+#: public/woocommerce-extra/WoocommerceFilter.php:599
+#: public/woocommerce-extra/WoocommerceFilter.php:803
+#: public/woocommerce-extra/WoocommerceProcessLoginErrors.php:106
+#: public/woocommerce-extra/WoocommerceReviewOrder.php:96
+#: public/woocommerce-extra/WoocommerceReviewOrder.php:170
+#: public/woocommerce-extra/WoocommerceReviewOrder.php:185
+#: public/woocommerce-extra/WoocommerceReviewOrder.php:252
+#: public/woocommerce-extra/WoocommerceReviewOrder.php:317
+#: public/woocommerce-extra/WoocommerceReviewOrder.php:331
+#: public/woocommerce-lrl-classes/WoocommerceLogin.php:107
+#: public/woocommerce-lrl-classes/WoocommerceLostpassword.php:106
+#: public/woocommerce-lrl-classes/WoocommerceRegister.php:104
+#: public/woocommerce-order/WoocommerceOrder.php:91
+#: public/woocommerce-order/WoocommerceOrder.php:427
+#: public/woocommerce-order/WoocommerceOrder.php:1035
+#: public/woocommerce-order/WoocommerceOrder.php:1260
+msgid "reCaptcha is a required field."
+msgstr ""
+
+#: public/bp-classes/Regisrtationbp.php:282
+#: public/bp-classes/Regisrtationbp.php:286
+msgid "reCaptcha token is invalid"
+msgstr ""
+
+#: public/woocommerce-extra/LostpasswordPost.php:86
+#: public/woocommerce-extra/WoocommerceAfterCheckoutValidation.php:119
+#: public/woocommerce-extra/WoocommerceAfterCheckoutValidation.php:200
+#: public/woocommerce-extra/WoocommerceFilter.php:72
+#: public/woocommerce-extra/WoocommerceFilter.php:235
+#: public/woocommerce-extra/WoocommerceFilter.php:412
+#: public/woocommerce-extra/WoocommerceFilter.php:572
+#: public/woocommerce-extra/WoocommerceFilter.php:776
+#: public/woocommerce-extra/WoocommerceProcessLoginErrors.php:88
+#: public/woocommerce-extra/WoocommerceRegisterPost.php:79
+#: public/woocommerce-order/WoocommerceOrder.php:393
+msgid "Invalid recaptcha."
+msgstr ""
+
+#: public/woocommerce-extra/LostpasswordPost.php:95
+#: public/woocommerce-extra/WoocommerceAfterCheckoutValidation.php:133
+#: public/woocommerce-extra/WoocommerceAfterCheckoutValidation.php:213
+#: public/woocommerce-extra/WoocommerceFilter.php:81
+#: public/woocommerce-extra/WoocommerceFilter.php:244
+#: public/woocommerce-extra/WoocommerceFilter.php:421
+#: public/woocommerce-extra/WoocommerceFilter.php:585
+#: public/woocommerce-extra/WoocommerceFilter.php:690
+#: public/woocommerce-extra/WoocommerceFilter.php:789
+#: public/woocommerce-extra/WoocommerceFilter.php:894
+#: public/woocommerce-extra/WoocommerceProcessLoginErrors.php:97
+#: public/woocommerce-extra/WoocommerceRegisterPost.php:90
+#: public/woocommerce-order/WoocommerceOrder.php:413
+msgid "Could not get response from recaptcha server."
+msgstr ""
+
+#: public/woocommerce-extra/LostpasswordPost.php:112
+#: public/woocommerce-extra/WoocommerceAfterCheckoutValidation.php:147
+#: public/woocommerce-extra/WoocommerceAfterCheckoutValidation.php:228
+#: public/woocommerce-extra/WoocommerceFilter.php:437
+#: public/woocommerce-extra/WoocommerceProcessLoginErrors.php:113
+#: public/woocommerce-extra/WoocommerceRegisterPost.php:107
+#: public/woocommerce-order/WoocommerceOrder.php:439
+msgid "Could not verify request."
+msgstr ""
+
+#: public/woocommerce-extra/LostpasswordPost.php:174
+#: public/woocommerce-extra/LostpasswordPost.php:186
+#: public/woocommerce-extra/WoocommerceAfterCheckoutValidation.php:319
+#: public/woocommerce-extra/WoocommerceAfterCheckoutValidation.php:331
+#: public/woocommerce-extra/WoocommerceFilter.php:144
+#: public/woocommerce-extra/WoocommerceFilter.php:152
+#: public/woocommerce-extra/WoocommerceFilter.php:310
+#: public/woocommerce-extra/WoocommerceFilter.php:322
+#: public/woocommerce-extra/WoocommerceFilter.php:490
+#: public/woocommerce-extra/WoocommerceFilter.php:662
+#: public/woocommerce-extra/WoocommerceFilter.php:676
+#: public/woocommerce-extra/WoocommerceFilter.php:866
+#: public/woocommerce-extra/WoocommerceFilter.php:880
+#: public/woocommerce-extra/WoocommerceProcessLoginErrors.php:175
+#: public/woocommerce-extra/WoocommerceProcessLoginErrors.php:187
+#: public/woocommerce-extra/WoocommerceRegisterPost.php:161
+#: public/woocommerce-extra/WoocommerceRegisterPost.php:173
+#: public/woocommerce-order/WoocommerceOrder.php:514
+#: public/woocommerce-order/WoocommerceOrder.php:529
+msgid "Google reCAPTCHA verification failed, please try again later."
+msgstr ""
+
+#: public/woocommerce-extra/LostpasswordPost.php:199
+#: public/woocommerce-extra/WoocommerceAfterCheckoutValidation.php:350
+#: public/woocommerce-extra/WoocommerceFilter.php:162
+#: public/woocommerce-extra/WoocommerceFilter.php:335
+#: public/woocommerce-extra/WoocommerceProcessLoginErrors.php:200
+#: public/woocommerce-extra/WoocommerceRegisterPost.php:186
+#: public/woocommerce-order/WoocommerceOrder.php:550
+msgid "Could not get response from reCAPTCHA server."
+msgstr ""
+
+#: public/woocommerce-extra/LostpasswordPost.php:211
+#: public/woocommerce-extra/WoocommerceAfterCheckoutValidation.php:362
+#: public/woocommerce-extra/WoocommerceFilter.php:171
+#: public/woocommerce-extra/WoocommerceFilter.php:347
+#: public/woocommerce-extra/WoocommerceFilter.php:703
+#: public/woocommerce-extra/WoocommerceFilter.php:907
+#: public/woocommerce-extra/WoocommerceProcessLoginErrors.php:212
+#: public/woocommerce-extra/WoocommerceRegisterPost.php:198
+#: public/woocommerce-order/WoocommerceOrder.php:564
+msgid "Google reCAPTCHA token is missing."
+msgstr ""
+
+#: public/woocommerce-extra/WoocommerceAfterCheckoutValidation.php:141
+#: public/woocommerce-extra/WoocommerceRegisterPost.php:99
+msgid "Recaptcha is a required field."
+msgstr ""
+
+#: public/woocommerce-extra/WoocommerceFilter.php:72
+#: public/woocommerce-extra/WoocommerceFilter.php:74
+#: public/woocommerce-extra/WoocommerceFilter.php:81
+#: public/woocommerce-extra/WoocommerceFilter.php:83
+#: public/woocommerce-extra/WoocommerceFilter.php:90
+#: public/woocommerce-extra/WoocommerceFilter.php:92
+#: public/woocommerce-extra/WoocommerceFilter.php:144
+#: public/woocommerce-extra/WoocommerceFilter.php:146
+#: public/woocommerce-extra/WoocommerceFilter.php:152
+#: public/woocommerce-extra/WoocommerceFilter.php:154
+#: public/woocommerce-extra/WoocommerceFilter.php:162
+#: public/woocommerce-extra/WoocommerceFilter.php:164
+#: public/woocommerce-extra/WoocommerceFilter.php:171
+#: public/woocommerce-extra/WoocommerceFilter.php:173
+#: public/woocommerce-extra/WoocommerceFilter.php:235
+#: public/woocommerce-extra/WoocommerceFilter.php:237
+#: public/woocommerce-extra/WoocommerceFilter.php:244
+#: public/woocommerce-extra/WoocommerceFilter.php:246
+#: public/woocommerce-extra/WoocommerceFilter.php:253
+#: public/woocommerce-extra/WoocommerceFilter.php:255
+#: public/woocommerce-extra/WoocommerceFilter.php:310
+#: public/woocommerce-extra/WoocommerceFilter.php:313
+#: public/woocommerce-extra/WoocommerceFilter.php:322
+#: public/woocommerce-extra/WoocommerceFilter.php:326
+#: public/woocommerce-extra/WoocommerceFilter.php:335
+#: public/woocommerce-extra/WoocommerceFilter.php:339
+#: public/woocommerce-extra/WoocommerceFilter.php:347
+#: public/woocommerce-extra/WoocommerceFilter.php:351
+#: public/woocommerce-extra/WoocommerceFilter.php:412
+#: public/woocommerce-extra/WoocommerceFilter.php:414
+#: public/woocommerce-extra/WoocommerceFilter.php:421
+#: public/woocommerce-extra/WoocommerceFilter.php:423
+#: public/woocommerce-extra/WoocommerceFilter.php:430
+#: public/woocommerce-extra/WoocommerceFilter.php:432
+#: public/woocommerce-extra/WoocommerceFilter.php:437
+#: public/woocommerce-extra/WoocommerceFilter.php:490
+#: public/woocommerce-extra/WoocommerceFilter.php:492
+msgid "ERROR:"
+msgstr ""
+
+#: public/woocommerce-extra/WoocommerceReviewOrder.php:46
+#: public/woocommerce-order/WoocommerceOrder.php:45
+#: public/woocommerce-order/WoocommerceOrder.php:630
+msgid "Refresh Captcha"
+msgstr ""

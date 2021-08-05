@@ -358,7 +358,7 @@ if ( ! class_exists( 'Wooaction' ) ) :
 
 						if ( has_filter( 'woocommerce_get_image_size_' . $image_size ) ) {
 							$disabled_attr    = 'disabled="disabled"';
-							$disabled_message = '<p><small>' . esc_html__( 'The settings of this image size have been disabled because its values are being overwritten by a filter.', 'woocommerce' ) . '</small></p>';
+							$disabled_message = '<p><small>' . esc_html__( 'The settings of this image size have been disabled because its values are being overwritten by a filter.', 'buddypress-recaptcha' ) . '</small></p>';
 						}
 
 						?>
@@ -370,7 +370,7 @@ if ( ! class_exists( 'Wooaction' ) ) :
 
 								<input name="<?php echo esc_attr( $value['id'] ); ?>[width]" <?php echo esc_attr( $disabled_attr ); ?> id="<?php echo esc_attr( $value['id'] ); ?>-width" type="text" size="3" value="<?php echo esc_attr( $width ); ?>" /> &times; <input name="<?php echo esc_attr( $value['id'] ); ?>[height]" <?php echo esc_html( $disabled_attr ); // WPCS: XSS ok. ?> id="<?php echo esc_attr( $value['id'] ); ?>-height" type="text" size="3" value="<?php echo esc_attr( $height ); ?>" />px
 
-								<label><input name="<?php echo esc_attr( $value['id'] ); ?>[crop]" <?php echo esc_attr( $disabled_attr ); ?> id="<?php echo esc_attr( $value['id'] ); ?>-crop" type="checkbox" value="1" <?php checked( 1, $crop ); ?> /> <?php esc_html_e( 'Hard crop?', 'woocommerce' ); ?></label>
+								<label><input name="<?php echo esc_attr( $value['id'] ); ?>[crop]" <?php echo esc_attr( $disabled_attr ); ?> id="<?php echo esc_attr( $value['id'] ); ?>-crop" type="checkbox" value="1" <?php checked( 1, $crop ); ?> /> <?php esc_html_e( 'Hard crop?', 'buddypress-recaptcha' ); ?></label>
 
 								</td>
 						</tr>
@@ -401,7 +401,7 @@ if ( ! class_exists( 'Wooaction' ) ) :
 								<label><?php echo esc_html( $value['title'] ); ?> <?php echo wp_kses_post( $tooltip_html ); ?></label>
 							</th>
 							<td class="forminp">
-								<?php echo str_replace( ' id=', " data-placeholder='" . esc_attr__( 'Select a page&hellip;', 'woocommerce' ) . "' style='" . $value['css'] . "' class='" . $value['class'] . "' id=", wp_dropdown_pages( $args ) ); // WPCS: XSS ok. ?> <?php echo wp_kses_post( $description ); // WPCS: XSS ok. ?>
+								<?php echo str_replace( ' id=', " data-placeholder='" . esc_attr__( 'Select a page&hellip;', 'buddypress-recaptcha' ) . "' style='" . $value['css'] . "' class='" . $value['class'] . "' id=", wp_dropdown_pages( $args ) ); // WPCS: XSS ok. ?> <?php echo wp_kses_post( $description ); // WPCS: XSS ok. ?>
 							</td>
 						</tr>
 						<?php
@@ -415,7 +415,7 @@ if ( ! class_exists( 'Wooaction' ) ) :
 							$page                = get_post( $option_value );
 							$option_display_name = sprintf(
 								/* translators: 1: page name 2: page ID */
-								__( '%1$s (ID: %2$s)', 'woocommerce' ),
+								__( '%1$s (ID: %2$s)', 'buddypress-recaptcha' ),
 								$page->post_title,
 								$option_value
 							);
@@ -432,7 +432,7 @@ if ( ! class_exists( 'Wooaction' ) ) :
 									style="<?php echo esc_attr( $value['css'] ); ?>"
 									class="<?php echo esc_attr( $value['class'] ); ?>"
 									<?php echo implode( ' ', $custom_attributes ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-									data-placeholder="<?php esc_attr_e( 'Search for a page&hellip;', 'woocommerce' ); ?>"
+									data-placeholder="<?php esc_attr_e( 'Search for a page&hellip;', 'buddypress-recaptcha' ); ?>"
 									data-allow_clear="true"
 									data-exclude="<?php echo esc_attr( wc_esc_json( wp_json_encode( $value['args']['exclude'] ) ) ); ?>"
 									>
@@ -465,7 +465,7 @@ if ( ! class_exists( 'Wooaction' ) ) :
 							<th scope="row" class="titledesc">
 								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo wp_kses_post( $tooltip_html ); // WPCS: XSS ok. ?></label>
 							</th>
-							<td class="forminp"><select name="<?php echo esc_attr( $value['id'] ); ?>" style="<?php echo esc_attr( $value['css'] ); ?>" data-placeholder="<?php esc_attr_e( 'Choose a country / region&hellip;', 'woocommerce' ); ?>" aria-label="<?php esc_attr_e( 'Country / Region', 'woocommerce' ); ?>" class="wc-enhanced-select">
+							<td class="forminp"><select name="<?php echo esc_attr( $value['id'] ); ?>" style="<?php echo esc_attr( $value['css'] ); ?>" data-placeholder="<?php esc_attr_e( 'Choose a country / region&hellip;', 'buddypress-recaptcha' ); ?>" aria-label="<?php esc_attr_e( 'Country / Region', 'buddypress-recaptcha' ); ?>" class="wc-enhanced-select">
 								<?php WC()->countries->country_dropdown_options( $country, $state ); ?>
 							</select> <?php echo wp_kses_post( $description ); ?>
 							</td>
@@ -490,7 +490,7 @@ if ( ! class_exists( 'Wooaction' ) ) :
 								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo wp_kses_post( $tooltip_html ); // WPCS: XSS ok. ?></label>
 							</th>
 							<td class="forminp">
-								<select multiple="multiple" name="<?php echo esc_attr( $value['id'] ); ?>[]" style="width:350px" data-placeholder="<?php esc_attr_e( 'Choose countries / regions&hellip;', 'woocommerce' ); ?>" aria-label="<?php esc_attr_e( 'Country / Region', 'woocommerce' ); ?>" class="wc-enhanced-select">
+								<select multiple="multiple" name="<?php echo esc_attr( $value['id'] ); ?>[]" style="width:350px" data-placeholder="<?php esc_attr_e( 'Choose countries / regions&hellip;', 'buddypress-recaptcha' ); ?>" aria-label="<?php esc_attr_e( 'Country / Region', 'buddypress-recaptcha' ); ?>" class="wc-enhanced-select">
 									<?php
 									if ( ! empty( $countries ) ) {
 										foreach ( $countries as $key => $val ) {
@@ -498,7 +498,7 @@ if ( ! class_exists( 'Wooaction' ) ) :
 										}
 									}
 									?>
-								</select> <?php echo ( $description ) ? $description : ''; ?> <br /><a class="select_all button" href="#"><?php esc_html_e( 'Select all', 'woocommerce' ); ?></a> <a class="select_none button" href="#"><?php esc_html_e( 'Select none', 'woocommerce' ); ?></a>
+								</select> <?php echo ( $description ) ? $description : ''; ?> <br /><a class="select_all button" href="#"><?php esc_html_e( 'Select all', 'buddypress-recaptcha' ); ?></a> <a class="select_none button" href="#"><?php esc_html_e( 'Select none', 'buddypress-recaptcha' ); ?></a>
 							</td>
 						</tr>
 						<?php
@@ -507,10 +507,10 @@ if ( ! class_exists( 'Wooaction' ) ) :
 					// Days/months/years selector.
 					case 'relative_date_selector':
 						$periods      = array(
-							'days'   => __( 'Day(s)', 'woocommerce' ),
-							'weeks'  => __( 'Week(s)', 'woocommerce' ),
-							'months' => __( 'Month(s)', 'woocommerce' ),
-							'years'  => __( 'Year(s)', 'woocommerce' ),
+							'days'   => __( 'Day(s)', 'buddypress-recaptcha' ),
+							'weeks'  => __( 'Week(s)', 'buddypress-recaptcha' ),
+							'months' => __( 'Month(s)', 'buddypress-recaptcha' ),
+							'years'  => __( 'Year(s)', 'buddypress-recaptcha' ),
 						);
 						$option_value = wc_parse_relative_date_option( $value['value'] );
 						?>
