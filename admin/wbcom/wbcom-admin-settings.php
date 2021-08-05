@@ -1,10 +1,11 @@
 <?php
 /**
- * Exit if accessed directly.
+ * Class to add top header pages of wbcom plugin and additional features.
  *
- * @package Exit if accessed directly.
+ * @author   Wbcom Designs
+ * @package  Bp_Add_Group_Types
  */
-
+// Exit if accessed directly.
 defined( 'ABSPATH' ) || exit;
 
 if ( ! class_exists( 'Wbcom_Admin_Settings' ) ) {
@@ -13,215 +14,169 @@ if ( ! class_exists( 'Wbcom_Admin_Settings' ) ) {
 	 * Class to add wbcom plugin's admin settings.
 	 *
 	 * @author   Wbcom Designs
-	 * @since    1.0.0
+	 * @since    2.0.0
 	 */
 	class Wbcom_Admin_Settings {
 
 		/**
 		 * Wbcom_Admin_Settings Constructor.
 		 *
-		 * @since  1.0.0
+		 * @since 2.0.0
 		 * @access public
 		 */
 		public function __construct() {
 			add_shortcode( 'wbcom_admin_setting_header', array( $this, 'wbcom_admin_setting_header_html' ) );
 			add_action( 'admin_menu', array( $this, 'wbcom_admin_additional_pages' ), 999 );
 			add_action( 'admin_enqueue_scripts', array( $this, 'wbcom_enqueue_admin_scripts' ) );
+			add_action( 'wp_ajax_wbcom_manage_plugin_installation', array( $this, 'wbcom_do_plugin_action' ) );
 		}
 
 		/**
-		 * Template Class Doc Comment
-
-		 * Template Class.
+		 * Ajax call to serve action related to plugin's install/activate/deactive.
+		 *
+		 * @since 2.0.0
+		 * @access public
 		 */
-		public function wbcom_admin_setting_header_html() {
-			$page = filter_input( INPUT_GET, 'page' ) ? filter_input( INPUT_GET, 'page' ) : 'wbcom-themes-page';
+		public function wbcom_do_plugin_action() {
+			$action = ! empty( $_POST['plugin_action'] ) ? $_POST['plugin_action'] : false;
+			$slug   = ! empty( $_POST['plugin_slug'] ) ? $_POST['plugin_slug'] : false;
 
-			$settings_active = '';
-			$support_active  = $settings_active;
-			$theme_active    = $support_active;
-			$plugin_active   = $theme_active;
-			switch ( $page ) {
-
-				case 'wbcom-plugins-page':
-					$plugin_active = 'is_active';
-					break;
-				case 'wbcom-themes-page':
-					$theme_active = 'is_active';
-					break;
-				case 'wbcom-support-page':
-					$support_active = 'is_active';
-					break;
-				case 'wbcom-license-page':
-					$license_active = 'is_active';
-					break;
-				default:
-					$settings_active = 'is_active';
+			if ( 'install_plugin' == $action ) {
+				$this->wbcom_do_plugin_install( $slug );
+			} elseif ( 'activate_plugin' == $action ) {
+				$this->wbcom_do_plugin_activate( $slug );
+			} else {
+				$this->wbcom_do_plugin_deactivate( $slug );
 			}
-			?>
-			<div id="wb_admin_header" class="wp-clearfix">
-
-				<div id="wb_admin_logo">
-					<img src="<?php echo esc_html( plugin_dir_url( __FILE__ ) . '/assets/imgs/logowbcom.png' ); ?>">
-					<div class="wb_admin_right"></div>
-				</div>
-
-				<nav id="wb_admin_nav">
-					<ul>
-						<li class="wb_admin_nav_item <?php echo esc_attr( $settings_active ); ?>">
-							<a href="<?php echo esc_html( get_admin_url() . 'admin.php?page=wbcomplugins' ); ?>" id="wb_admin_nav_trigger_settings">
-								<i class="fas fa-sliders-h"></i>
-								<h4><?php esc_html_e( 'Settings', 'buddypress-recaptcha' ); ?></h4>
-							</a>
-						</li>
-						<li class="wb_admin_nav_item <?php echo esc_attr( $plugin_active ); ?>">
-							<a href="<?php echo esc_html( get_admin_url() . 'admin.php?page=wbcom-plugins-page' ); ?>" id="wb_admin_nav_trigger_extensions">
-								<i class="fas fa-th"></i>
-								<h4><?php esc_html_e( 'Our Plugins', 'buddypress-recaptcha' ); ?></h4>
-							</a>
-						</li>
-						<li class="wb_admin_nav_item <?php echo esc_attr( $theme_active ); ?>">
-							<a href="<?php echo esc_html( get_admin_url() . 'admin.php?page=wbcom-themes-page' ); ?>" id="wb_admin_nav_trigger_themes">
-								<i class="fas fa-magic"></i>
-								<h4><?php esc_html_e( 'Our Themes', 'buddypress-recaptcha' ); ?></h4>
-							</a>
-						</li>
-						<li class="wb_admin_nav_item <?php echo esc_attr( $support_active ); ?>">
-							<a href="<?php echo esc_html( get_admin_url() . 'admin.php?page=wbcom-support-page' ); ?>" id="wb_admin_nav_trigger_support">
-								<i class="fas fa-question-circle"></i>
-								<h4><?php esc_html_e( 'Support', 'buddypress-recaptcha' ); ?></h4>
-							</a>
-						</li>
-						<?php do_action( 'wbcom_add_header_menu' ); ?>
-					</ul>
-				</nav>
-			</div>
-			<?php
+			die;
 		}
 
 		/**
-		 * Function for add plugin's admin panel header pages.
+		 * Function for activate plugin.
 		 *
-		 * @since  1.0.0
+		 * @since 2.0.0
 		 * @access public
+		 * @param string $slug Plugin's slug.
 		 */
-		public function wbcom_admin_additional_pages() {
-			add_submenu_page(
-				'wbcomplugins',
-				esc_html__( 'Our Plugins', 'buddypress-recaptcha' ),
-				esc_html__( 'Our Plugins', 'buddypress-recaptcha' ),
-				'manage_options',
-				'wbcom-plugins-page',
-				array( $this, 'wbcom_plugins_submenu_page_callback' )
-			);
-			add_submenu_page(
-				'wbcomplugins',
-				esc_html__( 'Our Themes', 'buddypress-recaptcha' ),
-				esc_html__( 'Our Themes', 'buddypress-recaptcha' ),
-				'manage_options',
-				'wbcom-themes-page',
-				array( $this, 'wbcom_themes_submenu_page_callback' )
-			);
-			add_submenu_page(
-				'wbcomplugins',
-				esc_html__( 'Support', 'buddypress-recaptcha' ),
-				esc_html__( 'Support', 'buddypress-recaptcha' ),
-				'manage_options',
-				'wbcom-support-page',
-				array( $this, 'wbcom_support_submenu_page_callback' )
-			);
+		public function wbcom_do_plugin_activate( $slug ) {
+			$plugin_file_path = $this->_get_plugin_file_path_from_slug( $slug );
+			activate_plugin( $plugin_file_path );
 		}
 
 		/**
-		 * Function for include wbcom plugins list page.
+		 * Function for deactivate plugin.
 		 *
-		 * @since  1.0.0
+		 * @since 2.0.0
 		 * @access public
+		 * @param string $slug Plugin's slug.
 		 */
-		public function wbcom_plugins_submenu_page_callback() {
-			include 'templates/wbcom-plugins-page.php';
+		public function wbcom_do_plugin_deactivate( $slug ) {
+			$plugin_file_path = $this->_get_plugin_file_path_from_slug( $slug );
+			deactivate_plugins( $plugin_file_path );
 		}
 
 		/**
-		 * Function for include themes list page.
+		 * Function for get plugin file name.
 		 *
-		 * @since  1.0.0
+		 * @since 2.0.0
 		 * @access public
+		 * @param string $slug Plugin's slug.
 		 */
-		public function wbcom_themes_submenu_page_callback() {
-			include 'templates/wbcom-themes-page.php';
-		}
-
-		/**
-		 * Function for include support page.
-		 *
-		 * @since  1.0.0
-		 * @access public
-		 */
-		public function wbcom_support_submenu_page_callback() {
-			include 'templates/wbcom-support-page.php';
-		}
-
-		/**
-		 * Enqueue js & css related to wbcom plugin.
-		 *
-		 * @since  1.0.0
-		 * @access public
-		 */
-		public function wbcom_enqueue_admin_scripts() {
-			if ( ! wp_style_is( 'font-awesome', 'enqueued' ) ) {
-				wp_enqueue_style( 'font-awesome', '//use.fontawesome.com/releases/v5.5.0/css/all.css', array(), '1.0' );
+		public function _get_plugin_file_path_from_slug( $slug ) {
+			if ( ! function_exists( 'get_plugins' ) ) {
+				require_once ABSPATH . 'wp-admin/includes/plugin.php';
 			}
-
-			if ( ! wp_script_is( 'wbcom-admin-setting-js', 'enqueued' ) ) {
-
-				wp_register_script(
-					$handle    = 'wbcom_admin_setting_js',
-					$src       = plugin_dir_url( __FILE__ ) . 'assets/js/wbcom-admin-setting.js',
-					$deps      = array( 'jquery' ),
-					$ver       = time(),
-					$in_footer = true
-				);
-				wp_localize_script(
-					'wbcom_admin_setting_js',
-					'wbcom_plugin_installer_params',
-					array(
-						'ajax_url'        => admin_url( 'admin-ajax.php' ),
-						'activate_text'   => esc_html__( 'Activate', 'buddypress-recaptcha' ),
-						'deactivate_text' => esc_html__( 'Deactivate', 'buddypress-recaptcha' ),
-					)
-				);
-				wp_enqueue_script( 'wbcom_admin_setting_js' );
-
-			}
-
-			if ( ! wp_style_is( 'wbcom-admin-setting-css', 'enqueued' ) ) {
-				wp_enqueue_style( 'wbcom-admin-setting-css', plugin_dir_url( __FILE__ ) . 'assets/css/wbcom-admin-setting.css', array(), '11.11' );
-			}
-
-			if ( function_exists( 'get_current_screen' ) ) {
-				$screen = get_current_screen();
-				if ( 'toplevel_page_wbcomplugins' === $screen->base ) {
-					if ( ! wp_script_is( 'jquery', 'enqueued' ) ) {
-						wp_enqueue_script( 'jquery' );
-					}
-					if ( ! wp_script_is( 'jquery-ui-sortable', 'enqueued' ) ) {
-						wp_enqueue_script( 'jquery-ui-sortable' );
-					}
-					if ( ! wp_script_is( 'woo-sell-services-selectize-js', 'enqueued' ) ) {
-						wp_enqueue_script( 'woo-sell-services-selectize-js', plugins_url() . '/woo-pincode-checker/admin/js/selectize.min.js', array( 'jquery' ), '10.10', false );
-					}
-					if ( ! wp_style_is( 'woo-sell-services-selectize-css', 'enqueued' ) ) {
-						wp_enqueue_style( 'woo-sell-services-selectize-css', plugins_url() . '/woo-pincode-checker/admin/css/selectize.css', array(), '10.10', 'all' );
-					}
+			$plugins_list = get_plugins();
+			$keys         = array_keys( $plugins_list );
+			foreach ( $keys as $key ) {
+				if ( preg_match( '|^' . $slug . '/|', $key ) ) {
+					return $key;
 				}
 			}
+			return $slug;
+		}
+
+		/**
+		 * Function for install plugin.
+		 *
+		 * @since 2.0.0
+		 * @access public
+		 * @param string $slug Plugin's slug.
+		 */
+		public function wbcom_do_plugin_install( $slug ) {
+			include_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
+			wp_cache_flush();
+
+			$upgrader   = new Plugin_Upgrader();
+			$plugin_zip = $this->get_download_url( $slug );
+			$installed  = $upgrader->install( $plugin_zip );
+			if ( $installed ) {
+				$response = array( 'status' => 'installed' );
+				echo wp_send_json_success( $response );
+			} else {
+				return false;
+			}
+			exit;
+		}
+
+		/**
+		 * Function for upgrade plugin.
+		 *
+		 * @since 2.0.0
+		 * @access public
+		 * @param string $plugin_slug Plugin's slug.
+		 */
+		public function upgrade_plugin( $plugin_slug ) {
+			include_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
+			wp_cache_flush();
+
+			$upgrader = new Plugin_Upgrader();
+			$upgraded = $upgrader->upgrade( $plugin_slug );
+
+			return $upgraded;
+		}
+
+		/**
+		 * Function for return plugin's WordPress repo download url.
+		 *
+		 * @since 2.0.0
+		 * @access public
+		 * @param string $slug Plugin's slug.
+		 */
+		public function get_download_url( $slug ) {
+			return $this->get_wp_repo_download_url( $slug );
+		}
+
+		/**
+		 * Function for get plugin's WordPress repo download url.
+		 *
+		 * @since 2.0.0
+		 * @access public
+		 * @param string $slug Plugin's slug.
+		 */
+		public function get_wp_repo_download_url( $slug ) {
+			$status = array();
+			include_once ABSPATH . 'wp-admin/includes/plugin-install.php'; // for plugins_api..
+			$api = plugins_api(
+				'plugin_information',
+				array(
+					'slug'   => $slug,
+					'fields' => array( 'sections' => false ),
+				)
+			); // Save on a bit of bandwidth.
+
+			if ( is_wp_error( $api ) ) {
+				$status['error'] = $api->get_error_message();
+				wp_send_json_error( $status );
+			}
+
+			return $api->download_link;
 		}
 
 		/**
 		 * Function for get all wbcom free plugin's details.
 		 *
-		 * @since  1.0.0
+		 * @since 2.0.0
 		 * @access public
 		 */
 		public function wbcom_all_free_plugins() {
@@ -386,22 +341,6 @@ if ( ! class_exists( 'Wbcom_Admin_Settings' ) ) {
 					'wp_url'      => 'https://wordpress.org/plugins/woo-price-quote-inquiry/',
 					'icon'        => 'fas fa-dollar-sign',
 				),
-				'20' => array(
-					'name'        => esc_html__( 'EDD Service Extended', 'buddypress-recaptcha' ),
-					'slug'        => 'edd-service-extended',
-					'description' => esc_html__( 'This plugin helps administrators of the site categorize their wordpress media.', 'buddypress-recaptcha' ),
-					'status'      => $this->wbcom_plugin_status( 'edd-service-extended' ),
-					'wp_url'      => 'https://wordpress.org/plugins/edd-service-extended/',
-					'icon'        => 'fab fa-product-hunt',
-				),
-				'21' => array(
-					'name'        => esc_html__( 'WB Ads Rotator with Split Test', 'buddypress-recaptcha' ),
-					'slug'        => 'wb-ads-rotator-with-split-test',
-					'description' => esc_html__( 'This plugin is designed for the SPLIT TESTING, you can check performance of your ads layout and on the basis of them you can select one of them for your regular use.', 'buddypress-recaptcha' ),
-					'status'      => $this->wbcom_plugin_status( 'wb-ads-rotator-with-split-test' ),
-					'wp_url'      => 'https://wordpress.org/plugins/wb-ads-rotator-with-split-test/',
-					'icon'        => 'fab fa-adversal',
-				),
 			);
 			return $free_plugins;
 		}
@@ -409,7 +348,7 @@ if ( ! class_exists( 'Wbcom_Admin_Settings' ) ) {
 		/**
 		 * Function for get all wbcom paid plugin's details.
 		 *
-		 * @since  1.0.0
+		 * @since 2.0.0
 		 * @access public
 		 */
 		public function wbcom_all_paid_plugins() {
@@ -455,31 +394,11 @@ if ( ! class_exists( 'Wbcom_Admin_Settings' ) ) {
 		}
 
 		/**
-		 * Function for check plugin's status.
-		 *
-		 * @since  1.0.0
-		 * @access public
-		 * @param  string $slug Plugin's slug.
-		 */
-		public function wbcom_plugin_status( $slug ) {
-			return 'activated';
-			if ( $this->wbcom_is_plugin_installed( $slug ) ) {
-				if ( $this->wbcom_is_plugin_active( $slug ) ) {
-					return 'activated';
-				} else {
-					return 'installed';
-				}
-			} else {
-				return 'not_installed';
-			}
-		}
-
-		/**
 		 * Function for check plugin is installed or not.
 		 *
-		 * @since  1.0.0
+		 * @since 2.0.0
 		 * @access public
-		 * @param  string $slug Plugin's slug.
+		 * @param string $slug Plugin's slug.
 		 */
 		public function wbcom_is_plugin_installed( $slug ) {
 			if ( ! function_exists( 'get_plugins' ) ) {
@@ -495,17 +414,230 @@ if ( ! class_exists( 'Wbcom_Admin_Settings' ) ) {
 			return false;
 		}
 
+		/**
+		 * Function for check plugin's status.
+		 *
+		 * @since 2.0.0
+		 * @access public
+		 * @param string $slug Plugin's slug.
+		 */
+		public function wbcom_plugin_status( $slug ) {
+			if ( $this->wbcom_is_plugin_installed( $slug ) ) {
+				if ( $this->wbcom_is_plugin_active( $slug ) ) {
+					return 'activated';
+				} else {
+					return 'installed';
+				}
+			} else {
+				return 'not_installed';
+			}
+		}
+
+		/**
+		 * Function for check plugin is activated or not.
+		 *
+		 * @since 2.0.0
+		 * @access public
+		 * @param string $slug Plugin's slug.
+		 */
+		public function wbcom_is_plugin_active( $slug ) {
+			if ( ! function_exists( 'get_plugins' ) ) {
+				require_once ABSPATH . 'wp-admin/includes/plugin.php';
+			}
+			$all_plugins = get_plugins();
+			$keys        = array_keys( $all_plugins );
+			$response    = false;
+			foreach ( $keys as $key ) {
+				if ( preg_match( '|^' . $slug . '/|', $key ) ) {
+					if ( is_plugin_active( $key ) ) {
+						$response = true;
+					}
+				}
+			}
+			return $response;
+		}
+
+		/**
+		 * Enqueue js & css related to wbcom plugin.
+		 *
+		 * @since 2.0.0
+		 * @access public
+		 */
+		public function wbcom_enqueue_admin_scripts() {
+			if ( ! wp_style_is( 'font-awesome', 'enqueued' ) ) {
+				wp_enqueue_style( 'font-awesome', '//use.fontawesome.com/releases/v5.5.0/css/all.css' );
+			}
+			if ( ! wp_script_is( 'wbcom_admin_setting_js', 'enqueued' ) ) {
+
+				wp_register_script(
+					'wbcom_admin_setting_js',
+					RFW_PLUGIN_URL . 'admin/wbcom/assets/js/wbcom-admin-setting.js',
+					array( 'jquery' ),
+					time(),
+					false
+				);
+				wp_localize_script(
+					'wbcom_admin_setting_js',
+					'wbcom_plugin_installer_params',
+					array(
+						'ajax_url'        => admin_url( 'admin-ajax.php' ),
+						'activate_text'   => esc_html__( 'Activate', 'buddypress-recaptcha' ),
+						'deactivate_text' => esc_html__( 'Deactivate', 'buddypress-recaptcha' ),
+					)
+				);
+				wp_enqueue_script( 'wbcom_admin_setting_js' );
+
+			}
+
+			if ( ! wp_style_is( 'wbcom-admin-setting-css', 'enqueued' ) ) {
+				wp_enqueue_style( 'wbcom-admin-setting-css', RFW_PLUGIN_URL . 'admin/wbcom/assets/css/wbcom-admin-setting.css' );
+			}
+
+			if ( function_exists( 'get_current_screen' ) ) {
+				$screen = get_current_screen();
+				if ( 'toplevel_page_wbcomplugins' === $screen->base ) {
+					wp_register_style( 'custom_wp_admin_css', RFW_PLUGIN_URL . 'assets/css/bpwoo-frontend-css.css' );
+
+					wp_enqueue_style( 'custom_wp_admin_css' );
+					wp_enqueue_script( 'custom_wp_admin_js', RFW_PLUGIN_URL . 'assets/js/bpwoo-frontend-js.js', array( 'jquery' ) );
+				}
+			}
+		}
+
+		/**
+		 * Function for add plugin's admin panel header pages.
+		 *
+		 * @since 2.0.0
+		 * @access public
+		 */
+		public function wbcom_admin_additional_pages() {
+			add_submenu_page(
+				'wbcomplugins',
+				esc_html__( 'Our Plugins', 'buddypress-recaptcha' ),
+				esc_html__( 'Our Plugins', 'buddypress-recaptcha' ),
+				'manage_options',
+				'wbcom-plugins-page',
+				array( $this, 'wbcom_plugins_submenu_page_callback' )
+			);
+			add_submenu_page(
+				'wbcomplugins',
+				esc_html__( 'Our Themes', 'buddypress-recaptcha' ),
+				esc_html__( 'Our Themes', 'buddypress-recaptcha' ),
+				'manage_options',
+				'wbcom-themes-page',
+				array( $this, 'wbcom_themes_submenu_page_callback' )
+			);
+			add_submenu_page(
+				'wbcomplugins',
+				esc_html__( 'Support', 'buddypress-recaptcha' ),
+				esc_html__( 'Support', 'buddypress-recaptcha' ),
+				'manage_options',
+				'wbcom-support-page',
+				array( $this, 'wbcom_support_submenu_page_callback' )
+			);
+		}
+
+		/**
+		 * Function for include wbcom plugins list page.
+		 *
+		 * @since 2.0.0
+		 * @access public
+		 */
+		public function wbcom_plugins_submenu_page_callback() {
+			include 'templates/wbcom-plugins-page.php';
+		}
+
+		/**
+		 * Function for include themes list page.
+		 *
+		 * @since 2.0.0
+		 * @access public
+		 */
+		public function wbcom_themes_submenu_page_callback() {
+			include 'templates/wbcom-themes-page.php';
+		}
+
+		/**
+		 * Function for include support page.
+		 *
+		 * @since 2.0.0
+		 * @access public
+		 */
+		public function wbcom_support_submenu_page_callback() {
+			include 'templates/wbcom-support-page.php';
+		}
+
+		/**
+		 * Shortcode for display top menu header.
+		 *
+		 * @since 2.0.0
+		 * @access public
+		 */
+		public function wbcom_admin_setting_header_html() {
+			$page          = filter_input( INPUT_GET, 'page' ) ? filter_input( INPUT_GET, 'page' ) : 'wbcom-themes-page';
+			$plugin_active = $theme_active = $support_active = $settings_active = '';
+			switch ( $page ) {
+				case 'wbcom-plugins-page':
+					$plugin_active = 'is_active';
+					break;
+				case 'wbcom-themes-page':
+					$theme_active = 'is_active';
+					break;
+				case 'wbcom-support-page':
+					$support_active = 'is_active';
+					break;
+				case 'wbcom-license-page':
+					$license_active = 'is_active';
+					break;
+				default:
+					$settings_active = 'is_active';
+			}
+			?>
+			<div id="wb_admin_header" class="wp-clearfix">
+
+				<div id="wb_admin_logo">
+					<img src="<?php echo esc_url( RFW_PLUGIN_URL . 'admin/wbcom/assets/imgs/logowbcom.png' ); ?>">
+					<div class="wb_admin_right"></div>
+				</div>
+
+				<nav id="wb_admin_nav">
+					<ul>
+						<li class="wb_admin_nav_item <?php echo esc_attr( $settings_active ); ?>">
+							<a href="<?php echo get_admin_url() . 'admin.php?page=wbcomplugins'; ?>" id="wb_admin_nav_trigger_settings">
+								<i class="fas fa-sliders-h"></i>
+								<h4><?php esc_html_e( 'Settings', 'buddypress-recaptcha' ); ?></h4>
+							</a>
+						</li>
+						<li class="wb_admin_nav_item <?php echo esc_attr( $plugin_active ); ?>">
+							<a href="<?php echo get_admin_url() . 'admin.php?page=wbcom-plugins-page'; ?>" id="wb_admin_nav_trigger_extensions">
+								<i class="fas fa-th"></i>
+								<h4><?php esc_html_e( 'Our Plugins', 'buddypress-recaptcha' ); ?></h4>
+							</a>
+						</li>
+						<li class="wb_admin_nav_item <?php echo esc_attr( $theme_active ); ?>">
+							<a href="<?php echo get_admin_url() . 'admin.php?page=wbcom-themes-page'; ?>" id="wb_admin_nav_trigger_themes">
+								<i class="fas fa-magic"></i>
+								<h4><?php esc_html_e( 'Our Themes', 'buddypress-recaptcha' ); ?></h4>
+							</a>
+						</li>
+						<li class="wb_admin_nav_item <?php echo esc_attr( $support_active ); ?>">
+							<a href="<?php echo get_admin_url() . 'admin.php?page=wbcom-support-page'; ?>" id="wb_admin_nav_trigger_support">
+								<i class="fas fa-question-circle"></i>
+								<h4><?php esc_html_e( 'Support', 'buddypress-recaptcha' ); ?></h4>
+							</a>
+						</li>
+						<?php do_action( 'wbcom_add_header_menu' ); ?>
+					</ul>
+				</nav>
+			</div>
+			<?php
+		}
+
 	}
 
-	/**
-	 * Template Class Doc Comment
-	 *
-	 * Template Class.
-	 */
 	function instantiate_wbcom_plugin_manager() {
 		new Wbcom_Admin_Settings();
 	}
 
 	instantiate_wbcom_plugin_manager();
-
 }
