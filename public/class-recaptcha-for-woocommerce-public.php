@@ -302,7 +302,7 @@ class Recaptcha_For_Woocommerce_Public {
 	 */
 	public function woo_load_lang_for_woo_recaptcha() {
 
-		load_plugin_textdomain( 'recaptcha-for-woocommerce', false, basename( dirname( __FILE__ ) ) . '/languages/' );
+		load_plugin_textdomain( 'buddypress-recaptcha', false, basename( dirname( __FILE__ ) ) . '/languages/' );
 		// add_filter('map_meta_cap', array($this, 'map_wbc_woo_map_woo_product_slider_meta_caps'), 10, 4);
 	}
 }

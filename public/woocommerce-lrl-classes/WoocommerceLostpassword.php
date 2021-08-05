@@ -79,7 +79,7 @@ class WoocommerceLostpassword {
 				<?php
 				if ( 'yes' != $wbc_recapcha_hide_label_lostpassword ) :
 					?>
-	<label for="lostpassword_captcha"><?php echo esc_html( ( '' == trim( $captcha_lable ) ) ? __( 'Captcha', 'recaptcha-for-woocommerce' ) : esc_html( $captcha_lable ) ); ?>&nbsp;<span class="required">*</span></label>
+	<label for="lostpassword_captcha"><?php echo esc_html( ( '' == trim( $captcha_lable ) ) ? __( 'Captcha', 'buddypress-recaptcha' ) : esc_html( $captcha_lable ) ); ?>&nbsp;<span class="required">*</span></label>
 					<?php
 			endif;
 				?>
@@ -103,7 +103,7 @@ class WoocommerceLostpassword {
 				<?php if ( 'yes' == trim( $disable_submit_btn ) ) : ?>
 	jQuery('.woocommerce-Button').attr("disabled", true);
 					<?php if ( '' == $recapcha_error_msg_captcha_blank ) : ?>
-							jQuery('.woocommerce-Button').attr("title", "<?php echo esc_html( __( 'reCaptcha is a required field.', 'recaptcha-for-woocommerce' ) ); ?>");
+							jQuery('.woocommerce-Button').attr("title", "<?php echo esc_html( __( 'reCaptcha is a required field.', 'buddypress-recaptcha' ) ); ?>");
 					<?php else : ?>
 							jQuery('.woocommerce-Button').attr("title", "<?php echo esc_html( $recapcha_error_msg_captcha_blank ); ?>");
 					<?php endif; ?>    

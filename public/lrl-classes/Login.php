@@ -76,7 +76,7 @@ class Login {
 				<?php
 				if ( 'yes' !== $wbc_recapcha_hide_label_wplogin ) :
 					?>
-	<label for="g-recaptcha-wp-login-wbc"><?php echo esc_html( ( '' === trim( $captcha_lable ) ) ? __( 'Captcha', 'recaptcha-for-woocommerce' ) : esc_html( $captcha_lable ) ); ?>&nbsp;</label>
+	<label for="g-recaptcha-wp-login-wbc"><?php echo esc_html( ( '' === trim( $captcha_lable ) ) ? __( 'Captcha', 'buddypress-recaptcha' ) : esc_html( $captcha_lable ) ); ?>&nbsp;</label>
 					<?php
 			endif;
 				?>
@@ -94,7 +94,7 @@ class Login {
 				<?php if ( 'yes' === trim( $disable_submit_btn ) ) : ?>
 	jQuery('#wp-submit').attr("disabled", true);
 					<?php if ( '' === $recapcha_error_msg_captcha_blank ) : ?>
-	jQuery('#wp-submit').attr("title", "<?php echo esc_html( __( 'reCaptcha is a required field.', 'recaptcha-for-woocommerce' ) ); ?>");
+	jQuery('#wp-submit').attr("title", "<?php echo esc_html( __( 'reCaptcha is a required field.', 'buddypress-recaptcha' ) ); ?>");
 	<?php else : ?>
 	jQuery('#wp-submit').attr("title", "<?php echo esc_html( $recapcha_error_msg_captcha_blank ); ?>");
 	<?php endif; ?>

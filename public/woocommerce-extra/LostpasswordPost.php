@@ -83,7 +83,7 @@ class LostpasswordPost {
 
 								if ( '' === trim( $recapcha_error_msg_captcha_invalid ) ) {
 
-									$validation_errors->add( 'g-recaptcha_error', __( 'Invalid recaptcha.', 'recaptcha-for-woocommerce' ) );
+									$validation_errors->add( 'g-recaptcha_error', __( 'Invalid recaptcha.', 'buddypress-recaptcha' ) );
 								} else {
 									$validation_errors->add( 'g-recaptcha_error', $recapcha_error_msg_captcha_invalid );
 								}
@@ -92,7 +92,7 @@ class LostpasswordPost {
 
 							if ( '' === trim( $recapcha_error_msg_captcha_no_response ) ) {
 
-								$validation_errors->add( 'g-recaptcha_error', __( 'Could not get response from recaptcha server.', 'recaptcha-for-woocommerce' ) );
+								$validation_errors->add( 'g-recaptcha_error', __( 'Could not get response from recaptcha server.', 'buddypress-recaptcha' ) );
 
 							} else {
 								$validation_errors->add( 'g-recaptcha_error', $recapcha_error_msg_captcha_no_response );
@@ -102,14 +102,14 @@ class LostpasswordPost {
 
 						if ( '' === trim( $recapcha_error_msg_captcha_blank ) ) {
 
-							$validation_errors->add( 'g-recaptcha_error', __( 'reCaptcha is a required field.', 'recaptcha-for-woocommerce' ) );
+							$validation_errors->add( 'g-recaptcha_error', __( 'reCaptcha is a required field.', 'buddypress-recaptcha' ) );
 						} else {
 							$validation_errors->add( 'g-recaptcha_error', $recapcha_error_msg_captcha_blank );
 						}
 					}
 				} else {
 
-					$validation_errors->add( 'g-recaptcha_error', __( 'Could not verify request.', 'recaptcha-for-woocommerce' ) );
+					$validation_errors->add( 'g-recaptcha_error', __( 'Could not verify request.', 'buddypress-recaptcha' ) );
 				}
 			}
 		} else {
@@ -171,7 +171,7 @@ class LostpasswordPost {
 
 							if ( '' === trim( $recapcha_error_msg_captcha_invalid ) ) {
 
-								$validation_errors->add( 'g-recaptcha_error', __( 'Google reCAPTCHA verification failed, please try again later.', 'recaptcha-for-woocommerce' ) );
+								$validation_errors->add( 'g-recaptcha_error', __( 'Google reCAPTCHA verification failed, please try again later.', 'buddypress-recaptcha' ) );
 
 							} else {
 								$validation_errors->add( 'g-recaptcha_error', $recapcha_error_msg_captcha_invalid );
@@ -183,7 +183,7 @@ class LostpasswordPost {
 
 								if ( '' === trim( $recapcha_error_msg_captcha_invalid ) ) {
 
-									$validation_errors->add( 'g-recaptcha_error', __( 'Google reCAPTCHA verification failed, please try again later.', 'recaptcha-for-woocommerce' ) );
+									$validation_errors->add( 'g-recaptcha_error', __( 'Google reCAPTCHA verification failed, please try again later.', 'buddypress-recaptcha' ) );
 
 								} else {
 
@@ -196,7 +196,7 @@ class LostpasswordPost {
 
 						if ( '' === trim( $recapcha_error_msg_captcha_no_response ) ) {
 
-							$validation_errors->add( 'g-recaptcha_error', __( 'Could not get response from reCAPTCHA server.', 'recaptcha-for-woocommerce' ) );
+							$validation_errors->add( 'g-recaptcha_error', __( 'Could not get response from reCAPTCHA server.', 'buddypress-recaptcha' ) );
 
 						} else {
 
@@ -208,7 +208,7 @@ class LostpasswordPost {
 
 					if ( '' === trim( $recapcha_error_msg_captcha_blank ) ) {
 
-						$validation_errors->add( 'g-recaptcha_error', __( 'Google reCAPTCHA token is missing.', 'recaptcha-for-woocommerce' ) );
+						$validation_errors->add( 'g-recaptcha_error', __( 'Google reCAPTCHA token is missing.', 'buddypress-recaptcha' ) );
 
 					} else {
 

@@ -116,7 +116,7 @@ class WoocommerceAfterCheckoutValidation {
 							if ( ! $response_data->success ) {
 
 								if ( '' === trim( $recapcha_error_msg_captcha_invalid ) ) {
-											$validation_errors->add( 'g-recaptcha_error', __( 'Invalid recaptcha.', 'recaptcha-for-woocommerce' ) );
+											$validation_errors->add( 'g-recaptcha_error', __( 'Invalid recaptcha.', 'buddypress-recaptcha' ) );
 								} else {
 									$validation_errors->add( 'g-recaptcha_error', $recapcha_error_msg_captcha_invalid );
 								}
@@ -130,7 +130,7 @@ class WoocommerceAfterCheckoutValidation {
 
 							if ( '' === trim( $recapcha_error_msg_captcha_no_response ) ) {
 
-																					$validation_errors->add( 'g-recaptcha_error', __( 'Could not get response from recaptcha server.', 'recaptcha-for-woocommerce' ) );
+																					$validation_errors->add( 'g-recaptcha_error', __( 'Could not get response from recaptcha server.', 'buddypress-recaptcha' ) );
 							} else {
 								$validation_errors->add( 'g-recaptcha_error', $recapcha_error_msg_captcha_no_response );
 							}
@@ -138,13 +138,13 @@ class WoocommerceAfterCheckoutValidation {
 					} else {
 
 						if ( '' === trim( $recapcha_error_msg_captcha_blank ) ) {
-							$validation_errors->add( 'g-recaptcha_error', __( 'Recaptcha is a required field.', 'recaptcha-for-woocommerce' ) );
+							$validation_errors->add( 'g-recaptcha_error', __( 'Recaptcha is a required field.', 'buddypress-recaptcha' ) );
 						} else {
 							$validation_errors->add( 'g-recaptcha_error', $recapcha_error_msg_captcha_blank );
 						}
 					}
 				} else {
-					$validation_errors->add( 'g-recaptcha_error', __( 'Could not verify request.', 'recaptcha-for-woocommerce' ) );
+					$validation_errors->add( 'g-recaptcha_error', __( 'Could not verify request.', 'buddypress-recaptcha' ) );
 				}
 			} elseif ( 'yes' === $is_enabled_logincheckout && ( ( isset( $_POST['woocommerce-process-checkout-nonce'] ) && ! empty( $_POST['woocommerce-process-checkout-nonce'] ) ) || ( isset( $_POST['_wpnonce'] ) && ! empty( $_POST['_wpnonce'] ) ) ) && is_user_logged_in() ) {
 
@@ -197,7 +197,7 @@ class WoocommerceAfterCheckoutValidation {
 
 								if ( '' === trim( $recapcha_error_msg_captcha_invalid ) ) {
 
-									$validation_errors->add( 'g-recaptcha_error', __( 'Invalid recaptcha.', 'recaptcha-for-woocommerce' ) );
+									$validation_errors->add( 'g-recaptcha_error', __( 'Invalid recaptcha.', 'buddypress-recaptcha' ) );
 								} else {
 									$validation_errors->add( 'g-recaptcha_error', $recapcha_error_msg_captcha_invalid );
 								}
@@ -210,7 +210,7 @@ class WoocommerceAfterCheckoutValidation {
 						} else {
 
 							if ( '' === trim( $recapcha_error_msg_captcha_no_response ) ) {
-								$validation_errors->add( 'g-recaptcha_error', __( 'Could not get response from recaptcha server.', 'recaptcha-for-woocommerce' ) );
+								$validation_errors->add( 'g-recaptcha_error', __( 'Could not get response from recaptcha server.', 'buddypress-recaptcha' ) );
 							} else {
 								$validation_errors->add( 'g-recaptcha_error', $recapcha_error_msg_captcha_no_response );
 							}
@@ -218,14 +218,14 @@ class WoocommerceAfterCheckoutValidation {
 					} else {
 
 						if ( '' === trim( $recapcha_error_msg_captcha_blank ) ) {
-							$validation_errors->add( 'g-recaptcha_error', __( 'reCaptcha is a required field.', 'recaptcha-for-woocommerce' ) );
+							$validation_errors->add( 'g-recaptcha_error', __( 'reCaptcha is a required field.', 'buddypress-recaptcha' ) );
 						} else {
 							$validation_errors->add( 'g-recaptcha_error', $recapcha_error_msg_captcha_blank );
 						}
 					}
 				} else {
 
-					$validation_errors->add( 'g-recaptcha_error', __( 'Could not verify request.', 'recaptcha-for-woocommerce' ) );
+					$validation_errors->add( 'g-recaptcha_error', __( 'Could not verify request.', 'buddypress-recaptcha' ) );
 				}
 			}
 		} else {
@@ -316,7 +316,7 @@ class WoocommerceAfterCheckoutValidation {
 
 							if ( '' == trim( $recapcha_error_msg_captcha_invalid ) ) {
 
-									$validation_errors->add( 'g-recaptcha_error', __( 'Google reCAPTCHA verification failed, please try again later.', 'recaptcha-for-woocommerce' ) );
+									$validation_errors->add( 'g-recaptcha_error', __( 'Google reCAPTCHA verification failed, please try again later.', 'buddypress-recaptcha' ) );
 
 							} else {
 								$validation_errors->add( 'g-recaptcha_error', $recapcha_error_msg_captcha_invalid );
@@ -328,7 +328,7 @@ class WoocommerceAfterCheckoutValidation {
 
 								if ( '' === trim( $recapcha_error_msg_captcha_invalid ) ) {
 
-									$validation_errors->add( 'g-recaptcha_error', __( 'Google reCAPTCHA verification failed, please try again later.', 'recaptcha-for-woocommerce' ) );
+									$validation_errors->add( 'g-recaptcha_error', __( 'Google reCAPTCHA verification failed, please try again later.', 'buddypress-recaptcha' ) );
 
 								} else {
 
@@ -347,7 +347,7 @@ class WoocommerceAfterCheckoutValidation {
 
 						if ( '' === trim( $recapcha_error_msg_captcha_no_response ) ) {
 
-							$validation_errors->add( 'g-recaptcha_error', __( 'Could not get response from reCAPTCHA server.', 'recaptcha-for-woocommerce' ) );
+							$validation_errors->add( 'g-recaptcha_error', __( 'Could not get response from reCAPTCHA server.', 'buddypress-recaptcha' ) );
 
 						} else {
 
@@ -359,7 +359,7 @@ class WoocommerceAfterCheckoutValidation {
 
 					if ( '' === trim( $recapcha_error_msg_captcha_blank ) ) {
 
-						$validation_errors->add( 'g-recaptcha_error', __( 'Google reCAPTCHA token is missing.', 'recaptcha-for-woocommerce' ) );
+						$validation_errors->add( 'g-recaptcha_error', __( 'Google reCAPTCHA token is missing.', 'buddypress-recaptcha' ) );
 
 					} else {
 
