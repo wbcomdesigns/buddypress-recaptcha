@@ -26,7 +26,7 @@ class Regisrtationbp {
 	 *
 	 * Template Class.
 	 */
-	public function woo_extra_wp_register_form() {
+	public function woo_extra_bp_register_form() {
 
 		$re_capcha_version = get_option( 'wbc_recapcha_version' );
 		if ( '' === $re_capcha_version ) {
