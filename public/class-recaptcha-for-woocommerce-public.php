@@ -200,7 +200,7 @@ class Recaptcha_For_Woocommerce_Public {
 			$wbc_recapcha_enable_on_payfororder = get_option( 'wbc_recapcha_enable_on_payfororder' );
 			$wbc_recapcha_no_conflict           = get_option( 'wbc_recapcha_no_conflict_v3' );
 
-			if ( is_user_logged_in() && is_wc_endpoint_url( get_option( 'woocommerce_myaccount_add_payment_method_endpoint', 'add-payment-method' ) ) ) {
+			if ( is_user_logged_in() && function_exists( 'is_wc_endpoint_url' ) && is_wc_endpoint_url( get_option( 'woocommerce_myaccount_add_payment_method_endpoint', 'add-payment-method' ) ) ) {
 
 				if ( 'yes' === $wbc_recapcha_no_conflict ) {
 
