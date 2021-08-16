@@ -1,114 +1,73 @@
 === Wbcom Designs - BuddyPress reCaptcha ===
-Contributors: (this should be a list of wordpress.org userid's)
+Contributors: vapvarun,wbcomdesigns
 Donate link: https://wbcomdesigns.com/
 Tags: comments, spam
 Requires at least: 3.0.1
-Tested up to: 3.4
-Stable tag: 4.3
+Tested up to: 5.8
+Stable tag: 1.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Here is a short description of the plugin.  This should be no more than 150 characters.  No markup here.
+Protect your community from malicious and automated attacks by using reCaptcha for BuddyPress.
 
 == Description ==
+BuddyPress reCaptcha offers support for reCaptcha options for
+1- Default WordPress login and register
+2- BuddyPress Register
+3- WooCommmerce My Account 
+4- New Topic creation for bbPress
 
-This is the long description.  No limit, and you can use Markdown (as well as in the following sections).
+You can also check details at our plugin document page
+== Links ==
 
-For backwards compatibility, if this section is missing, the full length of the short description will be used, and
-Markdown parsed.
+* [Plugin Homepage](https://wbcomdesigns.com/downloads/buddypress-recaptcha/)
 
-A few notes about the sections above:
+=== THEME - WORDPRESS THEME WITH OUTSTANDING BUDDYPRESS SUPPORT ===
+* [FREE BuddyPress Theme: BuddyX](https://wordpress.org/themes/buddyx/) - Offers unique layouts with clean code and easy-to-customize options giving you a whole new way to visualize BuddyPress.
 
-*   "Contributors" is a comma separated list of wp.org/wp-plugins.org usernames
-*   "Tags" is a comma separated list of tags that apply to the plugin
-*   "Requires at least" is the lowest version that the plugin will work on
-*   "Tested up to" is the highest version that you've *successfully used to test the plugin*. Note that it might work on
-higher versions... this is just the highest one you've verified.
-*   Stable tag should indicate the Subversion "tag" of the latest stable version, or "trunk," if you use `/trunk/` for
-stable.
+#### OUR ADON PLUGINS TO FURTHER IMPROVE YOUR BUDDYPRESS OR BUDDYBOSS PLATFORM COMMUNITY
+Check out free community add-ons by Wbcom Designs:
 
-    Note that the `readme.txt` of the stable tag is the one that is considered the defining one for the plugin, so
-if the `/trunk/readme.txt` file says that the stable tag is `4.3`, then it is `/tags/4.3/readme.txt` that'll be used
-for displaying information about the plugin.  In this situation, the only thing considered from the trunk `readme.txt`
-is the stable tag pointer.  Thus, if you develop in trunk, you can update the trunk `readme.txt` to reflect changes in
-your in-development version, without having that information incorrectly disclosed about the current stable version
-that lacks those changes -- as long as the trunk's `readme.txt` points to the correct stable tag.
+* **[Wbcom Designs - BuddyPress Member Reviews](https://wordpress.org/plugins/bp-user-profile-reviews/)** Allow members to add ratings or feedback to other community members.
+* **[Wbcom Designs - BuddyPress Group Reviews](https://wordpress.org/plugins/review-buddypress-groups/)** Allow members to add ratings or feedback to BuddyPress groups.
+* **[Wbcom Designs - BuddyPress Activity Social Share](https://wordpress.org/plugins/bp-activity-social-share/)** Allow members to share activities on their social profiles like Facebook, Twitter, What's App, LinkedIn with OG metadata.
+* **[Wbcom Designs - Private Community with BP Lock](https://wordpress.org/plugins/lock-my-bp/)** A plugin to make your community private and only accessible to logged-in users. It also allows you to keep select pages or the component public.
+* **[Wbcom Designs - BuddyPress Job Manager](https://wordpress.org/plugins/bp-job-manager/)** Allows your to integrate WP Job Manager plugin to BuddyPress.
+* **[Wbcom Designs - Check-ins for BuddyPress Activity](https://wordpress.org/plugins/bp-check-in/)** Allow members to add their location or post their Check-ins updates to activity.
+* **[Wbcom Designs - BuddyPress Favorite Notification](https://wordpress.org/plugins/bp-favorite-notification/)** Allow members to be notified after any like or favorite on their BuddyPress activity.
+* **[Wbcom Designs - Shortcodes & Elementor Widgets For BuddyPress](https://wordpress.org/plugins/shortcodes-for-buddypress/)** It offers shortcodes and elementor widgets for the activity listing, member's directory display, and the group's directory on any post/page.
 
-    If no stable tag is provided, it is assumed that trunk is stable, but you should specify "trunk" if that's where
-you put the stable version, in order to eliminate any doubt.
+Check out paid community add-ons by Wbcom Designs:
 
+* **[Wbcom Designs - BuddyPress Hashtags](https://wbcomdesigns.com/downloads/buddypress-hashtags/?utm_source=wp.org&utm_medium=plugins&utm_campaign=wp.org)** Allows members to use hashtags in BuddyPress or BuddyBoss Platform activities and bbPress topics..
+* **[Wbcom Designs - BuddyPress Polls](https://wbcomdesigns.com/downloads/buddypress-polls/?utm_source=wp.org&utm_medium=plugins&utm_campaign=wp.org)**  It allows you to extend BuddyPress or BuddyBoss Platform Activity for members to publish Polls with various options and works perfectly for individual activities and group activities.
+* **[Wbcom Designs - BuddyPress Quotes](https://wbcomdesigns.com/downloads/buddypress-quotes/?utm_source=wp.org&utm_medium=plugins&utm_campaign=wp.org)** It allows the feature to let members post their activity updates with interactive background selection such as colors and images set by the site administrator to tell a more expressive story.
+* **[Wbcom Designs - BuddyPress Status & Reaction](https://wbcomdesigns.com/downloads/buddypress-status/?utm_source=wp.org&utm_medium=plugins&utm_campaign=wp.org)** Allow your members to set a status icon and tagline on their profile and offer a big set of icons to react to published activities.
+* **[Wbcom Designs - BuddyPress Profanity](https://wbcomdesigns.com/downloads/buddypress-profanity/?utm_source=wp.org&utm_medium=plugins&utm_campaign=wp.org)** Allow you to censor content in your community! Easily Censor all the unwanted words in activities, private messages contents by specifying a list of keywords to be filtered.
+* **[Wbcom Designs - BuddyPress Sticky Post](https://wbcomdesigns.com/downloads/buddypress-sticky-post/?utm_source=wp.org&utm_medium=plugins&utm_campaign=wp.org)** Allows site administrators to prioritize certain activities over others. It lets admin pin-up site-wide and group activities to the top of the activity list.
+* **[Wbcom Designs - BuddyPress Auto Friends](https://wbcomdesigns.com/downloads/buddypress-auto-friends/?utm_source=wp.org&utm_medium=plugins&utm_campaign=wp.org)** Allow the site admin to select global friends for all his members and add bulk global friends.
+* **[Wbcom Designs - Shortcodes & Elementor Widgets For BuddyPress Pro](https://wordpress.org/plugins/shortcodes-for-buddypress/?utm_source=wp.org&utm_medium=plugins&utm_campaign=wp.org)** It offers shortcodes and elementor widgets with various argument parameters for the activity listing, member's directory display, and the group's directory on any post/page.
+
+
+= EXPERT SUPPORT =
+We are ready to provide incredible support. Ask your questions at [contact us directly](https://wbcomdesigns.com/support/).
 == Installation ==
 
-This section describes how to install the plugin and get it working.
-
-e.g.
-
-1. Upload ` recaptcha-for-woocommerce.php` to the `/wp-content/plugins/` directory
-1. Activate the plugin through the 'Plugins' menu in WordPress
-1. Place `<?php do_action('plugin_name_hook'); ?>` in your templates
+1. Upload the entire `buddypress-recaptcha` folder to the /wp-content/plugins/ directory.
+2. Activate the plugin through the 'Plugins' menu in WordPress.
 
 == Frequently Asked Questions ==
 
-= A question that someone might have =
+= What are the plugin requirements? =
 
-An answer to that question.
+The plugin requires plugins :
+1. [BuddyPress](https://buddypress.org/download/)
 
-= What about foo bar? =
+= For support, You can contact us at our website. =
 
-Answer to foo bar dilemma.
-
-== Screenshots ==
-
-1. This screen shot description corresponds to screenshot-1.(png|jpg|jpeg|gif). Note that the screenshot is taken from
-the /assets directory or the directory that contains the stable readme.txt (tags or trunk). Screenshots in the /assets
-directory take precedence. For example, `/assets/screenshot-1.png` would win over `/tags/4.3/screenshot-1.png`
-(or jpg, jpeg, gif).
-2. This is the second screen shot
+You can contact at our website [wbcomdesigns.com](https://wbcomdesigns.com/contact) for any query related to plugin and BuddyPress.
 
 == Changelog ==
 
-= 1.0 =
-* A change since the previous version.
-* Another change.
-
-= 0.5 =
-* List versions from most recent at top to oldest at bottom.
-
-== Upgrade Notice ==
-
-= 1.0 =
-Upgrade notices describe the reason a user should upgrade.  No more than 300 characters.
-
-= 0.5 =
-This version fixes a security related bug.  Upgrade immediately.
-
-== Arbitrary section ==
-
-You may provide arbitrary sections, in the same format as the ones above.  This may be of use for extremely complicated
-plugins where more information needs to be conveyed that doesn't fit into the categories of "description" or
-"installation."  Arbitrary sections will be shown below the built-in sections outlined above.
-
-== A brief Markdown Example ==
-
-Ordered list:
-
-1. Some feature
-1. Another feature
-1. Something else about the plugin
-
-Unordered list:
-
-* something
-* something else
-* third thing
-
-Here's a link to [WordPress](http://wordpress.org/ "Your favorite software") and one to [Markdown's Syntax Documentation][markdown syntax].
-Titles are optional, naturally.
-
-[markdown syntax]: http://daringfireball.net/projects/markdown/syntax
-            "Markdown is what the parser uses to process much of the readme file"
-
-Markdown uses email style notation for blockquotes and I've been told:
-> Asterisks for *emphasis*. Double it up  for **strong**.
-
-`<?php code(); // goes in backticks ?>`
+= 1.0.0 =
+* first version.
