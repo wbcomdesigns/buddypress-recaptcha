@@ -184,15 +184,15 @@ if ( ! class_exists( 'Wbc_WooCommerce_Settings_Page' ) ) :
 		public function get_sections() {
 
 			$sections = array(
-				''                   => __( 'General Settings', 'buddypress-recaptcha' ),
-				'signup'             => __( 'Woo Registration Captcha', 'buddypress-recaptcha' ),
-				'login'              => __( 'Woo Login Captcha', 'buddypress-recaptcha' ),
-				'forgotpassword'     => __( 'Woo Lost Password Captcha', 'buddypress-recaptcha' ),
-				'guestcheckout'      => __( 'Woo Checkout Captcha', 'buddypress-recaptcha' ),
-				'woo_comments'       => __( 'Woo Post Comment Form Captcha', 'buddypress-recaptcha' ),
-				'wp_login'           => __( 'WP Login Captcha', 'buddypress-recaptcha' ),
-				'wp_register'        => __( 'WP Registration Captcha', 'buddypress-recaptcha' ),
-				'wp_lostpassword'    => __( 'WP Lost Password Captcha', 'buddypress-recaptcha' ),
+				''                => __( 'General Settings', 'buddypress-recaptcha' ),
+				'signup'          => __( 'Woo Registration Captcha', 'buddypress-recaptcha' ),
+				'login'           => __( 'Woo Login Captcha', 'buddypress-recaptcha' ),
+				'forgotpassword'  => __( 'Woo Lost Password Captcha', 'buddypress-recaptcha' ),
+				'guestcheckout'   => __( 'Woo Checkout Captcha', 'buddypress-recaptcha' ),
+				'woo_comments'    => __( 'Woo Post Comment Form Captcha', 'buddypress-recaptcha' ),
+				'wp_login'        => __( 'WP Login Captcha', 'buddypress-recaptcha' ),
+				'wp_register'     => __( 'WP Registration Captcha', 'buddypress-recaptcha' ),
+				'wp_lostpassword' => __( 'WP Lost Password Captcha', 'buddypress-recaptcha' ),
 			);
 
 			return apply_filters( 'woocommerce_get_sections_' . $this->id, $sections );
@@ -1432,7 +1432,7 @@ if ( ! class_exists( 'Wbc_WooCommerce_Settings_Page' ) ) :
 						'section_title'                   => array(
 							'name' => __( 'reCaptcha Settings', 'buddypress-recaptcha' ),
 							'type' => 'title',
-							'desc' => '<b>' . __( 'Please use this guideline to get <a target="_blank" href="http://blog.i13websolution.com/how-to-get-google-recaptcha-v2-checkbox-keys/"> reCaptcha keys V2 (checkbox) </a> &nbsp;&nbsp;&nbsp;&nbsp; <a target="_blank" href="http://blog.i13websolution.com/how-to-get-google-recaptcha-v3-keys/"> reCaptcha keys V3 </a></b>', 'buddypress-recaptcha' ),
+							'desc' => '<b>' . __( 'Please use this guideline to get <a target="_blank" href="https://wbcomdesigns.com/how-to-create-google-recaptcha-v2-keys/"> reCaptcha keys V2 (checkbox) </a> &nbsp;&nbsp;&nbsp;&nbsp; <a target="_blank" href="https://wbcomdesigns.com/how-to-create-google-recaptcha-v3-keys/"> reCaptcha keys V3 </a></b>', 'buddypress-recaptcha' ),
 							'id'   => 'wc_settings_tab_recapcha',
 						),
 
