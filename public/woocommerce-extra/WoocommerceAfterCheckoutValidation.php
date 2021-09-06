@@ -69,10 +69,10 @@ class WoocommerceAfterCheckoutValidation {
 
 					if ( isset( $_REQUEST['woocommerce-process-checkout-nonce'] ) && ! empty( $_REQUEST['woocommerce-process-checkout-nonce'] ) ) {
 
-						$nonce_value = sanitize_text_field( $_REQUEST['woocommerce-process-checkout-nonce'] );
+						$nonce_value = sanitize_text_field( wp_unslash( $_REQUEST['woocommerce-process-checkout-nonce'] ) );
 					} elseif ( isset( $_REQUEST['_wpnonce'] ) && ! empty( $_REQUEST['_wpnonce'] ) ) {
 
-						$nonce_value = sanitize_text_field( $_REQUEST['_wpnonce'] );
+						$nonce_value = sanitize_text_field( wp_unslash( $_REQUEST['_wpnonce'] ) );
 					}
 				}
 
@@ -102,7 +102,7 @@ class WoocommerceAfterCheckoutValidation {
 					if ( isset( $_POST['g-recaptcha-response'] ) && ! empty( $_POST['g-recaptcha-response'] ) ) {
 
 						// Google reCAPTCHA API secret key.
-						$response = sanitize_text_field( $_POST['g-recaptcha-response'] );
+						$response = sanitize_text_field( wp_unslash( $_POST['g-recaptcha-response'] ) );
 
 						// Verify the reCAPTCHA response.
 						$verify_response = wp_remote_get( 'https://www.google.com/recaptcha/api/siteverify?secret=' . $secret_key . '&response=' . $response, array( 'timeout' => 30 ) );
@@ -153,10 +153,10 @@ class WoocommerceAfterCheckoutValidation {
 
 					if ( isset( $_REQUEST['woocommerce-process-checkout-nonce'] ) && ! empty( $_REQUEST['woocommerce-process-checkout-nonce'] ) ) {
 
-						$nonce_value = sanitize_text_field( $_REQUEST['woocommerce-process-checkout-nonce'] );
+						$nonce_value = sanitize_text_field( wp_unslash( $_REQUEST['woocommerce-process-checkout-nonce'] ) );
 					} elseif ( isset( $_REQUEST['_wpnonce'] ) && ! empty( $_REQUEST['_wpnonce'] ) ) {
 
-						$nonce_value = sanitize_text_field( $_REQUEST['_wpnonce'] );
+						$nonce_value = sanitize_text_field( wp_unslash( $_REQUEST['_wpnonce'] ) );
 					}
 				}
 
@@ -182,7 +182,7 @@ class WoocommerceAfterCheckoutValidation {
 					if ( isset( $_POST['g-recaptcha-response'] ) && ! empty( $_POST['g-recaptcha-response'] ) ) {
 
 						// Google reCAPTCHA API secret key.
-						$response = sanitize_text_field( $_POST['g-recaptcha-response'] );
+						$response = sanitize_text_field( wp_unslash( $_POST['g-recaptcha-response'] ) );
 
 						// Verify the reCAPTCHA response.
 						$verify_response = wp_remote_get( 'https://www.google.com/recaptcha/api/siteverify?secret=' . $secret_key . '&response=' . $response, array( 'timeout' => 30 ) );
@@ -259,10 +259,10 @@ class WoocommerceAfterCheckoutValidation {
 
 				if ( isset( $_REQUEST['woocommerce-process-checkout-nonce'] ) && ! empty( $_REQUEST['woocommerce-process-checkout-nonce'] ) ) {
 
-					$nonce_value = sanitize_text_field( $_REQUEST['woocommerce-process-checkout-nonce'] );
+					$nonce_value = sanitize_text_field( wp_unslash( $_REQUEST['woocommerce-process-checkout-nonce'] ) );
 				} elseif ( isset( $_REQUEST['_wpnonce'] ) && ! empty( $_REQUEST['_wpnonce'] ) ) {
 
-					$nonce_value = sanitize_text_field( $_REQUEST['_wpnonce'] );
+					$nonce_value = sanitize_text_field( wp_unslash( $_REQUEST['_wpnonce'] ) );
 				}
 			}
 
@@ -291,7 +291,7 @@ class WoocommerceAfterCheckoutValidation {
 
 				if ( isset( $_POST['wbc_checkout_token'] ) && ! empty( $_POST['wbc_checkout_token'] ) ) {
 					// Google reCAPTCHA API secret key.
-					$response = sanitize_text_field( $_POST['wbc_checkout_token'] );
+					$response = sanitize_text_field( wp_unslash( $_POST['wbc_checkout_token'] ) );
 
 					// Verify the reCAPTCHA response.
 					$verify_response = wp_remote_post(
