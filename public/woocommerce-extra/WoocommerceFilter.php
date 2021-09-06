@@ -54,7 +54,7 @@ class WoocommerceFilter {
 
 				if ( isset( $_POST['g-recaptcha-response'] ) && ! empty( $_POST['g-recaptcha-response'] ) ) {
 					// Google reCAPTCHA API secret key.
-					$response = sanitize_text_field( $_POST['g-recaptcha-response'] );
+					$response = sanitize_text_field( wp_unslash( $_POST['g-recaptcha-response'] ) );
 
 					// Verify the reCAPTCHA response.
 					$verify_response = wp_remote_get( 'https://www.google.com/recaptcha/api/siteverify?secret=' . $secret_key . '&response=' . $response, array( 'timeout' => 30 ) );
@@ -116,7 +116,7 @@ class WoocommerceFilter {
 
 				if ( isset( $_POST['wbc_recaptcha_token'] ) && ! empty( $_POST['wbc_recaptcha_token'] ) ) {
 					// Google reCAPTCHA API secret key.
-					$response = sanitize_text_field( $_POST['wbc_recaptcha_token'] );
+					$response = sanitize_text_field( wp_unslash( $_POST['wbc_recaptcha_token'] ) );
 
 					// Verify the reCAPTCHA response.
 					$verify_response = wp_remote_post(
@@ -220,7 +220,7 @@ class WoocommerceFilter {
 
 				if ( isset( $_POST['g-recaptcha-response'] ) && ! empty( $_POST['g-recaptcha-response'] ) ) {
 						// Google reCAPTCHA API secret key.
-						$response        = sanitize_text_field( $_POST['g-recaptcha-response'] );
+						$response        = sanitize_text_field( wp_unslash( $_POST['g-recaptcha-response'] ) );
 						$verify_response = wp_remote_get( 'https://www.google.com/recaptcha/api/siteverify?secret=' . $secret_key . '&response=' . $response, array( 'timeout' => 30 ) );
 
 					if ( is_array( $verify_response ) && ! is_wp_error( $verify_response ) && isset( $verify_response['body'] ) ) {
@@ -281,7 +281,7 @@ class WoocommerceFilter {
 
 				if ( isset( $_POST['wbc_recaptcha_wp_register_token'] ) && ! empty( $_POST['wbc_recaptcha_wp_register_token'] ) ) {
 					// Google reCAPTCHA API secret key.
-					$response = sanitize_text_field( $_POST['wbc_recaptcha_wp_register_token'] );
+					$response = sanitize_text_field( wp_unslash( $_POST['wbc_recaptcha_wp_register_token'] ) );
 
 					// Verify the reCAPTCHA response.
 					$verify_response = wp_remote_post(
@@ -394,7 +394,7 @@ class WoocommerceFilter {
 				if ( wp_verify_nonce( $nonce_value, 'wp-lostpassword-nonce' ) ) {
 					if ( isset( $_POST['g-recaptcha-response'] ) && ! empty( $_POST['g-recaptcha-response'] ) ) {
 						// Google reCAPTCHA API secret key.
-						$response = sanitize_text_field( $_POST['g-recaptcha-response'] );
+						$response = sanitize_text_field( wp_unslash( $_POST['g-recaptcha-response'] ) );
 
 						// Verify the reCAPTCHA response.
 						$verify_response = wp_remote_get( 'https://www.google.com/recaptcha/api/siteverify?secret=' . $secret_key . '&response=' . $response, array( 'timeout' => 30 ) );
@@ -465,7 +465,7 @@ class WoocommerceFilter {
 			if ( 'yes' == $is_enabled ) {
 				if ( isset( $_POST['wbc_recaptcha_token'] ) && ! empty( $_POST['wbc_recaptcha_token'] ) ) {
 					// Google reCAPTCHA API secret key.
-					$response = sanitize_text_field( $_POST['wbc_recaptcha_token'] );
+					$response = sanitize_text_field( wp_unslash( $_POST['wbc_recaptcha_token'] ) );
 
 					// Verify the reCAPTCHA response.
 					$verify_response = wp_remote_post(
@@ -554,7 +554,7 @@ class WoocommerceFilter {
 					if ( isset( $_POST['g-recaptcha-response'] ) && ! empty( $_POST['g-recaptcha-response'] ) ) {
 
 												// Google reCAPTCHA API secret key.
-												$response = sanitize_text_field( $_POST['g-recaptcha-response'] );
+												$response = sanitize_text_field( wp_unslash( $_POST['g-recaptcha-response'] ) );
 
 												// Verify the reCAPTCHA response.
 												$verify_response = wp_remote_get( 'https://www.google.com/recaptcha/api/siteverify?secret=' . $secret_key . '&response=' . $response, array( 'timeout' => 30 ) );
@@ -633,7 +633,7 @@ class WoocommerceFilter {
 
 					if ( isset( $_POST['wbc_recaptcha_review_token'] ) && ! empty( $_POST['wbc_recaptcha_review_token'] ) ) {
 						// Google reCAPTCHA API secret key.
-						$response = sanitize_text_field( $_POST['wbc_recaptcha_review_token'] );
+						$response = sanitize_text_field( wp_unslash( $_POST['wbc_recaptcha_review_token'] ) );
 
 						// Verify the reCAPTCHA response.
 						$verify_response = wp_remote_post(
@@ -758,7 +758,7 @@ class WoocommerceFilter {
 					if ( isset( $_POST['g-recaptcha-response'] ) && ! empty( $_POST['g-recaptcha-response'] ) ) {
 
 												// Google reCAPTCHA API secret key.
-												$response = sanitize_text_field( $_POST['g-recaptcha-response'] );
+												$response = sanitize_text_field( wp_unslash( $_POST['g-recaptcha-response'] ) );
 
 												// Verify the reCAPTCHA response.
 												$verify_response = wp_remote_get( 'https://www.google.com/recaptcha/api/siteverify?secret=' . $secret_key . '&response=' . $response, array( 'timeout' => 30 ) );
@@ -837,7 +837,7 @@ class WoocommerceFilter {
 
 					if ( isset( $_POST['wbc_recaptcha_comment_token'] ) && ! empty( $_POST['wbc_recaptcha_comment_token'] ) ) {
 						// Google reCAPTCHA API secret key.
-						$response = sanitize_text_field( $_POST['wbc_recaptcha_comment_token'] );
+						$response = sanitize_text_field( wp_unslash( $_POST['wbc_recaptcha_comment_token'] ) );
 
 						// Verify the reCAPTCHA response.
 						$verify_response = wp_remote_post(

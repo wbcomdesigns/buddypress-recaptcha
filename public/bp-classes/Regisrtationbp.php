@@ -420,7 +420,7 @@ frm.submit();
 		$verify    = false;
 
 		if ( false === $response ) {
-			$response = isset( $_POST['g-recaptcha-response'] ) ? $_POST['g-recaptcha-response'] : '';
+			$response = isset( $_POST['g-recaptcha-response'] ) ? sanitize_text_field( wp_unslash( $_POST['g-recaptcha-response'] ) ) : '';
 		}
 
 		if ( ! $secre_key ) { // if $secre_key is not set.
