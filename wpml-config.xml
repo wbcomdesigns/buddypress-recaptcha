@@ -13,6 +13,5 @@
         <key name="wbc_recapcha_signup_title_bp" />
         <key name="recapcha_bbpress_topic_title" />
         <key name="recapcha_bbpress_replay_title" />
-        
     </admin-texts>
 </wpml-config>
