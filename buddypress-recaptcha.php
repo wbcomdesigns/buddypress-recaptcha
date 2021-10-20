@@ -87,10 +87,12 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-recaptcha-for-woocommerce.
  * @return void
  */
 function wb_recaptcha_required_plugin_activation_check() {
-	if ( class_exists( 'WooCommerce' ) || function_exists( 'BuddyPress' ) || class_exists( 'bbPress' ) ) {
+	if ( class_exists( 'WooCommerce' ) || class_exists( 'BuddyPress' ) || class_exists( 'bbPress' ) ) {
 		register_activation_hook( __FILE__, 'activate_recaptcha_for_woocommerce' );
 	} else {
 		add_action( 'admin_notices', 'wb_recaptcha_required_plugin_admin_notice' );
+		add_action( 'admin_init', 'wb_recaptcha_existing_checkin_plugin' );
+
 	}
 }
 add_action( 'plugins_loaded', 'wb_recaptcha_required_plugin_activation_check' );
@@ -113,6 +115,20 @@ function wb_recaptcha_required_plugin_admin_notice() {
 	}
 }
 
+
+/**
+ * Function to remove buddypress recaptcha plugin if already exist.
+ *
+ * @since 1.0.0
+ */
+function wb_recaptcha_existing_checkin_plugin() {
+	$wb_recaptcha_plugin = plugin_dir_path( __DIR__ ) . 'buddypress-recaptcha/buddypress-recaptcha';
+	// Check to see if plugin is already active.
+	if ( is_plugin_active( plugin_basename( __FILE__ ) ) ) {
+		deactivate_plugins( plugin_basename( __FILE__ ) );
+	}
+}
+
 /**
  * Redirect to plugin settings page after activated.
  *
@@ -120,7 +136,7 @@ function wb_recaptcha_required_plugin_admin_notice() {
  */
 function wb_recaptcha_activation_redirect_settings( $plugin ) {
 
-	if ( plugin_basename( __FILE__ ) === $plugin ) {
+	if ( plugin_basename( __FILE__ ) === $plugin && class_exists( 'WooCommerce' ) || class_exists( 'BuddyPress' ) || class_exists( 'bbPress' ) ) {
 		wp_safe_redirect( admin_url( 'admin.php?page=buddypress-recaptcha' ) );
 		exit;
 	}
