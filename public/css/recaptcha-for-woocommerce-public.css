@@ -1,4 +1,14 @@
-/**
- * All of the CSS for your public-facing functionality should be
- * included in this file.
- */
+/*--------------------------------------------------------------
+>>> TABLE OF CONTENTS:
+----------------------------------------------------------------
+# Themes Specific
+    # Twentytwenty
+/*--------------------------------------------------------------
+
+/*--------------------------------------------------------------
+# Twentytwenty
+--------------------------------------------------------------*/
+.theme-twentytwenty #review_form .woo-comment-captcha {
+    max-width: 58rem;
+    margin: auto;
+}
