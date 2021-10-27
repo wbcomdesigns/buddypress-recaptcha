@@ -124,7 +124,7 @@ class Recaptcha_For_Woocommerce_Admin {
 	 * @since    1.0.0
 	 */
 	public function rfw_admin_menu() {
-
+		if ( class_exists( 'WooCommerce' ) || class_exists( 'BuddyPress' ) || class_exists( 'bbPress' ) ) {
 		/* add sub menu in wnplugin setting page */
 		if ( empty( $GLOBALS['admin_page_hooks']['wbcomplugins'] ) ) {
 			add_menu_page( esc_html__( 'WB Plugins', 'buddypress-recaptcha' ), esc_html__( 'WB Plugins', 'buddypress-recaptcha' ), 'manage_options', 'wbcomplugins', array( $this, 'rfw_admin_settings_page' ), 'dashicons-lightbulb', 59 );
@@ -132,7 +132,7 @@ class Recaptcha_For_Woocommerce_Admin {
 		}
 
 		add_submenu_page( 'wbcomplugins', esc_html__( 'BuddyPress reCaptcha', 'buddypress-recaptcha' ), esc_html__( 'BuddyPress reCaptcha', 'buddypress-recaptcha' ), 'manage_options', 'buddypress-recaptcha', array( $this, 'rfw_admin_settings_page' ) );
-
+	}
 		// register_setting( 'rfw_general_settings', 'buddypress-recaptcha' );
 		// add_settings_section( 'rfw-general', ' ', array( $this, 'rfw_general_settings_content' ), 'buddypress-recaptcha' );
 	}
