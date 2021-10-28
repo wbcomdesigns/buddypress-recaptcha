@@ -5,7 +5,7 @@
  * @link       https://wbcomdesigns.com/
  * @since      1.0.0
  *
- * @package    Recaptcha_For_Woocommerce
+ * @package    Recaptcha_For_BuddyPress
  * @subpackage bp_recaptcha/admin
  */
 
@@ -15,11 +15,11 @@
  * Defines the plugin name, version, and two examples hooks for how to
  * enqueue the admin-specific stylesheet and JavaScript.
  *
- * @package    Recaptcha_For_Woocommerce
+ * @package    Recaptcha_For_BuddyPress
  * @subpackage bp_recaptcha/admin
  * @author     Wbcom Designs <admin@wbcomdesigns.com>
  */
-class Recaptcha_For_Woocommerce_Admin {
+class Recaptcha_For_BuddyPress_Admin {
 
 	/**
 	 * The ID of this plugin.
@@ -73,15 +73,15 @@ class Recaptcha_For_Woocommerce_Admin {
 		 * This function is provided for demonstration purposes only.
 		 *
 		 * An instance of this class should be passed to the run() function
-		 * defined in Recaptcha_For_Woocommerce_Loader as all of the hooks are defined
+		 * defined in Recaptcha_For_BuddyPress_Loader as all of the hooks are defined
 		 * in that particular class.
 		 *
-		 * The Recaptcha_For_Woocommerce_Loader will then create the relationship
+		 * The Recaptcha_For_BuddyPress_Loader will then create the relationship
 		 * between the defined hooks and the functions defined in this
 		 * class.
 		 */
 
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/recaptcha-for-woocommerce-admin.css', array(), $this->version, 'all' );
+		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/recaptcha-for-buddypress-admin.css', array(), $this->version, 'all' );
 
 	}
 
@@ -96,15 +96,15 @@ class Recaptcha_For_Woocommerce_Admin {
 		 * This function is provided for demonstration purposes only.
 		 *
 		 * An instance of this class should be passed to the run() function
-		 * defined in Recaptcha_For_Woocommerce_Loader as all of the hooks are defined
+		 * defined in Recaptcha_For_BuddyPress_Loader as all of the hooks are defined
 		 * in that particular class.
 		 *
-		 * The Recaptcha_For_Woocommerce_Loader will then create the relationship
+		 * The Recaptcha_For_BuddyPress_Loader will then create the relationship
 		 * between the defined hooks and the functions defined in this
 		 * class.
 		 */
 
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/recaptcha-for-woocommerce-admin.js', array( 'jquery' ), $this->version, false );
+		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/recaptcha-for-buddypress-admin.js', array( 'jquery' ), $this->version, false );
 
 	}
 

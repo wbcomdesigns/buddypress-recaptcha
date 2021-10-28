@@ -5,7 +5,7 @@
  * @link       https://wbcomdesigns.com/
  * @since      1.0.0
  *
- * @package    Recaptcha_For_Woocommerce
+ * @package    Recaptcha_For_BuddyPress
  * @subpackage bp_recaptcha/includes
  */
 
@@ -16,11 +16,11 @@
  * the plugin, and register them with the WordPress API. Call the
  * run function to execute the list of actions and filters.
  *
- * @package    Recaptcha_For_Woocommerce
+ * @package    Recaptcha_For_BuddyPress
  * @subpackage bp_recaptcha/includes
  * @author     Wbcom Designs <admin@wbcomdesigns.com>
  */
-class Recaptcha_For_Woocommerce_Loader {
+class Recaptcha_For_BuddyPress_Loader {
 
 	/**
 	 * The array of actions registered with WordPress.

@@ -7,7 +7,7 @@
 				<div class="wbcom-demo-importer">
 					<div class="container">
 						<div class="wbcom-image-wrapper">
-							<img src="<?php echo esc_url( RFW_PLUGIN_URL . 'admin/wbcom/assets/imgs/reign.jpg' ); ?>" alt="Avatar" class="image" style="width:100%">
+							<img src="<?php echo esc_url( RFB_PLUGIN_URL . 'admin/wbcom/assets/imgs/reign.jpg' ); ?>" alt="Avatar" class="image" style="width:100%">
 						</div>
 						<div class="wbcom-demo-title">
 							<h2><?php esc_html_e( 'Reign Theme', 'buddypress-recaptcha' ); ?></h2>
@@ -32,7 +32,7 @@
 				<div class="wbcom-demo-importer">
 					<div class="container">
 						<div class="wbcom-image-wrapper">
-							<img src="<?php echo esc_url( RFW_PLUGIN_URL . 'admin/wbcom/assets/imgs/learnmate.jpg' ); ?>" alt="Avatar" class="image" style="width:100%">
+							<img src="<?php echo esc_url( RFB_PLUGIN_URL . 'admin/wbcom/assets/imgs/learnmate.jpg' ); ?>" alt="Avatar" class="image" style="width:100%">
 						</div>
 						<div class="wbcom-demo-title">
 							<h2><?php esc_html_e( 'LearnMate Solution', 'buddypress-recaptcha' ); ?></h2>
@@ -57,7 +57,7 @@
 				<div class="wbcom-demo-importer">
 					<div class="container">
 						<div class="wbcom-image-wrapper">
-							<img src="<?php echo esc_url( RFW_PLUGIN_URL . 'admin/wbcom/assets/imgs/storemate.jpg' ); ?>" alt="Avatar" class="image" style="width:100%">
+							<img src="<?php echo esc_url( RFB_PLUGIN_URL . 'admin/wbcom/assets/imgs/storemate.jpg' ); ?>" alt="Avatar" class="image" style="width:100%">
 						</div>
 						<div class="wbcom-demo-title">
 							<h2><?php esc_html_e( 'StoreMate Solution', 'buddypress-recaptcha' ); ?></h2>
@@ -80,7 +80,7 @@
 				<div class="wbcom-demo-importer">
 					<div class="container">
 						<div class="wbcom-image-wrapper">
-							<img src="<?php echo esc_url( RFW_PLUGIN_URL . 'admin/wbcom/assets/imgs/jobmate.jpg ' ); ?>" alt="Avatar" class="image" style="width:100%">
+							<img src="<?php echo esc_url( RFB_PLUGIN_URL . 'admin/wbcom/assets/imgs/jobmate.jpg ' ); ?>" alt="Avatar" class="image" style="width:100%">
 						</div>
 						<div class="wbcom-demo-title">
 							<h2><?php esc_html_e( 'Jobmate Theme', 'buddypress-recaptcha' ); ?></h2>
@@ -102,7 +102,7 @@
 				<div class="wbcom-demo-importer">
 					<div class="container">
 						<div class="wbcom-image-wrapper">
-							<img src="<?php echo esc_url( RFW_PLUGIN_URL . 'admin/wbcom/assets/imgs/buddyx.jpg' ); ?>" alt="Avatar" class="image" style="width:100%">
+							<img src="<?php echo esc_url( RFB_PLUGIN_URL . 'admin/wbcom/assets/imgs/buddyx.jpg' ); ?>" alt="Avatar" class="image" style="width:100%">
 						</div>
 						<div class="wbcom-demo-title">
 							<h2><?php esc_html_e( 'BuddyX Theme', 'buddypress-recaptcha' ); ?></h2>
@@ -125,7 +125,7 @@
 				<div class="wbcom-demo-importer">
 					<div class="container">
 						<div class="wbcom-image-wrapper">
-							<img src="<?php echo esc_url( RFW_PLUGIN_URL . 'admin/wbcom/assets/imgs/knowx.jpg' ); ?>" alt="Avatar" class="image" style="width:100%">
+							<img src="<?php echo esc_url( RFB_PLUGIN_URL . 'admin/wbcom/assets/imgs/knowx.jpg' ); ?>" alt="Avatar" class="image" style="width:100%">
 						</div>
 						<div class="wbcom-demo-title">
 							<h2><?php esc_html_e( 'KnowX Theme', 'buddypress-recaptcha' ); ?></h2>

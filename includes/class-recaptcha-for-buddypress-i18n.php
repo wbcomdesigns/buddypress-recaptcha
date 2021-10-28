@@ -8,7 +8,7 @@
  * @link       https://wbcomdesigns.com/
  * @since      1.0.0
  *
- * @package    Recaptcha_For_Woocommerce
+ * @package    Recaptcha_For_BuddyPress
  * @subpackage bp_recaptcha/includes
  */
 
@@ -19,11 +19,11 @@
  * so that it is ready for translation.
  *
  * @since      1.0.0
- * @package    Recaptcha_For_Woocommerce
+ * @package    Recaptcha_For_BuddyPress
  * @subpackage bp_recaptcha/includes
  * @author     Wbcom Designs <admin@wbcomdesigns.com>
  */
-class Recaptcha_For_Woocommerce_I18n {
+class Recaptcha_For_BuddyPress_I18n {
 
 
 	/**
@@ -34,7 +34,7 @@ class Recaptcha_For_Woocommerce_I18n {
 	public function load_plugin_textdomain() {
 
 		load_plugin_textdomain(
-			' recaptcha-for-woocommerce',
+			' recaptcha-for-buddypress',
 			false,
 			dirname( dirname( plugin_basename( __FILE__ ) ) ) . '/languages/'
 		);
