@@ -6,7 +6,7 @@
  * @since      1.0.0
  *
  * @package    Recaptcha_For_Woocommerce
- * @subpackage Recaptcha_For_Woocommerce/admin
+ * @subpackage bp_recaptcha/admin
  */
 
 /**
@@ -16,7 +16,7 @@
  * enqueue the admin-specific stylesheet and JavaScript.
  *
  * @package    Recaptcha_For_Woocommerce
- * @subpackage Recaptcha_For_Woocommerce/admin
+ * @subpackage bp_recaptcha/admin
  * @author     Wbcom Designs <admin@wbcomdesigns.com>
  */
 class Recaptcha_For_Woocommerce_Admin {

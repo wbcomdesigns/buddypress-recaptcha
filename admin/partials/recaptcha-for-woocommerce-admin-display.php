@@ -8,7 +8,7 @@
  * @since      1.0.0
  *
  * @package    Recaptcha_For_Woocommerce
- * @subpackage Recaptcha_For_Woocommerce/admin/partials
+ * @subpackage bp_recaptcha/admin/partials
  */
 
 ?>

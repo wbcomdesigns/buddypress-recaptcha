@@ -6,7 +6,7 @@
  * @since      1.0.0
  *
  * @package    Recaptcha_For_Woocommerce
- * @subpackage Recaptcha_For_Woocommerce/includes
+ * @subpackage bp_recaptcha/includes
  */
 
 /**
@@ -16,7 +16,7 @@
  *
  * @since      1.0.0
  * @package    Recaptcha_For_Woocommerce
- * @subpackage Recaptcha_For_Woocommerce/includes
+ * @subpackage bp_recaptcha/includes
  * @author     Wbcom Designs <admin@wbcomdesigns.com>
  */
 class Recaptcha_For_Woocommerce_Activator {

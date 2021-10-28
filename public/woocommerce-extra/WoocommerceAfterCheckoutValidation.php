@@ -6,7 +6,7 @@
  * @since      1.0.0
  *
  * @package    Recaptcha_For_Woocommerce
- * @subpackage Recaptcha_For_Woocommerce/public
+ * @subpackage bp_recaptcha/public
  */
 
 /**
@@ -16,7 +16,7 @@
  * enqueue the public-facing stylesheet and JavaScript.
  *
  * @package    Recaptcha_For_Woocommerce
- * @subpackage Recaptcha_For_Woocommerce/public
+ * @subpackage bp_recaptcha/public
  * @author     Wbcom Designs <admin@wbcomdesigns.com>
  */
 class WoocommerceAfterCheckoutValidation {
