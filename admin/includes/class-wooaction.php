@@ -498,7 +498,7 @@ if ( ! class_exists( 'Wooaction' ) ) :
 										}
 									}
 									?>
-								</select> <?php echo ( $description ) ? $description : ''; ?> <br /><a class="select_all button" href="#"><?php esc_html_e( 'Select all', 'buddypress-recaptcha' ); ?></a> <a class="select_none button" href="#"><?php esc_html_e( 'Select none', 'buddypress-recaptcha' ); ?></a>
+								</select> <?php echo ( $description ) ? $description : ''; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> <br /><a class="select_all button" href="#"><?php esc_html_e( 'Select all', 'buddypress-recaptcha' ); ?></a> <a class="select_none button" href="#"><?php esc_html_e( 'Select none', 'buddypress-recaptcha' ); ?></a>
 							</td>
 						</tr>
 						<?php
@@ -537,7 +537,7 @@ if ( ! class_exists( 'Wooaction' ) ) :
 										echo '<option value="' . esc_attr( $value ) . '"' . selected( $option_value['unit'], $value, false ) . '>' . esc_html( $label ) . '</option>';
 									}
 									?>
-								</select> <?php echo ( $description ) ? $description : ''; ?>
+								</select> <?php echo ( $description ) ? $description : ''; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 							</td>
 						</tr>
 						<?php
