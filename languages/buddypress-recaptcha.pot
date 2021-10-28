@@ -24,72 +24,72 @@ msgstr ""
 "X-Textdomain-Support: yes\n"
 "X-Generator: grunt-wp-i18n 1.0.3\n"
 
-#: admin/class-recaptcha-for-woocommerce-admin.php:130
+#: admin/class-recaptcha-for-buddypress-admin.php:130
 msgid "WB Plugins"
 msgstr ""
 
-#: admin/class-recaptcha-for-woocommerce-admin.php:131
-#: admin/class-recaptcha-for-woocommerce-admin.php:191
+#: admin/class-recaptcha-for-buddypress-admin.php:131
+#: admin/class-recaptcha-for-buddypress-admin.php:191
 msgid "General"
 msgstr ""
 
-#: admin/class-recaptcha-for-woocommerce-admin.php:134
+#: admin/class-recaptcha-for-buddypress-admin.php:134
 msgid "BuddyPress reCaptcha"
 msgstr ""
 
-#: admin/class-recaptcha-for-woocommerce-admin.php:156
+#: admin/class-recaptcha-for-buddypress-admin.php:156
 msgid "BuddyPress reCaptcha Settings"
 msgstr ""
 
-#: admin/class-recaptcha-for-woocommerce-admin.php:173
+#: admin/class-recaptcha-for-buddypress-admin.php:173
 msgid "Save changes"
 msgstr ""
 
-#: admin/class-recaptcha-for-woocommerce-admin.php:188
+#: admin/class-recaptcha-for-buddypress-admin.php:188
 msgid "Welcome"
 msgstr ""
 
-#: admin/class-recaptcha-for-woocommerce-admin.php:194
+#: admin/class-recaptcha-for-buddypress-admin.php:194
 msgid "WP Login"
 msgstr ""
 
-#: admin/class-recaptcha-for-woocommerce-admin.php:197
+#: admin/class-recaptcha-for-buddypress-admin.php:197
 msgid "WP Registration"
 msgstr ""
 
-#: admin/class-recaptcha-for-woocommerce-admin.php:200
+#: admin/class-recaptcha-for-buddypress-admin.php:200
 msgid "WP Lost Password"
 msgstr ""
 
-#: admin/class-recaptcha-for-woocommerce-admin.php:203
+#: admin/class-recaptcha-for-buddypress-admin.php:203
 msgid "Post Comment Form"
 msgstr ""
 
-#: admin/class-recaptcha-for-woocommerce-admin.php:207
+#: admin/class-recaptcha-for-buddypress-admin.php:207
 msgid "BP Registration"
 msgstr ""
 
-#: admin/class-recaptcha-for-woocommerce-admin.php:212
+#: admin/class-recaptcha-for-buddypress-admin.php:212
 msgid "bbPress Topic"
 msgstr ""
 
-#: admin/class-recaptcha-for-woocommerce-admin.php:215
+#: admin/class-recaptcha-for-buddypress-admin.php:215
 msgid "bbPress Reply"
 msgstr ""
 
-#: admin/class-recaptcha-for-woocommerce-admin.php:220
+#: admin/class-recaptcha-for-buddypress-admin.php:220
 msgid "Woo Registration"
 msgstr ""
 
-#: admin/class-recaptcha-for-woocommerce-admin.php:223
+#: admin/class-recaptcha-for-buddypress-admin.php:223
 msgid "Woo Login"
 msgstr ""
 
-#: admin/class-recaptcha-for-woocommerce-admin.php:226
+#: admin/class-recaptcha-for-buddypress-admin.php:226
 msgid "Woo Lost Password"
 msgstr ""
 
-#: admin/class-recaptcha-for-woocommerce-admin.php:229
+#: admin/class-recaptcha-for-buddypress-admin.php:229
 msgid "Woo Checkout"
 msgstr ""
 

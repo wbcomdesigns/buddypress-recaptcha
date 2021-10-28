@@ -7,7 +7,7 @@
  * @link       https://wbcomdesigns.com/
  * @since      1.0.0
  *
- * @package    Recaptcha_For_Woocommerce
+ * @package    Recaptcha_For_BuddyPress
  * @subpackage bp_recaptcha/admin/partials
  */
 

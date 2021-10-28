@@ -8,7 +8,7 @@
  * @link       https://wbcomdesigns.com/
  * @since      1.0.0
  *
- * @package    Recaptcha_For_Woocommerce
+ * @package    Recaptcha_For_BuddyPress
  * @subpackage bp_recaptcha/includes
  */
 
@@ -22,11 +22,11 @@
  * version of the plugin.
  *
  * @since      1.0.0
- * @package    Recaptcha_For_Woocommerce
+ * @package    Recaptcha_For_BuddyPress
  * @subpackage bp_recaptcha/includes
  * @author     Wbcom Designs <admin@wbcomdesigns.com>
  */
-class Recaptcha_For_Woocommerce {
+class Recaptcha_For_BuddyPress {
 
 	/**
 	 * The loader that's responsible for maintaining and registering all hooks that power
@@ -34,7 +34,7 @@ class Recaptcha_For_Woocommerce {
 	 *
 	 * @since    1.0.0
 	 * @access   protected
-	 * @var      Recaptcha_For_Woocommerce_Loader    $loader    Maintains and registers all hooks for the plugin.
+	 * @var      Recaptcha_For_BuddyPress_Loader    $loader    Maintains and registers all hooks for the plugin.
 	 */
 	protected $loader;
 
@@ -85,10 +85,10 @@ class Recaptcha_For_Woocommerce {
 	 *
 	 * Include the following files that make up the plugin:
 	 *
-	 * - Recaptcha_For_Woocommerce_Loader. Orchestrates the hooks of the plugin.
-	 * - Recaptcha_For_Woocommerce_I18n. Defines internationalization functionality.
-	 * - Recaptcha_For_Woocommerce_Admin. Defines all hooks for the admin area.
-	 * - Recaptcha_For_Woocommerce_Public. Defines all hooks for the public side of the site.
+	 * - Recaptcha_For_BuddyPress_Loader. Orchestrates the hooks of the plugin.
+	 * - Recaptcha_For_BuddyPress_I18n. Defines internationalization functionality.
+	 * - Recaptcha_For_BuddyPress_Admin. Defines all hooks for the admin area.
+	 * - Recaptcha_For_BuddyPress_Public. Defines all hooks for the public side of the site.
 	 *
 	 * Create an instance of the loader which will be used to register the hooks
 	 * with WordPress.
@@ -102,24 +102,24 @@ class Recaptcha_For_Woocommerce {
 		 * The class responsible for orchestrating the actions and filters of the
 		 * core plugin.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-recaptcha-for-woocommerce-loader.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-recaptcha-for-buddypress-loader.php';
 
 		/**
 		 * The class responsible for defining internationalization functionality
 		 * of the plugin.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-recaptcha-for-woocommerce-i18n.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-recaptcha-for-buddypress-i18n.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-recaptcha-for-woocommerce-admin.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-recaptcha-for-buddypress-admin.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the public-facing
 		 * side of the site.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-recaptcha-for-woocommerce-public.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-recaptcha-for-buddypress-public.php';
 
 		/* Enqueue wbcom plugin settings file. */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/wbcom/wbcom-admin-settings.php';
@@ -141,14 +141,14 @@ class Recaptcha_For_Woocommerce {
 		// Buddy Press.
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/bp-classes/Regisrtationbp.php';
 
-		$this->loader = new Recaptcha_For_Woocommerce_Loader();
+		$this->loader = new Recaptcha_For_BuddyPress_Loader();
 
 	}
 
 	/**
 	 * Define the locale for this plugin for internationalization.
 	 *
-	 * Uses the Recaptcha_For_Woocommerce_I18n class in order to set the domain and to register the hook
+	 * Uses the Recaptcha_For_BuddyPress_I18n class in order to set the domain and to register the hook
 	 * with WordPress.
 	 *
 	 * @since    1.0.0
@@ -156,7 +156,7 @@ class Recaptcha_For_Woocommerce {
 	 */
 	private function set_locale() {
 
-		$plugin_i18n = new Recaptcha_For_Woocommerce_I18n();
+		$plugin_i18n = new Recaptcha_For_BuddyPress_I18n();
 
 		$this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain' );
 
@@ -171,7 +171,7 @@ class Recaptcha_For_Woocommerce {
 	 */
 	private function define_admin_hooks() {
 
-		$plugin_admin = new Recaptcha_For_Woocommerce_Admin( $this->get_plugin_name(), $this->get_version() );
+		$plugin_admin = new Recaptcha_For_BuddyPress_Admin( $this->get_plugin_name(), $this->get_version() );
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
@@ -191,7 +191,7 @@ class Recaptcha_For_Woocommerce {
 	 */
 	private function define_public_hooks() {
 
-		$plugin_public = new Recaptcha_For_Woocommerce_Public( $this->get_plugin_name(), $this->get_version() );
+		$plugin_public = new Recaptcha_For_BuddyPress_Public( $this->get_plugin_name(), $this->get_version() );
 
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
@@ -311,7 +311,7 @@ class Recaptcha_For_Woocommerce {
 	 * The reference to the class that orchestrates the hooks with the plugin.
 	 *
 	 * @since     1.0.0
-	 * @return    Recaptcha_For_Woocommerce_Loader    Orchestrates the hooks of the plugin.
+	 * @return    Recaptcha_For_BuddyPress_Loader    Orchestrates the hooks of the plugin.
 	 */
 	public function get_loader() {
 		return $this->loader;

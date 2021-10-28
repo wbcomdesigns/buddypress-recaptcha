@@ -1,25 +1,25 @@
 <?php
 /**
- * Fired during plugin deactivation
+ * Fired during plugin activation
  *
  * @link       https://wbcomdesigns.com/
  * @since      1.0.0
  *
- * @package    Recaptcha_For_Woocommerce
+ * @package    Recaptcha_For_BuddyPress
  * @subpackage bp_recaptcha/includes
  */
 
 /**
- * Fired during plugin deactivation.
+ * Fired during plugin activation.
  *
- * This class defines all code necessary to run during the plugin's deactivation.
+ * This class defines all code necessary to run during the plugin's activation.
  *
  * @since      1.0.0
- * @package    Recaptcha_For_Woocommerce
+ * @package    Recaptcha_For_BuddyPress
  * @subpackage bp_recaptcha/includes
  * @author     Wbcom Designs <admin@wbcomdesigns.com>
  */
-class Recaptcha_For_Woocommerce_Deactivator {
+class Recaptcha_For_BuddyPress_Activator {
 
 	/**
 	 * Short Description. (use period)
@@ -28,7 +28,7 @@ class Recaptcha_For_Woocommerce_Deactivator {
 	 *
 	 * @since    1.0.0
 	 */
-	public static function deactivate() {
+	public static function activate() {
 
 	}
 
