@@ -112,7 +112,7 @@ if ( ! class_exists( 'Wbcom_Admin_Settings' ) ) {
 			$installed  = $upgrader->install( $plugin_zip );
 			if ( $installed ) {
 				$response = array( 'status' => 'installed' );
-				echo wp_send_json_success( $response );
+				echo wp_send_json_success( $response );  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			} else {
 				return false;
 			}

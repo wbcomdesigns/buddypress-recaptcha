@@ -6,7 +6,7 @@
  * @since 1.0.0
  *
  * @package    Recaptcha_For_Woocommerce
- * @subpackage Recaptcha_For_Woocommerce/public
+ * @subpackage Recaptcha_For_Woocommerce/public/bp-classes
  */
 
 /**
@@ -303,7 +303,7 @@ frm.submit();
 			if ( ! empty( $lable ) && 'yes' !== $hide_lable ) {
 				echo esc_html( $lable );
 			}
-			echo $this->form_field_return();
+			echo $this->form_field_return(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		}
 	}
 
@@ -319,7 +319,7 @@ frm.submit();
 			if ( ! empty( $lable ) && 'yes' !== $hide_lable ) {
 				echo esc_html( $lable );
 			}
-			echo $this->form_field_return();
+			echo $this->form_field_return(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		}
 	}
 
@@ -329,7 +329,7 @@ frm.submit();
 	 * Template Class.
 	 */
 	public function form_field_bp() {
-		echo $this->form_field_return();
+		echo $this->form_field_return(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		$regisrtation_bp = new Regisrtationbp();
 		$regisrtation_bp->v2_checkbox_script();
 	}

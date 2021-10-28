@@ -111,7 +111,6 @@ class Recaptcha_For_Woocommerce_Public {
 
 		if ( 'v2' === strtolower( $woo_recaptcha_version ) ) {
 								$wbc_recapcha_v2_lang = esc_html( get_option( 'wbc_recapcha_v2_lang' ) );
-			// wp_register_style('wbc-woo-styles', plugins_url('/public/css/styles.css', __FILE__), array(), '1.0');
 			if ( '' !== $wbc_recapcha_v2_lang ) {
 				wp_register_script( 'wbc-woo-captcha', 'https://www.google.com/recaptcha/api.js?from=wbc_recaptcha&hl=' . $wbc_recapcha_v2_lang, array(), '1.0', true );
 				wp_register_script( 'wbc-woo-captcha-explicit', 'https://www.google.com/recaptcha/api.js?from=wbc_recaptcha&render=explicit&hl=' . $wbc_recapcha_v2_lang, array(), '2.0', true );
@@ -303,6 +302,5 @@ class Recaptcha_For_Woocommerce_Public {
 	public function woo_load_lang_for_woo_recaptcha() {
 
 		load_plugin_textdomain( 'buddypress-recaptcha', false, basename( dirname( __FILE__ ) ) . '/languages/' );
-		// add_filter('map_meta_cap', array($this, 'map_wbc_woo_map_woo_product_slider_meta_caps'), 10, 4);
 	}
 }
