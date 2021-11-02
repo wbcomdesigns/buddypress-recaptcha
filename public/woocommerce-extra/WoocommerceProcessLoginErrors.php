@@ -59,10 +59,10 @@ class WoocommerceProcessLoginErrors {
 
 				if ( isset( $_REQUEST['woocommerce-login-nonce'] ) && ! empty( $_REQUEST['woocommerce-login-nonce'] ) ) {
 
-					$nonce_value = sanitize_text_field( $_REQUEST['woocommerce-login-nonce'] );
+					$nonce_value = sanitize_text_field( wp_unslash( $_REQUEST['woocommerce-login-nonce'] ) );
 				} elseif ( isset( $_REQUEST['_wpnonce'] ) && ! empty( $_REQUEST['_wpnonce'] ) ) {
 
-					$nonce_value = sanitize_text_field( $_REQUEST['_wpnonce'] );
+					$nonce_value = sanitize_text_field( wp_unslash( $_REQUEST['_wpnonce'] ) );
 				}
 			}
 			if ( 'yes' === $is_enabled && isset( $_POST['username'] ) ) {
@@ -70,7 +70,7 @@ class WoocommerceProcessLoginErrors {
 				if ( wp_verify_nonce( $nonce_value, 'woocommerce-login' ) ) {
 					if ( isset( $_POST['g-recaptcha-response'] ) && ! empty( $_POST['g-recaptcha-response'] ) ) {
 						// Google reCAPTCHA API secret key.
-						$response = sanitize_text_field( $_POST['g-recaptcha-response'] );
+						$response = sanitize_text_field( wp_unslash( $_POST['g-recaptcha-response'] ) );
 
 						// Verify the reCAPTCHA response.
 						$verify_response = wp_remote_get( 'https://www.google.com/recaptcha/api/siteverify?secret=' . $secret_key . '&response=' . $response, array( 'timeout' => 30 ) );
@@ -136,17 +136,17 @@ class WoocommerceProcessLoginErrors {
 
 				if ( isset( $_REQUEST['woocommerce-login-nonce'] ) && ! empty( $_REQUEST['woocommerce-login-nonce'] ) ) {
 
-					$nonce_value = sanitize_text_field( $_REQUEST['woocommerce-login-nonce'] );
+					$nonce_value = sanitize_text_field( wp_unslash( $_REQUEST['woocommerce-login-nonce'] ) );
 				} elseif ( isset( $_REQUEST['_wpnonce'] ) && ! empty( $_REQUEST['_wpnonce'] ) ) {
 
-					$nonce_value = sanitize_text_field( $_REQUEST['_wpnonce'] );
+					$nonce_value = sanitize_text_field( wp_unslash( $_REQUEST['_wpnonce'] ) );
 				}
 			}
 			if ( 'yes' === $is_enabled && isset( $_POST['username'] ) && wp_verify_nonce( $nonce_value, 'woocommerce-login' ) ) {
 
 				if ( isset( $_POST['wbc_recaptcha_login_token'] ) && ! empty( $_POST['wbc_recaptcha_login_token'] ) ) {
 					// Google reCAPTCHA API secret key.
-					$response = sanitize_text_field( $_POST['wbc_recaptcha_login_token'] );
+					$response = sanitize_text_field( wp_unslash( $_POST['wbc_recaptcha_login_token'] ) );
 
 					// Verify the reCAPTCHA response.
 					$verify_response = wp_remote_post(
