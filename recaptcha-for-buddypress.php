@@ -153,7 +153,12 @@ add_action( 'activated_plugin', 'wb_recaptcha_activation_redirect_settings' );
  * @since    1.0.0
  */
 function run_recaptcha_for_woocommerce() {
-
+	require plugin_dir_path( __FILE__ ) . 'bp-recaptcha-update-checker/bp-recaptcha-update-checker.php';
+	$myUpdateChecker = Puc_v4_Factory::buildUpdateChecker(
+		'https://demos.wbcomdesigns.com/exporter/free-plugins/buddypress-recaptcha.json',
+		__FILE__, // Full path to the main plugin file or functions.php.
+		'buddypress-recaptcha'
+	);
 	$plugin = new Recaptcha_For_BuddyPress();
 	$plugin->run();
 
