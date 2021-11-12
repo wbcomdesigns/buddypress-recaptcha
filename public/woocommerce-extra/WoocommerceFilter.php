@@ -48,7 +48,7 @@ class WoocommerceFilter {
 			$recapcha_error_msg_captcha_no_response = str_replace( '[recaptcha]', $captcha_lable, $recapcha_error_msg_captcha_no_response );
 			$recapcha_error_msg_captcha_invalid     = str_replace( '[recaptcha]', $captcha_lable, $recapcha_error_msg_captcha_invalid );
 
-			$nonce_value = isset( $_POST['wp-login-nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['wp-login-nonce'] ) ) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.NonceVerification.NoNonceVerification
+			$nonce_value = isset( $_POST['wp-login-nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['wp-login-nonce'] ) ) : '';
 			$varify_none = wp_verify_nonce( $nonce_value, 'wp-login-nonce' );
 			if ( 'yes' === $is_enabled && isset( $_POST['log'] ) ) {
 
@@ -110,7 +110,7 @@ class WoocommerceFilter {
 							$recapcha_error_msg_captcha_invalid     = get_option( 'wbc_recapcha_error_msg_v3_invalid_captcha' );
 							$secret_key                             = get_option( 'wc_settings_tab_recapcha_secret_key_v3' );
 							$is_enabled                             = get_option( 'wbc_recapcha_enable_on_wplogin' );
-							$nonce_value                            = isset( $_POST['wp-login-nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['wp-login-nonce'] ) ) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.NonceVerification.NoNonceVerification
+							$nonce_value                            = isset( $_POST['wp-login-nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['wp-login-nonce'] ) ) : '';
 							$varify_none                            = wp_verify_nonce( $nonce_value, 'wp-login-nonce' );
 			if ( 'yes' === $is_enabled && isset( $_POST['log'] ) ) {
 
@@ -213,7 +213,7 @@ class WoocommerceFilter {
 			$recapcha_error_msg_captcha_no_response = str_replace( '[recaptcha]', $captcha_lable, $recapcha_error_msg_captcha_no_response );
 			$recapcha_error_msg_captcha_invalid     = str_replace( '[recaptcha]', $captcha_lable, $recapcha_error_msg_captcha_invalid );
 
-			$nonce_value             = isset( $_POST['wp-register-nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['wp-register-nonce'] ) ) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.NonceVerification.NoNonceVerification
+			$nonce_value             = isset( $_POST['wp-register-nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['wp-register-nonce'] ) ) : '';
 						$varify_none = wp_verify_nonce( $nonce_value, 'wp-register-nonce' );
 
 			if ( 'yes' === $is_enabled && isset( $_POST['user_login'] ) && ! empty( $_POST['user_login'] ) ) {
@@ -274,7 +274,7 @@ class WoocommerceFilter {
 						$recapcha_error_msg_captcha_invalid     = get_option( 'wbc_recapcha_error_msg_v3_invalid_captcha' );
 						$secret_key                             = get_option( 'wc_settings_tab_recapcha_secret_key_v3' );
 						$is_enabled                             = get_option( 'wbc_recapcha_enable_on_wpregister' );
-						$nonce_value                            = isset( $_POST['wp-register-nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['wp-register-nonce'] ) ) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.NonceVerification.NoNonceVerification
+						$nonce_value                            = isset( $_POST['wp-register-nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['wp-register-nonce'] ) ) : '';
 						$varify_none                            = wp_verify_nonce( $nonce_value, 'wp-register-nonce' );
 
 			if ( 'yes' === $is_enabled && isset( $_POST['user_login'] ) ) {
@@ -379,7 +379,7 @@ class WoocommerceFilter {
 			$recapcha_error_msg_captcha_blank       = get_option( 'wc_settings_tab_recapcha_error_msg_captcha_blank' );
 			$recapcha_error_msg_captcha_no_response = get_option( 'wc_settings_tab_recapcha_error_msg_captcha_no_response' );
 			$recapcha_error_msg_captcha_invalid     = get_option( 'wc_settings_tab_recapcha_error_msg_captcha_invalid' );
-			$nonce_value                            = isset( $_POST['wp-lostpassword-nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['wp-lostpassword-nonce'] ) ) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.NonceVerification.NoNonceVerification
+			$nonce_value                            = isset( $_POST['wp-lostpassword-nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['wp-lostpassword-nonce'] ) ) : '';
 
 			$captcha_lable = get_option( 'wbc_recapcha_wplostpassword_title' );
 			if ( ! empty( trim( $captcha_lable ) ) ) {
@@ -455,10 +455,10 @@ class WoocommerceFilter {
 							$secret_key                             = get_option( 'wc_settings_tab_recapcha_secret_key_v3' );
 							$is_enabled                             = get_option( 'wbc_recapcha_enable_on_wplostpassword' );
 			if ( empty( $_POST['wp-lostpassword-nonce'] ) ) {
-				$nonce_value = isset( $_POST['woocommerce-lost-password-nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['wp-lostpassword-nonce'] ) ) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.NonceVerification.NoNonceVerification
+				$nonce_value = isset( $_POST['woocommerce-lost-password-nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['wp-lostpassword-nonce'] ) ) : '';
 				$varify_none = wp_verify_nonce( $nonce_value, 'woocommerce-lost-password-nonce' );
 			} else {
-				$nonce_value = isset( $_POST['wp-lostpassword-nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['wp-lostpassword-nonce'] ) ) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.NonceVerification.NoNonceVerification
+				$nonce_value = isset( $_POST['wp-lostpassword-nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['wp-lostpassword-nonce'] ) ) : '';
 				$varify_none = wp_verify_nonce( $nonce_value, 'wp-lostpassword-nonce' );
 			}
 
@@ -546,10 +546,10 @@ class WoocommerceFilter {
 							$recapcha_error_msg_captcha_no_response = str_replace( '[recaptcha]', $captcha_lable, $recapcha_error_msg_captcha_no_response );
 							$recapcha_error_msg_captcha_invalid     = str_replace( '[recaptcha]', $captcha_lable, $recapcha_error_msg_captcha_invalid );
 
-							$nonce_value = isset( $_POST['_wpnonce'] ) ? sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.NonceVerification.NoNonceVerification
+							$nonce_value = isset( $_POST['_wpnonce'] ) ? sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ) : '';
 							$varify_none = wp_verify_nonce( $nonce_value, 'wp-review-nonce' );
 
-				if ( ! is_admin() && isset( $_POST['comment_post_ID'], $comment_data['comment_type'] ) && 'product' === get_post_type( absint( $_POST['comment_post_ID'] ) ) && 'review' === $comment_data['comment_type'] && wc_reviews_enabled() ) { // WPCS: input var ok, CSRF ok.
+				if ( ! is_admin() && isset( $_POST['comment_post_ID'], $comment_data['comment_type'] ) && 'product' === get_post_type( absint( $_POST['comment_post_ID'] ) ) && 'review' === $comment_data['comment_type'] && wc_reviews_enabled() ) {
 
 					if ( isset( $_POST['g-recaptcha-response'] ) && ! empty( $_POST['g-recaptcha-response'] ) ) {
 
@@ -626,10 +626,10 @@ class WoocommerceFilter {
 					$recapcha_error_msg_captcha_invalid     = get_option( 'wbc_recapcha_error_msg_v3_invalid_captcha' );
 					$secret_key                             = get_option( 'wc_settings_tab_recapcha_secret_key_v3' );
 
-					$nonce_value = isset( $_POST['_wpnonce'] ) ? sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.NonceVerification.NoNonceVerification
+					$nonce_value = isset( $_POST['_wpnonce'] ) ? sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ) : '';
 					$varify_none = wp_verify_nonce( $nonce_value, 'wp-review-nonce' );
 
-				if ( ! is_admin() && isset( $_POST['comment_post_ID'], $comment_data['comment_type'] ) && 'product' === get_post_type( absint( $_POST['comment_post_ID'] ) ) && 'review' === $comment_data['comment_type'] && wc_reviews_enabled() ) { // WPCS: input var ok, CSRF ok.
+				if ( ! is_admin() && isset( $_POST['comment_post_ID'], $comment_data['comment_type'] ) && 'product' === get_post_type( absint( $_POST['comment_post_ID'] ) ) && 'review' === $comment_data['comment_type'] && wc_reviews_enabled() ) {
 
 					if ( isset( $_POST['wbc_recaptcha_review_token'] ) && ! empty( $_POST['wbc_recaptcha_review_token'] ) ) {
 						// Google reCAPTCHA API secret key.
@@ -750,10 +750,10 @@ class WoocommerceFilter {
 								$recapcha_error_msg_captcha_no_response = str_replace( '[recaptcha]', $captcha_lable, $recapcha_error_msg_captcha_no_response );
 								$recapcha_error_msg_captcha_invalid     = str_replace( '[recaptcha]', $captcha_lable, $recapcha_error_msg_captcha_invalid );
 
-								$nonce_value = isset( $_POST['_wpnonce'] ) ? sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.NonceVerification.NoNonceVerification
+								$nonce_value = isset( $_POST['_wpnonce'] ) ? sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ) : '';
 								$varify_none = wp_verify_nonce( $nonce_value, 'wp-review-nonce' );
 
-				if ( ! is_admin() && isset( $_POST['comment_post_ID'], $comment_data['comment_type'] ) && 'product' !== get_post_type( absint( $_POST['comment_post_ID'] ) ) && 'review' !== $comment_data['comment_type'] ) { // WPCS: input var ok, CSRF ok.
+				if ( ! is_admin() && isset( $_POST['comment_post_ID'], $comment_data['comment_type'] ) && 'product' !== get_post_type( absint( $_POST['comment_post_ID'] ) ) && 'review' !== $comment_data['comment_type'] ) {
 
 					if ( isset( $_POST['g-recaptcha-response'] ) && ! empty( $_POST['g-recaptcha-response'] ) ) {
 
@@ -830,10 +830,10 @@ class WoocommerceFilter {
 								$recapcha_error_msg_captcha_invalid     = get_option( 'wbc_recapcha_error_msg_v3_invalid_captcha' );
 								$secret_key                             = get_option( 'wc_settings_tab_recapcha_secret_key_v3' );
 
-								$nonce_value = isset( $_POST['_wpnonce'] ) ? sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.NonceVerification.NoNonceVerification
+								$nonce_value = isset( $_POST['_wpnonce'] ) ? sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ) : '';
 								$varify_none = wp_verify_nonce( $nonce_value, 'wp-comment-nonce' );
 
-				if ( ! is_admin() && isset( $_POST['comment_post_ID'], $comment_data['comment_type'] ) && 'product' !== get_post_type( absint( $_POST['comment_post_ID'] ) ) && 'review' !== $comment_data['comment_type'] ) { // WPCS: input var ok, CSRF ok.
+				if ( ! is_admin() && isset( $_POST['comment_post_ID'], $comment_data['comment_type'] ) && 'product' !== get_post_type( absint( $_POST['comment_post_ID'] ) ) && 'review' !== $comment_data['comment_type'] ) {
 
 					if ( isset( $_POST['wbc_recaptcha_comment_token'] ) && ! empty( $_POST['wbc_recaptcha_comment_token'] ) ) {
 						// Google reCAPTCHA API secret key.
@@ -855,7 +855,7 @@ class WoocommerceFilter {
 
 						if ( is_array( $verify_response ) && ! is_wp_error( $verify_response ) && isset( $verify_response['body'] ) ) {
 
-										// Decode json data.
+								// Decode json data.
 								$response_data = json_decode( $verify_response['body'] );
 								// If reCAPTCHA response is valid.
 

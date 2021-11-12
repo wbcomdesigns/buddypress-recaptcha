@@ -423,7 +423,7 @@ if ( ! class_exists( 'Wooaction' ) ) :
 						?>
 						<tr valign="top" class="single_select_page">
 							<th scope="row" class="titledesc">
-								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo $value['title']; ?> <?php echo $tooltip_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></label>
+								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo wp_kses_post( $tooltip_html ); ?></label>
 							</th>
 							<td class="forminp forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?>">
 								<select
@@ -431,7 +431,7 @@ if ( ! class_exists( 'Wooaction' ) ) :
 									id="<?php echo esc_attr( $value['id'] ); ?>"
 									style="<?php echo esc_attr( $value['css'] ); ?>"
 									class="<?php echo esc_attr( $value['class'] ); ?>"
-									<?php echo implode( ' ', $custom_attributes ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+									<?php echo esc_attr( implode( ' ', $custom_attributes ) ); ?>
 									data-placeholder="<?php esc_attr_e( 'Search for a page&hellip;', 'buddypress-recaptcha' ); ?>"
 									data-allow_clear="true"
 									data-exclude="<?php echo esc_attr( wc_esc_json( wp_json_encode( $value['args']['exclude'] ) ) ); ?>"
@@ -439,10 +439,10 @@ if ( ! class_exists( 'Wooaction' ) ) :
 									<option value=""></option>
 									<?php if ( ! is_null( $page ) ) { ?>
 										<option value="<?php echo esc_attr( $option_value ); ?>" selected="selected">
-										<?php echo wp_strip_all_tags( $option_display_name ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+										<?php echo esc_html( wp_strip_all_tags( $option_display_name ) ); ?>
 										</option>
 									<?php } ?>
-								</select> <?php echo $description; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+								</select> <?php echo wp_kses_post( $description ); ?>
 							</td>
 						</tr>
 						<?php
@@ -463,7 +463,7 @@ if ( ! class_exists( 'Wooaction' ) ) :
 						?>
 						<tr valign="top">
 							<th scope="row" class="titledesc">
-								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo wp_kses_post( $tooltip_html ); // WPCS: XSS ok. ?></label>
+								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo wp_kses_post( $tooltip_html ); ?></label>
 							</th>
 							<td class="forminp"><select name="<?php echo esc_attr( $value['id'] ); ?>" style="<?php echo esc_attr( $value['css'] ); ?>" data-placeholder="<?php esc_attr_e( 'Choose a country / region&hellip;', 'buddypress-recaptcha' ); ?>" aria-label="<?php esc_attr_e( 'Country / Region', 'buddypress-recaptcha' ); ?>" class="wc-enhanced-select">
 								<?php WC()->countries->country_dropdown_options( $country, $state ); ?>
@@ -487,18 +487,18 @@ if ( ! class_exists( 'Wooaction' ) ) :
 						?>
 						<tr valign="top">
 							<th scope="row" class="titledesc">
-								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo wp_kses_post( $tooltip_html ); // WPCS: XSS ok. ?></label>
+								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo wp_kses_post( $tooltip_html ); ?></label>
 							</th>
 							<td class="forminp">
 								<select multiple="multiple" name="<?php echo esc_attr( $value['id'] ); ?>[]" style="width:350px" data-placeholder="<?php esc_attr_e( 'Choose countries / regions&hellip;', 'buddypress-recaptcha' ); ?>" aria-label="<?php esc_attr_e( 'Country / Region', 'buddypress-recaptcha' ); ?>" class="wc-enhanced-select">
 									<?php
 									if ( ! empty( $countries ) ) {
 										foreach ( $countries as $key => $val ) {
-											echo '<option value="' . esc_attr( $key ) . '"' . esc_attr( wc_selected( $key, $selections ) ) . '>' . esc_html( $val ) . '</option>'; // WPCS: XSS ok.
+											echo '<option value="' . esc_attr( $key ) . '"' . esc_attr( wc_selected( $key, $selections ) ) . '>' . esc_html( $val ) . '</option>';
 										}
 									}
 									?>
-								</select> <?php echo ( $description ) ? $description : ''; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> <br /><a class="select_all button" href="#"><?php esc_html_e( 'Select all', 'buddypress-recaptcha' ); ?></a> <a class="select_none button" href="#"><?php esc_html_e( 'Select none', 'buddypress-recaptcha' ); ?></a>
+								</select> <?php echo ( $description ) ? wp_kses_post( $description ) : ''; ?> <br /><a class="select_all button" href="#"><?php esc_html_e( 'Select all', 'buddypress-recaptcha' ); ?></a> <a class="select_none button" href="#"><?php esc_html_e( 'Select none', 'buddypress-recaptcha' ); ?></a>
 							</td>
 						</tr>
 						<?php
@@ -537,7 +537,7 @@ if ( ! class_exists( 'Wooaction' ) ) :
 										echo '<option value="' . esc_attr( $value ) . '"' . selected( $option_value['unit'], $value, false ) . '>' . esc_html( $label ) . '</option>';
 									}
 									?>
-								</select> <?php echo ( $description ) ? $description : ''; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+								</select> <?php echo ( $description ) ? wp_kses_post( $description ) : ''; ?>
 							</td>
 						</tr>
 						<?php
