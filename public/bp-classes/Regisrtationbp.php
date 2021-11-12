@@ -416,7 +416,7 @@ frm.submit();
 		}
 
 		$secre_key = trim( get_option( 'wc_settings_tab_recapcha_secret_key' ) );
-		$remoteip  = isset( $_SERVER['REMOTE_ADDR'] ) ? $_SERVER['REMOTE_ADDR'] : '';
+		$remoteip  = isset( $_SERVER['REMOTE_ADDR'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) : '';
 		$verify    = false;
 
 		if ( false === $response ) {
@@ -551,9 +551,9 @@ frm.submit();
 		$regisrtation_bp = new Regisrtationbp();
 		$google_url      = apply_filters( 'anr_v2_checkbox_script_api_src', sprintf( 'https://www.%s/recaptcha/api.js?onload=anr_onloadCallback&render=explicit' . $lang, $regisrtation_bp->anr_recaptcha_domain() ), $lang );
 		?>
-			<script src="<?php echo esc_url( $google_url ); ?>"
-				async defer>
-			</script>
+		<script src="<?php echo esc_url( $google_url ); ?>"
+			async defer>
+		</script>
 		<?php
 	}
 }
