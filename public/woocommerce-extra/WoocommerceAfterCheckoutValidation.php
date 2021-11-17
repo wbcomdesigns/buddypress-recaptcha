@@ -86,7 +86,7 @@ class WoocommerceAfterCheckoutValidation {
 
 						if ( isset( $_POST['payment_request_type'] ) && ! empty( $_POST['payment_request_type'] ) ) {
 
-												$payment_request_type = wc_clean( $_POST['payment_request_type'] );
+							$payment_request_type = wc_clean( sanitize_text_field( wp_unslash( $_POST['payment_request_type'] ) ) );
 							if ( 'apple_pay' === $payment_request_type || 'payment_request_api' === $payment_request_type ) {
 
 								return $validation_errors;
@@ -130,7 +130,7 @@ class WoocommerceAfterCheckoutValidation {
 
 							if ( '' === trim( $recapcha_error_msg_captcha_no_response ) ) {
 
-																					$validation_errors->add( 'g-recaptcha_error', __( 'Could not get response from recaptcha server.', 'buddypress-recaptcha' ) );
+								$validation_errors->add( 'g-recaptcha_error', __( 'Could not get response from recaptcha server.', 'buddypress-recaptcha' ) );
 							} else {
 								$validation_errors->add( 'g-recaptcha_error', $recapcha_error_msg_captcha_no_response );
 							}
@@ -168,7 +168,7 @@ class WoocommerceAfterCheckoutValidation {
 					if ( 'no' === $wbc_recaptcha_login_recpacha_for_req_btn ) {
 
 						if ( isset( $_POST['payment_request_type'] ) && ! empty( $_POST['payment_request_type'] ) ) {
-								$payment_request_type = wc_clean( $_POST['payment_request_type'] );
+								$payment_request_type = wc_clean( sanitize_text_field( wp_unslash( $_POST['payment_request_type'] ) ) );
 							if ( 'apple_pay' === $payment_request_type || 'payment_request_api' === $payment_request_type ) {
 
 								return $validation_errors;
@@ -281,7 +281,7 @@ class WoocommerceAfterCheckoutValidation {
 
 					if ( isset( $_POST['payment_request_type'] ) && ! empty( $_POST['payment_request_type'] ) ) {
 
-						$payment_request_type = wc_clean( $_POST['payment_request_type'] );
+						$payment_request_type = wc_clean( sanitize_text_field( wp_unslash( $_POST['payment_request_type'] ) ) );
 						if ( 'apple_pay' === $payment_request_type || 'payment_request_api' === $payment_request_type ) {
 
 							return $validation_errors;
