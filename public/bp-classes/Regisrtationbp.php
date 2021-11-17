@@ -264,7 +264,7 @@ frm.submit();
 		if ( 'yes' == $wbc_recapcha_enable_on_signup_bp ) {
 			if ( 'v2' !== $re_capcha_version ) {
 				$secret_key      = get_option( 'wc_settings_tab_recapcha_secret_key_v3' );
-				$response        = sanitize_text_field( wp_unslash( $_POST['wbc_recaptcha_wp_register_token'] ) );
+				$response        = ( isset( $_POST['wbc_recaptcha_wp_register_token'] ) ) ? sanitize_text_field( wp_unslash( $_POST['wbc_recaptcha_wp_register_token'] ) ) : '';
 				$verify_response = wp_remote_post(
 					'https://www.google.com/recaptcha/api/siteverify',
 					array(
