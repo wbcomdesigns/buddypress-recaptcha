@@ -1,4 +1,4 @@
-(function( $ ) {
+(function ($) {
 	'use strict';
 
 	/**
@@ -29,52 +29,81 @@
 	 * practising this, we should strive to set a better example in our own work.
 	 */
 
-	$( document ).ready(
-		function(){
-			var version = $( 'input[type=radio][name=wbc_recapcha_version][checked=checked]' ).val();
-			hideshowfield( version );
-			function hideshowfield(version)
-			{
+	$(document).ready(
+		function () {
+			var version = $('input[type=radio][name=wbc_recapcha_version][checked=checked]').val();
+			hideshowfield(version);
+			function hideshowfield(version) {
 				if (version == 'v2' || version == 'undefined') {
-					$( '#wc_settings_tab_recapcha_site_key_v3' ).closest( "tr" ).hide();
-					$( '#wc_settings_tab_recapcha_secret_key_v3' ).closest( "tr" ).hide();
-					$( '#wbc_recapcha_error_msg_v3_invalid_captcha' ).closest( "tr" ).hide();
-					$( '#wbc_recapcha_no_conflict_v3' ).closest( "tr" ).hide();
-					$( '#wbc_recapcha_error_msg_captcha_blank_v3' ).closest( "tr" ).hide();
-					$( '#wbc_recapcha_error_msg_captcha_no_response_v3' ).closest( "tr" ).hide();
+					$('#wc_settings_tab_recapcha_site_key_v3').closest("tr").hide();
+					$('#wc_settings_tab_recapcha_secret_key_v3').closest("tr").hide();
+					$('#wbc_recapcha_error_msg_v3_invalid_captcha').closest("tr").hide();
+					$('#wbc_recapcha_no_conflict_v3').closest("tr").hide();
+					$('#wbc_recapcha_error_msg_captcha_blank_v3').closest("tr").hide();
+					$('#wbc_recapcha_error_msg_captcha_no_response_v3').closest("tr").hide();
 
-					$( '#wc_settings_tab_recapcha_site_key' ).closest( "tr" ).show();
-					$( '#wc_settings_tab_recapcha_secret_key' ).closest( "tr" ).show();
-					$( '#wc_settings_tab_recapcha_error_msg_captcha_invalid' ).closest( "tr" ).show();
-					$( '#wbc_recapcha_no_conflict' ).closest( "tr" ).show();
-					$( '#wc_settings_tab_recapcha_error_msg_captcha_blank' ).closest( "tr" ).show();
-					$( '#wc_settings_tab_recapcha_error_msg_captcha_no_response' ).closest( "tr" ).show();
+					$('#wc_settings_tab_recapcha_site_key').closest("tr").show();
+					$('#wc_settings_tab_recapcha_secret_key').closest("tr").show();
+					$('#wc_settings_tab_recapcha_error_msg_captcha_invalid').closest("tr").show();
+					$('#wbc_recapcha_no_conflict').closest("tr").show();
+					$('#wc_settings_tab_recapcha_error_msg_captcha_blank').closest("tr").show();
+					$('#wc_settings_tab_recapcha_error_msg_captcha_no_response').closest("tr").show();
 				} else {
-					$( '#wc_settings_tab_recapcha_site_key_v3' ).closest( "tr" ).show();
-					$( '#wc_settings_tab_recapcha_secret_key_v3' ).closest( "tr" ).show();
-					$( '#wbc_recapcha_error_msg_v3_invalid_captcha' ).closest( "tr" ).show();
-					$( '#wbc_recapcha_no_conflict_v3' ).closest( "tr" ).show();
-					$( '#wbc_recapcha_error_msg_captcha_blank_v3' ).closest( "tr" ).show();
-					$( '#wbc_recapcha_error_msg_captcha_no_response_v3' ).closest( "tr" ).show();
+					$('#wc_settings_tab_recapcha_site_key_v3').closest("tr").show();
+					$('#wc_settings_tab_recapcha_secret_key_v3').closest("tr").show();
+					$('#wbc_recapcha_error_msg_v3_invalid_captcha').closest("tr").show();
+					$('#wbc_recapcha_no_conflict_v3').closest("tr").show();
+					$('#wbc_recapcha_error_msg_captcha_blank_v3').closest("tr").show();
+					$('#wbc_recapcha_error_msg_captcha_no_response_v3').closest("tr").show();
 
-					$( '#wc_settings_tab_recapcha_site_key' ).closest( "tr" ).hide();
-					$( '#wc_settings_tab_recapcha_secret_key' ).closest( "tr" ).hide();
-					$( '#wc_settings_tab_recapcha_error_msg_captcha_invalid' ).closest( "tr" ).hide();
-					$( '#wbc_recapcha_no_conflict' ).closest( "tr" ).hide();
-					$( '#wc_settings_tab_recapcha_error_msg_captcha_blank' ).closest( "tr" ).hide();
-					$( '#wc_settings_tab_recapcha_error_msg_captcha_no_response' ).closest( "tr" ).hide();
+					$('#wc_settings_tab_recapcha_site_key').closest("tr").hide();
+					$('#wc_settings_tab_recapcha_secret_key').closest("tr").hide();
+					$('#wc_settings_tab_recapcha_error_msg_captcha_invalid').closest("tr").hide();
+					$('#wbc_recapcha_no_conflict').closest("tr").hide();
+					$('#wc_settings_tab_recapcha_error_msg_captcha_blank').closest("tr").hide();
+					$('#wc_settings_tab_recapcha_error_msg_captcha_no_response').closest("tr").hide();
 				}
 			}
-			$( 'input[type=radio][name=wbc_recapcha_version]' ).change(
-				function() {
-					var vals   = $( this ).val();
+			$('input[type=radio][name=wbc_recapcha_version]').change(
+				function () {
+					var vals = $(this).val();
 					var txtmsg = 'reCaptcha V3 does not show any challenge like I am not robot etc. reCaptcha V3 uses a behind-the-scenes scoring system to detect abusive traffic, and lets you decide the minimum passing score. Please note that there is no user interaction shown in reRecapcha V3 meaning that no recaptcha challenge is shown to solve.';
-					hideshowfield( vals );
+					hideshowfield(vals);
 					if (vals == 'v3') {
-						alert( txtmsg );
+						alert(txtmsg);
 					}
 				}
 			);
+
+			$('#wbc_recapcha_enable_on_guestcheckout').on('click', function () {
+				if ($(this).prop("checked") == true) {
+					$('table.form-table tbody tr:nth-child(9)').show(500);
+					$('table.form-table tbody tr:nth-child(12)').show(500);
+				} else {
+					$('table.form-table tbody tr:nth-child(9)').hide(500);
+					$('table.form-table tbody tr:nth-child(12)').hide(500);
+				}
+			});
+
+			$('#wbc_recapcha_enable_on_logincheckout').on('click', function () {
+				if ($(this).prop("checked") == true) {
+					$('table.form-table tbody tr:nth-child(10)').show(500);
+					$('table.form-table tbody tr:nth-child(13)').show(500);
+				} else {
+					$('table.form-table tbody tr:nth-child(10)').hide(500);
+					$('table.form-table tbody tr:nth-child(13)').hide(500);
+				}
+			});
+
+			$('#wbc_recapcha_enable_on_payfororder').on('click', function () {
+				if ($(this).prop("checked") == true) {
+					$('table.form-table tbody tr:nth-child(11)').show(500);
+					$('table.form-table tbody tr:nth-child(14)').show(500);
+				} else {
+					$('table.form-table tbody tr:nth-child(11)').hide(500);
+					$('table.form-table tbody tr:nth-child(14)').hide(500);
+				}
+			});
 		}
 	);
-})( jQuery );
+})(jQuery);

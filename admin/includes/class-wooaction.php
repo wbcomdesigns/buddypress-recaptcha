@@ -284,6 +284,27 @@ if ( ! class_exists( 'Wooaction' ) ) :
 						$option_value     = $value['value'];
 						$visibility_class = array();
 
+						if ( 'wbc_recapcha_enable_on_guestcheckout' === $value['id'] ) {
+							$guest_checkout_value = $value['value'];
+							$guest_checkout_class = '';
+							if ( 'yes' !== $guest_checkout_value ) {
+								$guest_checkout_class = 'hide';
+							}
+						}
+						if ( 'wbc_recapcha_enable_on_logincheckout' === $value['id'] ) {
+							$login_checkout_value = $value['value'];
+							$login_checkout_class = '';
+							if ( 'yes' !== $login_checkout_value ) {
+								$login_checkout_class = 'hide';
+							}
+						}
+						if ( 'wbc_recapcha_enable_on_payfororder' === $value['id'] ) {
+							$pay_order_value = $value['value'];
+							$pay_order_class = '';
+							if ( 'yes' !== $pay_order_value ) {
+								$pay_order_class = 'hide';
+							}
+						}
 						if ( ! isset( $value['hide_if_checked'] ) ) {
 							$value['hide_if_checked'] = false;
 						}
@@ -301,8 +322,25 @@ if ( ! class_exists( 'Wooaction' ) ) :
 						}
 
 						if ( ! isset( $value['checkboxgroup'] ) || 'start' === $value['checkboxgroup'] ) {
+
 							?>
-								<tr valign="top" class="<?php echo esc_attr( implode( ' ', $visibility_class ) ); ?>">
+								<tr valign="top" class="
+								<?php
+								if ( 'wbc_recapcha_disable_submitbtn_guestcheckout' === $value['id'] || 'wbc_recapcha_guest_recpacha_refersh_on_error' === $value['id'] ) {
+									echo esc_attr( $guest_checkout_class );
+								}
+								?>
+								<?php
+								if ( 'wbc_recapcha_disable_submitbtn_logincheckout' === $value['id'] || 'wbc_recapcha_login_recpacha_refersh_on_error' === $value['id'] ) {
+									echo esc_attr( $login_checkout_class );
+								}
+								?>
+								<?php
+								if ( 'wbc_recapcha_disable_submitbtn_payfororder' === $value['id'] || 'wbc_recaptcha_login_recpacha_for_req_btn' === $value['id'] ) {
+									echo esc_attr( $pay_order_class );
+								}
+								?>
+								<?php echo esc_attr( implode( ' ', $visibility_class ) ); ?>">
 									<th scope="row" class="titledesc"><?php echo esc_html( $value['title'] ); ?></th>
 									<td class="forminp forminp-checkbox">
 										<fieldset>
