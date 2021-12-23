@@ -34,7 +34,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 					<div class="col">
 						<h3><span class="dashicons dashicons-book"></span><?php esc_html_e( 'Documentation', 'buddypress-recaptcha' ); ?></h3>
 						<p><?php esc_html_e( 'We have prepared an extensive guide on Wbcom Designs - reCaptcha to learn all aspects of the plugin. You will find most of your answers here.', 'buddypress-recaptcha' ); ?></p>
-						<a href="<?php echo esc_url( '#' ); ?>" class="button button-primary button-welcome-support" target="_blank"><?php esc_html_e( 'Read Documentation', 'buddypress-recaptcha' ); ?></a>
+						<a href="<?php echo esc_url( 'https://wbcomdesigns.com/docs/general/buddypress-recaptcha/' ); ?>" class="button button-primary button-welcome-support" target="_blank"><?php esc_html_e( 'Read Documentation', 'buddypress-recaptcha' ); ?></a>
 					</div>
 
 					<div class="col">
