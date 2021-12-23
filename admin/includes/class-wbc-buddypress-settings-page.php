@@ -865,12 +865,6 @@ if ( ! class_exists( 'Wbc_WooCommerce_Settings_Page' ) ) :
 								),
 								'default' => 'normal',
 							),
-							'wbc_recapcha_guestcheckout_refresh' => array(
-								'name'    => __( 'reCaptcha Refresh Title', 'buddypress-recaptcha' ),
-								'type'    => 'text',
-								'id'      => 'wbc_recapcha_guestcheckout_refresh',
-								'default' => 'Refresh Captcha',
-							),
 							'wbc_recapcha_disable_submitbtn_guestcheckout' => array(
 								'name' => __( 'Disable submit button', 'buddypress-recaptcha' ),
 								'desc' => __( 'Disable submit button until recaptcha validate for guest checkout.', 'buddypress-recaptcha' ),

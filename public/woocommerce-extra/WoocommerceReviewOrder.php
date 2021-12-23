@@ -40,16 +40,11 @@ class WoocommerceReviewOrder {
 			$wbc_recapcha_hide_label_checkout  = get_option( 'wbc_recapcha_hide_label_checkout' );
 			$captcha_lable                     = get_option( 'wbc_recapcha_guestcheckout_title' );
 			$captcha_lable_                    = get_option( 'wbc_recapcha_guestcheckout_title' );
-			$refresh_lable                     = get_option( 'wbc_recapcha_guestcheckout_refresh' );
-			if ( '' == esc_html( $refresh_lable ) ) {
-
-				$refresh_lable = __( 'Refresh Captcha', 'buddypress-recaptcha' );
-			}
-			$site_key                 = get_option( 'wc_settings_tab_recapcha_site_key' );
-			$theme                    = get_option( 'wbc_recapcha_guestcheckout_theme' );
-			$size                     = get_option( 'wbc_recapcha_guestcheckout_size' );
-			$is_enabled               = get_option( 'wbc_recapcha_enable_on_guestcheckout' );
-			$is_enabled_logincheckout = get_option( 'wbc_recapcha_enable_on_logincheckout' );
+			$site_key                          = get_option( 'wc_settings_tab_recapcha_site_key' );
+			$theme                             = get_option( 'wbc_recapcha_guestcheckout_theme' );
+			$size                              = get_option( 'wbc_recapcha_guestcheckout_size' );
+			$is_enabled                        = get_option( 'wbc_recapcha_enable_on_guestcheckout' );
+			$is_enabled_logincheckout          = get_option( 'wbc_recapcha_enable_on_logincheckout' );
 			$wbc_recapcha_guest_recpacha_refersh_on_error = get_option( 'wbc_recapcha_guest_recpacha_refersh_on_error' );
 			$wbc_recapcha_login_recpacha_refersh_on_error = get_option( 'wbc_recapcha_login_recpacha_refersh_on_error' );
 
@@ -74,10 +69,6 @@ class WoocommerceReviewOrder {
 			endif;
 				?>
 	<div id="g-recaptcha-checkout-wbc" name="g-recaptcha" class="g-recaptcha-" data-callback="verifyCallback_add_guestcheckout"  data-sitekey="<?php echo esc_html( $site_key ); ?>" data-theme="<?php echo esc_html( $theme ); ?>" data-size="<?php echo esc_html( $size ); ?>"></div>
-	<div id='refresh_captcha' style="width:100%;padding-top:5px"> 
-	<a href="javascript:grecaptcha.reset(myCaptcha);" style="clear:both"><?php echo esc_html( $refresh_lable ); ?></a>
-	</div>    
-
 	</p>
 	<script type="text/javascript">
 	var myCaptcha = null;
@@ -231,8 +222,6 @@ class WoocommerceReviewOrder {
 			endif;
 				?>
 	<div id="g-recaptcha-checkout-wbc" name="g-recaptcha" class="g-recaptcha-" data-callback="verifyCallback_add_logincheckout"   data-sitekey="<?php echo esc_html( $site_key ); ?>" data-theme="<?php echo esc_html( $theme ); ?>" data-size="<?php echo esc_html( $size ); ?>"></div>
-	<div id='refresh_captcha' style="width:100%;padding-top:5px"> <a href="javascript:grecaptcha.reset(myCaptcha);"><?php echo esc_html( $refresh_lable ); ?></a></div>
-
 	</p>
 	<script type="text/javascript">
 	var myCaptcha = null;    
