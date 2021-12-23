@@ -5,42 +5,44 @@
 # Admin Tab Content
 --------------------------------------------------------------*/
 
-
 /*--------------------------------------------------------------
 # Admin Tab Section 
 --------------------------------------------------------------*/
 
 .rfw-tabs-section .nav-tab-wrapper ul li a.nav-tab span.dashicons {
-    display: inline-block;
-    line-height: normal;
-    font-weight: 400;
-    font-style: normal;
-    speak: never;
-    text-decoration: inherit;
-    text-transform: none;
-    text-rendering: auto;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    width: 20px;
-    height: 20px;
-    font-size: 20px;
-    vertical-align: top;
-    text-align: center;
-    transition: color 0.1s ease-in;
-    margin-right: 8px;
+  display: inline-block;
+  line-height: normal;
+  font-weight: 400;
+  font-style: normal;
+  speak: never;
+  text-decoration: inherit;
+  text-transform: none;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  width: 20px;
+  height: 20px;
+  font-size: 20px;
+  vertical-align: top;
+  text-align: center;
+  transition: color 0.1s ease-in;
+  margin-right: 8px;
 }
 
 /*--------------------------------------------------------------
 # Admin Tab Content 
 --------------------------------------------------------------*/
 .rfw-tab-content input[type="text"] {
-    width: 100%;
+  width: 100%;
 }
 
 .rfw-tab-content .woocommerce-save-button {
-    margin-top: 15px;
+  margin-top: 15px;
 }
 
-.nav-tab-wrapper ul li a.nav-tab:before { 
-display:none;
+.nav-tab-wrapper ul li a.nav-tab:before {
+  display: none;
+}
+.hide {
+  display: none;
 }
