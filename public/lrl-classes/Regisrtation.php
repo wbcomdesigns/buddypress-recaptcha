@@ -74,7 +74,7 @@ class Regisrtation {
 <input type="hidden" autocomplete="off" name="wp-register-nonce" value="<?php echo esc_html( wp_create_nonce( 'wp-register-nonce' ) ); ?>" />
 <p class="wp_register_captcha">
 				<?php
-				if ( 'yes' !== $wbc_recapcha_hide_label_wpregister ) :
+				if ( 'yes' === $wbc_recapcha_hide_label_wpregister ) :
 					?>
 <label for="g-recaptcha-wp-register-wbc"><?php echo esc_html( ( '' === trim( $captcha_lable ) ) ? __( 'Captcha', 'buddypress-recaptcha' ) : esc_html( $captcha_lable ) ); ?>&nbsp;</label>
 					<?php

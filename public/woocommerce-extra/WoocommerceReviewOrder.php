@@ -62,7 +62,7 @@ class WoocommerceReviewOrder {
 				?>
 	<p class="guest-checkout-recaptcha woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
 				<?php
-				if ( 'yes' != $wbc_recapcha_hide_label_checkout ) :
+				if ( 'yes' === $wbc_recapcha_hide_label_checkout ) :
 					?>
 	<label for="reg_captcha"><?php echo esc_html( ( '' == trim( $captcha_lable ) ) ? __( 'Captcha', 'buddypress-recaptcha' ) : esc_html( $captcha_lable ) ); ?>&nbsp;<span class="required">*</span></label>
 					<?php
@@ -215,7 +215,7 @@ class WoocommerceReviewOrder {
 				?>
 	<p class="login-checkout-captcha woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
 				<?php
-				if ( 'yes' != $wbc_recapcha_hide_label_checkout ) :
+				if ( 'yes' === $wbc_recapcha_hide_label_checkout ) :
 					?>
 	<label for="reg_captcha"><?php echo esc_html( ( '' == trim( $captcha_lable ) ) ? __( 'Captcha', 'buddypress-recaptcha' ) : esc_html( $captcha_lable ) ); ?>&nbsp;<span class="required">*</span></label>
 					<?php

@@ -78,7 +78,7 @@ class WoocommerceLogin {
 				?>
 	<p class="woo-login-captcha woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
 				<?php
-				if ( 'yes' != $wbc_recapcha_hide_label_login ) :
+				if ( 'yes' === $wbc_recapcha_hide_label_login ) :
 					?>
 	<label for="login_captcha"><?php echo esc_html( ( '' == trim( $captcha_lable ) ) ? __( 'Captcha', 'buddypress-recaptcha' ) : esc_html( $captcha_lable ) ); ?>&nbsp;<span class="required">*</span></label>
 					<?php
@@ -196,7 +196,7 @@ class WoocommerceLogin {
 				  
 				});
 			});
-			<?php if ( 'yes' == $wbc_token_generation_v3_woo_login ) : ?>
+				<?php if ( 'yes' == $wbc_token_generation_v3_woo_login ) : ?>
 						setInterval(function() {
 							grecaptcha.execute('<?php echo esc_html( $site_key ); ?>', { action: '<?php echo esc_html( $wbc_recapcha_login_action_v3 ); ?>' }).then(function (token) {
 

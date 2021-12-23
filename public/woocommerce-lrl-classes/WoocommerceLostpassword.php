@@ -77,7 +77,7 @@ class WoocommerceLostpassword {
 				?>
 	<p class="woo-lost-password-captcha woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
 				<?php
-				if ( 'yes' != $wbc_recapcha_hide_label_lostpassword ) :
+				if ( 'yes' === $wbc_recapcha_hide_label_lostpassword ) :
 					?>
 	<label for="lostpassword_captcha"><?php echo esc_html( ( '' == trim( $captcha_lable ) ) ? __( 'Captcha', 'buddypress-recaptcha' ) : esc_html( $captcha_lable ) ); ?>&nbsp;<span class="required">*</span></label>
 					<?php
@@ -116,7 +116,7 @@ class WoocommerceLostpassword {
 	var verifyCallback_woo_lostpassword = function(response) {
 
 	if(response.length!==0){
-		<?php if ( 'yes' == trim( $disable_submit_btn ) ) : ?>
+				<?php if ( 'yes' == trim( $disable_submit_btn ) ) : ?>
 				jQuery('.woocommerce-Button').removeAttr("title");
 				jQuery('.woocommerce-Button').attr("disabled", false);
 			<?php endif; ?>  

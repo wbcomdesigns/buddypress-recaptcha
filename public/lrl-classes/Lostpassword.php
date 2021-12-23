@@ -76,7 +76,7 @@ class Lostpassword {
 		<input type="hidden" autocomplete="off" name="wp-lostpassword-nonce" value="<?php echo esc_html( wp_create_nonce( 'wp-lostpassword-nonce' ) ); ?>" />
 		<p class="wbc_woo_wp_forgopt_password_captcha" >
 				<?php
-				if ( 'yes' !== $wbc_recapcha_hide_label_wplostpassword ) :
+				if ( 'yes' === $wbc_recapcha_hide_label_wplostpassword ) :
 					?>
 		<label for="g-recaptcha-wp-lostpassword-wbc"><?php echo esc_html( ( '' === trim( $captcha_lable ) ) ? __( 'Captcha', 'buddypress-recaptcha' ) : esc_html( $captcha_lable ) ); ?>&nbsp;</label>
 					<?php

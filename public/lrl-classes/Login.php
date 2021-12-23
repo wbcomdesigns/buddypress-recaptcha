@@ -74,7 +74,7 @@ class Login {
 	<input type="hidden" autocomplete="off" name="wp-login-nonce" value="<?php echo esc_html( wp_create_nonce( 'wp-login-nonce' ) ); ?>" />
 	<p class="wbc_woo_wp_login_captcha">
 				<?php
-				if ( 'yes' !== $wbc_recapcha_hide_label_wplogin ) :
+				if ( 'yes' === $wbc_recapcha_hide_label_wplogin ) :
 					?>
 	<label for="g-recaptcha-wp-login-wbc"><?php echo esc_html( ( '' === trim( $captcha_lable ) ) ? __( 'Captcha', 'buddypress-recaptcha' ) : esc_html( $captcha_lable ) ); ?>&nbsp;</label>
 					<?php

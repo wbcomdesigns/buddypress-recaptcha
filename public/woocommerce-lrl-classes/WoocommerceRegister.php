@@ -77,7 +77,7 @@ class WoocommerceRegister {
 				?>
 	<p id="woo_reg_recaptcha" class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
 				<?php
-				if ( 'yes' != $wbc_recapcha_hide_label_signup ) :
+				if ( 'yes' === $wbc_recapcha_hide_label_signup ) :
 					?>
 	<label for="reg_captcha"><?php echo esc_html( ( '' == trim( $captcha_lable ) ) ? esc_html( __( 'Captcha', 'buddypress-recaptcha' ) ) : esc_html( $captcha_lable ) ); ?>&nbsp;<span class="required">*</span></label>
 					<?php

@@ -74,7 +74,7 @@ class Regisrtationbp {
 <input type="hidden" autocomplete="off" name="wp-register-nonce" value="<?php echo esc_html( wp_create_nonce( 'wp-register-nonce' ) ); ?>" />
 <p class="wp_register_captcha">
 				<?php
-				if ( 'yes' !== $wbc_recapcha_hide_label_wpregister ) :
+				if ( 'yes' === $wbc_recapcha_hide_label_wpregister ) :
 					?>
 <label for="g-recaptcha-wp-register-wbc"><?php echo esc_html( ( '' === trim( $captcha_lable ) ) ? __( 'Captcha', 'buddypress-recaptcha' ) : esc_html( $captcha_lable ) ); ?>&nbsp;</label>
 					<?php
@@ -300,7 +300,7 @@ frm.submit();
 		if ( 'yes' === $is_enabled ) {
 			$lable      = get_option( 'recapcha_bbpress_topic_title' );
 			$hide_lable = get_option( 'recapcha_hide_label_bbpress_topic' );
-			if ( ! empty( $lable ) && 'yes' !== $hide_lable ) {
+			if ( ! empty( $lable ) && 'yes' === $hide_lable ) {
 				echo esc_html( $lable );
 			}
 			echo $this->form_field_return(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
@@ -316,7 +316,7 @@ frm.submit();
 		if ( 'yes' === $is_enabled ) {
 			$lable      = get_option( 'recapcha_bbpress_replay_title' );
 			$hide_lable = get_option( 'recapcha_hide_label_bbpress_replay' );
-			if ( ! empty( $lable ) && 'yes' !== $hide_lable ) {
+			if ( ! empty( $lable ) && 'yes' === $hide_lable ) {
 				echo esc_html( $lable );
 			}
 			echo $this->form_field_return(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
