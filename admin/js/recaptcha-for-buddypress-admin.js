@@ -104,6 +104,94 @@
 					$('table.form-table tbody tr:nth-child(14)').hide(500);
 				}
 			});
+
+			$('#wbc_recapcha_hide_label_wplogin').on('click', function () {
+				if ($(this).prop("checked") == true) {
+					$('table.form-table tbody tr:nth-child(3)').show(500);
+				} else {
+					$('table.form-table tbody tr:nth-child(3)').hide(500);
+				}
+			});
+
+			$('#wbc_recapcha_hide_label_wpregister').on('click', function () {
+				if ($(this).prop("checked") == true) {
+					$('table.form-table tbody tr:nth-child(3)').show(500);
+				} else {
+					$('table.form-table tbody tr:nth-child(3)').hide(500);
+				}
+			});
+
+			$('#wbc_recapcha_hide_label_wplostpassword').on('click', function () {
+				if ($(this).prop("checked") == true) {
+					$('table.form-table tbody tr:nth-child(3)').show(500);
+				} else {
+					$('table.form-table tbody tr:nth-child(3)').hide(500);
+				}
+			});
+
+			$('#wbc_recapcha_hide_label_woo_comment').on('click', function () {
+				if ($(this).prop("checked") == true) {
+					$('table.form-table tbody tr:nth-child(3)').show(500);
+				} else {
+					$('table.form-table tbody tr:nth-child(3)').hide(500);
+				}
+			});
+
+			$('#wbc_recapcha_hide_label_signup_bp').on('click', function () {
+				if ($(this).prop("checked") == true) {
+					$('table.form-table tbody tr:nth-child(3)').show(500);
+				} else {
+					$('table.form-table tbody tr:nth-child(3)').hide(500);
+				}
+			});
+
+			$('#recapcha_hide_label_bbpress_topic').on('click', function () {
+				if ($(this).prop("checked") == true) {
+					$('table.form-table tbody tr:nth-child(3)').show(500);
+				} else {
+					$('table.form-table tbody tr:nth-child(3)').hide(500);
+				}
+			});
+
+			$('#recapcha_hide_label_bbpress_replay').on('click', function () {
+				if ($(this).prop("checked") == true) {
+					$('table.form-table tbody tr:nth-child(3)').show(500);
+				} else {
+					$('table.form-table tbody tr:nth-child(3)').hide(500);
+				}
+			});
+
+			$('#wbc_recapcha_hide_label_signup').on('click', function () {
+				if ($(this).prop("checked") == true) {
+					$('table.form-table tbody tr:nth-child(3)').show(500);
+				} else {
+					$('table.form-table tbody tr:nth-child(3)').hide(500);
+				}
+			});
+
+			$('#wbc_recapcha_hide_label_login').on('click', function () {
+				if ($(this).prop("checked") == true) {
+					$('table.form-table tbody tr:nth-child(3)').show(500);
+				} else {
+					$('table.form-table tbody tr:nth-child(3)').hide(500);
+				}
+			});
+
+			$('#wbc_recapcha_hide_label_lostpassword').on('click', function () {
+				if ($(this).prop("checked") == true) {
+					$('table.form-table tbody tr:nth-child(3)').show(500);
+				} else {
+					$('table.form-table tbody tr:nth-child(3)').hide(500);
+				}
+			});
+
+			$('#wbc_recapcha_hide_label_checkout').on('click', function () {
+				if ($(this).prop("checked") == true) {
+					$('table.form-table tbody tr:nth-child(5)').show(500);
+				} else {
+					$('table.form-table tbody tr:nth-child(5)').hide(500);
+				}
+			});
 		}
 	);
 })(jQuery);

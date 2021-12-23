@@ -127,7 +127,63 @@ if ( ! class_exists( 'Wooaction' ) ) :
 					case 'tel':
 						$option_value = $value['value'];
 
-						?><tr valign="top">
+						?><tr valign="top" class="
+						<?php
+						if ( 'wbc_recapcha_wplogin_title' === $value['id'] ) {
+							echo esc_attr( $hide_wplogin_label_class );
+						}
+						?>
+						<?php
+						if ( 'wbc_recapcha_wpregister_title' === $value['id'] ) {
+							echo esc_attr( $hide_wpregister_label_class );
+						}
+						?>
+						<?php
+						if ( 'wbc_recapcha_wplostpassword_title' === $value['id'] ) {
+							echo esc_attr( $hide_wplostpassword_label_class );
+						}
+						?>
+						<?php
+						if ( 'wbc_recapcha_woo_comment_title' === $value['id'] ) {
+							echo esc_attr( $hide_woo_comment_label_class );
+						}
+						?>
+						<?php
+						if ( 'wbc_recapcha_signup_title_bp' === $value['id'] ) {
+							echo esc_attr( $hide_sign_up_bp_title_label_class );
+						}
+						?>
+						<?php
+						if ( 'recapcha_bbpress_topic_title' === $value['id'] ) {
+							echo esc_attr( $hide_bbpress_topic_label_class );
+						}
+						?>
+						<?php
+						if ( 'recapcha_bbpress_replay_title' === $value['id'] ) {
+							echo esc_attr( $hide_bbpress_replay_label_class );
+						}
+						?>
+						<?php
+						if ( 'wbc_recapcha_signup_title' === $value['id'] ) {
+							echo esc_attr( $hide_signup_label_class );
+						}
+						?>
+						<?php
+						if ( 'wbc_recapcha_login_title' === $value['id'] ) {
+							echo esc_attr( $hide_login_label_class );
+						}
+						?>
+						<?php
+						if ( 'wbc_recapcha_lostpassword_title' === $value['id'] ) {
+							echo esc_attr( $hide_lostpassword_label_class );
+						}
+						?>
+						<?php
+						if ( 'wbc_recapcha_guestcheckout_title' === $value['id'] ) {
+							echo esc_attr( $hide_checkout_label_class );
+						}
+						?>
+						">
 							<th scope="row" class="titledesc">
 								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?><?php echo wp_kses_post( $tooltip_html ); ?></label>
 							</th>
@@ -283,7 +339,6 @@ if ( ! class_exists( 'Wooaction' ) ) :
 					case 'checkbox':
 						$option_value     = $value['value'];
 						$visibility_class = array();
-
 						if ( 'wbc_recapcha_enable_on_guestcheckout' === $value['id'] ) {
 							$guest_checkout_value = $value['value'];
 							$guest_checkout_class = '';
@@ -303,6 +358,83 @@ if ( ! class_exists( 'Wooaction' ) ) :
 							$pay_order_class = '';
 							if ( 'yes' !== $pay_order_value ) {
 								$pay_order_class = 'hide';
+							}
+						}
+						if ( 'wbc_recapcha_hide_label_wplogin' === $value['id'] ) {
+							$hide_wplogin_label_value = $value['value'];
+							$hide_wplogin_label_class = '';
+							if ( 'yes' !== $hide_wplogin_label_value ) {
+								$hide_wplogin_label_class = 'hide';
+							}
+						}
+						if ( 'wbc_recapcha_hide_label_wpregister' === $value['id'] ) {
+							$hide_wpregister_label_value = $value['value'];
+							$hide_wpregister_label_class = '';
+							if ( 'yes' !== $hide_wpregister_label_value ) {
+								$hide_wpregister_label_class = 'hide';
+							}
+						}
+						if ( 'wbc_recapcha_hide_label_wplostpassword' === $value['id'] ) {
+							$hide_wplostpassword_label_value = $value['value'];
+							$hide_wplostpassword_label_class = '';
+							if ( 'yes' !== $hide_wplostpassword_label_value ) {
+								$hide_wplostpassword_label_class = 'hide';
+							}
+						}
+						if ( 'wbc_recapcha_hide_label_woo_comment' === $value['id'] ) {
+							$hide_woo_comment_label_value = $value['value'];
+							$hide_woo_comment_label_class = '';
+							if ( 'yes' !== $hide_woo_comment_label_value ) {
+								$hide_woo_comment_label_class = 'hide';
+							}
+						}
+						if ( 'wbc_recapcha_hide_label_signup_bp' === $value['id'] ) {
+							$hide_sign_up_bp_title_label_value = $value['value'];
+							$hide_sign_up_bp_title_label_class = '';
+							if ( 'yes' !== $hide_sign_up_bp_title_label_value ) {
+								$hide_sign_up_bp_title_label_class = 'hide';
+							}
+						}
+						if ( 'recapcha_hide_label_bbpress_topic' === $value['id'] ) {
+							$hide_bbpress_topic_label_value = $value['value'];
+							$hide_bbpress_topic_label_class = '';
+							if ( 'yes' !== $hide_bbpress_topic_label_value ) {
+								$hide_bbpress_topic_label_class = 'hide';
+							}
+						}
+						if ( 'recapcha_hide_label_bbpress_replay' === $value['id'] ) {
+							$hide_bbpress_replay_label_value = $value['value'];
+							$hide_bbpress_replay_label_class = '';
+							if ( 'yes' !== $hide_bbpress_replay_label_value ) {
+								$hide_bbpress_replay_label_class = 'hide';
+							}
+						}
+						if ( 'wbc_recapcha_hide_label_signup' === $value['id'] ) {
+							$hide_signup_label_value = $value['value'];
+							$hide_signup_label_class = '';
+							if ( 'yes' !== $hide_signup_label_value ) {
+								$hide_signup_label_class = 'hide';
+							}
+						}
+						if ( 'wbc_recapcha_hide_label_login' === $value['id'] ) {
+							$hide_login_label_value = $value['value'];
+							$hide_login_label_class = '';
+							if ( 'yes' !== $hide_login_label_value ) {
+								$hide_login_label_class = 'hide';
+							}
+						}
+						if ( 'wbc_recapcha_hide_label_lostpassword' === $value['id'] ) {
+							$hide_lostpassword_label_value = $value['value'];
+							$hide_lostpassword_label_class = '';
+							if ( 'yes' !== $hide_lostpassword_label_value ) {
+								$hide_lostpassword_label_class = 'hide';
+							}
+						}
+						if ( 'wbc_recapcha_hide_label_checkout' === $value['id'] ) {
+							$hide_checkout_label_value = $value['value'];
+							$hide_checkout_label_class = '';
+							if ( 'yes' !== $hide_checkout_label_value ) {
+								$hide_checkout_label_class = 'hide';
 							}
 						}
 						if ( ! isset( $value['hide_if_checked'] ) ) {

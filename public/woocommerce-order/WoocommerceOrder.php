@@ -58,7 +58,7 @@ class WoocommerceOrder {
 				?>
 	<p class="payorder-checkout-recaptcha woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
 				<?php
-				if ( 'yes' != $wbc_recapcha_hide_label_checkout ) :
+				if ( 'yes' === $wbc_recapcha_hide_label_checkout ) :
 					?>
 	<label for="reg_captcha"><?php echo esc_html( ( '' == trim( $captcha_lable ) ) ? __( 'Captcha', 'buddypress-recaptcha' ) : esc_html( $captcha_lable ) ); ?>&nbsp;<span class="required">*</span></label>
 					<?php
@@ -656,7 +656,7 @@ class WoocommerceOrder {
 					?>
 							<p class="guest-checkout-recaptcha woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
 								<?php
-								if ( 'yes' != $wbc_recapcha_hide_label_checkout ) :
+								if ( 'yes' === $wbc_recapcha_hide_label_checkout ) :
 									?>
 						<label for="reg_captcha"><?php echo esc_html( ( '' == trim( $captcha_lable ) ) ? __( 'Captcha', 'buddypress-recaptcha' ) : esc_html( $captcha_lable ) ); ?>&nbsp;<span class="required">*</span></label><?php endif; ?>
 							<div id="g-recaptcha-checkout-wbc" name="g-recaptcha" class="g-recaptcha-" data-callback="verifyCallback_add_guestcheckout"  data-sitekey="<?php echo esc_html( $site_key ); ?>" data-theme="<?php echo esc_html( $theme ); ?>" data-size="<?php echo esc_html( $size ); ?>"></div>
@@ -753,7 +753,7 @@ class WoocommerceOrder {
 					?>
 							<p class="login-checkout-captcha woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
 						<?php
-						if ( 'yes' != $wbc_recapcha_hide_label_checkout ) :
+						if ( 'yes' === $wbc_recapcha_hide_label_checkout ) :
 							?>
 							<label for="reg_captcha"><?php echo esc_html( ( '' == trim( $captcha_lable ) ) ? __( 'Captcha', 'buddypress-recaptcha' ) : esc_html( $captcha_lable ) ); ?>&nbsp;<span class="required">*</span></label><?php endif; ?>
 							<div id="g-recaptcha-checkout-wbc" name="g-recaptcha" class="g-recaptcha-" data-callback="verifyCallback_add_logincheckout"   data-sitekey="<?php echo esc_html( $site_key ); ?>" data-theme="<?php echo esc_html( $theme ); ?>" data-size="<?php echo esc_html( $size ); ?>"></div>
@@ -987,7 +987,7 @@ class WoocommerceOrder {
 				?>
 	<div class="woo-comment-captcha woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
 				<?php
-				if ( 'yes' != $wbc_recapcha_hide_label_login ) :
+				if ( 'yes' === $wbc_recapcha_hide_label_login ) :
 					?>
 	<label for="comment_captcha"><?php echo esc_html( ( '' == trim( $captcha_lable ) ) ? __( 'Captcha', 'buddypress-recaptcha' ) : esc_html( $captcha_lable ) ); ?>&nbsp;<span class="required">*</span></label>
 					<?php
