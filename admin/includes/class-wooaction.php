@@ -159,8 +159,8 @@ if ( ! class_exists( 'Wooaction' ) ) :
 						}
 						?>
 						<?php
-						if ( 'recapcha_bbpress_replay_title' === $value['id'] ) {
-							echo esc_attr( $hide_bbpress_replay_label_class );
+						if ( 'recapcha_bbpress_reply_title' === $value['id'] ) {
+							echo esc_attr( $hide_bbpress_reply_label_class );
 						}
 						?>
 						<?php
@@ -402,11 +402,11 @@ if ( ! class_exists( 'Wooaction' ) ) :
 								$hide_bbpress_topic_label_class = 'hide';
 							}
 						}
-						if ( 'recapcha_hide_label_bbpress_replay' === $value['id'] ) {
-							$hide_bbpress_replay_label_value = $value['value'];
-							$hide_bbpress_replay_label_class = '';
-							if ( 'yes' !== $hide_bbpress_replay_label_value ) {
-								$hide_bbpress_replay_label_class = 'hide';
+						if ( 'recapcha_hide_label_bbpress_reply' === $value['id'] ) {
+							$hide_bbpress_reply_label_value = $value['value'];
+							$hide_bbpress_reply_label_class = '';
+							if ( 'yes' !== $hide_bbpress_reply_label_value ) {
+								$hide_bbpress_reply_label_class = 'hide';
 							}
 						}
 						if ( 'wbc_recapcha_hide_label_signup' === $value['id'] ) {

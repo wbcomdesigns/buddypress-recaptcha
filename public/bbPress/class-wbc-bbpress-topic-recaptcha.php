@@ -51,7 +51,7 @@ class Recaptcha_bbPress_Topic {
 					foreach ( $wp_scripts->queue as $handle ) {
 
 						foreach ( $urls as $url ) {
-							if ( false !== strpos( $wp_scripts->registered[ $handle ]->src, $url ) && ( 'wbc-bbpress-replay' !== $handle && 'wbc-bbpress-replay-v3' !== $handle ) ) {
+							if ( false !== strpos( $wp_scripts->registered[ $handle ]->src, $url ) && ( 'wbc-bbpress-reply' !== $handle && 'wbc-bbpress-reply-v3' !== $handle ) ) {
 								wp_dequeue_script( $handle );
 								wp_deregister_script( $handle );
 								break;
@@ -60,14 +60,14 @@ class Recaptcha_bbPress_Topic {
 					}
 				}
 				wp_enqueue_script( 'jquery' );
-				wp_enqueue_script( 'wbc-bbpress-replay-v3' );
+				wp_enqueue_script( 'wbc-bbpress-reply-v3' );
 
 				$site_key                                 = get_option( 'wc_settings_tab_recapcha_site_key_v3' );
 				$wbc_recapcha_bbpress_topic_action_v3     = get_option( 'wbc_recapcha_bbpress_topic_action_v3' );
 				$wbc_recapcha_bbpress_topic_generation_v3 = get_option( 'wbc_recapcha_bbpress_topic_submit_token_generation_v3' );
 				if ( '' === trim( $wbc_recapcha_bbpress_topic_action_v3 ) ) {
 
-					$wbc_recapcha_bbpress_topic_action_v3 = 'bbPress_replay';
+					$wbc_recapcha_bbpress_topic_action_v3 = 'bbPress_reply';
 				}
 				if ( '' === $wbc_recapcha_bbpress_topic_generation_v3 ) {
 
@@ -75,17 +75,17 @@ class Recaptcha_bbPress_Topic {
 				}
 
 				?>
-				<input type="hidden" autocomplete="off" name="bbpress-replay-nonce" value="<?php echo esc_html( wp_create_nonce( 'bbpress-replay-nonce' ) ); ?>" />
+				<input type="hidden" autocomplete="off" name="bbpress-reply-nonce" value="<?php echo esc_html( wp_create_nonce( 'bbpress-reply-nonce' ) ); ?>" />
 				<input type="hidden" autocomplete="off" name="wbc_recaptcha_bbpress_topic_token" value="" id="wbc_recaptcha_bbpress_topic_token" />
 				<script type="text/javascript">
 
-				<?php $intval_bbpress_replay = uniqid( 'interval_' ); ?>
+				<?php $intval_bbpress_reply = uniqid( 'interval_' ); ?>
 
-var <?php echo esc_html( $intval_bbpress_replay ); ?> = setInterval(function() {
+var <?php echo esc_html( $intval_bbpress_reply ); ?> = setInterval(function() {
 
 if(document.readyState === 'complete') {
 
-clearInterval(<?php echo esc_html( $intval_bbpress_replay ); ?>);
+clearInterval(<?php echo esc_html( $intval_bbpress_reply ); ?>);
 
 
 grecaptcha.ready(function () {

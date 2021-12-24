@@ -205,7 +205,7 @@ if ( ! class_exists( 'Wbc_WooCommerce_Settings_Page' ) ) :
 		 * Template Class.
 		 */
 		public function get_settings( $current_section = '' ) {
-			if ( 'bb_press_replay' === $current_section ) {
+			if ( 'bb_press_reply' === $current_section ) {
 
 				/**
 				 * Filter Plugin Section 2 Settings
@@ -219,44 +219,44 @@ if ( ! class_exists( 'Wbc_WooCommerce_Settings_Page' ) ) :
 					$settings = apply_filters(
 						'woocomm_signup',
 						array(
-							'section_title_recpacha_on_bbpress_replay' => array(
+							'section_title_recpacha_on_bbpress_reply' => array(
 								'name' => __( 'reCaptcha On bbPress Reply', 'buddypress-recaptcha' ),
 								'type' => 'title',
 								'desc' => '',
-								'id'   => 'wc_settings_tab_recapcha_bbpress_replay',
+								'id'   => 'wc_settings_tab_recapcha_bbpress_reply',
 							),
-							'recapcha_enable_on_bbpress_replay' => array(
+							'recapcha_enable_on_bbpress_reply' => array(
 								'name' => __( 'Enable reCaptcha on bbPress Reply', 'buddypress-recaptcha' ),
 								'type' => 'checkbox',
-								'id'   => 'recapcha_enable_on_bbpress_replay',
+								'id'   => 'recapcha_enable_on_bbpress_reply',
 							),
-							'recapcha_hide_label_bbpress_replay' => array(
+							'recapcha_hide_label_bbpress_reply' => array(
 								'name'    => __( 'Enable Label', 'buddypress-recaptcha' ),
 								'type'    => 'checkbox',
-								'id'      => 'recapcha_hide_label_bbpress_replay',
+								'id'      => 'recapcha_hide_label_bbpress_reply',
 								'default' => 'no',
 								'desc'    => __( 'Enable label on form?', 'buddypress-recaptcha' ),
 							),
-							'recapcha_bbpress_replay_title' => array(
+							'recapcha_bbpress_reply_title' => array(
 								'name'    => __( 'reCaptcha Field Title', 'buddypress-recaptcha' ),
 								'type'    => 'text',
-								'id'      => 'recapcha_bbpress_replay_title',
+								'id'      => 'recapcha_bbpress_reply_title',
 								'default' => 'Captcha',
 							),
-							'recapcha_theme_bbpress_replay' => array(
+							'recapcha_theme_bbpress_reply' => array(
 								'name'    => __( 'reCaptcha Theme', 'buddypress-recaptcha' ),
 								'type'    => 'radio',
-								'id'      => 'recapcha_theme_bbpress_replay',
+								'id'      => 'recapcha_theme_bbpress_reply',
 								'options' => array(
 									'light' => __( 'Light', 'buddypress-recaptcha' ),
 									'dark'  => __( 'Dark', 'buddypress-recaptcha' ),
 								),
 								'default' => 'light',
 							),
-							'recapcha_size_bbpress_replay' => array(
+							'recapcha_size_bbpress_reply'  => array(
 								'name'    => __( 'reCaptcha Size', 'buddypress-recaptcha' ),
 								'type'    => 'radio',
-								'id'      => 'recapcha_size_bbpress_replay',
+								'id'      => 'recapcha_size_bbpress_reply',
 								'options' => array(
 									'normal'  => __( 'Normal', 'buddypress-recaptcha' ),
 									'compact' => __( 'Compact', 'buddypress-recaptcha' ),
@@ -265,49 +265,49 @@ if ( ! class_exists( 'Wbc_WooCommerce_Settings_Page' ) ) :
 							),
 							array(
 								'type' => 'sectionend',
-								'id'   => 'wc_settings_tab_recapcha_bbpress_replay',
+								'id'   => 'wc_settings_tab_recapcha_bbpress_reply',
 							),
 						)
 					);
 				} else {
 
 					$settings = apply_filters(
-						'wbr_bbpress_replay_setting',
+						'wbr_bbpress_reply_setting',
 						array(
-							'section_title_recpacha_on_bbpress_replay' => array(
-								'name' => __( 'reCaptcha On bbPress Replay', 'buddypress-recaptcha' ),
+							'section_title_recpacha_on_bbpress_reply' => array(
+								'name' => __( 'reCaptcha On bbPress Reply', 'buddypress-recaptcha' ),
 								'type' => 'title',
 								'desc' => '',
-								'id'   => 'wc_settings_tab_recapcha_bbpress_replay',
+								'id'   => 'wc_settings_tab_recapcha_bbpress_reply',
 							),
-							'wbc_recapcha_enable_on_bbpress_replay' => array(
-								'name' => __( 'Enable reCaptcha on bbPress Replay', 'buddypress-recaptcha' ),
+							'wbc_recapcha_enable_on_bbpress_reply' => array(
+								'name' => __( 'Enable reCaptcha on bbPress Reply', 'buddypress-recaptcha' ),
 								'type' => 'checkbox',
-								'id'   => 'wbc_recapcha_enable_on_bbpress_replay',
+								'id'   => 'wbc_recapcha_enable_on_bbpress_reply',
 							),
-							'wbc_recapcha_bbpress_replay_score_threshold_v3' => array(
+							'wbc_recapcha_bbpress_reply_score_threshold_v3' => array(
 								'name'    => __( 'reCaptcha score threshold', 'buddypress-recaptcha' ),
 								'type'    => 'custom_type_number',
-								'id'      => 'wbc_recapcha_bbpress_replay_score_threshold_v3',
+								'id'      => 'wbc_recapcha_bbpress_reply_score_threshold_v3',
 								'default' => '0.5',
 								'desc'    => __( 'Instead of showing a CAPTCHA challenge, reCAPTCHA v3 returns a score so you can choose the most appropriate action for your website. The score is based on interactions with your site and enables you to take an appropriate action for your site. reCaptcha will rank traffic and interactions based on a score of 0.0 to 1.0, with a 1.0 being a good interaction and scores closer to 0.0 indicating a good likelihood that the traffic was generated by bots', 'buddypress-recaptcha' ),
 							),
-							'wbc_recapcha_bbpress_replay_action_v3' => array(
+							'wbc_recapcha_bbpress_reply_action_v3' => array(
 								'name'    => __( 'reCaptcha Action Name', 'buddypress-recaptcha' ),
 								'type'    => 'text',
-								'id'      => 'wbc_recapcha_bbpress_replay_action_v3',
-								'default' => 'bbPress_replay',
+								'id'      => 'wbc_recapcha_bbpress_reply_action_v3',
+								'default' => 'bbPress_reply',
 								'desc'    => __( 'In reCAPTCHA v3, Google introducing a new concept called “Action” —a tag that you can use to define the key steps of your user journey and enable reCAPTCHA to run its risk analysis in context.', 'buddypress-recaptcha' ),
 							),
-							'wbc_recapcha_bbpress_replay_submit_token_generation_v3' => array(
+							'wbc_recapcha_bbpress_reply_submit_token_generation_v3' => array(
 								'name' => __( 'Disable on the fly reCAPTCHA v3 token generation', 'buddypress-recaptcha' ),
 								'type' => 'checkbox',
-								'id'   => 'wbc_recapcha_bbpress_replay_submit_token_generation_v3',
+								'id'   => 'wbc_recapcha_bbpress_reply_submit_token_generation_v3',
 								'desc' => __( 'Use only when there is problem with other plugin that use submit button. For example error like "Google reCAPTCHA token is missing" ', 'buddypress-recaptcha' ),
 							),
 							array(
 								'type' => 'sectionend',
-								'id'   => 'wc_settings_tab_recapcha_bbpress_replay',
+								'id'   => 'wc_settings_tab_recapcha_bbpress_reply',
 							),
 						)
 					);

@@ -142,7 +142,7 @@ class Recaptcha_For_BuddyPress {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/bp-classes/Regisrtationbp.php';
 
 		// bbPress.
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/bbPress/class-wbc-bbpress-replay-recaptcha.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/bbPress/class-wbc-bbpress-reply-recaptcha.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/bbPress/class-wbc-bbpress-topic-recaptcha.php';
 
 		$this->loader = new Recaptcha_For_BuddyPress_Loader();
@@ -225,10 +225,10 @@ class Recaptcha_For_BuddyPress {
 		add_action( 'bbp_new_topic_pre_extras', array( $bbpress_topic_class, 'wbr_bbpress_topic_new_verify' ) );
 		add_action( 'wp_enqueue_scripts', array( $bbpress_topic_class, 'wbr_bbpress_topic_v2_checkbox_script' ) );
 
-		$bbpress_replay_class = new Recaptcha_bbPress_Replay();
-		add_action( 'bbp_theme_before_reply_form_submit_wrapper', array( $bbpress_replay_class, 'wbr_bbpress_replay_form_field_replay' ), 99 );
-		add_action( 'bbp_new_reply_pre_extras', array( $bbpress_replay_class, 'wbr_bbpress_replay_verify' ) );
-		add_action( 'wp_enqueue_scripts', array( $bbpress_replay_class, 'wbr_bbpress_replay_v2_checkbox_script' ) );
+		$bbpress_reply_class = new Recaptcha_bbPress_Reply();
+		add_action( 'bbp_theme_before_reply_form_submit_wrapper', array( $bbpress_reply_class, 'wbr_bbpress_reply_form_field_reply' ), 99 );
+		add_action( 'bbp_new_reply_pre_extras', array( $bbpress_reply_class, 'wbr_bbpress_reply_verify' ) );
+		add_action( 'wp_enqueue_scripts', array( $bbpress_reply_class, 'wbr_bbpress_reply_v2_checkbox_script' ) );
 		// Woocommerce Login registration and lost form.
 		$woocommerce_register      = new WoocommerceRegister();
 		$woocommerce_login         = new WoocommerceLogin();
