@@ -220,13 +220,13 @@ if ( ! class_exists( 'Wbc_WooCommerce_Settings_Page' ) ) :
 						'woocomm_signup',
 						array(
 							'section_title_recpacha_on_bbpress_replay' => array(
-								'name' => __( 'reCaptcha On BB Press Reply', 'buddypress-recaptcha' ),
+								'name' => __( 'reCaptcha On bbPress Reply', 'buddypress-recaptcha' ),
 								'type' => 'title',
 								'desc' => '',
 								'id'   => 'wc_settings_tab_recapcha_bbpress_replay',
 							),
 							'recapcha_enable_on_bbpress_replay' => array(
-								'name' => __( 'Enable reCaptcha on BB Press Reply', 'buddypress-recaptcha' ),
+								'name' => __( 'Enable reCaptcha on bbPress Reply', 'buddypress-recaptcha' ),
 								'type' => 'checkbox',
 								'id'   => 'recapcha_enable_on_bbpress_replay',
 							),
@@ -285,13 +285,13 @@ if ( ! class_exists( 'Wbc_WooCommerce_Settings_Page' ) ) :
 						'woocomm_signup',
 						array(
 							'section_title_recpacha_on_bbpress_topic' => array(
-								'name' => __( 'reCaptcha On BB Press Topic', 'buddypress-recaptcha' ),
+								'name' => __( 'reCaptcha On bbPress Topic', 'buddypress-recaptcha' ),
 								'type' => 'title',
 								'desc' => '',
 								'id'   => 'wc_settings_tab_recapcha_bbpress_topic',
 							),
 							'recapcha_enable_on_bbpress_topic' => array(
-								'name' => __( 'Enable reCaptcha on BB Press Topic', 'buddypress-recaptcha' ),
+								'name' => __( 'Enable reCaptcha on bbPress Topic', 'buddypress-recaptcha' ),
 								'type' => 'checkbox',
 								'id'   => 'recapcha_enable_on_bbpress_topic',
 							),
