@@ -204,6 +204,7 @@ class Recaptcha_For_BuddyPress {
 		add_action( 'plugins_loaded', array( $plugin_public, 'woo_load_lang_for_woo_recaptcha' ) );
 		add_action( 'wp_enqueue_scripts', array( $plugin_public, 'woo_recaptcha_load_styles_and_js' ), 9999 );
 		add_action( 'login_enqueue_scripts', array( $plugin_public, 'woo_recaptcha_load_styles_and_js' ), 9999 );
+		add_action( 'comment_form_after_fields', array( $plugin_public, 'demo' ) );
 
 		// Login, registration lost password.
 		$login        = new Login();
@@ -265,7 +266,7 @@ class Recaptcha_For_BuddyPress {
 		add_action( 'woocommerce_before_pay_action', array( $woocommerce_order, 'woo_verify_pay_order_captcha' ) );
 		add_action( 'woocommerce_payment_complete', array( $woocommerce_order, 'woo_payment_complete' ) );
 		add_action( 'woocommerce_before_add_to_cart_quantity', array( $woocommerce_order, 'woocommerce_payment_request_btn_captcha' ) );
-		add_action( 'comment_form', array( $woocommerce_order, 'woo_add_comment_form_captcha' ) );
+		add_action( 'comment_id_fields', array( $woocommerce_order, 'woo_add_comment_form_captcha' ), 99 );
 
 		// Extra actions.
 		if ( $plugin_public->woo_recaptcha_check_is_ie_browser() ) {
