@@ -230,19 +230,6 @@ if ( ! class_exists( 'Wbc_WooCommerce_Settings_Page' ) ) :
 								'type' => 'checkbox',
 								'id'   => 'recapcha_enable_on_bbpress_reply',
 							),
-							'recapcha_hide_label_bbpress_reply' => array(
-								'name'    => __( 'Enable Label', 'buddypress-recaptcha' ),
-								'type'    => 'checkbox',
-								'id'      => 'recapcha_hide_label_bbpress_reply',
-								'default' => 'no',
-								'desc'    => __( 'Enable label on form?', 'buddypress-recaptcha' ),
-							),
-							'recapcha_bbpress_reply_title' => array(
-								'name'    => __( 'reCaptcha Field Title', 'buddypress-recaptcha' ),
-								'type'    => 'text',
-								'id'      => 'recapcha_bbpress_reply_title',
-								'default' => 'Captcha',
-							),
 							'recapcha_theme_bbpress_reply' => array(
 								'name'    => __( 'reCaptcha Theme', 'buddypress-recaptcha' ),
 								'type'    => 'radio',
@@ -337,19 +324,6 @@ if ( ! class_exists( 'Wbc_WooCommerce_Settings_Page' ) ) :
 								'type' => 'checkbox',
 								'id'   => 'recapcha_enable_on_bbpress_topic',
 							),
-							'recapcha_hide_label_bbpress_topic' => array(
-								'name'    => __( 'Enable Label', 'buddypress-recaptcha' ),
-								'type'    => 'checkbox',
-								'id'      => 'recapcha_hide_label_bbpress_topic',
-								'default' => 'no',
-								'desc'    => __( 'Enable label on form?', 'buddypress-recaptcha' ),
-							),
-							'recapcha_bbpress_topic_title' => array(
-								'name'    => __( 'reCaptcha Field Title', 'buddypress-recaptcha' ),
-								'type'    => 'text',
-								'id'      => 'recapcha_bbpress_topic_title',
-								'default' => 'Captcha',
-							),
 							'recapcha_theme_bbpress_topic' => array(
 								'name'    => __( 'reCaptcha Theme', 'buddypress-recaptcha' ),
 								'type'    => 'radio',
@@ -443,19 +417,6 @@ if ( ! class_exists( 'Wbc_WooCommerce_Settings_Page' ) ) :
 								'name' => __( 'Enable reCaptcha on Signup', 'buddypress-recaptcha' ),
 								'type' => 'checkbox',
 								'id'   => 'wbc_recapcha_enable_on_signup_bp',
-							),
-							'wbc_recapcha_hide_label_signup_bp' => array(
-								'name'    => __( 'Enable Label', 'buddypress-recaptcha' ),
-								'type'    => 'checkbox',
-								'id'      => 'wbc_recapcha_hide_label_signup_bp',
-								'default' => 'no',
-								'desc'    => __( 'Enable label on form?', 'buddypress-recaptcha' ),
-							),
-							'wbc_recapcha_signup_title_bp' => array(
-								'name'    => __( 'reCaptcha Field Title', 'buddypress-recaptcha' ),
-								'type'    => 'text',
-								'id'      => 'wbc_recapcha_signup_title_bp',
-								'default' => 'Captcha',
 							),
 							'wbc_recapcha_signup_theme_bp' => array(
 								'name'    => __( 'reCaptcha Theme', 'buddypress-recaptcha' ),
@@ -559,19 +520,6 @@ if ( ! class_exists( 'Wbc_WooCommerce_Settings_Page' ) ) :
 								'type' => 'checkbox',
 								'id'   => 'wbc_recapcha_enable_on_signup',
 							),
-							'wbc_recapcha_hide_label_signup' => array(
-								'name'    => __( 'Enable Label', 'buddypress-recaptcha' ),
-								'type'    => 'checkbox',
-								'id'      => 'wbc_recapcha_hide_label_signup',
-								'default' => 'no',
-								'desc'    => __( 'Enable label on form?', 'buddypress-recaptcha' ),
-							),
-							'wbc_recapcha_signup_title' => array(
-								'name'    => __( 'reCaptcha Field Title', 'buddypress-recaptcha' ),
-								'type'    => 'text',
-								'id'      => 'wbc_recapcha_signup_title',
-								'default' => 'Captcha',
-							),
 							'wbc_recapcha_signup_theme' => array(
 								'name'    => __( 'reCaptcha Theme', 'buddypress-recaptcha' ),
 								'type'    => 'radio',
@@ -667,19 +615,6 @@ if ( ! class_exists( 'Wbc_WooCommerce_Settings_Page' ) ) :
 								'name' => __( 'Enable reCaptcha on Login', 'buddypress-recaptcha' ),
 								'type' => 'checkbox',
 								'id'   => 'wbc_recapcha_enable_on_login',
-							),
-							'wbc_recapcha_hide_label_login' => array(
-								'name'    => __( 'Enable Label', 'buddypress-recaptcha' ),
-								'type'    => 'checkbox',
-								'id'      => 'wbc_recapcha_hide_label_login',
-								'default' => 'no',
-								'desc'    => __( 'Enable label on form?', 'buddypress-recaptcha' ),
-							),
-							'wbc_recapcha_login_title'     => array(
-								'name'    => __( 'reCaptcha Field Title', 'buddypress-recaptcha' ),
-								'type'    => 'text',
-								'id'      => 'wbc_recapcha_login_title',
-								'default' => 'Captcha',
 							),
 							'wbc_recapcha_login_theme'     => array(
 								'name'    => __( 'reCaptcha Theme', 'buddypress-recaptcha' ),
@@ -789,19 +724,6 @@ if ( ! class_exists( 'Wbc_WooCommerce_Settings_Page' ) ) :
 								'type' => 'checkbox',
 								'id'   => 'wbc_recapcha_enable_on_lostpassword',
 							),
-							'wbc_recapcha_hide_label_lostpassword' => array(
-								'name'    => __( 'Enable Label', 'buddypress-recaptcha' ),
-								'type'    => 'checkbox',
-								'id'      => 'wbc_recapcha_hide_label_lostpassword',
-								'default' => 'no',
-								'desc'    => __( 'Enable label on form?', 'buddypress-recaptcha' ),
-							),
-							'wbc_recapcha_lostpassword_title' => array(
-								'name'    => __( 'reCaptcha Field Title', 'buddypress-recaptcha' ),
-								'type'    => 'text',
-								'id'      => 'wbc_recapcha_lostpassword_title',
-								'default' => 'Captcha',
-							),
 							'wbc_recapcha_lostpassword_theme' => array(
 								'name'    => __( 'reCaptcha Theme', 'buddypress-recaptcha' ),
 								'type'    => 'radio',
@@ -908,19 +830,6 @@ if ( ! class_exists( 'Wbc_WooCommerce_Settings_Page' ) ) :
 								'type' => 'checkbox',
 								'id'   => 'wbc_recapcha_enable_on_payfororder',
 								'desc' => __( 'WooCommerce allow failed order to pay again. In this case captcha must be needed to prevent fraud', 'buddypress-recaptcha' ),
-							),
-							'wbc_recapcha_hide_label_checkout' => array(
-								'name'    => __( 'Enable Label', 'buddypress-recaptcha' ),
-								'type'    => 'checkbox',
-								'id'      => 'wbc_recapcha_hide_label_checkout',
-								'default' => 'no',
-								'desc'    => __( 'Enable label on form?', 'buddypress-recaptcha' ),
-							),
-							'wbc_recapcha_guestcheckout_title' => array(
-								'name'    => __( 'reCaptcha Field Title', 'buddypress-recaptcha' ),
-								'type'    => 'text',
-								'id'      => 'wbc_recapcha_guestcheckout_title',
-								'default' => 'Captcha',
 							),
 							'wbc_recapcha_checkout_timeout'    => array(
 								'name'    => __( 'reCaptcha Validity', 'buddypress-recaptcha' ),
@@ -1080,19 +989,6 @@ if ( ! class_exists( 'Wbc_WooCommerce_Settings_Page' ) ) :
 								'type' => 'checkbox',
 								'id'   => 'wbc_recapcha_enable_on_wplogin',
 							),
-							'wbc_recapcha_hide_label_wplogin' => array(
-								'name'    => __( 'Enable Label', 'buddypress-recaptcha' ),
-								'type'    => 'checkbox',
-								'id'      => 'wbc_recapcha_hide_label_wplogin',
-								'default' => 'no',
-								'desc'    => __( 'Enable label on form?', 'buddypress-recaptcha' ),
-							),
-							'wbc_recapcha_wplogin_title' => array(
-								'name'    => __( 'reCaptcha Field Title', 'buddypress-recaptcha' ),
-								'type'    => 'text',
-								'id'      => 'wbc_recapcha_wplogin_title',
-								'default' => 'Captcha',
-							),
 							'wbc_recapcha_wplogin_theme' => array(
 								'name'    => __( 'reCaptcha Theme', 'buddypress-recaptcha' ),
 								'type'    => 'radio',
@@ -1186,19 +1082,6 @@ if ( ! class_exists( 'Wbc_WooCommerce_Settings_Page' ) ) :
 								'name' => __( 'Enable reCaptcha on WP Registration', 'buddypress-recaptcha' ),
 								'type' => 'checkbox',
 								'id'   => 'wbc_recapcha_enable_on_wpregister',
-							),
-							'wbc_recapcha_hide_label_wpregister' => array(
-								'name'    => __( 'Enable Label', 'buddypress-recaptcha' ),
-								'type'    => 'checkbox',
-								'id'      => 'wbc_recapcha_hide_label_wpregister',
-								'default' => 'no',
-								'desc'    => __( 'Enable label on form?', 'buddypress-recaptcha' ),
-							),
-							'wbc_recapcha_wpregister_title' => array(
-								'name'    => __( 'reCaptcha Field Title', 'buddypress-recaptcha' ),
-								'type'    => 'text',
-								'id'      => 'wbc_recapcha_wpregister_title',
-								'default' => 'Captcha',
 							),
 							'wbc_recapcha_wpregister_theme' => array(
 								'name'    => __( 'reCaptcha Theme', 'buddypress-recaptcha' ),
@@ -1296,19 +1179,6 @@ if ( ! class_exists( 'Wbc_WooCommerce_Settings_Page' ) ) :
 								'type' => 'checkbox',
 								'id'   => 'wbc_recapcha_enable_on_wplostpassword',
 							),
-							'wbc_recapcha_hide_label_wplostpassword' => array(
-								'name'    => __( 'Enable Label', 'buddypress-recaptcha' ),
-								'type'    => 'checkbox',
-								'id'      => 'wbc_recapcha_hide_label_wplostpassword',
-								'default' => 'no',
-								'desc'    => __( 'Enable label on form?', 'buddypress-recaptcha' ),
-							),
-							'wbc_recapcha_wplostpassword_title' => array(
-								'name'    => __( 'reCaptcha Field Title', 'buddypress-recaptcha' ),
-								'type'    => 'text',
-								'id'      => 'wbc_recapcha_wplostpassword_title',
-								'default' => 'Captcha',
-							),
 							'wbc_recapcha_wplostpassword_theme' => array(
 								'name'    => __( 'reCaptcha Theme', 'buddypress-recaptcha' ),
 								'type'    => 'radio',
@@ -1404,19 +1274,6 @@ if ( ! class_exists( 'Wbc_WooCommerce_Settings_Page' ) ) :
 								'name' => __( 'Enable reCaptcha on comment form', 'buddypress-recaptcha' ),
 								'type' => 'checkbox',
 								'id'   => 'wbc_recapcha_enable_on_woo_comment',
-							),
-							'wbc_recapcha_hide_label_woo_comment' => array(
-								'name'    => __( 'Enable Label', 'buddypress-recaptcha' ),
-								'type'    => 'checkbox',
-								'id'      => 'wbc_recapcha_hide_label_woo_comment',
-								'default' => 'no',
-								'desc'    => __( 'Enable label on form?', 'buddypress-recaptcha' ),
-							),
-							'wbc_recapcha_woo_comment_title' => array(
-								'name'    => __( 'reCaptcha Field Title', 'buddypress-recaptcha' ),
-								'type'    => 'text',
-								'id'      => 'wbc_recapcha_woo_comment_title',
-								'default' => 'Captcha',
 							),
 							'wbc_recapcha_woo_comment_theme' => array(
 								'name'    => __( 'reCaptcha Theme', 'buddypress-recaptcha' ),

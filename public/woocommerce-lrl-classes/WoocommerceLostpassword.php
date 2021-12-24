@@ -36,21 +36,15 @@ class WoocommerceLostpassword {
 
 		if ( 'v2' == strtolower( $woo_recaptcha_version ) ) {
 
-			$disable_submit_btn                   = get_option( 'wbc_recapcha_disable_submitbtn_woo_lostpassword' );
-			$wbc_recapcha_hide_label_lostpassword = get_option( 'wbc_recapcha_hide_label_lostpassword' );
-			$captcha_lable                        = get_option( 'wbc_recapcha_lostpassword_title' );
-			$captcha_lable_                       = $captcha_lable;
-			$site_key                             = get_option( 'wc_settings_tab_recapcha_site_key' );
-			$theme                                = get_option( 'wbc_recapcha_lostpassword_theme' );
-			$size                                 = get_option( 'wbc_recapcha_lostpassword_size' );
-			$is_enabled                           = get_option( 'wbc_recapcha_enable_on_lostpassword' );
-			$wbc_recapcha_no_conflict             = get_option( 'wbc_recapcha_no_conflict' );
+			$disable_submit_btn       = get_option( 'wbc_recapcha_disable_submitbtn_woo_lostpassword' );
+			$site_key                 = get_option( 'wc_settings_tab_recapcha_site_key' );
+			$theme                    = get_option( 'wbc_recapcha_lostpassword_theme' );
+			$size                     = get_option( 'wbc_recapcha_lostpassword_size' );
+			$is_enabled               = get_option( 'wbc_recapcha_enable_on_lostpassword' );
+			$wbc_recapcha_no_conflict = get_option( 'wbc_recapcha_no_conflict' );
 
 			$recapcha_error_msg_captcha_blank = get_option( 'wc_settings_tab_recapcha_error_msg_captcha_blank' );
-			if ( '' == trim( $captcha_lable_ ) ) {
-
-				$captcha_lable_ = 'recaptcha';
-			}
+			$captcha_lable_                   = 'Captcha';
 			$recapcha_error_msg_captcha_blank = str_replace( '[recaptcha]', ucfirst( $captcha_lable_ ), $recapcha_error_msg_captcha_blank );
 
 			if ( 'yes' == $is_enabled ) {
@@ -76,13 +70,6 @@ class WoocommerceLostpassword {
 				wp_enqueue_script( 'wbc-woo-captcha' );
 				?>
 	<p class="woo-lost-password-captcha woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
-				<?php
-				if ( 'yes' === $wbc_recapcha_hide_label_lostpassword ) :
-					?>
-	<label for="lostpassword_captcha"><?php echo esc_html( ( '' == trim( $captcha_lable ) ) ? __( 'Captcha', 'buddypress-recaptcha' ) : esc_html( $captcha_lable ) ); ?>&nbsp;<span class="required">*</span></label>
-					<?php
-			endif;
-				?>
 	<div name="g-recaptcha-lostpassword-wbc" class="g-recaptcha" data-callback="verifyCallback_woo_lostpassword"  data-sitekey="<?php echo esc_html( $site_key ); ?>" data-theme="<?php echo esc_html( $theme ); ?>" data-size="<?php echo esc_html( $size ); ?>"></div>
 
 

@@ -127,63 +127,7 @@ if ( ! class_exists( 'Wooaction' ) ) :
 					case 'tel':
 						$option_value = $value['value'];
 
-						?><tr valign="top" class="
-						<?php
-						if ( 'wbc_recapcha_wplogin_title' === $value['id'] ) {
-							echo esc_attr( $hide_wplogin_label_class );
-						}
-						?>
-						<?php
-						if ( 'wbc_recapcha_wpregister_title' === $value['id'] ) {
-							echo esc_attr( $hide_wpregister_label_class );
-						}
-						?>
-						<?php
-						if ( 'wbc_recapcha_wplostpassword_title' === $value['id'] ) {
-							echo esc_attr( $hide_wplostpassword_label_class );
-						}
-						?>
-						<?php
-						if ( 'wbc_recapcha_woo_comment_title' === $value['id'] ) {
-							echo esc_attr( $hide_woo_comment_label_class );
-						}
-						?>
-						<?php
-						if ( 'wbc_recapcha_signup_title_bp' === $value['id'] ) {
-							echo esc_attr( $hide_sign_up_bp_title_label_class );
-						}
-						?>
-						<?php
-						if ( 'recapcha_bbpress_topic_title' === $value['id'] ) {
-							echo esc_attr( $hide_bbpress_topic_label_class );
-						}
-						?>
-						<?php
-						if ( 'recapcha_bbpress_reply_title' === $value['id'] ) {
-							echo esc_attr( $hide_bbpress_reply_label_class );
-						}
-						?>
-						<?php
-						if ( 'wbc_recapcha_signup_title' === $value['id'] ) {
-							echo esc_attr( $hide_signup_label_class );
-						}
-						?>
-						<?php
-						if ( 'wbc_recapcha_login_title' === $value['id'] ) {
-							echo esc_attr( $hide_login_label_class );
-						}
-						?>
-						<?php
-						if ( 'wbc_recapcha_lostpassword_title' === $value['id'] ) {
-							echo esc_attr( $hide_lostpassword_label_class );
-						}
-						?>
-						<?php
-						if ( 'wbc_recapcha_guestcheckout_title' === $value['id'] ) {
-							echo esc_attr( $hide_checkout_label_class );
-						}
-						?>
-						">
+						?><tr valign="top" class="">
 							<th scope="row" class="titledesc">
 								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?><?php echo wp_kses_post( $tooltip_html ); ?></label>
 							</th>
@@ -339,104 +283,7 @@ if ( ! class_exists( 'Wooaction' ) ) :
 					case 'checkbox':
 						$option_value     = $value['value'];
 						$visibility_class = array();
-						if ( 'wbc_recapcha_enable_on_guestcheckout' === $value['id'] ) {
-							$guest_checkout_value = $value['value'];
-							$guest_checkout_class = '';
-							if ( 'yes' !== $guest_checkout_value ) {
-								$guest_checkout_class = 'hide';
-							}
-						}
-						if ( 'wbc_recapcha_enable_on_logincheckout' === $value['id'] ) {
-							$login_checkout_value = $value['value'];
-							$login_checkout_class = '';
-							if ( 'yes' !== $login_checkout_value ) {
-								$login_checkout_class = 'hide';
-							}
-						}
-						if ( 'wbc_recapcha_enable_on_payfororder' === $value['id'] ) {
-							$pay_order_value = $value['value'];
-							$pay_order_class = '';
-							if ( 'yes' !== $pay_order_value ) {
-								$pay_order_class = 'hide';
-							}
-						}
-						if ( 'wbc_recapcha_hide_label_wplogin' === $value['id'] ) {
-							$hide_wplogin_label_value = $value['value'];
-							$hide_wplogin_label_class = '';
-							if ( 'yes' !== $hide_wplogin_label_value ) {
-								$hide_wplogin_label_class = 'hide';
-							}
-						}
-						if ( 'wbc_recapcha_hide_label_wpregister' === $value['id'] ) {
-							$hide_wpregister_label_value = $value['value'];
-							$hide_wpregister_label_class = '';
-							if ( 'yes' !== $hide_wpregister_label_value ) {
-								$hide_wpregister_label_class = 'hide';
-							}
-						}
-						if ( 'wbc_recapcha_hide_label_wplostpassword' === $value['id'] ) {
-							$hide_wplostpassword_label_value = $value['value'];
-							$hide_wplostpassword_label_class = '';
-							if ( 'yes' !== $hide_wplostpassword_label_value ) {
-								$hide_wplostpassword_label_class = 'hide';
-							}
-						}
-						if ( 'wbc_recapcha_hide_label_woo_comment' === $value['id'] ) {
-							$hide_woo_comment_label_value = $value['value'];
-							$hide_woo_comment_label_class = '';
-							if ( 'yes' !== $hide_woo_comment_label_value ) {
-								$hide_woo_comment_label_class = 'hide';
-							}
-						}
-						if ( 'wbc_recapcha_hide_label_signup_bp' === $value['id'] ) {
-							$hide_sign_up_bp_title_label_value = $value['value'];
-							$hide_sign_up_bp_title_label_class = '';
-							if ( 'yes' !== $hide_sign_up_bp_title_label_value ) {
-								$hide_sign_up_bp_title_label_class = 'hide';
-							}
-						}
-						if ( 'recapcha_hide_label_bbpress_topic' === $value['id'] ) {
-							$hide_bbpress_topic_label_value = $value['value'];
-							$hide_bbpress_topic_label_class = '';
-							if ( 'yes' !== $hide_bbpress_topic_label_value ) {
-								$hide_bbpress_topic_label_class = 'hide';
-							}
-						}
-						if ( 'recapcha_hide_label_bbpress_reply' === $value['id'] ) {
-							$hide_bbpress_reply_label_value = $value['value'];
-							$hide_bbpress_reply_label_class = '';
-							if ( 'yes' !== $hide_bbpress_reply_label_value ) {
-								$hide_bbpress_reply_label_class = 'hide';
-							}
-						}
-						if ( 'wbc_recapcha_hide_label_signup' === $value['id'] ) {
-							$hide_signup_label_value = $value['value'];
-							$hide_signup_label_class = '';
-							if ( 'yes' !== $hide_signup_label_value ) {
-								$hide_signup_label_class = 'hide';
-							}
-						}
-						if ( 'wbc_recapcha_hide_label_login' === $value['id'] ) {
-							$hide_login_label_value = $value['value'];
-							$hide_login_label_class = '';
-							if ( 'yes' !== $hide_login_label_value ) {
-								$hide_login_label_class = 'hide';
-							}
-						}
-						if ( 'wbc_recapcha_hide_label_lostpassword' === $value['id'] ) {
-							$hide_lostpassword_label_value = $value['value'];
-							$hide_lostpassword_label_class = '';
-							if ( 'yes' !== $hide_lostpassword_label_value ) {
-								$hide_lostpassword_label_class = 'hide';
-							}
-						}
-						if ( 'wbc_recapcha_hide_label_checkout' === $value['id'] ) {
-							$hide_checkout_label_value = $value['value'];
-							$hide_checkout_label_class = '';
-							if ( 'yes' !== $hide_checkout_label_value ) {
-								$hide_checkout_label_class = 'hide';
-							}
-						}
+
 						if ( ! isset( $value['hide_if_checked'] ) ) {
 							$value['hide_if_checked'] = false;
 						}
@@ -456,23 +303,7 @@ if ( ! class_exists( 'Wooaction' ) ) :
 						if ( ! isset( $value['checkboxgroup'] ) || 'start' === $value['checkboxgroup'] ) {
 
 							?>
-								<tr valign="top" class="
-								<?php
-								if ( 'wbc_recapcha_disable_submitbtn_guestcheckout' === $value['id'] || 'wbc_recapcha_guest_recpacha_refersh_on_error' === $value['id'] ) {
-									echo esc_attr( $guest_checkout_class );
-								}
-								?>
-								<?php
-								if ( 'wbc_recapcha_disable_submitbtn_logincheckout' === $value['id'] || 'wbc_recapcha_login_recpacha_refersh_on_error' === $value['id'] ) {
-									echo esc_attr( $login_checkout_class );
-								}
-								?>
-								<?php
-								if ( 'wbc_recapcha_disable_submitbtn_payfororder' === $value['id'] || 'wbc_recaptcha_login_recpacha_for_req_btn' === $value['id'] ) {
-									echo esc_attr( $pay_order_class );
-								}
-								?>
-								<?php echo esc_attr( implode( ' ', $visibility_class ) ); ?>">
+								<tr valign="top" class="<?php echo esc_attr( implode( ' ', $visibility_class ) ); ?>">
 									<th scope="row" class="titledesc"><?php echo esc_html( $value['title'] ); ?></th>
 									<td class="forminp forminp-checkbox">
 										<fieldset>

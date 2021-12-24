@@ -37,15 +37,11 @@ class WoocommerceAfterCheckoutValidation {
 
 		if ( 'v2' === strtolower( $re_capcha_version ) ) {
 
-						$wbc_recaptcha_v3_login_recpacha_for_req_btn = get_option( 'wbc_recaptcha_v3_login_recpacha_for_req_btn' );
-			$captcha_lable = get_option( 'wbc_recapcha_guestcheckout_title' );
-			if ( '' === trim( $captcha_lable ) ) {
-
-				$captcha_lable = 'recaptcha';
-			}
+			$wbc_recaptcha_v3_login_recpacha_for_req_btn = get_option( 'wbc_recaptcha_v3_login_recpacha_for_req_btn' );
 			if ( '' === $wbc_recaptcha_v3_login_recpacha_for_req_btn ) {
 				$wbc_recaptcha_v3_login_recpacha_for_req_btn = 'no';
 			}
+			$captcha_lable                          = 'Captcha';
 			$recapcha_error_msg_captcha_blank       = get_option( 'wc_settings_tab_recapcha_error_msg_captcha_blank' );
 			$recapcha_error_msg_captcha_no_response = get_option( 'wc_settings_tab_recapcha_error_msg_captcha_no_response' );
 			$recapcha_error_msg_captcha_invalid     = get_option( 'wc_settings_tab_recapcha_error_msg_captcha_invalid' );

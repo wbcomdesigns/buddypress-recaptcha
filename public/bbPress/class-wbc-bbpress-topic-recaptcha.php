@@ -30,11 +30,6 @@ class Recaptcha_bbPress_Topic {
 		if ( 'v2' === $version ) {
 			$is_enabled = get_option( 'recapcha_enable_on_bbpress_topic' );
 			if ( 'yes' === $is_enabled ) {
-				$lable      = get_option( 'recapcha_bbpress_topic_title' );
-				$hide_lable = get_option( 'recapcha_hide_label_bbpress_topic' );
-				if ( ! empty( $lable ) && 'yes' === $hide_lable ) {
-					echo esc_html( $lable );
-				}
 				echo $this->wbr_bbpress_topic_form_field_return(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			}
 		} else {

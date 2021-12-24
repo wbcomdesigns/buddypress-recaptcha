@@ -34,11 +34,7 @@ class WoocommerceLogin {
 		}
 		if ( 'v2' == strtolower( $woo_recaptcha_version ) ) {
 
-			$disable_submit_btn            = get_option( 'wbc_recapcha_disable_submitbtn_woo_login' );
-			$wbc_recapcha_hide_label_login = get_option( 'wbc_recapcha_hide_label_login' );
-			$captcha_lable                 = get_option( 'wbc_recapcha_login_title' );
-			$captcha_lable_                = $captcha_lable;
-
+			$disable_submit_btn       = get_option( 'wbc_recapcha_disable_submitbtn_woo_login' );
 			$site_key                 = get_option( 'wc_settings_tab_recapcha_site_key' );
 			$theme                    = get_option( 'wbc_recapcha_login_theme' );
 			$size                     = get_option( 'wbc_recapcha_login_size' );
@@ -46,10 +42,7 @@ class WoocommerceLogin {
 			$wbc_recapcha_no_conflict = get_option( 'wbc_recapcha_no_conflict' );
 
 			$recapcha_error_msg_captcha_blank = get_option( 'wc_settings_tab_recapcha_error_msg_captcha_blank' );
-			if ( '' == trim( $captcha_lable_ ) ) {
-
-				$captcha_lable_ = 'recaptcha';
-			}
+			$captcha_lable_                   = 'Captcha';
 			$recapcha_error_msg_captcha_blank = str_replace( '[recaptcha]', ucfirst( $captcha_lable_ ), $recapcha_error_msg_captcha_blank );
 
 			if ( 'yes' == $is_enabled ) {
