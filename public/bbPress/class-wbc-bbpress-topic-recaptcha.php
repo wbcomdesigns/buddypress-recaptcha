@@ -28,9 +28,95 @@ class Recaptcha_bbPress_Topic {
 	public function wbr_bbpress_topic_form_field() {
 		$version = get_option( 'wbc_recapcha_version' );
 		if ( 'v2' === $version ) {
-			$is_enabled = get_option( 'recapcha_enable_on_bbpress_topic' );
+			$is_enabled                       = get_option( 'recapcha_enable_on_bbpress_topic' );
+			$disable_submit_btn               = get_option( 'wbc_recapcha_disable_submitbtn_bbpress_topic' );
+			$site_key                         = get_option( 'wc_settings_tab_recapcha_site_key' );
+			$theme                            = get_option( 'recapcha_theme_bbpress_topic' );
+			$size                             = get_option( 'recapcha_size_bbpress_topic' );
+			$wbc_recapcha_no_conflict         = get_option( 'wbc_recapcha_no_conflict' );
+			$recapcha_error_msg_captcha_blank = get_option( 'wc_settings_tab_recapcha_error_msg_captcha_blank' );
+			$captcha_lable_                   = 'Captcha';
+			$recapcha_error_msg_captcha_blank = str_replace( '[recaptcha]', ucfirst( $captcha_lable_ ), $recapcha_error_msg_captcha_blank );
+
 			if ( 'yes' === $is_enabled ) {
-				echo $this->wbr_bbpress_topic_form_field_return(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				if ( 'yes' === $wbc_recapcha_no_conflict ) {
+
+					global $wp_scripts;
+
+					$urls = array( 'google.com/recaptcha', 'gstatic.com/recaptcha' );
+
+					foreach ( $wp_scripts->queue as $handle ) {
+
+						foreach ( $urls as $url ) {
+							if ( false !== strpos( $wp_scripts->registered[ $handle ]->src, $url ) && ( 'wbc-bbpress-topic-captcha' != $handle && 'wbc-bbpress-topic-captcha-v3' != $handle ) ) {
+								wp_dequeue_script( $handle );
+								wp_deregister_script( $handle );
+								break;
+							}
+						}
+					}
+				}
+				wp_enqueue_script( 'jquery' );
+				wp_enqueue_script( 'wbc-bbpress-topic-captcha' );
+				?>
+<input type="hidden" autocomplete="off" name="wp-register-nonce" value="<?php echo esc_html( wp_create_nonce( 'wp-register-nonce' ) ); ?>" />
+<p class="wp_register_captcha">
+<div name="g-recaptcha-wp-register-wbc" class="g-recaptcha" data-callback="verifyCallback_wp_register"  data-sitekey="<?php echo esc_html( $site_key ); ?>" data-theme="<?php echo esc_html( $theme ); ?>" data-size="<?php echo esc_html( $size ); ?>"></div>
+<br/>
+
+
+</p>
+
+<script type="text/javascript">
+
+jQuery(document).ready(function(){
+	var myCaptcha = null;
+				<?php $intval_signup = uniqid( 'interval_' ); ?>
+
+	var <?php echo esc_html( $intval_signup ); ?> = setInterval(function() {
+
+	clearInterval(<?php echo esc_html( $intval_signup ); ?>);
+					<?php if ( 'yes' === trim( $disable_submit_btn ) ) : ?>
+					jQuery('#bbp_topic_submit').attr("disabled", true);
+					console.log('close');
+						<?php if ( '' === $recapcha_error_msg_captcha_blank ) : ?>
+				jQuery('#bbp_topic_submit').attr("title", "<?php echo esc_html( __( 'reCaptcha is a required field.', 'buddypress-recaptcha' ) ); ?>");
+		<?php else : ?>
+						jQuery('#bbp_topic_submit').attr("title", "<?php echo esc_html( $recapcha_error_msg_captcha_blank ); ?>");
+		<?php endif; ?>
+					<?php endif; ?>
+
+	}, 500);
+});
+
+var verifyCallback_wp_register = function(response) {
+if(response.length!==0){
+				<?php if ( 'yes' === trim( $disable_submit_btn ) ) : ?>
+				jQuery('#bbp_topic_submit').removeAttr("disabled");
+				jQuery('#bbp_topic_submit').removeAttr("title");
+				<?php endif; ?>
+
+if (typeof woo_wp_register_captcha_verified === "function") {
+
+woo_wp_register_captcha_verified(response);
+}
+}
+
+
+};
+
+
+
+</script>
+				<?php if ( 'compact' !== $size ) : ?>
+<style type="text/css">
+[name="g-recaptcha-wp-register-wbc"]{
+transform:scale(0.89);-webkit-transform:scale(0.89);transform-origin:0 0;-webkit-transform-origin:0 0;
+}
+</style>
+				<?php endif; ?>
+				<?php
+				// echo $this->wbr_bbpress_topic_form_field_return(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			}
 		} else {
 			$is_enabled               = get_option( 'wbc_recapcha_enable_on_bbpress_topic' );
