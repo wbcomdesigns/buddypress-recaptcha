@@ -250,6 +250,12 @@ if ( ! class_exists( 'Wbc_WooCommerce_Settings_Page' ) ) :
 								),
 								'default' => 'normal',
 							),
+							'wbc_recapcha_disable_submitbtn_bbpress_reply' => array(
+								'name' => __( 'Disable bbPress Reply Submit button', 'buddypress-recaptcha' ),
+								'desc' => __( 'Disable bbPress Reply button until recaptcha validate.', 'buddypress-recaptcha' ),
+								'type' => 'checkbox',
+								'id'   => 'wbc_recapcha_disable_submitbtn_bbpress_reply',
+							),
 							array(
 								'type' => 'sectionend',
 								'id'   => 'wc_settings_tab_recapcha_bbpress_reply',
@@ -343,6 +349,12 @@ if ( ! class_exists( 'Wbc_WooCommerce_Settings_Page' ) ) :
 									'compact' => __( 'Compact', 'buddypress-recaptcha' ),
 								),
 								'default' => 'normal',
+							),
+							'wbc_recapcha_disable_submitbtn_bbpress_topic' => array(
+								'name' => __( 'Disable bbPress Topic Submit button', 'buddypress-recaptcha' ),
+								'desc' => __( 'Disable bbPress Topic button until recaptcha validate.', 'buddypress-recaptcha' ),
+								'type' => 'checkbox',
+								'id'   => 'wbc_recapcha_disable_submitbtn_bbpress_topic',
 							),
 							array(
 								'type' => 'sectionend',
