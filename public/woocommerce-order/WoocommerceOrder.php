@@ -919,6 +919,7 @@ class WoocommerceOrder {
 			$size                             = get_option( 'wbc_recapcha_woo_comment_size' );
 			$is_enabled                       = apply_filters( 'wbc_recapcha_enable_in_comment_form', get_option( 'wbc_recapcha_enable_on_woo_comment' ) );
 			$wbc_recapcha_no_conflict         = get_option( 'wbc_recapcha_no_conflict' );
+			$recapcha_error_msg_captcha_blank = get_option( 'wc_settings_tab_recapcha_error_msg_captcha_blank' );
 			$captcha_lable_                   = 'Captcha';
 			$recapcha_error_msg_captcha_blank = str_replace( '[recaptcha]', ucfirst( $captcha_lable_ ), $recapcha_error_msg_captcha_blank );
 
