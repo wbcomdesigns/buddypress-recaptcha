@@ -141,6 +141,10 @@ class Recaptcha_For_BuddyPress {
 		// Buddy Press.
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/bp-classes/Regisrtationbp.php';
 
+		// bbPress.
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/bbPress/class-wbc-bbpress-replay-recaptcha.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/bbPress/class-wbc-bbpress-topic-recaptcha.php';
+
 		$this->loader = new Recaptcha_For_BuddyPress_Loader();
 
 	}
@@ -216,13 +220,15 @@ class Recaptcha_For_BuddyPress {
 		// add_action( 'bp_activity_entry_comments', array( $regisrtation_bp, 'form_field_bp' ) );
 		// add_action( 'bp_activity_post_form_options', array( $regisrtation_bp, 'form_field_bp' ) );
 
-		$regisrtation_bp = new Regisrtationbp();
-		add_action( 'bbp_theme_before_topic_form_submit_wrapper', array( $regisrtation_bp, 'form_field' ), 99 );
-		add_action( 'bbp_new_topic_pre_extras', array( $regisrtation_bp, 'bbp_new_verify' ) );
-		add_action( 'bbp_theme_before_reply_form_submit_wrapper', array( $regisrtation_bp, 'form_field_replay' ), 99 );
-		add_action( 'bbp_new_reply_pre_extras', array( $regisrtation_bp, 'bbp_reply_verify' ) );
-		add_action( 'wp_enqueue_scripts', array( $regisrtation_bp, 'v2_checkbox_script' ) );
+		$bbpress_topic_class = new Recaptcha_bbPress_Topic();
+		add_action( 'bbp_theme_before_topic_form_submit_wrapper', array( $bbpress_topic_class, 'wbr_bbpress_topic_form_field' ), 99 );
+		add_action( 'bbp_new_topic_pre_extras', array( $bbpress_topic_class, 'wbr_bbpress_topic_new_verify' ) );
+		add_action( 'wp_enqueue_scripts', array( $bbpress_topic_class, 'wbr_bbpress_topic_v2_checkbox_script' ) );
 
+		$bbpress_replay_class = new Recaptcha_bbPress_Replay();
+		add_action( 'bbp_theme_before_reply_form_submit_wrapper', array( $bbpress_replay_class, 'wbr_bbpress_replay_form_field_replay' ), 99 );
+		add_action( 'bbp_new_reply_pre_extras', array( $bbpress_replay_class, 'wbr_bbpress_replay_verify' ) );
+		add_action( 'wp_enqueue_scripts', array( $bbpress_replay_class, 'wbr_bbpress_replay_v2_checkbox_script' ) );
 		// Woocommerce Login registration and lost form.
 		$woocommerce_register      = new WoocommerceRegister();
 		$woocommerce_login         = new WoocommerceLogin();
