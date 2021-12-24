@@ -243,26 +243,26 @@ if ( ! class_exists( 'Wbc_WooCommerce_Settings_Page' ) ) :
 								'id'      => 'recapcha_bbpress_replay_title',
 								'default' => 'Captcha',
 							),
-							// 'recapcha_theme_bbpress_replay' => array(
-							// 'name'    => __( 'reCaptcha Theme', 'buddypress-recaptcha' ),
-							// 'type'    => 'radio',
-							// 'id'      => 'recapcha_theme_bbpress_replay',
-							// 'options' => array(
-							// 'light' => __( 'Light', 'buddypress-recaptcha' ),
-							// 'dark'  => __( 'Dark', 'buddypress-recaptcha' ),
-							// ),
-							// 'default' => 'light',
-							// ),
-							// 'recapcha_size_bbpress_replay' => array(
-							// 'name'    => __( 'reCaptcha Size', 'buddypress-recaptcha' ),
-							// 'type'    => 'radio',
-							// 'id'      => 'recapcha_size_bbpress_replay',
-							// 'options' => array(
-							// 'normal'  => __( 'Normal', 'buddypress-recaptcha' ),
-							// 'compact' => __( 'Compact', 'buddypress-recaptcha' ),
-							// ),
-							// 'default' => 'normal',
-							// ),
+							'recapcha_theme_bbpress_replay' => array(
+								'name'    => __( 'reCaptcha Theme', 'buddypress-recaptcha' ),
+								'type'    => 'radio',
+								'id'      => 'recapcha_theme_bbpress_replay',
+								'options' => array(
+									'light' => __( 'Light', 'buddypress-recaptcha' ),
+									'dark'  => __( 'Dark', 'buddypress-recaptcha' ),
+								),
+								'default' => 'light',
+							),
+							'recapcha_size_bbpress_replay' => array(
+								'name'    => __( 'reCaptcha Size', 'buddypress-recaptcha' ),
+								'type'    => 'radio',
+								'id'      => 'recapcha_size_bbpress_replay',
+								'options' => array(
+									'normal'  => __( 'Normal', 'buddypress-recaptcha' ),
+									'compact' => __( 'Compact', 'buddypress-recaptcha' ),
+								),
+								'default' => 'normal',
+							),
 							array(
 								'type' => 'sectionend',
 								'id'   => 'wc_settings_tab_recapcha_bbpress_replay',
