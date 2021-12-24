@@ -34,21 +34,15 @@ class Lostpassword {
 		}
 		if ( 'v2' === strtolower( $re_capcha_version ) ) {
 
-			$disable_submit_btn                     = get_option( 'wbc_recapcha_disable_submitbtn_wp_lost_password' );
-			$wbc_recapcha_hide_label_wplostpassword = get_option( 'wbc_recapcha_hide_label_wplostpassword' );
-			$captcha_lable                          = get_option( 'wbc_recapcha_wplostpassword_title' );
-			$captcha_lable_                         = $captcha_lable;
-			$site_key                               = get_option( 'wc_settings_tab_recapcha_site_key' );
-			$theme                                  = get_option( 'wbc_recapcha_wplostpassword_theme' );
-			$size                                   = get_option( 'wbc_recapcha_wplostpassword_size' );
-			$is_enabled                             = get_option( 'wbc_recapcha_enable_on_wplostpassword' );
-			$wbc_recapcha_no_conflict               = get_option( 'wbc_recapcha_no_conflict' );
+			$disable_submit_btn       = get_option( 'wbc_recapcha_disable_submitbtn_wp_lost_password' );
+			$site_key                 = get_option( 'wc_settings_tab_recapcha_site_key' );
+			$theme                    = get_option( 'wbc_recapcha_wplostpassword_theme' );
+			$size                     = get_option( 'wbc_recapcha_wplostpassword_size' );
+			$is_enabled               = get_option( 'wbc_recapcha_enable_on_wplostpassword' );
+			$wbc_recapcha_no_conflict = get_option( 'wbc_recapcha_no_conflict' );
 
 			$recapcha_error_msg_captcha_blank = get_option( 'wc_settings_tab_recapcha_error_msg_captcha_blank' );
-			if ( '' === trim( $captcha_lable_ ) ) {
-
-				$captcha_lable_ = 'recaptcha';
-			}
+			$captcha_lable_                   = 'Captcha';
 			$recapcha_error_msg_captcha_blank = str_replace( '[recaptcha]', ucfirst( $captcha_lable_ ), $recapcha_error_msg_captcha_blank );
 
 			if ( 'yes' === $is_enabled ) {
@@ -75,13 +69,6 @@ class Lostpassword {
 				?>
 		<input type="hidden" autocomplete="off" name="wp-lostpassword-nonce" value="<?php echo esc_html( wp_create_nonce( 'wp-lostpassword-nonce' ) ); ?>" />
 		<p class="wbc_woo_wp_forgopt_password_captcha" >
-				<?php
-				if ( 'yes' === $wbc_recapcha_hide_label_wplostpassword ) :
-					?>
-		<label for="g-recaptcha-wp-lostpassword-wbc"><?php echo esc_html( ( '' === trim( $captcha_lable ) ) ? __( 'Captcha', 'buddypress-recaptcha' ) : esc_html( $captcha_lable ) ); ?>&nbsp;</label>
-					<?php
-			endif;
-				?>
 		<div name="g-recaptcha-wp-lostpassword-wbc" data-callback="verifyCallback_woo_lost_password"  class="g-recaptcha" data-sitekey="<?php echo esc_html( $site_key ); ?>" data-theme="<?php echo esc_html( $theme ); ?>" data-size="<?php echo esc_html( $size ); ?>"></div>
 		<br/>
 

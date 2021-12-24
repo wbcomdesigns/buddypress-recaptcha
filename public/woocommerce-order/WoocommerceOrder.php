@@ -35,20 +35,15 @@ class WoocommerceOrder {
 
 		if ( 'v2' == strtolower( $woo_recaptcha_version ) ) {
 
-			$disable_submit_btn               = get_option( 'wbc_recapcha_disable_submitbtn_payfororder' );
-			$wbc_recapcha_hide_label_checkout = get_option( 'wbc_recapcha_hide_label_checkout' );
-			$captcha_lable                    = get_option( 'wbc_recapcha_guestcheckout_title' );
-			$captcha_lable_                   = get_option( 'wbc_recapcha_guestcheckout_title' );
-			$site_key                         = get_option( 'wc_settings_tab_recapcha_site_key' );
-			$theme                            = get_option( 'wbc_recapcha_guestcheckout_theme' );
-			$size                             = get_option( 'wbc_recapcha_guestcheckout_size' );
-			$is_enabled                       = get_option( 'wbc_recapcha_enable_on_payfororder' );
+			$disable_submit_btn = get_option( 'wbc_recapcha_disable_submitbtn_payfororder' );
+			$site_key           = get_option( 'wc_settings_tab_recapcha_site_key' );
+			$theme              = get_option( 'wbc_recapcha_guestcheckout_theme' );
+			$size               = get_option( 'wbc_recapcha_guestcheckout_size' );
+			$is_enabled         = get_option( 'wbc_recapcha_enable_on_payfororder' );
 
 			$recapcha_error_msg_captcha_blank = get_option( 'wc_settings_tab_recapcha_error_msg_captcha_blank' );
-			if ( '' == trim( $captcha_lable_ ) ) {
 
-				$captcha_lable_ = 'recaptcha';
-			}
+			$captcha_lable_                   = 'Captcha';
 			$recapcha_error_msg_captcha_blank = str_replace( '[recaptcha]', ucfirst( $captcha_lable_ ), $recapcha_error_msg_captcha_blank );
 
 			if ( 'yes' == $is_enabled ) {
@@ -57,13 +52,6 @@ class WoocommerceOrder {
 
 				?>
 	<p class="payorder-checkout-recaptcha woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
-				<?php
-				if ( 'yes' === $wbc_recapcha_hide_label_checkout ) :
-					?>
-	<label for="reg_captcha"><?php echo esc_html( ( '' == trim( $captcha_lable ) ) ? __( 'Captcha', 'buddypress-recaptcha' ) : esc_html( $captcha_lable ) ); ?>&nbsp;<span class="required">*</span></label>
-					<?php
-			endif;
-				?>
 	<div id="g-recaptcha-checkout-wbc" name="g-recaptcha" class="g-recaptcha-" data-callback="verifyCallback_add_guestcheckout"  data-sitekey="<?php echo esc_html( $site_key ); ?>" data-theme="<?php echo esc_html( $theme ); ?>" data-size="<?php echo esc_html( $size ); ?>"></div>
 
 	</p>
@@ -325,12 +313,7 @@ class WoocommerceOrder {
 
 		if ( 'v2' == strtolower( $woo_recaptcha_version ) ) {
 
-			$captcha_lable = get_option( 'wbc_recapcha_guestcheckout_title' );
-			if ( '' == trim( $captcha_lable ) ) {
-
-				$captcha_lable = 'recaptcha';
-			}
-
+			$captcha_lable                          = 'Captcha';
 			$recapcha_error_msg_captcha_blank       = get_option( 'wc_settings_tab_recapcha_error_msg_captcha_blank' );
 			$recapcha_error_msg_captcha_no_response = get_option( 'wc_settings_tab_recapcha_error_msg_captcha_no_response' );
 			$recapcha_error_msg_captcha_invalid     = get_option( 'wc_settings_tab_recapcha_error_msg_captcha_invalid' );
@@ -613,22 +596,17 @@ class WoocommerceOrder {
 			}
 			if ( 'yes' == $wbc_recaptcha_login_recpacha_for_req_btn ) {
 
-				$wbc_recapcha_hide_label_checkout = get_option( 'wbc_recapcha_hide_label_checkout' );
-				$captcha_lable                    = get_option( 'wbc_recapcha_guestcheckout_title' );
-				$captcha_lable_                   = get_option( 'wbc_recapcha_guestcheckout_title' );
-				$site_key                         = get_option( 'wc_settings_tab_recapcha_site_key' );
-				$theme                            = get_option( 'wbc_recapcha_guestcheckout_theme' );
-				$size                             = get_option( 'wbc_recapcha_guestcheckout_size' );
-				$is_enabled                       = get_option( 'wbc_recapcha_enable_on_guestcheckout' );
-				$is_enabled_logincheckout         = get_option( 'wbc_recapcha_enable_on_logincheckout' );
+				$site_key                 = get_option( 'wc_settings_tab_recapcha_site_key' );
+				$theme                    = get_option( 'wbc_recapcha_guestcheckout_theme' );
+				$size                     = get_option( 'wbc_recapcha_guestcheckout_size' );
+				$is_enabled               = get_option( 'wbc_recapcha_enable_on_guestcheckout' );
+				$is_enabled_logincheckout = get_option( 'wbc_recapcha_enable_on_logincheckout' );
 				$wbc_recapcha_guest_recpacha_refersh_on_error = get_option( 'wbc_recapcha_guest_recpacha_refersh_on_error' );
 				$wbc_recapcha_login_recpacha_refersh_on_error = get_option( 'wbc_recapcha_login_recpacha_refersh_on_error' );
 
 				$recapcha_error_msg_captcha_blank = get_option( 'wc_settings_tab_recapcha_error_msg_captcha_blank' );
-				if ( '' == trim( $captcha_lable_ ) ) {
 
-						$captcha_lable_ = 'recaptcha';
-				}
+				$captcha_lable_                   = 'Captcha';
 				$recapcha_error_msg_captcha_blank = str_replace( '[recaptcha]', ucfirst( $captcha_lable_ ), $recapcha_error_msg_captcha_blank );
 
 				if ( 'yes' == $is_enabled && ! is_user_logged_in() ) {
@@ -655,10 +633,6 @@ class WoocommerceOrder {
 
 					?>
 							<p class="guest-checkout-recaptcha woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
-								<?php
-								if ( 'yes' === $wbc_recapcha_hide_label_checkout ) :
-									?>
-						<label for="reg_captcha"><?php echo esc_html( ( '' == trim( $captcha_lable ) ) ? __( 'Captcha', 'buddypress-recaptcha' ) : esc_html( $captcha_lable ) ); ?>&nbsp;<span class="required">*</span></label><?php endif; ?>
 							<div id="g-recaptcha-checkout-wbc" name="g-recaptcha" class="g-recaptcha-" data-callback="verifyCallback_add_guestcheckout"  data-sitekey="<?php echo esc_html( $site_key ); ?>" data-theme="<?php echo esc_html( $theme ); ?>" data-size="<?php echo esc_html( $size ); ?>"></div>
 
 							</p>
@@ -752,10 +726,6 @@ class WoocommerceOrder {
 
 					?>
 							<p class="login-checkout-captcha woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
-						<?php
-						if ( 'yes' === $wbc_recapcha_hide_label_checkout ) :
-							?>
-							<label for="reg_captcha"><?php echo esc_html( ( '' == trim( $captcha_lable ) ) ? __( 'Captcha', 'buddypress-recaptcha' ) : esc_html( $captcha_lable ) ); ?>&nbsp;<span class="required">*</span></label><?php endif; ?>
 							<div id="g-recaptcha-checkout-wbc" name="g-recaptcha" class="g-recaptcha-" data-callback="verifyCallback_add_logincheckout"   data-sitekey="<?php echo esc_html( $site_key ); ?>" data-theme="<?php echo esc_html( $theme ); ?>" data-size="<?php echo esc_html( $size ); ?>"></div>
 							</p>
 							<script type="text/javascript">
@@ -943,22 +913,13 @@ class WoocommerceOrder {
 		}
 		if ( 'v2' == strtolower( $woo_recaptcha_version ) ) {
 
-			$disable_submit_btn            = get_option( 'wbc_recapcha_disable_submitbtn_woo_comment' );
-			$wbc_recapcha_hide_label_login = get_option( 'wbc_recapcha_hide_label_woo_comment' );
-			$captcha_lable                 = get_option( 'wbc_recapcha_woo_comment_title' );
-			$captcha_lable_                = $captcha_lable;
-
-			$site_key                 = get_option( 'wc_settings_tab_recapcha_site_key' );
-			$theme                    = get_option( 'wbc_recapcha_woo_comment_theme' );
-			$size                     = get_option( 'wbc_recapcha_woo_comment_size' );
-			$is_enabled               = apply_filters( 'wbc_recapcha_enable_in_comment_form', get_option( 'wbc_recapcha_enable_on_woo_comment' ) );
-			$wbc_recapcha_no_conflict = get_option( 'wbc_recapcha_no_conflict' );
-
-			$recapcha_error_msg_captcha_blank = get_option( 'wc_settings_tab_recapcha_error_msg_captcha_blank' );
-			if ( '' == trim( $captcha_lable_ ) ) {
-
-				$captcha_lable_ = 'recaptcha';
-			}
+			$disable_submit_btn               = get_option( 'wbc_recapcha_disable_submitbtn_woo_comment' );
+			$site_key                         = get_option( 'wc_settings_tab_recapcha_site_key' );
+			$theme                            = get_option( 'wbc_recapcha_woo_comment_theme' );
+			$size                             = get_option( 'wbc_recapcha_woo_comment_size' );
+			$is_enabled                       = apply_filters( 'wbc_recapcha_enable_in_comment_form', get_option( 'wbc_recapcha_enable_on_woo_comment' ) );
+			$wbc_recapcha_no_conflict         = get_option( 'wbc_recapcha_no_conflict' );
+			$captcha_lable_                   = 'Captcha';
 			$recapcha_error_msg_captcha_blank = str_replace( '[recaptcha]', ucfirst( $captcha_lable_ ), $recapcha_error_msg_captcha_blank );
 
 			if ( 'yes' == $is_enabled ) {
@@ -986,13 +947,6 @@ class WoocommerceOrder {
 				wp_enqueue_script( 'wbc-woo-captcha' );
 				?>
 	<div class="woo-comment-captcha woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
-				<?php
-				if ( 'yes' === $wbc_recapcha_hide_label_login ) :
-					?>
-	<label for="comment_captcha"><?php echo esc_html( ( '' == trim( $captcha_lable ) ) ? __( 'Captcha', 'buddypress-recaptcha' ) : esc_html( $captcha_lable ) ); ?>&nbsp;<span class="required">*</span></label>
-					<?php
-			endif;
-				?>
 	<style>  #g-recaptcha-comment-wbc{margin-bottom: 10px;}</style>
 	<div id="g-recaptcha-comment-wbc" name="g-recaptcha-comment-wbc" class="g-recaptcha" data-callback="verifyCallback_woo_comment" data-sitekey="<?php echo esc_html( $site_key ); ?>" data-theme="<?php echo esc_html( $theme ); ?>" data-size="<?php echo esc_html( $size ); ?>"></div>
 

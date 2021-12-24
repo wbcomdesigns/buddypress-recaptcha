@@ -202,13 +202,7 @@ class WoocommerceFilter {
 			$recapcha_error_msg_captcha_blank       = get_option( 'wc_settings_tab_recapcha_error_msg_captcha_blank' );
 			$recapcha_error_msg_captcha_no_response = get_option( 'wc_settings_tab_recapcha_error_msg_captcha_no_response' );
 			$recapcha_error_msg_captcha_invalid     = get_option( 'wc_settings_tab_recapcha_error_msg_captcha_invalid' );
-
-			$captcha_lable = trim( get_option( 'wbc_recapcha_wpregister_title' ) );
-			if ( '' === trim( $captcha_lable ) ) {
-
-				$captcha_lable = 'captcha';
-			}
-
+			$captcha_lable                          = 'captcha';
 			$recapcha_error_msg_captcha_blank       = str_replace( '[recaptcha]', ucfirst( $captcha_lable ), $recapcha_error_msg_captcha_blank );
 			$recapcha_error_msg_captcha_no_response = str_replace( '[recaptcha]', $captcha_lable, $recapcha_error_msg_captcha_no_response );
 			$recapcha_error_msg_captcha_invalid     = str_replace( '[recaptcha]', $captcha_lable, $recapcha_error_msg_captcha_invalid );
@@ -380,12 +374,7 @@ class WoocommerceFilter {
 			$recapcha_error_msg_captcha_no_response = get_option( 'wc_settings_tab_recapcha_error_msg_captcha_no_response' );
 			$recapcha_error_msg_captcha_invalid     = get_option( 'wc_settings_tab_recapcha_error_msg_captcha_invalid' );
 			$nonce_value                            = isset( $_POST['wp-lostpassword-nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['wp-lostpassword-nonce'] ) ) : '';
-
-			$captcha_lable = get_option( 'wbc_recapcha_wplostpassword_title' );
-			if ( ! empty( trim( $captcha_lable ) ) ) {
-
-				$captcha_lable = 'captcha';
-			}
+			$captcha_lable                          = 'Captcha';
 			$recapcha_error_msg_captcha_blank       = str_replace( '[recaptcha]', ucfirst( $captcha_lable ), $recapcha_error_msg_captcha_blank );
 			$recapcha_error_msg_captcha_no_response = str_replace( '[recaptcha]', $captcha_lable, $recapcha_error_msg_captcha_no_response );
 			$recapcha_error_msg_captcha_invalid     = str_replace( '[recaptcha]', $captcha_lable, $recapcha_error_msg_captcha_invalid );
@@ -735,23 +724,17 @@ class WoocommerceFilter {
 
 			if ( 'v2' === strtolower( $re_capcha_version ) ) {
 
-								$secret_key                             = get_option( 'wc_settings_tab_recapcha_secret_key' );
-								$recapcha_error_msg_captcha_blank       = get_option( 'wc_settings_tab_recapcha_error_msg_captcha_blank' );
-								$recapcha_error_msg_captcha_no_response = get_option( 'wc_settings_tab_recapcha_error_msg_captcha_no_response' );
-								$recapcha_error_msg_captcha_invalid     = get_option( 'wc_settings_tab_recapcha_error_msg_captcha_invalid' );
+				$secret_key                             = get_option( 'wc_settings_tab_recapcha_secret_key' );
+				$recapcha_error_msg_captcha_blank       = get_option( 'wc_settings_tab_recapcha_error_msg_captcha_blank' );
+				$recapcha_error_msg_captcha_no_response = get_option( 'wc_settings_tab_recapcha_error_msg_captcha_no_response' );
+				$recapcha_error_msg_captcha_invalid     = get_option( 'wc_settings_tab_recapcha_error_msg_captcha_invalid' );
+				$captcha_lable                          = 'Captcha';
+				$recapcha_error_msg_captcha_blank       = str_replace( '[recaptcha]', ucfirst( $captcha_lable ), $recapcha_error_msg_captcha_blank );
+				$recapcha_error_msg_captcha_no_response = str_replace( '[recaptcha]', $captcha_lable, $recapcha_error_msg_captcha_no_response );
+				$recapcha_error_msg_captcha_invalid     = str_replace( '[recaptcha]', $captcha_lable, $recapcha_error_msg_captcha_invalid );
 
-								$captcha_lable = get_option( 'wbc_recapcha_woo_comment_title' );
-				if ( '' === trim( $captcha_lable ) ) {
-
-					$captcha_lable = 'captcha';
-				}
-
-								$recapcha_error_msg_captcha_blank       = str_replace( '[recaptcha]', ucfirst( $captcha_lable ), $recapcha_error_msg_captcha_blank );
-								$recapcha_error_msg_captcha_no_response = str_replace( '[recaptcha]', $captcha_lable, $recapcha_error_msg_captcha_no_response );
-								$recapcha_error_msg_captcha_invalid     = str_replace( '[recaptcha]', $captcha_lable, $recapcha_error_msg_captcha_invalid );
-
-								$nonce_value = isset( $_POST['_wpnonce'] ) ? sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ) : '';
-								$varify_none = wp_verify_nonce( $nonce_value, 'wp-review-nonce' );
+				$nonce_value = isset( $_POST['_wpnonce'] ) ? sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ) : '';
+				$varify_none = wp_verify_nonce( $nonce_value, 'wp-review-nonce' );
 
 				if ( ! is_admin() && isset( $_POST['comment_post_ID'], $comment_data['comment_type'] ) && 'product' !== get_post_type( absint( $_POST['comment_post_ID'] ) ) && 'review' !== $comment_data['comment_type'] ) {
 
