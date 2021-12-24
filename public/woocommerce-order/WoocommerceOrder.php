@@ -968,6 +968,7 @@ class WoocommerceOrder {
 
 				<?php if ( 'yes' == trim( $disable_submit_btn ) ) : ?>
 	jQuery('#commentform').find('#submit').attr("disabled", true);
+	jQuery('#commentform').find('#submit').addClass("wbcom-disable");
 					<?php if ( '' == $recapcha_error_msg_captcha_blank ) : ?>
 	jQuery('#commentform').find('#submit').attr("title", "<?php echo esc_html( __( 'reCaptcha is a required field.', 'buddypress-recaptcha' ) ); ?>");
 	<?php else : ?>
@@ -985,6 +986,8 @@ class WoocommerceOrder {
 				<?php if ( 'yes' == trim( $disable_submit_btn ) ) : ?>
 	jQuery('#commentform').find('#submit').removeAttr("title");
 	jQuery('#commentform').find('#submit').attr("disabled", false);
+		jQuery('#commentform').find('#submit').removeClass("wbcom-disable");
+
 	<?php endif; ?>
 
 

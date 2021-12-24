@@ -11,21 +11,30 @@
 # Global
 --------------------------------------------------------------*/
 .form-row.woo-comment-captcha {
-    clear: both;
-    margin: 0;
-    margin-top: 15px;
-    display: block;
-    clear: both;
+  clear: both;
+  margin: 0;
+  margin-top: 15px;
+  display: block;
+  clear: both;
 }
 
-label[for=comment_captcha] {
-    display: block !important;
+label[for="comment_captcha"] {
+  display: block !important;
 }
 
 /*--------------------------------------------------------------
 ## Twentytwenty
 --------------------------------------------------------------*/
 .theme-twentytwenty #review_form .woo-comment-captcha {
-    max-width: 58rem;
-    margin: auto;
+  max-width: 58rem;
+  margin: auto;
+}
+
+.wbcom-disable {
+  color: #a7aaad !important;
+  background: #f6f7f7 !important;
+  border-color: #dcdcde !important;
+  box-shadow: none !important;
+  text-shadow: none !important;
+  cursor: default;
 }
