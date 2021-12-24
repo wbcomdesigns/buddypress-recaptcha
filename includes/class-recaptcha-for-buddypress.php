@@ -204,7 +204,6 @@ class Recaptcha_For_BuddyPress {
 		add_action( 'plugins_loaded', array( $plugin_public, 'woo_load_lang_for_woo_recaptcha' ) );
 		add_action( 'wp_enqueue_scripts', array( $plugin_public, 'woo_recaptcha_load_styles_and_js' ), 9999 );
 		add_action( 'login_enqueue_scripts', array( $plugin_public, 'woo_recaptcha_load_styles_and_js' ), 9999 );
-		add_action( 'comment_form_after_fields', array( $plugin_public, 'demo' ) );
 
 		// Login, registration lost password.
 		$login        = new Login();
