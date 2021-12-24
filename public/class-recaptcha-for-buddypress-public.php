@@ -198,7 +198,8 @@ class Recaptcha_For_BuddyPress_Public {
 			$is_enabled_logincheckout           = get_option( 'wbc_recapcha_enable_on_logincheckout' );
 			$wbc_recapcha_enable_on_payfororder = get_option( 'wbc_recapcha_enable_on_payfororder' );
 			$wbc_recapcha_no_conflict           = get_option( 'wbc_recapcha_no_conflict_v3' );
-
+			$wbc_is_enabled_bbpress_replay      = get_option( 'wbc_recapcha_enable_on_bbpress_replay' );
+			$wbc_is_enabled_bbpress_topic       = get_option( 'wbc_recapcha_enable_on_bbpress_topic' );
 			if ( is_user_logged_in() && function_exists( 'is_wc_endpoint_url' ) && is_wc_endpoint_url( get_option( 'woocommerce_myaccount_add_payment_method_endpoint', 'add-payment-method' ) ) ) {
 
 				if ( 'yes' === $wbc_recapcha_no_conflict ) {
@@ -242,6 +243,46 @@ class Recaptcha_For_BuddyPress_Public {
 				}
 							wp_enqueue_script( 'wbc-woo-captcha-v3' );
 			} elseif ( 'yes' === ( $is_enabled_logincheckout || $wbc_recapcha_enable_on_payfororder ) && is_user_logged_in() && is_checkout() ) {
+
+				if ( 'yes' === $wbc_recapcha_no_conflict ) {
+
+					global $wp_scripts;
+
+					$urls = array( 'google.com/recaptcha', 'gstatic.com/recaptcha' );
+
+					foreach ( $wp_scripts->queue as $handle ) {
+
+						foreach ( $urls as $url ) {
+							if ( false !== strpos( $wp_scripts->registered[ $handle ]->src, $url ) && ( 'wbc-woo-captcha' !== $handle && 'wbc-woo-captcha-v3' !== $handle ) ) {
+								wp_dequeue_script( $handle );
+								wp_deregister_script( $handle );
+								break;
+							}
+						}
+					}
+				}
+				wp_enqueue_script( 'wbc-woo-captcha-v3' );
+			} elseif ( ( 'yes' === $wbc_is_enabled_bbpress_replay ) && is_user_logged_in() && is_singular( 'topic' ) ) {
+
+				if ( 'yes' === $wbc_recapcha_no_conflict ) {
+
+					global $wp_scripts;
+
+					$urls = array( 'google.com/recaptcha', 'gstatic.com/recaptcha' );
+
+					foreach ( $wp_scripts->queue as $handle ) {
+
+						foreach ( $urls as $url ) {
+							if ( false !== strpos( $wp_scripts->registered[ $handle ]->src, $url ) && ( 'wbc-woo-captcha' !== $handle && 'wbc-woo-captcha-v3' !== $handle ) ) {
+								wp_dequeue_script( $handle );
+								wp_deregister_script( $handle );
+								break;
+							}
+						}
+					}
+				}
+				wp_enqueue_script( 'wbc-woo-captcha-v3' );
+			} elseif ( ( 'yes' === $wbc_is_enabled_bbpress_topic ) && is_user_logged_in() && is_singular( 'forum' ) ) {
 
 				if ( 'yes' === $wbc_recapcha_no_conflict ) {
 
