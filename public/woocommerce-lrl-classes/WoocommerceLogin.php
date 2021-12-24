@@ -70,13 +70,6 @@ class WoocommerceLogin {
 				wp_enqueue_script( 'wbc-woo-captcha' );
 				?>
 	<p class="woo-login-captcha woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
-				<?php
-				if ( 'yes' === $wbc_recapcha_hide_label_login ) :
-					?>
-	<label for="login_captcha"><?php echo esc_html( ( '' == trim( $captcha_lable ) ) ? __( 'Captcha', 'buddypress-recaptcha' ) : esc_html( $captcha_lable ) ); ?>&nbsp;<span class="required">*</span></label>
-					<?php
-			endif;
-				?>
 	<div name="g-recaptcha-login-wbc" class="g-recaptcha" data-callback="verifyCallback_woo_login" data-sitekey="<?php echo esc_html( $site_key ); ?>" data-theme="<?php echo esc_html( $theme ); ?>" data-size="<?php echo esc_html( $size ); ?>"></div>
 
 
