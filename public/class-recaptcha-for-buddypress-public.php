@@ -198,7 +198,7 @@ class Recaptcha_For_BuddyPress_Public {
 			$is_enabled_logincheckout           = get_option( 'wbc_recapcha_enable_on_logincheckout' );
 			$wbc_recapcha_enable_on_payfororder = get_option( 'wbc_recapcha_enable_on_payfororder' );
 			$wbc_recapcha_no_conflict           = get_option( 'wbc_recapcha_no_conflict_v3' );
-			$wbc_is_enabled_bbpress_replay      = get_option( 'wbc_recapcha_enable_on_bbpress_replay' );
+			$wbc_is_enabled_bbpress_reply       = get_option( 'wbc_recapcha_enable_on_bbpress_reply' );
 			$wbc_is_enabled_bbpress_topic       = get_option( 'wbc_recapcha_enable_on_bbpress_topic' );
 			if ( is_user_logged_in() && function_exists( 'is_wc_endpoint_url' ) && is_wc_endpoint_url( get_option( 'woocommerce_myaccount_add_payment_method_endpoint', 'add-payment-method' ) ) ) {
 
@@ -262,7 +262,7 @@ class Recaptcha_For_BuddyPress_Public {
 					}
 				}
 				wp_enqueue_script( 'wbc-woo-captcha-v3' );
-			} elseif ( ( 'yes' === $wbc_is_enabled_bbpress_replay ) && is_user_logged_in() && is_singular( 'topic' ) ) {
+			} elseif ( ( 'yes' === $wbc_is_enabled_bbpress_reply ) && is_user_logged_in() && is_singular( 'topic' ) ) {
 
 				if ( 'yes' === $wbc_recapcha_no_conflict ) {
 

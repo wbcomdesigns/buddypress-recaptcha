@@ -210,8 +210,8 @@ class Recaptcha_For_BuddyPress_Admin {
 			$this->plugin_settings_tabs['bb_press_topic']['name'] = esc_html__( 'bbPress Topic', 'buddypress-recaptcha' );
 			$this->plugin_settings_tabs['bb_press_topic']['icon'] = 'dashicons-editor-paste-text';
 
-			$this->plugin_settings_tabs['bb_press_replay']['name'] = esc_html__( 'bbPress Reply', 'buddypress-recaptcha' );
-			$this->plugin_settings_tabs['bb_press_replay']['icon'] = 'dashicons-editor-paste-text';
+			$this->plugin_settings_tabs['bb_press_reply']['name'] = esc_html__( 'bbPress Reply', 'buddypress-recaptcha' );
+			$this->plugin_settings_tabs['bb_press_reply']['icon'] = 'dashicons-editor-paste-text';
 		}
 
 		if ( class_exists( 'WooCommerce' ) ) {

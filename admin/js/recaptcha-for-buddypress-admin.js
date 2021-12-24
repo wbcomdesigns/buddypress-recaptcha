@@ -153,7 +153,7 @@
 				}
 			});
 
-			$('#recapcha_hide_label_bbpress_replay').on('click', function () {
+			$('#recapcha_hide_label_bbpress_reply').on('click', function () {
 				if ($(this).prop("checked") == true) {
 					$('table.form-table tbody tr:nth-child(3)').show(500);
 				} else {

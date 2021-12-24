@@ -19,28 +19,28 @@
  * @subpackage bp_recaptcha/public
  * @author     Wbcom Designs <admin@wbcomdesigns.com>
  */
-class Recaptcha_bbPress_Replay {
+class Recaptcha_bbPress_Reply {
 
 	/**
 	 * Template Class Doc Comment
 	 * Template Class.
 	 */
-	public function wbr_bbpress_replay_form_field_replay() {
+	public function wbr_bbpress_reply_form_field_reply() {
 		$version = get_option( 'wbc_recapcha_version' );
 		if ( 'v2' === $version ) {
 
-			$is_enabled = get_option( 'recapcha_enable_on_bbpress_replay' );
+			$is_enabled = get_option( 'recapcha_enable_on_bbpress_reply' );
 			if ( 'yes' === $is_enabled ) {
 
-				$lable      = get_option( 'recapcha_bbpress_replay_title' );
-				$hide_lable = get_option( 'recapcha_hide_label_bbpress_replay' );
+				$lable      = get_option( 'recapcha_bbpress_reply_title' );
+				$hide_lable = get_option( 'recapcha_hide_label_bbpress_reply' );
 				if ( ! empty( $lable ) && 'yes' === $hide_lable ) {
 					echo esc_html( $lable );
 				}
-				echo $this->wbr_bbpress_replay_form_field_return(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				echo $this->wbr_bbpress_reply_form_field_return(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			}
 		} else {
-			$is_enabled               = get_option( 'wbc_recapcha_enable_on_bbpress_replay' );
+			$is_enabled               = get_option( 'wbc_recapcha_enable_on_bbpress_reply' );
 			$wbc_recapcha_no_conflict = get_option( 'wbc_recapcha_no_conflict_v3' );
 			if ( 'yes' === $is_enabled ) {
 
@@ -53,7 +53,7 @@ class Recaptcha_bbPress_Replay {
 					foreach ( $wp_scripts->queue as $handle ) {
 
 						foreach ( $urls as $url ) {
-							if ( false !== strpos( $wp_scripts->registered[ $handle ]->src, $url ) && ( 'wbc-bbpress-replay' !== $handle && 'wbc-bbpress-replay-v3' !== $handle ) ) {
+							if ( false !== strpos( $wp_scripts->registered[ $handle ]->src, $url ) && ( 'wbc-bbpress-reply' !== $handle && 'wbc-bbpress-reply-v3' !== $handle ) ) {
 								wp_dequeue_script( $handle );
 								wp_deregister_script( $handle );
 								break;
@@ -62,50 +62,50 @@ class Recaptcha_bbPress_Replay {
 					}
 				}
 				wp_enqueue_script( 'jquery' );
-				wp_enqueue_script( 'wbc-bbpress-replay-v3' );
+				wp_enqueue_script( 'wbc-bbpress-reply-v3' );
 
-				$site_key                                  = get_option( 'wc_settings_tab_recapcha_site_key_v3' );
-				$wbc_recapcha_bbpress_replay_action_v3     = get_option( 'wbc_recapcha_bbpress_replay_action_v3' );
-				$wbc_recapcha_bbpress_replay_generation_v3 = get_option( 'wbc_recapcha_bbpress_replay_submit_token_generation_v3' );
-				if ( '' === trim( $wbc_recapcha_bbpress_replay_action_v3 ) ) {
+				$site_key                                 = get_option( 'wc_settings_tab_recapcha_site_key_v3' );
+				$wbc_recapcha_bbpress_reply_action_v3     = get_option( 'wbc_recapcha_bbpress_reply_action_v3' );
+				$wbc_recapcha_bbpress_reply_generation_v3 = get_option( 'wbc_recapcha_bbpress_reply_submit_token_generation_v3' );
+				if ( '' === trim( $wbc_recapcha_bbpress_reply_action_v3 ) ) {
 
-					$wbc_recapcha_bbpress_replay_action_v3 = 'bbPress_replay';
+					$wbc_recapcha_bbpress_reply_action_v3 = 'bbPress_reply';
 				}
-				if ( '' === $wbc_recapcha_bbpress_replay_generation_v3 ) {
+				if ( '' === $wbc_recapcha_bbpress_reply_generation_v3 ) {
 
-					$wbc_recapcha_bbpress_replay_generation_v3 = 'no';
+					$wbc_recapcha_bbpress_reply_generation_v3 = 'no';
 				}
 
 				?>
-				<input type="hidden" autocomplete="off" name="bbpress-replay-nonce" value="<?php echo esc_html( wp_create_nonce( 'bbpress-replay-nonce' ) ); ?>" />
-				<input type="hidden" autocomplete="off" name="wbc_recaptcha_bbpress_replay_token" value="" id="wbc_recaptcha_bbpress_replay_token" />
+				<input type="hidden" autocomplete="off" name="bbpress-reply-nonce" value="<?php echo esc_html( wp_create_nonce( 'bbpress-reply-nonce' ) ); ?>" />
+				<input type="hidden" autocomplete="off" name="wbc_recaptcha_bbpress_reply_token" value="" id="wbc_recaptcha_bbpress_reply_token" />
 				<script type="text/javascript">
 
-				<?php $intval_bbpress_replay = uniqid( 'interval_' ); ?>
+				<?php $intval_bbpress_reply = uniqid( 'interval_' ); ?>
 
-var <?php echo esc_html( $intval_bbpress_replay ); ?> = setInterval(function() {
+var <?php echo esc_html( $intval_bbpress_reply ); ?> = setInterval(function() {
 
 if(document.readyState === 'complete') {
 
-clearInterval(<?php echo esc_html( $intval_bbpress_replay ); ?>);
+clearInterval(<?php echo esc_html( $intval_bbpress_reply ); ?>);
 
 
 grecaptcha.ready(function () {
 
-grecaptcha.execute('<?php echo esc_html( $site_key ); ?>', { action: '<?php echo esc_html( $wbc_recapcha_bbpress_replay_action_v3 ); ?>' }).then(function (token) {
+grecaptcha.execute('<?php echo esc_html( $site_key ); ?>', { action: '<?php echo esc_html( $wbc_recapcha_bbpress_reply_action_v3 ); ?>' }).then(function (token) {
 
-var recaptchaResponse = document.getElementById('wbc_recaptcha_bbpress_replay_token');
+var recaptchaResponse = document.getElementById('wbc_recaptcha_bbpress_reply_token');
 recaptchaResponse.value = token;
 });
 });
 
-				<?php if ( 'yes' === $wbc_recapcha_bbpress_replay_generation_v3 ) : ?>
+				<?php if ( 'yes' === $wbc_recapcha_bbpress_reply_generation_v3 ) : ?>
 
 setInterval(function() {
 
-grecaptcha.execute('<?php echo esc_html( $site_key ); ?>', { action: '<?php echo esc_html( $wbc_recapcha_bbpress_replay_action_v3 ); ?>' }).then(function (token) {
+grecaptcha.execute('<?php echo esc_html( $site_key ); ?>', { action: '<?php echo esc_html( $wbc_recapcha_bbpress_reply_action_v3 ); ?>' }).then(function (token) {
 
-var recaptchaResponse = document.getElementById('wbc_recaptcha_bbpress_replay_token');
+var recaptchaResponse = document.getElementById('wbc_recaptcha_bbpress_reply_token');
 recaptchaResponse.value = token;
 });
 
@@ -117,9 +117,9 @@ jQuery('#new-post').on('submit', function (e) {
 var frm = this;
 e.preventDefault();
 
-grecaptcha.execute('<?php echo esc_html( $site_key ); ?>', { action: '<?php echo esc_html( $wbc_recapcha_bbpress_replay_action_v3 ); ?>' }).then(function (token) {
+grecaptcha.execute('<?php echo esc_html( $site_key ); ?>', { action: '<?php echo esc_html( $wbc_recapcha_bbpress_reply_action_v3 ); ?>' }).then(function (token) {
 
-var recaptchaResponse = document.getElementById('wbc_recaptcha_bbpress_replay_token');
+var recaptchaResponse = document.getElementById('wbc_recaptcha_bbpress_reply_token');
 recaptchaResponse.value = token;
 frm.submit();
 
@@ -154,10 +154,10 @@ frm.submit();
 	 *
 	 * Template Class.
 	 */
-	public function wbr_bbpress_form_field_replay() {
-		echo $this->wbr_bbpress_replay_form_field_return(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-		$bbpress_replay_recaptcha_class = new Recaptcha_bbPress_Replay();
-		$bbpress_replay_recaptcha_class->wbr_bbpress_replay_v2_checkbox_script();
+	public function wbr_bbpress_form_field_reply() {
+		echo $this->wbr_bbpress_reply_form_field_return(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		$bbpress_reply_recaptcha_class = new Recaptcha_bbPress_Reply();
+		$bbpress_reply_recaptcha_class->wbr_bbpress_reply_v2_checkbox_script();
 	}
 
 	/**
@@ -167,8 +167,8 @@ frm.submit();
 	 *
 	 * @param array $return The position of the current token.
 	 */
-	public function wbr_bbpress_replay_form_field_return( $return = '' ) {
-		return $return . $this->wbr_bbpress_replay_captcha_form_field();
+	public function wbr_bbpress_reply_form_field_return( $return = '' ) {
+		return $return . $this->wbr_bbpress_reply_captcha_form_field();
 	}
 
 	/**
@@ -176,7 +176,7 @@ frm.submit();
 	 *
 	 * Template Class.
 	 */
-	public function wbr_bbpress_replay_captcha_form_field() {
+	public function wbr_bbpress_reply_captcha_form_field() {
 		$version  = get_option( 'wbc_recapcha_version' );
 		$site_key = get_option( 'wc_settings_tab_recapcha_site_key' );
 		$number   = 0;
@@ -212,7 +212,7 @@ frm.submit();
 							</div>
 						  </div>
 						</noscript>',
-				self::wbr_bbpress_replay_anr_recaptcha_domain()
+				self::wbr_bbpress_reply_anr_recaptcha_domain()
 			);
 		}
 		return $field;
@@ -223,7 +223,7 @@ frm.submit();
 	 *
 	 * Template Class.
 	 */
-	public function wbr_bbpress_replay_anr_recaptcha_domain() {
+	public function wbr_bbpress_reply_anr_recaptcha_domain() {
 		$domain = 'google.com';
 		return apply_filters( 'anr_recaptcha_domain', $domain );
 	}
@@ -234,7 +234,7 @@ frm.submit();
 	 * @param array $response The position of the current token
 	 * Template Class.
 	 */
-	public function wbr_bbpress_replay_recaptcha_verify( $response = false ) {
+	public function wbr_bbpress_reply_recaptcha_verify( $response = false ) {
 		static $last_verify = null;
 		if ( is_user_logged_in() ) {
 			return true;
@@ -261,7 +261,7 @@ frm.submit();
 				return $last_verify;
 			}
 
-			$url = apply_filters( 'anr_google_verify_url', sprintf( 'https://www.%s/recaptcha/api/siteverify', wbr_bbpress_replay_anr_recaptcha_domain() ) );
+			$url = apply_filters( 'anr_google_verify_url', sprintf( 'https://www.%s/recaptcha/api/siteverify', wbr_bbpress_reply_anr_recaptcha_domain() ) );
 
 			// make a POST request to the Google reCAPTCHA Server.
 			$request = wp_remote_post(
@@ -300,7 +300,7 @@ frm.submit();
 			$verify    = false;
 
 			if ( false === $response ) {
-				$response = isset( $_POST['wbc_recaptcha_bbpress_replay_token'] ) ? sanitize_text_field( wp_unslash( $_POST['wbc_recaptcha_bbpress_replay_token'] ) ) : '';
+				$response = isset( $_POST['wbc_recaptcha_bbpress_reply_token'] ) ? sanitize_text_field( wp_unslash( $_POST['wbc_recaptcha_bbpress_reply_token'] ) ) : '';
 			}
 
 			if ( ! $secre_key ) { // if $secre_key is not set.
@@ -315,7 +315,7 @@ frm.submit();
 				return $last_verify;
 			}
 
-			$url = apply_filters( 'anr_google_verify_url', sprintf( 'https://www.%s/recaptcha/api/siteverify', wbr_bbpress_replay_anr_recaptcha_domain() ) );
+			$url = apply_filters( 'anr_google_verify_url', sprintf( 'https://www.%s/recaptcha/api/siteverify', wbr_bbpress_reply_anr_recaptcha_domain() ) );
 
 			// make a POST request to the Google reCAPTCHA Server.
 			$request = wp_remote_post(
@@ -360,22 +360,22 @@ frm.submit();
 	 * @param array $forum_id The position of the current token.
 	 * Template Class.
 	 */
-	public function wbr_bbpress_replay_verify( $topic_id = '', $forum_id = '' ) {
+	public function wbr_bbpress_reply_verify( $topic_id = '', $forum_id = '' ) {
 		$version = get_option( 'wbc_recapcha_version' );
 		if ( 'v2' === $version ) {
 			$is_enabled = get_option( 'recapcha_enable_on_bbpress_topic' );
 			if ( 'yes' === $is_enabled && empty( $_POST['g-recaptcha-response'] ) ) {
 				bbp_add_error( 'anr_error', 'reCaptcha is required' );
 			}
-			if ( ! $this->wbr_bbpress_replay_recaptcha_verify() ) {
+			if ( ! $this->wbr_bbpress_reply_recaptcha_verify() ) {
 				bbp_add_error( 'anr_error', $this->add_error_to_mgs() );
 			}
 		} else {
-			$is_enabled = get_option( 'wbc_recapcha_enable_on_bbpress_replay' );
-			if ( 'yes' === $is_enabled && empty( $_POST['wbc_recaptcha_bbpress_replay_token'] ) ) {
+			$is_enabled = get_option( 'wbc_recapcha_enable_on_bbpress_reply' );
+			if ( 'yes' === $is_enabled && empty( $_POST['wbc_recaptcha_bbpress_reply_token'] ) ) {
 				bbp_add_error( 'anr_error', 'reCaptcha is required' );
 			}
-			if ( ! $this->wbr_bbpress_replay_recaptcha_verify() ) {
+			if ( ! $this->wbr_bbpress_reply_recaptcha_verify() ) {
 				bbp_add_error( 'anr_error', $this->add_error_to_mgs() );
 			}
 		}
@@ -387,7 +387,7 @@ frm.submit();
 	 *
 	 * Template Class.
 	 */
-	public function wbr_bbpress_replay_v2_checkbox_script() {
+	public function wbr_bbpress_reply_v2_checkbox_script() {
 		$version = get_option( 'wbc_recapcha_version' );
 		if ( 'v2' === $version ) {
 			if ( is_singular( 'topic' ) ) {
@@ -404,8 +404,8 @@ frm.submit();
 						( function( form ) {
 							var anr_captcha = grecaptcha.render( captcha_div,{
 								'sitekey' : '<?php echo esc_js( trim( get_option( 'wc_settings_tab_recapcha_site_key' ) ) ); ?>',
-								'size'  : '<?php echo esc_js( get_option( 'recapcha_size_bbpress_replay' ) ); ?>',
-								'theme' : '<?php echo esc_js( get_option( 'recapcha_theme_bbpress_replay' ) ); ?>'
+								'size'  : '<?php echo esc_js( get_option( 'recapcha_size_bbpress_reply' ) ); ?>',
+								'theme' : '<?php echo esc_js( get_option( 'recapcha_theme_bbpress_reply' ) ); ?>'
 							});
 							if ( typeof jQuery !== 'undefined' ) {
 								jQuery( document.body ).on( 'checkout_error', function(){
@@ -428,8 +428,8 @@ frm.submit();
 				if ( $language ) {
 					$lang = '&hl=' . $language;
 				}
-				$bbpress_replay_recaptcha_class = new Recaptcha_bbPress_Replay();
-				$google_url                     = apply_filters( 'anr_v2_checkbox_script_api_src', sprintf( 'https://www.%s/recaptcha/api.js?onload=anr_onloadCallback&render=explicit' . $lang, $bbpress_replay_recaptcha_class->wbr_bbpress_replay_anr_recaptcha_domain() ), $lang );
+				$bbpress_reply_recaptcha_class = new Recaptcha_bbPress_Reply();
+				$google_url                    = apply_filters( 'anr_v2_checkbox_script_api_src', sprintf( 'https://www.%s/recaptcha/api.js?onload=anr_onloadCallback&render=explicit' . $lang, $bbpress_reply_recaptcha_class->wbr_bbpress_reply_anr_recaptcha_domain() ), $lang );
 				?>
 	<script src="<?php echo esc_url( $google_url ); ?>"
 		async defer>
