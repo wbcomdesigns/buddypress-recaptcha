@@ -604,14 +604,14 @@ class WoocommerceFilter {
 					$wbc_recapcha_woo_review_score_threshold_v3 = '0.5';
 				}
 
-				$wbc_recapcha_woo_review_method_action_v3 = get_option( 'wbc_recapcha_woo_review_method_action_v3' );
+				$wbc_recapcha_woo_review_method_action_v3 = get_option( 'wbc_recapcha_woo_comment_method_action_v3' );
 				if ( '' === $wbc_recapcha_woo_review_method_action_v3 ) {
 
-					$wbc_recapcha_woo_review_method_action_v3 = 'review';
+					$wbc_recapcha_woo_review_method_action_v3 = 'comment';
 				}
 
 				$recapcha_error_msg_captcha_blank       = get_option( 'wbc_recapcha_error_msg_captcha_blank_v3' );
-				$recapcha_error_msg_captcha_no_response = get_option( 'wbc_recapcha_error_msg_captcha_no_response_v3' );
+				$recapcha_error_msg_captcha_no_response = get_option( 'wbc_recapcha_wp_disable_submit_token_generation_v3_woo_comment' );
 				$recapcha_error_msg_captcha_invalid     = get_option( 'wbc_recapcha_error_msg_v3_invalid_captcha' );
 				$secret_key                             = get_option( 'wc_settings_tab_recapcha_secret_key_v3' );
 
@@ -620,9 +620,9 @@ class WoocommerceFilter {
 
 				if ( ! is_admin() && isset( $_POST['comment_post_ID'], $comment_data['comment_type'] ) && 'product' === get_post_type( absint( $_POST['comment_post_ID'] ) ) && 'review' === $comment_data['comment_type'] && wc_reviews_enabled() ) {
 
-					if ( isset( $_POST['wbc_recaptcha_review_token'] ) && ! empty( $_POST['wbc_recaptcha_review_token'] ) ) {
+					if ( isset( $_POST['wbc_recaptcha_comment_token'] ) && ! empty( $_POST['wbc_recaptcha_comment_token'] ) ) {
 						// Google reCAPTCHA API secret key.
-						$response = sanitize_text_field( wp_unslash( $_POST['wbc_recaptcha_review_token'] ) );
+						$response = sanitize_text_field( wp_unslash( $_POST['wbc_recaptcha_comment_token'] ) );
 
 						// Verify the reCAPTCHA response.
 						$verify_response = wp_remote_post(
@@ -809,7 +809,7 @@ class WoocommerceFilter {
 				}
 
 								$recapcha_error_msg_captcha_blank       = get_option( 'wbc_recapcha_error_msg_captcha_blank_v3' );
-								$recapcha_error_msg_captcha_no_response = get_option( 'wbc_recapcha_error_msg_captcha_no_response_v3' );
+								$recapcha_error_msg_captcha_no_response = get_option( 'wbc_recapcha_wp_disable_submit_token_generation_v3_woo_comment' );
 								$recapcha_error_msg_captcha_invalid     = get_option( 'wbc_recapcha_error_msg_v3_invalid_captcha' );
 								$secret_key                             = get_option( 'wc_settings_tab_recapcha_secret_key_v3' );
 
