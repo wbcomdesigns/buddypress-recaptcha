@@ -137,7 +137,7 @@ class WoocommerceProcessLoginErrors {
 					$nonce_value = sanitize_text_field( wp_unslash( $_REQUEST['_wpnonce'] ) );
 				}
 			}
-			if ( 'yes' === $is_enabled && isset( $_POST['username'] ) && wp_verify_nonce( $nonce_value, 'woocommerce-login' ) ) {
+			if ( 'yes' === $is_enabled && isset( $_POST['username'] ) && wp_verify_nonce( $nonce_value, 'woocommerce-login-nonce' ) ) {
 
 				if ( isset( $_POST['wbc_recaptcha_login_token'] ) && ! empty( $_POST['wbc_recaptcha_login_token'] ) ) {
 					// Google reCAPTCHA API secret key.
