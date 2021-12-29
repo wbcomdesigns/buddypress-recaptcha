@@ -1113,4 +1113,18 @@ class WoocommerceOrder {
 		}
 
 	}
+
+	/**
+	 * Filters the submit button for the comment form to display.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @param string $submit_button HTML markup for the submit button.
+	 * @param array  $args          Arguments passed to comment_form().
+	 */
+	public function woo_recaptcha_alter_post_comment_submit_button( $submit_button, $args ) {
+		// do_action( 'wbcom_recaptcha_add_comment_form' );
+		$this->woo_add_comment_form_captcha();
+		return $submit_button;
+	}
 }
