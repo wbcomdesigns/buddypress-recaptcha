@@ -510,7 +510,7 @@ class WoocommerceFilter {
 	 */
 	public function woo_check_review_captcha( $comment_data ) {
 
-			$is_enabled = get_option( 'wbc_recapcha_enable_on_woo_review' );
+		$is_enabled = get_option( 'wbc_recapcha_enable_on_woo_comment' );
 		if ( 'yes' === $is_enabled ) {
 
 				$re_capcha_version = get_option( 'wbc_recapcha_version' );
@@ -520,40 +520,40 @@ class WoocommerceFilter {
 
 			if ( 'v2' === strtolower( $re_capcha_version ) ) {
 
-						$secret_key                             = get_option( 'wc_settings_tab_recapcha_secret_key' );
-						$recapcha_error_msg_captcha_blank       = get_option( 'wc_settings_tab_recapcha_error_msg_captcha_blank' );
-						$recapcha_error_msg_captcha_no_response = get_option( 'wc_settings_tab_recapcha_error_msg_captcha_no_response' );
-						$recapcha_error_msg_captcha_invalid     = get_option( 'wc_settings_tab_recapcha_error_msg_captcha_invalid' );
+					$secret_key                             = get_option( 'wc_settings_tab_recapcha_secret_key' );
+					$recapcha_error_msg_captcha_blank       = get_option( 'wc_settings_tab_recapcha_error_msg_captcha_blank' );
+					$recapcha_error_msg_captcha_no_response = get_option( 'wc_settings_tab_recapcha_error_msg_captcha_no_response' );
+					$recapcha_error_msg_captcha_invalid     = get_option( 'wc_settings_tab_recapcha_error_msg_captcha_invalid' );
 
-														$captcha_lable = get_option( 'wbc_recapcha_woo_review_title' );
+					$captcha_lable = get_option( 'wbc_recapcha_woo_review_title' );
 				if ( '' === trim( $captcha_lable ) ) {
 
 					$captcha_lable = 'captcha';
 				}
 
-							$recapcha_error_msg_captcha_blank       = str_replace( '[recaptcha]', ucfirst( $captcha_lable ), $recapcha_error_msg_captcha_blank );
-							$recapcha_error_msg_captcha_no_response = str_replace( '[recaptcha]', $captcha_lable, $recapcha_error_msg_captcha_no_response );
-							$recapcha_error_msg_captcha_invalid     = str_replace( '[recaptcha]', $captcha_lable, $recapcha_error_msg_captcha_invalid );
+						$recapcha_error_msg_captcha_blank       = str_replace( '[recaptcha]', ucfirst( $captcha_lable ), $recapcha_error_msg_captcha_blank );
+						$recapcha_error_msg_captcha_no_response = str_replace( '[recaptcha]', $captcha_lable, $recapcha_error_msg_captcha_no_response );
+						$recapcha_error_msg_captcha_invalid     = str_replace( '[recaptcha]', $captcha_lable, $recapcha_error_msg_captcha_invalid );
 
-							$nonce_value = isset( $_POST['_wpnonce'] ) ? sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ) : '';
-							$varify_none = wp_verify_nonce( $nonce_value, 'wp-review-nonce' );
+						$nonce_value = isset( $_POST['_wpnonce'] ) ? sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ) : '';
+						$varify_none = wp_verify_nonce( $nonce_value, 'wp-review-nonce' );
 
 				if ( ! is_admin() && isset( $_POST['comment_post_ID'], $comment_data['comment_type'] ) && 'product' === get_post_type( absint( $_POST['comment_post_ID'] ) ) && 'review' === $comment_data['comment_type'] && wc_reviews_enabled() ) {
 
 					if ( isset( $_POST['g-recaptcha-response'] ) && ! empty( $_POST['g-recaptcha-response'] ) ) {
 
-												// Google reCAPTCHA API secret key.
-												$response = sanitize_text_field( wp_unslash( $_POST['g-recaptcha-response'] ) );
+											// Google reCAPTCHA API secret key.
+											$response = sanitize_text_field( wp_unslash( $_POST['g-recaptcha-response'] ) );
 
-												// Verify the reCAPTCHA response.
-												$verify_response = wp_remote_get( 'https://www.google.com/recaptcha/api/siteverify?secret=' . $secret_key . '&response=' . $response, array( 'timeout' => 30 ) );
+											// Verify the reCAPTCHA response.
+											$verify_response = wp_remote_get( 'https://www.google.com/recaptcha/api/siteverify?secret=' . $secret_key . '&response=' . $response, array( 'timeout' => 30 ) );
 
 						if ( is_array( $verify_response ) && ! is_wp_error( $verify_response ) && isset( $verify_response['body'] ) ) {
 
-									// Decode json data.
-									$response_data = json_decode( $verify_response['body'] );
+								// Decode json data.
+								$response_data = json_decode( $verify_response['body'] );
 
-									// If reCAPTCHA response is valid.
+								// If reCAPTCHA response is valid.
 							if ( ! $response_data->success ) {
 
 								if ( '' === trim( $recapcha_error_msg_captcha_invalid ) ) {
@@ -563,8 +563,8 @@ class WoocommerceFilter {
 
 								} else {
 
-										wp_die( esc_html( $recapcha_error_msg_captcha_invalid ) );
-										exit;
+									wp_die( esc_html( $recapcha_error_msg_captcha_invalid ) );
+									exit;
 								}
 							}
 						} else {
@@ -576,8 +576,8 @@ class WoocommerceFilter {
 
 							} else {
 
-															wp_die( esc_html( $recapcha_error_msg_captcha_no_response ) );
-														exit;
+														wp_die( esc_html( $recapcha_error_msg_captcha_no_response ) );
+													exit;
 
 							}
 						}
@@ -585,38 +585,38 @@ class WoocommerceFilter {
 
 						if ( '' === trim( $recapcha_error_msg_captcha_blank ) ) {
 
-								wp_die( esc_html__( 'reCaptcha is a required field.', 'buddypress-recaptcha' ) );
-								exit;
+							wp_die( esc_html__( 'reCaptcha is a required field.', 'buddypress-recaptcha' ) );
+							exit;
 
 						} else {
 
-								wp_die( esc_html( $recapcha_error_msg_captcha_blank ) );
-								exit;
+							wp_die( esc_html( $recapcha_error_msg_captcha_blank ) );
+							exit;
 
 						}
 					}
 				}
 			} else {
 
-					$wbc_recapcha_woo_review_score_threshold_v3 = get_option( 'wbc_recapcha_woo_review_score_threshold_v3' );
+				$wbc_recapcha_woo_review_score_threshold_v3 = get_option( 'wbc_recapcha_woo_review_score_threshold_v3' );
 				if ( '' === $wbc_recapcha_woo_review_score_threshold_v3 ) {
 
 					$wbc_recapcha_woo_review_score_threshold_v3 = '0.5';
 				}
 
-					$wbc_recapcha_woo_review_method_action_v3 = get_option( 'wbc_recapcha_woo_review_method_action_v3' );
+				$wbc_recapcha_woo_review_method_action_v3 = get_option( 'wbc_recapcha_woo_review_method_action_v3' );
 				if ( '' === $wbc_recapcha_woo_review_method_action_v3 ) {
 
 					$wbc_recapcha_woo_review_method_action_v3 = 'review';
 				}
 
-					$recapcha_error_msg_captcha_blank       = get_option( 'wbc_recapcha_error_msg_captcha_blank_v3' );
-					$recapcha_error_msg_captcha_no_response = get_option( 'wbc_recapcha_error_msg_captcha_no_response_v3' );
-					$recapcha_error_msg_captcha_invalid     = get_option( 'wbc_recapcha_error_msg_v3_invalid_captcha' );
-					$secret_key                             = get_option( 'wc_settings_tab_recapcha_secret_key_v3' );
+				$recapcha_error_msg_captcha_blank       = get_option( 'wbc_recapcha_error_msg_captcha_blank_v3' );
+				$recapcha_error_msg_captcha_no_response = get_option( 'wbc_recapcha_error_msg_captcha_no_response_v3' );
+				$recapcha_error_msg_captcha_invalid     = get_option( 'wbc_recapcha_error_msg_v3_invalid_captcha' );
+				$secret_key                             = get_option( 'wc_settings_tab_recapcha_secret_key_v3' );
 
-					$nonce_value = isset( $_POST['_wpnonce'] ) ? sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ) : '';
-					$varify_none = wp_verify_nonce( $nonce_value, 'wp-review-nonce' );
+				$nonce_value = isset( $_POST['_wpnonce'] ) ? sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ) : '';
+				$varify_none = wp_verify_nonce( $nonce_value, 'wp-review-nonce' );
 
 				if ( ! is_admin() && isset( $_POST['comment_post_ID'], $comment_data['comment_type'] ) && 'product' === get_post_type( absint( $_POST['comment_post_ID'] ) ) && 'review' === $comment_data['comment_type'] && wc_reviews_enabled() ) {
 
@@ -640,7 +640,7 @@ class WoocommerceFilter {
 
 						if ( is_array( $verify_response ) && ! is_wp_error( $verify_response ) && isset( $verify_response['body'] ) ) {
 
-										// Decode json data.
+									// Decode json data.
 								$response_data = json_decode( $verify_response['body'] );
 								// If reCAPTCHA response is valid.
 
@@ -653,8 +653,8 @@ class WoocommerceFilter {
 
 								} else {
 
-															wp_die( esc_html( $recapcha_error_msg_captcha_invalid ) );
-															exit;
+														wp_die( esc_html( $recapcha_error_msg_captcha_invalid ) );
+														exit;
 								}
 							} else {
 
@@ -689,8 +689,8 @@ class WoocommerceFilter {
 
 						if ( '' === trim( $recapcha_error_msg_captcha_blank ) ) {
 
-								wp_die( esc_html__( 'Google reCAPTCHA token is missing.', 'buddypress-recaptcha' ) );
-								exit;
+							wp_die( esc_html__( 'Google reCAPTCHA token is missing.', 'buddypress-recaptcha' ) );
+							exit;
 
 						} else {
 
