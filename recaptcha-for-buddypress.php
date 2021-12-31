@@ -136,7 +136,7 @@ function wb_recaptcha_existing_checkin_plugin() {
  */
 function wb_recaptcha_activation_redirect_settings( $plugin ) {
 
-	if ( plugin_basename( __FILE__ ) === $plugin && class_exists( 'WooCommerce' ) || class_exists( 'BuddyPress' ) || class_exists( 'bbPress' ) ) {
+	if ( plugin_basename( __FILE__ ) === $plugin && ( class_exists( 'WooCommerce' ) || class_exists( 'BuddyPress' ) || class_exists( 'bbPress' ) ) ) {
 		wp_safe_redirect( admin_url( 'admin.php?page=buddypress-recaptcha' ) );
 		exit;
 	}
