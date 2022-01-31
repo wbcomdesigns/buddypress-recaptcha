@@ -210,7 +210,11 @@ class Recaptcha_For_BuddyPress {
 		$regisrtation = new Regisrtation();
 		$lostpassword = new Lostpassword();
 		add_action( 'login_form', array( $login, 'woo_extra_wp_login_form' ) );
+		add_action( 'reign_recaptcha_after_login_form', array( $login, 'woo_extra_wp_login_form' ) );
+		add_action( 'buddyxpro_recaptcha_after_login_form', array( $login, 'woo_extra_wp_login_form' ) );
 		add_action( 'register_form', array( $regisrtation, 'woo_extra_wp_register_form' ) );
+		add_action( 'reign_recaptcha_after_register_form', array( $regisrtation, 'woo_extra_wp_register_form' ) );
+		add_action( 'buddyxpro_recaptcha_after_register_form', array( $regisrtation, 'woo_extra_wp_register_form' ) );
 		add_action( 'lostpassword_form', array( $lostpassword, 'woo_extra_wp_lostpassword_form' ) );
 
 		// Buddypress.
