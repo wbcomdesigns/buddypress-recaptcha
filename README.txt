@@ -3,8 +3,8 @@ Contributors: vapvarun,wbcomdesigns
 Donate link: https://wbcomdesigns.com/
 Tags: BuddyPress, WooCommmerce, bbPress
 Requires at least: 3.0.1
-Tested up to: 5.8.1
-Stable tag: 1.1.0
+Tested up to: 5.9.0
+Stable tag: 1.2.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -24,6 +24,10 @@ BuddyPress reCaptcha offers support for reCaptcha options for
 2. Activate the plugin through the 'Plugins' menu in WordPress.
 
 == Changelog ==
+= 1.2.0 =
+* Fix: Add recaptcha support for buddyx-pro and reign theme
+* Fix: (#39)Fixed welcome page redirection issue
+
 = 1.1.0 =
 * Fix: Fixed phpcs errors
 * Fix: (#27, #28) Managed UI with post comment form
