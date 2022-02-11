@@ -642,11 +642,10 @@ if ( ! class_exists( 'Wooaction' ) ) :
 		 * @param array $data The position of the current token.
 		 * Template Class.
 		 */
-		public static function save_fields( $options, $data = null ) {
-			if ( is_null( $data ) ) {
-				$data = $_POST;
-			}
-			if ( empty( $data ) ) {
+		public static function save_fields( $options ) {
+			$bp_recatcha_nonce = isset( $_POST['bp_recaptcha_submit_fields_nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['bp_recaptcha_submit_fields_nonce'] ) ) : '';
+
+			if ( ! wp_verify_nonce( $bp_recatcha_nonce, 'bp_recaptcha_submit_nonce' ) || empty( $_POST ) ) {
 				return false;
 			}
 
@@ -665,11 +664,11 @@ if ( ! class_exists( 'Wooaction' ) ) :
 					parse_str( $option['id'], $option_name_array );
 					$option_name  = current( array_keys( $option_name_array ) );
 					$setting_name = key( $option_name_array[ $option_name ] );
-					$raw_value    = isset( $data[ $option_name ][ $setting_name ] ) ? wp_unslash( $data[ $option_name ][ $setting_name ] ) : null;
+					$raw_value    = isset( $_POST[ $option_name ][ $setting_name ] ) ? sanitize_text_field( wp_unslash( $_POST[ $option_name ][ $setting_name ] ) ) : null;
 				} else {
 					$option_name  = $option['id'];
 					$setting_name = '';
-					$raw_value    = isset( $data[ $option['id'] ] ) ? wp_unslash( $data[ $option['id'] ] ) : null;
+					$raw_value    = isset( $_POST[ $option['id'] ] ) ? sanitize_text_field( wp_unslash( $_POST[ $option['id'] ] ) ) : null;
 				}
 
 				// Format the value based on option type.
