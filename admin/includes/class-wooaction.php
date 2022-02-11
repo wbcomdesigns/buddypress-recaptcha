@@ -643,9 +643,9 @@ if ( ! class_exists( 'Wooaction' ) ) :
 		 * Template Class.
 		 */
 		public static function save_fields( $options ) {
-			$bp_recatcha_nonce = isset( $_POST['bp_recaptcha_submit_fields_nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['bp_recaptcha_submit_fields_nonce'] ) ) : '';
+			$bp_recaptcha_nonce = isset( $_POST['bp_recaptcha_submit_fields_nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['bp_recaptcha_submit_fields_nonce'] ) ) : '';
 
-			if ( ! wp_verify_nonce( $bp_recatcha_nonce, 'bp_recaptcha_submit_nonce' ) || empty( $_POST ) ) {
+			if ( ! wp_verify_nonce( $bp_recaptcha_nonce, 'bp_recaptcha_submit_nonce' ) || empty( $_POST ) ) {
 				return false;
 			}
 
