@@ -168,6 +168,7 @@ class Recaptcha_For_BuddyPress_Admin {
 								$wbc_woo_commerce_settings_page->output( $current );
 								?>
 								<p class="submit">
+									<?php wp_nonce_field( 'bp_recaptcha_submit_nonce', 'bp_recaptcha_submit_fields_nonce' ); ?>
 									<button name="save" class="button button-primary" type="submit" value="Save changes"><?php esc_html_e( 'Save changes', 'buddypress-recaptcha' ); ?></button>
 								</p>
 							</form>
