@@ -162,8 +162,11 @@ class Recaptcha_For_BuddyPress_Admin {
 						<div class="wbcom-tab-content rfw-tab-content">
 							<form method="post" id="wb-recaptcha" action="" enctype="multipart/form-data">
 								<?php
-								if ( $_POST ) {
+								$nonce = isset( $_POST['bp_recaptcha_submit_fields_nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['bp_recaptcha_submit_fields_nonce'] ) ) : '';
+								if ( isset( $_POST['bp_recaptcha_submit_fields_nonce'] ) && wp_verify_nonce( $nonce, 'bp_recaptcha_submit_nonce' ) ) {
+									if ( $_POST ) {
 										$wbc_woo_commerce_settings_page->save( $current );
+									}
 								}
 								$wbc_woo_commerce_settings_page->output( $current );
 								?>

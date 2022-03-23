@@ -402,7 +402,7 @@ if ( ! class_exists( 'Wooaction' ) ) :
 								<label><?php echo esc_html( $value['title'] ); ?> <?php echo wp_kses_post( $tooltip_html ); ?></label>
 							</th>
 							<td class="forminp">
-								<?php echo str_replace( ' id=', " data-placeholder='" . esc_attr__( 'Select a page&hellip;', 'buddypress-recaptcha' ) . "' style='" . $value['css'] . "' class='" . $value['class'] . "' id=", wp_dropdown_pages( $args ) ); ?> <?php echo wp_kses_post( $description ); ?>
+								<?php echo wp_kses_post( str_replace( ' id=', " data-placeholder='" . esc_attr__( 'Select a page&hellip;', 'buddypress-recaptcha' ) . "' style='" . $value['css'] . "' class='" . $value['class'] . "' id=", wp_dropdown_pages( $args ) ) ); ?> <?php echo wp_kses_post( $description ); ?>
 							</td>
 						</tr>
 						<?php
@@ -639,7 +639,6 @@ if ( ! class_exists( 'Wooaction' ) ) :
 		 * Template Class Doc Comment
 		 *
 		 * @param array $options The position of the current token.
-		 * @param array $data The position of the current token.
 		 * Template Class.
 		 */
 		public static function save_fields( $options ) {

@@ -179,7 +179,6 @@ class WoocommerceLogin {
 				var recaptchaResponse = document.getElementById('wbc_recaptcha_login_token');
 					recaptchaResponse.value = token;
 				}, function (reason) {
-				  
 				});
 			});
 				<?php if ( 'yes' == $wbc_token_generation_v3_woo_login ) : ?>

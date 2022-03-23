@@ -150,7 +150,6 @@ class WoocommerceReviewOrder {
 	jQuery("#place_order").attr("title", "<?php echo esc_html( $recapcha_error_msg_captcha_blank ); ?>");
 	<?php endif; ?>    
 		<?php endif; ?>
-		  
 	});
 
 	jQuery( document ).ajaxComplete(function() {
@@ -288,8 +287,6 @@ class WoocommerceReviewOrder {
 								jQuery("#place_order").attr("title", "<?php echo esc_html( $recapcha_error_msg_captcha_blank ); ?>");
 						<?php endif; ?>    
 						<?php endif; ?>
-					  
-
 	});
 				jQuery( document ).ajaxComplete(function() {
 						if(jQuery(".woocommerce-error").is(":visible") || jQuery(".woocommerce_error").is(":visible")){
@@ -357,8 +354,7 @@ class WoocommerceReviewOrder {
 	});
 
 
-					<?php if ( 'no' == $wbc_recapcha_wp_disable_to_woo_checkout ) : ?>  
-				  
+					<?php if ( 'no' == $wbc_recapcha_wp_disable_to_woo_checkout ) : ?>
 	var checkout_form = jQuery('form.checkout');
 
 	/*checkout_form.on('checkout_place_order', function () {
@@ -421,9 +417,7 @@ class WoocommerceReviewOrder {
 
 	});
 	});
-								  
 						<?php else : ?>
-						  
 							setInterval(function() {
 
 								grecaptcha.execute('<?php echo esc_html( $site_key ); ?>', { action: '<?php echo esc_html( $wbc_recapcha_checkout_action_v3 ); ?>' }).then(function (token) {

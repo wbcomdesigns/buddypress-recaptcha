@@ -248,7 +248,11 @@ frm.submit();
 		$disable_submit_btn               = get_option( 'wbc_recapcha_enable_on_signup_bp' );
 		$re_capcha_version                = get_option( 'wbc_recapcha_version' );
 		$wbc_recapcha_enable_on_signup_bp = get_option( 'wbc_recapcha_enable_on_signup_bp' );
-		if ( 'yes' == $wbc_recapcha_enable_on_signup_bp ) {
+		$nonce                            = isset( $_POST['_wpnonce'] ) ? sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ) : '';
+		if ( isset( $_POST['_wpnonce'] ) && ! wp_verify_nonce( $nonce, 'bp_new_signup' ) ) {
+			die( 'Busted!' );
+		}
+		if ( 'yes' === $wbc_recapcha_enable_on_signup_bp ) {
 			if ( 'v2' !== $re_capcha_version ) {
 				$secret_key      = get_option( 'wc_settings_tab_recapcha_secret_key_v3' );
 				$response        = ( isset( $_POST['wbc_recaptcha_wp_register_token'] ) ) ? sanitize_text_field( wp_unslash( $_POST['wbc_recaptcha_wp_register_token'] ) ) : '';

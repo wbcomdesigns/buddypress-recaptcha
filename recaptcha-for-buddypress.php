@@ -110,8 +110,9 @@ function wb_recaptcha_required_plugin_admin_notice() {
 	/* translators: %1s: reCaptcha for WooCommerce, %2$s: WooCommerce, %3$s: BuddyPress, %4$s: bbPress,    */
 	. sprintf( esc_html__( '%1$s is ineffective as it requires %2$s or %3$s or %4$s to be installed and active.', 'buddypress-recaptcha' ), '<strong>' . esc_html( $wb_recaptcha ) . '</strong>', '<strong>' . esc_html( $woo_plugin ) . '</strong>', '<strong>' . esc_html( $bp_plugin ) . '</strong>', '<strong>' . esc_html( $bbpress_plugin ) . '</strong>' )
 	. '</p></div>';
-	if ( isset( $_GET['activate'] ) ) {
-		unset( $_GET['activate'] );
+	if ( null !== filter_input( INPUT_GET, 'activate' ) ) {
+		$activate = filter_input( INPUT_GET, 'activate' );
+		unset( $activate );
 	}
 }
 
@@ -159,7 +160,7 @@ function run_recaptcha_for_woocommerce() {
 		__FILE__, // Full path to the main plugin file or functions.php.
 		'buddypress-recaptcha'
 	);
-	$plugin = new Recaptcha_For_BuddyPress();
+	$plugin          = new Recaptcha_For_BuddyPress();
 	$plugin->run();
 
 }
