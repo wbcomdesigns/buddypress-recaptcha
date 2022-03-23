@@ -118,7 +118,6 @@ transform:scale(0.89);-webkit-transform:scale(0.89);transform-origin:0 0;-webkit
 				<?php endif; ?>
 				<?php
 
-				// echo $this->wbr_bbpress_reply_form_field_return(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			}
 		} else {
 			$is_enabled               = get_option( 'wbc_recapcha_enable_on_bbpress_reply' );
@@ -236,7 +235,7 @@ frm.submit();
 	 * Template Class.
 	 */
 	public function wbr_bbpress_form_field_reply() {
-		echo $this->wbr_bbpress_reply_form_field_return(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo wp_kses_post( $this->wbr_bbpress_reply_form_field_return() );
 		$bbpress_reply_recaptcha_class = new Recaptcha_bbPress_Reply();
 		$bbpress_reply_recaptcha_class->wbr_bbpress_reply_v2_checkbox_script();
 	}
@@ -317,6 +316,10 @@ frm.submit();
 	 */
 	public function wbr_bbpress_reply_recaptcha_verify( $response = false ) {
 		static $last_verify = null;
+		$nonce              = isset( $_POST['_wpnonce'] ) ? sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ) : '';
+		if ( isset( $_POST['_wpnonce'] ) && ! wp_verify_nonce( $nonce, 'bbp-new-reply' ) ) {
+			die( 'Busted!' );
+		}
 		if ( is_user_logged_in() ) {
 			return true;
 		}
@@ -443,6 +446,10 @@ frm.submit();
 	 */
 	public function wbr_bbpress_reply_verify( $topic_id = '', $forum_id = '' ) {
 		$version = get_option( 'wbc_recapcha_version' );
+		$nonce   = isset( $_POST['_wpnonce'] ) ? sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ) : '';
+		if ( isset( $_POST['_wpnonce'] ) && ! wp_verify_nonce( $nonce, 'bbp-new-reply' ) ) {
+			die( 'Busted!' );
+		}
 		if ( 'v2' === $version ) {
 			$is_enabled = get_option( 'recapcha_enable_on_bbpress_topic' );
 			if ( 'yes' === $is_enabled && empty( $_POST['g-recaptcha-response'] ) ) {

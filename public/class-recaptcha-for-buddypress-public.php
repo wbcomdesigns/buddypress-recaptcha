@@ -94,7 +94,7 @@ class Recaptcha_For_BuddyPress_Public {
 		 */
 
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/recaptcha-for-buddypress-public.js', array( 'jquery' ), $this->version, false );
-		wp_enqueue_script('wbc-woo-captcha');
+		wp_enqueue_script( 'wbc-woo-captcha' );
 		wp_enqueue_script( 'wbc-woo-captcha-v3' );
 
 	}
