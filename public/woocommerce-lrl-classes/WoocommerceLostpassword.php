@@ -152,7 +152,7 @@ class WoocommerceLostpassword {
 
 					$wbc_recapcha_lostpassword_action_v3 = 'forgot_password';
 				}
-				if ( empty( trim( $$wbc_generation_v3_woo_fpass ) ) ) {
+				if ( empty( trim( $wbc_generation_v3_woo_fpass ) ) ) {
 
 					$wbc_generation_v3_woo_fpass = 'no';
 				}
