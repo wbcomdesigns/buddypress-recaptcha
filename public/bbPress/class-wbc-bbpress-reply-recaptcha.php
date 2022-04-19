@@ -451,7 +451,7 @@ frm.submit();
 			die( 'Busted!' );
 		}
 		if ( 'v2' === $version ) {
-			$is_enabled = get_option( 'recapcha_enable_on_bbpress_topic' );
+			$is_enabled = get_option( 'recapcha_enable_on_bbpress_reply' );
 			if ( 'yes' === $is_enabled && empty( $_POST['g-recaptcha-response'] ) ) {
 				bbp_add_error( 'anr_error', 'reCaptcha is required' );
 			}
