@@ -43,7 +43,7 @@ class WoocommerceFilter {
 			$secret_key                             = get_option( 'wc_settings_tab_recapcha_secret_key' );
 			$is_enabled                             = get_option( 'wbc_recapcha_enable_on_wplogin' );
 
-			$captcha_lable                          = get_option( 'wbc_recapcha_wplogin_title' );
+			$captcha_lable                          = 'Captcha';
 			$recapcha_error_msg_captcha_blank       = str_replace( '[recaptcha]', ucfirst( $captcha_lable ), $recapcha_error_msg_captcha_blank );
 			$recapcha_error_msg_captcha_no_response = str_replace( '[recaptcha]', $captcha_lable, $recapcha_error_msg_captcha_no_response );
 			$recapcha_error_msg_captcha_invalid     = str_replace( '[recaptcha]', $captcha_lable, $recapcha_error_msg_captcha_invalid );
