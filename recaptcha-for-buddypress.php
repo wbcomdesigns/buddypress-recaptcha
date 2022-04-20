@@ -15,7 +15,7 @@
  * Plugin Name:       Wbcom Designs - BuddyPress reCaptcha
  * Plugin URI:        https://wbcomdesigns.com/downloads/recaptcha-for-buddypress/
  * Description:       This is a short description of what the plugin does. It's displayed in the WordPress admin area.
- * Version:           1.3.0
+ * Version:           1.4.0
  * Author:            Wbcom Designs
  * Author URI:        https://wbcomdesigns.com/
  * License:           GPL-2.0+
@@ -35,7 +35,7 @@ if ( ! defined( 'WPINC' ) ) {
  * Rename this for your plugin and update it as you release new versions.
  */
 if ( ! defined( 'RFB_PLUGIN_VERSION' ) ) {
-	define( 'RFB_PLUGIN_VERSION', '1.3.0' );
+	define( 'RFB_PLUGIN_VERSION', '1.4.0' );
 }
 
 if ( ! defined( 'RFB_PLUGIN_FILE' ) ) {
