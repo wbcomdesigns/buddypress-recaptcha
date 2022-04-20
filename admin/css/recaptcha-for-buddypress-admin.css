@@ -46,3 +46,7 @@
 .hide {
   display: none;
 }
+
+h1.wbcom-plugin-heading {
+  display: block !important;
+}

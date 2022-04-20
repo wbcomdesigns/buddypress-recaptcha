@@ -151,7 +151,7 @@ class Recaptcha_For_BuddyPress_Admin {
 				<div class="ess-admin-header">
 					<?php echo do_shortcode( '[wbcom_admin_setting_header]' ); ?>
 					<h1 class="wbcom-plugin-heading">
-						<?php esc_html_e( 'BuddyPress reCaptcha Settings', 'buddypress-recaptcha' ); ?>
+						<?php esc_html_e( 'BuddyPress reCaptcha', 'buddypress-recaptcha' ); ?>
 					</h1>
 				</div>
 				<div class="wbcom-admin-settings-page">
