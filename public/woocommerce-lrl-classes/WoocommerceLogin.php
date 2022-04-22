@@ -27,7 +27,10 @@ class WoocommerceLogin {
 	 * @return void
 	 */
 	public function woo_extra_login_fields() {
-
+		$recpatcha_system_ip = get_option( 'wbc_recapcha_ip_to_skip_captcha' );
+		if ( $recpatcha_system_ip && wb_recaptcha_restriction_recaptcha_by_ip() ) {
+			return false;
+		}
 		$woo_recaptcha_version = get_option( 'wbc_recapcha_version' );
 		if ( '' == $woo_recaptcha_version ) {
 			$woo_recaptcha_version = 'v2';

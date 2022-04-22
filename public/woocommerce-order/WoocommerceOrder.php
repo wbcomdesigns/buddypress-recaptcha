@@ -27,7 +27,6 @@ class WoocommerceOrder {
 	 * @return void
 	 */
 	public function woo_extra_checkout_fields_pay_order() {
-
 		$woo_recaptcha_version = get_option( 'wbc_recapcha_version' );
 		if ( '' == $woo_recaptcha_version ) {
 			$woo_recaptcha_version = 'v2';
@@ -1124,7 +1123,13 @@ class WoocommerceOrder {
 	 */
 	public function woo_recaptcha_alter_post_comment_submit_button( $submit_button, $args ) {
 		// do_action( 'wbcom_recaptcha_add_comment_form' );
-		$this->woo_add_comment_form_captcha();
-		return $submit_button;
+		$recpatcha_system_ip = get_option( 'wbc_recapcha_ip_to_skip_captcha' );
+		if ( $recpatcha_system_ip && wb_recaptcha_restriction_recaptcha_by_ip() ) {
+			return $submit_button;
+			return false;
+		} else {
+			$this->woo_add_comment_form_captcha();
+			return $submit_button;
+		}
 	}
 }

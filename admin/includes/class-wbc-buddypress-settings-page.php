@@ -1483,7 +1483,7 @@ if ( ! class_exists( 'Wbc_WooCommerce_Settings_Page' ) ) :
 							'type'    => 'text',
 							'id'      => 'wbc_recapcha_ip_to_skip_captcha',
 							'default' => '',
-							'desc'    => __( 'Useful when you want to not show reCaptcha for certain users/clients. When requests comes through the above IP or IP range the reCaptcha is not shown and validation will skipped. for example 123.201.160.11,123.201.160.11-123.201.160.50', 'buddypress-recaptcha' ),
+							'desc'    => __( 'Useful when you want to not show reCaptcha for certain users/clients. When requests comes through the above IP or IP\'s the reCaptcha is not shown and validation will skipped. Ip\'s should be seperated by "," For example 123.201.160.11,123.201.160.11,123.201.160.50', 'buddypress-recaptcha' ),
 						),
 						array(
 							'name'    => __( 'Language Code', 'buddypress-recaptcha' ),

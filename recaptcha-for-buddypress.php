@@ -165,3 +165,40 @@ function run_recaptcha_for_woocommerce() {
 
 }
 run_recaptcha_for_woocommerce();
+
+function wb_recaptcha_get_the_user_ip() {
+	$ipaddress = '';
+	if ( isset( $_SERVER['HTTP_CLIENT_IP'] ) ) {
+		$ipaddress = $_SERVER['HTTP_CLIENT_IP'];
+	}
+	if ( isset( $_SERVER['HTTP_X_FORWARDED_FOR'] ) ) {
+		$ipaddress = $_SERVER['HTTP_X_FORWARDED_FOR'];
+	}
+	if ( isset( $_SERVER['HTTP_X_FORWARDED'] ) ) {
+		$ipaddress = $_SERVER['HTTP_X_FORWARDED'];
+	}
+	if ( isset( $_SERVER['HTTP_FORWARDED_FOR'] ) ) {
+		$ipaddress = $_SERVER['HTTP_FORWARDED_FOR'];
+	}
+	if ( isset( $_SERVER['HTTP_FORWARDED'] ) ) {
+		$ipaddress = $_SERVER['HTTP_FORWARDED'];
+	}
+	if ( isset( $_SERVER['REMOTE_ADDR'] ) ) {
+		$ipaddress = $_SERVER['REMOTE_ADDR'];
+	}
+
+	return $ipaddress;
+
+}
+add_shortcode( 'display_ip', 'wb_recaptcha_get_the_user_ip' );
+
+function wb_recaptcha_restriction_recaptcha_by_ip() {
+	$get_ip       = wb_recaptcha_get_the_user_ip();
+	$recpatcha_ip = get_option( 'wbc_recapcha_ip_to_skip_captcha' );
+	$explode      = $recpatcha_ip;
+	$explode_ip   = explode( ',', $explode );
+	if ( in_array( $get_ip, $explode_ip ) ) {
+		return true;
+	}
+	return false;
+}
