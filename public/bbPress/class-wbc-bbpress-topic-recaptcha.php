@@ -26,6 +26,10 @@ class Recaptcha_bbPress_Topic {
 	 * Template Class.
 	 */
 	public function wbr_bbpress_topic_form_field() {
+		$recpatcha_system_ip = get_option( 'wbc_recapcha_ip_to_skip_captcha' );
+		if ( $recpatcha_system_ip && wb_recaptcha_restriction_recaptcha_by_ip() ) {
+			return false;
+		}
 		$version = get_option( 'wbc_recapcha_version' );
 		if ( 'v2' === $version ) {
 			$is_enabled                       = get_option( 'recapcha_enable_on_bbpress_topic' );

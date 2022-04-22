@@ -27,7 +27,10 @@ class Regisrtation {
 	 * Template Class.
 	 */
 	public function woo_extra_wp_register_form() {
-
+		$recpatcha_system_ip = get_option( 'wbc_recapcha_ip_to_skip_captcha' );
+		if ( $recpatcha_system_ip && wb_recaptcha_restriction_recaptcha_by_ip() ) {
+			return false;
+		}
 		$re_capcha_version = get_option( 'wbc_recapcha_version' );
 		if ( '' === $re_capcha_version ) {
 			$re_capcha_version = 'v2';
