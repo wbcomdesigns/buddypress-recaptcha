@@ -14,7 +14,7 @@
  * @wordpress-plugin
  * Plugin Name:       Wbcom Designs - BuddyPress reCaptcha
  * Plugin URI:        https://wbcomdesigns.com/downloads/recaptcha-for-buddypress/
- * Description:       This is a short description of what the plugin does. It's displayed in the WordPress admin area.
+ * Description:       Buddypress reCaptcha is the best solution for spam and BOT protection that provides an all-in-one captcha for Buddypress, WordPress, bbPress and woo-commerce. Various control options are provided to manage the captcha on required places.
  * Version:           1.4.1
  * Author:            Wbcom Designs
  * Author URI:        https://wbcomdesigns.com/
