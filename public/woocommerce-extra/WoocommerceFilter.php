@@ -69,27 +69,29 @@ class WoocommerceFilter {
 
 							if ( '' === trim( $recapcha_error_msg_captcha_invalid ) ) {
 
-								return new WP_Error( 'Captcha Invalid', '<strong>' . __( 'ERROR:', 'buddypress-recaptcha' ) . '</strong> ' . __( 'Invalid recaptcha.', 'buddypress-recaptcha' ) );
+								return new WP_Error( 'Captcha Invalid', '<strong>' . __( 'ERROR:11', 'buddypress-recaptcha' ) . '</strong> ' . __( 'Invalid recaptcha.', 'buddypress-recaptcha' ) );
 							} else {
-								return new WP_Error( 'Captcha Invalid', '<strong>' . __( 'ERROR:', 'buddypress-recaptcha' ) . '</strong> ' . $recapcha_error_msg_captcha_invalid );
+								return new WP_Error( 'Captcha Invalid', '<strong>' . __( 'ERROR:22', 'buddypress-recaptcha' ) . '</strong> ' . $recapcha_error_msg_captcha_invalid );
 							}
 						}
 					} else {
 
 						if ( '' === trim( $recapcha_error_msg_captcha_no_response ) ) {
 
-							return new WP_Error( 'Captcha Invalid', '<strong>' . __( 'ERROR:', 'buddypress-recaptcha' ) . '</strong> ' . __( 'Could not get response from recaptcha server.', 'buddypress-recaptcha' ) );
+							return new WP_Error( 'Captcha Invalid', '<strong>' . __( 'ERROR:33', 'buddypress-recaptcha' ) . '</strong> ' . __( 'Could not get response from recaptcha server.', 'buddypress-recaptcha' ) );
 						} else {
-							return new WP_Error( 'Captcha Invalid', '<strong>' . __( 'ERROR:', 'buddypress-recaptcha' ) . '</strong> ' . $recapcha_error_msg_captcha_no_response );
+							return new WP_Error( 'Captcha Invalid', '<strong>' . __( 'ERROR:44', 'buddypress-recaptcha' ) . '</strong> ' . $recapcha_error_msg_captcha_no_response );
 						}
 					}
 				} else {
 
 					if ( '' === trim( $recapcha_error_msg_captcha_blank ) ) {
 
-						return new WP_Error( 'Captcha Invalid', '<strong>' . __( 'ERROR:', 'buddypress-recaptcha' ) . '</strong> ' . __( 'reCaptcha is a required field.', 'buddypress-recaptcha' ) );
+						return new WP_Error( 'Captcha Invalid', '<strong>' . __( 'ERROR:55', 'buddypress-recaptcha' ) . '</strong> ' . __( 'reCaptcha is a required field.', 'buddypress-recaptcha' ) );
 					} else {
-						return new WP_Error( 'Captcha Invalid', '<strong>' . __( 'ERROR:', 'buddypress-recaptcha' ) . '</strong> ' . $recapcha_error_msg_captcha_blank );
+						if ( ! wb_recaptcha_restriction_recaptcha_by_ip() ) {
+							return new WP_Error( 'Captcha Invalid', '<strong>' . __( 'ERROR:66', 'buddypress-recaptcha' ) . '</strong> ' . $recapcha_error_msg_captcha_blank );
+						}
 					}
 				}
 			}
@@ -141,17 +143,17 @@ class WoocommerceFilter {
 
 							if ( '' === trim( $recapcha_error_msg_captcha_invalid ) ) {
 
-								return new WP_Error( 'Captcha Invalid', '<strong>' . __( 'ERROR:', 'buddypress-recaptcha' ) . '</strong> ' . __( 'Google reCAPTCHA verification failed, please try again later.', 'buddypress-recaptcha' ) );
+								return new WP_Error( 'Captcha Invalid', '<strong>' . __( 'ERROR:77', 'buddypress-recaptcha' ) . '</strong> ' . __( 'Google reCAPTCHA verification failed, please try again later.', 'buddypress-recaptcha' ) );
 							} else {
-								return new WP_Error( 'Captcha Invalid', '<strong>' . __( 'ERROR:', 'buddypress-recaptcha' ) . '</strong> ' . $recapcha_error_msg_captcha_invalid );
+								return new WP_Error( 'Captcha Invalid', '<strong>' . __( 'ERROR:88', 'buddypress-recaptcha' ) . '</strong> ' . $recapcha_error_msg_captcha_invalid );
 							}
 						} else {
 							if ( $response_data->score < $wbc_recapcha_wp_login_score_threshold_v3 || $response_data->action !== $wbc_recapcha_wp_login_action_v3 ) {
 
 								if ( '' === trim( $recapcha_error_msg_captcha_invalid ) ) {
-									return new WP_Error( 'Captcha Invalid', '<strong>' . __( 'ERROR:', 'buddypress-recaptcha' ) . '</strong> ' . __( 'Google reCAPTCHA verification failed, please try again later.', 'buddypress-recaptcha' ) );
+									return new WP_Error( 'Captcha Invalid', '<strong>' . __( 'ERROR:99', 'buddypress-recaptcha' ) . '</strong> ' . __( 'Google reCAPTCHA verification failed, please try again later.', 'buddypress-recaptcha' ) );
 								} else {
-									return new WP_Error( 'Captcha Invalid', '<strong>' . __( 'ERROR:', 'buddypress-recaptcha' ) . '</strong> ' . $recapcha_error_msg_captcha_invalid );
+									return new WP_Error( 'Captcha Invalid', '<strong>' . __( 'ERROR:001', 'buddypress-recaptcha' ) . '</strong> ' . $recapcha_error_msg_captcha_invalid );
 								}
 							}
 						}
@@ -159,18 +161,20 @@ class WoocommerceFilter {
 
 						if ( '' === trim( $recapcha_error_msg_captcha_no_response ) ) {
 
-							return new WP_Error( 'Captcha Invalid', '<strong>' . __( 'ERROR:', 'buddypress-recaptcha' ) . '</strong> ' . __( 'Could not get response from reCAPTCHA server.', 'buddypress-recaptcha' ) );
+							return new WP_Error( 'Captcha Invalid', '<strong>' . __( 'ERROR:10', 'buddypress-recaptcha' ) . '</strong> ' . __( 'Could not get response from reCAPTCHA server.', 'buddypress-recaptcha' ) );
 						} else {
-							return new WP_Error( 'Captcha Invalid', '<strong>' . __( 'ERROR:', 'buddypress-recaptcha' ) . '</strong> ' . $recapcha_error_msg_captcha_no_response );
+							return new WP_Error( 'Captcha Invalid', '<strong>' . __( 'ERROR:11', 'buddypress-recaptcha' ) . '</strong> ' . $recapcha_error_msg_captcha_no_response );
 						}
 					}
 				} else {
 
 					if ( '' === trim( $recapcha_error_msg_captcha_blank ) ) {
 
-						return new WP_Error( 'Captcha Invalid', '<strong>' . __( 'ERROR:', 'buddypress-recaptcha' ) . '</strong> ' . __( 'Google reCAPTCHA token is missing.', 'buddypress-recaptcha' ) );
+						return new WP_Error( 'Captcha Invalid', '<strong>' . __( 'ERROR:12', 'buddypress-recaptcha' ) . '</strong> ' . __( 'Google reCAPTCHA token is missing.', 'buddypress-recaptcha' ) );
 					} else {
-						return new WP_Error( 'Captcha Invalid', '<strong>' . __( 'ERROR:', 'buddypress-recaptcha' ) . '</strong> ' . $recapcha_error_msg_captcha_blank );
+						if ( ! wb_recaptcha_restriction_recaptcha_by_ip() ) {
+							return new WP_Error( 'Captcha Invalid', '<strong>' . __( 'ERROR:', 'buddypress-recaptcha' ) . '</strong> ' . $recapcha_error_msg_captcha_blank );
+						}
 					}
 				}
 			}
@@ -226,27 +230,29 @@ class WoocommerceFilter {
 						if ( ! $response_data->success ) {
 							if ( '' === trim( $recapcha_error_msg_captcha_invalid ) ) {
 
-														$validation_errors->add( 'g-recaptcha_error', '<strong>' . __( 'ERROR:', 'buddypress-recaptcha' ) . '</strong> ' . __( 'Invalid recaptcha.', 'buddypress-recaptcha' ) );
+														$validation_errors->add( 'g-recaptcha_error', '<strong>' . __( 'ERROR:14', 'buddypress-recaptcha' ) . '</strong> ' . __( 'Invalid recaptcha.', 'buddypress-recaptcha' ) );
 							} else {
-																$validation_errors->add( 'g-recaptcha_error', '<strong>' . __( 'ERROR:', 'buddypress-recaptcha' ) . '</strong> ' . $recapcha_error_msg_captcha_invalid );
+																$validation_errors->add( 'g-recaptcha_error', '<strong>' . __( 'ERROR:15', 'buddypress-recaptcha' ) . '</strong> ' . $recapcha_error_msg_captcha_invalid );
 							}
 						}
 					} else {
 
 						if ( '' === trim( $recapcha_error_msg_captcha_no_response ) ) {
 
-							$validation_errors->add( 'g-recaptcha_error', '<strong>' . __( 'ERROR:', 'buddypress-recaptcha' ) . '</strong> ' . __( 'Could not get response from recaptcha server.', 'buddypress-recaptcha' ) );
+							$validation_errors->add( 'g-recaptcha_error', '<strong>' . __( 'ERROR:16', 'buddypress-recaptcha' ) . '</strong> ' . __( 'Could not get response from recaptcha server.', 'buddypress-recaptcha' ) );
 						} else {
-							$validation_errors->add( 'g-recaptcha_error', '<strong>' . __( 'ERROR:', 'buddypress-recaptcha' ) . '</strong> ' . $recapcha_error_msg_captcha_no_response );
+							$validation_errors->add( 'g-recaptcha_error', '<strong>' . __( 'ERROR:17', 'buddypress-recaptcha' ) . '</strong> ' . $recapcha_error_msg_captcha_no_response );
 						}
 					}
 				} else {
 
 					if ( '' === trim( $recapcha_error_msg_captcha_blank ) ) {
 
-										$validation_errors->add( 'g-recaptcha_error', '<strong>' . __( 'ERROR:', 'buddypress-recaptcha' ) . '</strong> ' . __( 'reCaptcha is a required field.', 'buddypress-recaptcha' ) );
+										$validation_errors->add( 'g-recaptcha_error', '<strong>' . __( 'ERROR:18', 'buddypress-recaptcha' ) . '</strong> ' . __( 'reCaptcha is a required field.', 'buddypress-recaptcha' ) );
 					} else {
-										$validation_errors->add( 'g-recaptcha_error', '<strong>' . __( 'ERROR:', 'buddypress-recaptcha' ) . '</strong> ' . $recapcha_error_msg_captcha_blank );
+						if ( ! wb_recaptcha_restriction_recaptcha_by_ip() ) {
+										$validation_errors->add( 'g-recaptcha_error', '<strong>' . __( 'ERROR:19', 'buddypress-recaptcha' ) . '</strong> ' . $recapcha_error_msg_captcha_blank );
+						}
 					}
 				}
 			}
@@ -301,10 +307,10 @@ class WoocommerceFilter {
 
 							if ( '' === trim( $recapcha_error_msg_captcha_invalid ) ) {
 
-								$validation_errors->add( 'g-recaptcha_error', '<strong>' . __( 'ERROR:', 'buddypress-recaptcha' ) . '</strong> ' . __( 'Google reCAPTCHA verification failed, please try again later.', 'buddypress-recaptcha' ) );
+								$validation_errors->add( 'g-recaptcha_error', '<strong>' . __( 'ERROR:20', 'buddypress-recaptcha' ) . '</strong> ' . __( 'Google reCAPTCHA verification failed, please try again later.', 'buddypress-recaptcha' ) );
 
 							} else {
-								$validation_errors->add( 'g-recaptcha_error', '<strong>' . __( 'ERROR:', 'buddypress-recaptcha' ) . '</strong> ' . $recapcha_error_msg_captcha_invalid );
+								$validation_errors->add( 'g-recaptcha_error', '<strong>' . __( 'ERROR:21', 'buddypress-recaptcha' ) . '</strong> ' . $recapcha_error_msg_captcha_invalid );
 
 							}
 						} else {
@@ -313,11 +319,11 @@ class WoocommerceFilter {
 
 								if ( '' === trim( $recapcha_error_msg_captcha_invalid ) ) {
 
-									$validation_errors->add( 'g-recaptcha_error', '<strong>' . __( 'ERROR:', 'buddypress-recaptcha' ) . '</strong> ' . __( 'Google reCAPTCHA verification failed, please try again later.', 'buddypress-recaptcha' ) );
+									$validation_errors->add( 'g-recaptcha_error', '<strong>' . __( 'ERROR:22', 'buddypress-recaptcha' ) . '</strong> ' . __( 'Google reCAPTCHA verification failed, please try again later.', 'buddypress-recaptcha' ) );
 
 								} else {
 
-									$validation_errors->add( 'g-recaptcha_error', '<strong>' . __( 'ERROR:', 'buddypress-recaptcha' ) . '</strong> ' . $recapcha_error_msg_captcha_invalid );
+									$validation_errors->add( 'g-recaptcha_error', '<strong>' . __( 'ERROR:22', 'buddypress-recaptcha' ) . '</strong> ' . $recapcha_error_msg_captcha_invalid );
 
 								}
 							}
@@ -326,11 +332,11 @@ class WoocommerceFilter {
 
 						if ( '' === trim( $recapcha_error_msg_captcha_no_response ) ) {
 
-							$validation_errors->add( 'g-recaptcha_error', '<strong>' . __( 'ERROR:', 'buddypress-recaptcha' ) . '</strong> ' . __( 'Could not get response from reCAPTCHA server.', 'buddypress-recaptcha' ) );
+							$validation_errors->add( 'g-recaptcha_error', '<strong>' . __( 'ERROR:23', 'buddypress-recaptcha' ) . '</strong> ' . __( 'Could not get response from reCAPTCHA server.', 'buddypress-recaptcha' ) );
 
 						} else {
 
-							$validation_errors->add( 'g-recaptcha_error', '<strong>' . __( 'ERROR:', 'buddypress-recaptcha' ) . '</strong> ' . $recapcha_error_msg_captcha_no_response );
+							$validation_errors->add( 'g-recaptcha_error', '<strong>' . __( 'ERROR:24', 'buddypress-recaptcha' ) . '</strong> ' . $recapcha_error_msg_captcha_no_response );
 
 						}
 					}
@@ -338,12 +344,12 @@ class WoocommerceFilter {
 
 					if ( '' === trim( $recapcha_error_msg_captcha_blank ) ) {
 
-						$validation_errors->add( 'g-recaptcha_error', '<strong>' . __( 'ERROR:', 'buddypress-recaptcha' ) . '</strong> ' . __( 'Google reCAPTCHA token is missing.', 'buddypress-recaptcha' ) );
+						$validation_errors->add( 'g-recaptcha_error', '<strong>' . __( 'ERROR:25', 'buddypress-recaptcha' ) . '</strong> ' . __( 'Google reCAPTCHA token is missing.', 'buddypress-recaptcha' ) );
 
 					} else {
-
-						$validation_errors->add( 'g-recaptcha_error', '<strong>' . __( 'ERROR:', 'buddypress-recaptcha' ) . '</strong> ' . $recapcha_error_msg_captcha_blank );
-
+						if ( ! wb_recaptcha_restriction_recaptcha_by_ip() ) {
+							$validation_errors->add( 'g-recaptcha_error', '<strong>' . __( 'ERROR:', 'buddypress-recaptcha' ) . '</strong> ' . $recapcha_error_msg_captcha_blank );
+						}
 					}
 				}
 			}
@@ -398,32 +404,34 @@ class WoocommerceFilter {
 
 								if ( '' === trim( $recapcha_error_msg_captcha_invalid ) ) {
 
-									$validation_errors->add( 'g-recaptcha_error', '<strong>' . __( 'ERROR:', 'buddypress-recaptcha' ) . '</strong> ' . __( 'Invalid recaptcha.', 'buddypress-recaptcha' ) );
+									$validation_errors->add( 'g-recaptcha_error', '<strong>' . __( 'ERROR:00', 'buddypress-recaptcha' ) . '</strong> ' . __( 'Invalid recaptcha.', 'buddypress-recaptcha' ) );
 								} else {
-									$validation_errors->add( 'g-recaptcha_error', '<strong>' . __( 'ERROR:', 'buddypress-recaptcha' ) . '</strong> ' . $recapcha_error_msg_captcha_invalid );
+									$validation_errors->add( 'g-recaptcha_error', '<strong>' . __( 'ERROR:01', 'buddypress-recaptcha' ) . '</strong> ' . $recapcha_error_msg_captcha_invalid );
 								}
 							}
 						} else {
 
 							if ( '' === trim( $recapcha_error_msg_captcha_no_response ) ) {
 
-								$validation_errors->add( 'g-recaptcha_error', '<strong>' . __( 'ERROR:', 'buddypress-recaptcha' ) . '</strong> ' . __( 'Could not get response from recaptcha server.', 'buddypress-recaptcha' ) );
+								$validation_errors->add( 'g-recaptcha_error', '<strong>' . __( 'ERROR:02', 'buddypress-recaptcha' ) . '</strong> ' . __( 'Could not get response from recaptcha server.', 'buddypress-recaptcha' ) );
 							} else {
-								$validation_errors->add( 'g-recaptcha_error', '<strong>' . __( 'ERROR:', 'buddypress-recaptcha' ) . '</strong> ' . $recapcha_error_msg_captcha_no_response );
+								$validation_errors->add( 'g-recaptcha_error', '<strong>' . __( 'ERROR:03', 'buddypress-recaptcha' ) . '</strong> ' . $recapcha_error_msg_captcha_no_response );
 							}
 						}
 					} else {
 
 						if ( '' === trim( $recapcha_error_msg_captcha_blank ) ) {
 
-							$validation_errors->add( 'g-recaptcha_error', '<strong>' . __( 'ERROR:', 'buddypress-recaptcha' ) . '</strong> ' . __( 'reCaptcha is a required field.', 'buddypress-recaptcha' ) );
+							$validation_errors->add( 'g-recaptcha_error', '<strong>' . __( 'ERROR:04', 'buddypress-recaptcha' ) . '</strong> ' . __( 'reCaptcha is a required field.', 'buddypress-recaptcha' ) );
 						} else {
-							$validation_errors->add( 'g-recaptcha_error', '<strong>' . __( 'ERROR:', 'buddypress-recaptcha' ) . '</strong> ' . $recapcha_error_msg_captcha_blank );
+							if ( ! wb_recaptcha_restriction_recaptcha_by_ip() ) {
+								$validation_errors->add( 'g-recaptcha_error', '<strong>' . __( 'ERROR:05', 'buddypress-recaptcha' ) . '</strong> ' . $recapcha_error_msg_captcha_blank );
+							}
 						}
 					}
 				} else {
 
-					$validation_errors->add( 'g-recaptcha_error', '<strong>' . __( 'ERROR:', 'buddypress-recaptcha' ) . '</strong> ' . __( 'Could not verify request.', 'buddypress-recaptcha' ) );
+					$validation_errors->add( 'g-recaptcha_error', '<strong>' . __( 'ERROR:06', 'buddypress-recaptcha' ) . '</strong> ' . __( 'Could not verify request.', 'buddypress-recaptcha' ) );
 				}
 			}
 		} else {
@@ -476,9 +484,9 @@ class WoocommerceFilter {
 						// If reCAPTCHA response is valid.
 						if ( ! $response_data->success ) {
 							if ( empty( trim( $recapcha_error_msg_captcha_invalid ) ) ) {
-								$validation_errors->add( 'g-recaptcha_error', '<strong>' . __( 'ERROR:', 'buddypress-recaptcha' ) . '</strong> ' . __( 'Google reCAPTCHA verification failed, please try again later.', 'buddypress-recaptcha' ) );
+								$validation_errors->add( 'g-recaptcha_error', '<strong>' . __( 'ERROR:07', 'buddypress-recaptcha' ) . '</strong> ' . __( 'Google reCAPTCHA verification failed, please try again later.', 'buddypress-recaptcha' ) );
 							} else {
-								$validation_errors->add( 'g-recaptcha_error', '<strong>' . __( 'ERROR:', 'buddypress-recaptcha' ) . '</strong> ' . $recapcha_error_msg_captcha_invalid );
+								$validation_errors->add( 'g-recaptcha_error', '<strong>' . __( 'ERROR:08', 'buddypress-recaptcha' ) . '</strong> ' . $recapcha_error_msg_captcha_invalid );
 							}
 						} else {
 							$validation_errors->remove( 'g-recaptcha_error' );
@@ -891,9 +899,10 @@ class WoocommerceFilter {
 								exit;
 
 						} else {
-
-							wp_die( esc_html( $recapcha_error_msg_captcha_blank ) );
-							exit;
+							if ( ! wb_recaptcha_restriction_recaptcha_by_ip() ) {
+								wp_die( esc_html( $recapcha_error_msg_captcha_blank ) );
+								exit;
+							}	
 
 						}
 					}

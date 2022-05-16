@@ -28,7 +28,6 @@ class LostpasswordPost {
 	 * Template Class.
 	 */
 	public function woocomm_validate_lostpassword_captcha( $validation_errors ) {
-
 		$re_capcha_version = get_option( 'wbc_recapcha_version' );
 		if ( '' === $re_capcha_version ) {
 			$re_capcha_version = 'v2';
@@ -99,7 +98,9 @@ class LostpasswordPost {
 
 							$validation_errors->add( 'g-recaptcha_error', __( 'reCaptcha is a required field.', 'buddypress-recaptcha' ) );
 						} else {
-							$validation_errors->add( 'g-recaptcha_error', $recapcha_error_msg_captcha_blank );
+							if ( ! wb_recaptcha_restriction_recaptcha_by_ip() ) {
+								$validation_errors->add( 'g-recaptcha_error', $recapcha_error_msg_captcha_blank );
+							}
 						}
 					}
 				} else {
