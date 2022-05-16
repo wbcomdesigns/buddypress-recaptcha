@@ -190,7 +190,7 @@ function wb_recaptcha_get_the_user_ip() {
 	return $ipaddress;
 
 }
-add_shortcode( 'display_ip', 'wb_recaptcha_get_the_user_ip' );
+
 
 function wb_recaptcha_restriction_recaptcha_by_ip() {
 	$get_ip       = wb_recaptcha_get_the_user_ip();

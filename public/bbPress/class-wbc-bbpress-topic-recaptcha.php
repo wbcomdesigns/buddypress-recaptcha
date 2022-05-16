@@ -456,16 +456,20 @@ frm.submit();
 		}
 		if ( 'v2' === $version ) {
 			$is_enabled = get_option( 'recapcha_enable_on_bbpress_topic' );
-			if ( 'yes' === $is_enabled && empty( $_POST['g-recaptcha-response'] ) ) {
-				bbp_add_error( 'anr_error', 'reCaptcha is required' );
+			if ( ! wb_recaptcha_restriction_recaptcha_by_ip() ) {
+				if ( 'yes' === $is_enabled && empty( $_POST['g-recaptcha-response'] ) ) {
+					bbp_add_error( 'anr_error', 'reCaptcha is required' );
+				}
 			}
 			if ( ! $this->wbr_bbpress_topic_verify_recaptcha() ) {
 				bbp_add_error( 'anr_error', $this->add_error_to_mgs() );
 			}
 		} else {
 			$is_enabled = get_option( 'wbc_recapcha_enable_on_bbpress_topic' );
-			if ( 'yes' === $is_enabled && empty( $_POST['wbc_recaptcha_bbpress_topic_token'] ) ) {
-				bbp_add_error( 'anr_error', 'reCaptcha is required' );
+			if ( ! wb_recaptcha_restriction_recaptcha_by_ip() ) {
+				if ( 'yes' === $is_enabled && empty( $_POST['wbc_recaptcha_bbpress_topic_token'] ) ) {
+					bbp_add_error( 'anr_error', 'reCaptcha is required' );
+				}
 			}
 			if ( ! $this->wbr_bbpress_topic_verify_recaptcha() ) {
 				bbp_add_error( 'anr_error', $this->add_error_to_mgs() );

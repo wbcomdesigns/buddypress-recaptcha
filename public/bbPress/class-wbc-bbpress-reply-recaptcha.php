@@ -26,6 +26,10 @@ class Recaptcha_bbPress_Reply {
 	 * Template Class.
 	 */
 	public function wbr_bbpress_reply_form_field_reply() {
+		$recpatcha_system_ip = get_option( 'wbc_recapcha_ip_to_skip_captcha' );
+		if ( $recpatcha_system_ip && wb_recaptcha_restriction_recaptcha_by_ip() ) {
+			return false;
+		}
 		$version = get_option( 'wbc_recapcha_version' );
 		if ( 'v2' === $version ) {
 			$is_enabled                       = get_option( 'recapcha_enable_on_bbpress_reply' );
@@ -452,8 +456,10 @@ frm.submit();
 		}
 		if ( 'v2' === $version ) {
 			$is_enabled = get_option( 'recapcha_enable_on_bbpress_reply' );
-			if ( 'yes' === $is_enabled && empty( $_POST['g-recaptcha-response'] ) ) {
-				bbp_add_error( 'anr_error', 'reCaptcha is required' );
+			if ( ! wb_recaptcha_restriction_recaptcha_by_ip() ) {
+				if ( 'yes' === $is_enabled && empty( $_POST['g-recaptcha-response'] ) ) {
+					bbp_add_error( 'anr_error', 'reCaptcha is required' );
+				}
 			}
 			if ( ! $this->wbr_bbpress_reply_recaptcha_verify() ) {
 				bbp_add_error( 'anr_error', $this->add_error_to_mgs() );
