@@ -105,15 +105,22 @@ var verifyCallback_wp_register = function(response) {
 
 if(response.length!==0){
 
-				<?php if ( 'yes' === trim( $disable_submit_btn ) ) : ?>
-jQuery('#wp-submit').removeAttr("title");
-jQuery('#wp-submit').attr("disabled", false);
-<?php endif; ?>
+	<?php if ( 'yes' === trim( $disable_submit_btn ) ) : ?>
+	jQuery('#wp-submit').removeAttr("title");
+	jQuery('#wp-submit').attr("disabled", false);
+	<?php endif; ?>
 
-if (typeof woo_wp_register_captcha_verified === "function") {
+	if ( jQuery('.bplock-login-form-container').length ) {
+		jQuery('#bplock-login-btn').removeClass('has-recaptcha-error');
+	}
+	if ( jQuery('.bplock-register-form-container').length ) {
+		jQuery('#bplock-register-btn').removeClass('has-recaptcha-error');
+	}
 
-woo_wp_register_captcha_verified(response);
-}
+	if (typeof woo_wp_register_captcha_verified === "function") {
+
+	woo_wp_register_captcha_verified(response);
+	}
 }
 
 
