@@ -217,6 +217,14 @@ class Recaptcha_For_BuddyPress {
 		add_action( 'buddyxpro_recaptcha_after_register_form', array( $regisrtation, 'woo_extra_wp_register_form' ) );
 		add_action( 'lostpassword_form', array( $lostpassword, 'woo_extra_wp_lostpassword_form' ) );
 
+		$is_wp_login_recaptcha_enabled = get_option( 'wbc_recapcha_enable_on_wplogin' );
+		if ( 'yes' === $is_wp_login_recaptcha_enabled ) {
+			add_action( 'bppcp_after_login_form', array( $regisrtation, 'woo_extra_wp_register_form' ) );
+			add_action( 'bppcp_after_register_form', array( $regisrtation, 'woo_extra_wp_register_form' ) );
+			add_action( 'bp_lock_after_login_form', array( $regisrtation, 'woo_extra_wp_register_form' ) );
+			add_action( 'bp_lock_after_register_form', array( $regisrtation, 'woo_extra_wp_register_form' ) );
+		}
+
 		// Buddypress.
 		$regisrtation_bp = new Regisrtationbp();
 		add_action( 'bp_before_registration_submit_buttons', array( $regisrtation_bp, 'woo_extra_bp_register_form' ), 36 );
