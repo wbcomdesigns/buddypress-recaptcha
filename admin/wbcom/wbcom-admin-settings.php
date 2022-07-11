@@ -29,6 +29,57 @@ if ( ! class_exists( 'Wbcom_Admin_Settings' ) ) {
 			add_shortcode( 'wbcom_admin_setting_header', array( $this, 'wbcom_admin_setting_header_html' ) );
 			add_action( 'admin_menu', array( $this, 'wbcom_admin_additional_pages' ), 999 );
 			add_action( 'admin_enqueue_scripts', array( $this, 'wbcom_enqueue_admin_scripts' ) );
+			add_action( 'wp_ajax_wbcom_addons_cards', array( $this, 'wbcom_addons_cards_links' ) );
+			add_action( 'in_admin_header', array( $this, 'wbcom_hide_all_admin_notices_from_setting_page' ) );
+		}
+
+		/**
+		 * Extensions cards callback function.
+		 *
+		 * @return void
+		 */
+		public function wbcom_addons_cards_links() {
+			$wbcom_setting_nonce = isset( $_POST['nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['nonce'] ) ) : '';
+			$action              = isset( $_POST['action'] ) ? sanitize_text_field( wp_unslash( $_POST['action'] ) ) : '';
+			if ( ! empty( $wbcom_setting_nonce ) && wp_verify_nonce( $wbcom_setting_nonce, 'wbcom_admin_setting_nonce' ) && 'wbcom_addons_cards' === $action ) {
+				$display_extention = isset( $_POST['display_extension'] ) ? sanitize_text_field( wp_unslash( $_POST['display_extension'] ) ) : '';
+				echo esc_html( $display_extention );
+				die;
+			}
+
+		}
+
+		/**
+		 * Hide all notices from the setting page.
+		 *
+		 * @return void
+		 */
+		public function wbcom_hide_all_admin_notices_from_setting_page() {
+			$wbcom_pages_array  = array( 'wbcomplugins', 'wbcom-plugins-page', 'wbcom-support-page', 'buddypress-recaptcha' );
+			$wbcom_setting_page = filter_input( INPUT_GET, 'page' ) ? filter_input( INPUT_GET, 'page' ) : '';
+
+			if ( in_array( $wbcom_setting_page, $wbcom_pages_array, true ) ) {
+				remove_all_actions( 'admin_notices' );
+				remove_all_actions( 'all_admin_notices' );
+			}
+
+		}
+
+		/**
+		 * Function for upgrade plugin.
+		 *
+		 * @since 2.0.0
+		 * @access public
+		 * @param string $plugin_slug Plugin's slug.
+		 */
+		public function upgrade_plugin( $plugin_slug ) {
+			include_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
+			wp_cache_flush();
+
+			$upgrader = new Plugin_Upgrader();
+			$upgraded = $upgrader->upgrade( $plugin_slug );
+
+			return $upgraded;
 		}
 
 		/**
@@ -52,242 +103,6 @@ if ( ! class_exists( 'Wbcom_Admin_Settings' ) ) {
 			return $slug;
 		}
 
-		/**
-		 * Function for upgrade plugin.
-		 *
-		 * @since 2.0.0
-		 * @access public
-		 * @param string $plugin_slug Plugin's slug.
-		 */
-		public function upgrade_plugin( $plugin_slug ) {
-			include_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
-			wp_cache_flush();
-
-			$upgrader = new Plugin_Upgrader();
-			$upgraded = $upgrader->upgrade( $plugin_slug );
-
-			return $upgraded;
-		}
-
-		/**
-		 * Function for get all wbcom free plugin's details.
-		 *
-		 * @since 2.0.0
-		 * @access public
-		 */
-		public function wbcom_all_free_plugins() {
-			$free_plugins = array(
-				'0'  => array(
-					'name'        => esc_html__( 'Custom Font Uploader', 'buddypress-recaptcha' ),
-					'slug'        => 'custom-font-uploader',
-					'description' => esc_html__( 'It also allows you to upload your own custom font to your site and use them using custom css.', 'buddypress-recaptcha' ),
-					'status'      => $this->wbcom_plugin_status( 'custom-font-uploader' ),
-					'wp_url'      => 'https://wordpress.org/plugins/custom-font-uploader/',
-					'icon'        => 'fas fa-upload',
-				),
-				'1'  => array(
-					'name'        => esc_html__( 'BuddyPress Activity Filter', 'buddypress-recaptcha' ),
-					'slug'        => 'bp-activity-filter',
-					'description' => esc_html__( 'Admin can set default and customised activities to be listed on front-end.', 'buddypress-recaptcha' ),
-					'status'      => $this->wbcom_plugin_status( 'bp-activity-filter' ),
-					'wp_url'      => 'https://wordpress.org/plugins/bp-activity-filter/',
-					'icon'        => 'fas fa-filter',
-				),
-				'2'  => array(
-					'name'        => esc_html__( 'BuddyPress Activity Social Share', 'buddypress-recaptcha' ),
-					'slug'        => 'bp-activity-social-share',
-					'description' => esc_html__( 'This plugin allows anyone easily share BuddyPress Activites on major social media (Facebook, Twitter, Google+, Linkedin ).', 'buddypress-recaptcha' ),
-					'status'      => $this->wbcom_plugin_status( 'bp-activity-social-share' ),
-					'wp_url'      => 'https://wordpress.org/plugins/bp-activity-social-share/',
-					'icon'        => 'fas fa-share-alt',
-				),
-				'3'  => array(
-					'name'        => esc_html__( 'BuddyPress Create Group Type', 'buddypress-recaptcha' ),
-					'slug'        => 'bp-create-group-type',
-					'description' => esc_html__( 'It will help to create group type for BuddyPress Groups.', 'buddypress-recaptcha' ),
-					'status'      => $this->wbcom_plugin_status( 'bp-create-group-type' ),
-					'wp_url'      => 'https://wordpress.org/plugins/bp-create-group-type/',
-					'icon'        => 'fas fa-sitemap',
-				),
-				'4'  => array(
-					'name'        => esc_html__( 'BuddyPress Member Reviews', 'buddypress-recaptcha' ),
-					'slug'        => 'bp-user-profile-reviews',
-					'description' => esc_html__( 'This plugin allows only site members to add reviews to the buddypress members on the site and even rate the member’s profile out of 5 points with multiple review criteria.', 'buddypress-recaptcha' ),
-					'status'      => $this->wbcom_plugin_status( 'bp-user-profile-reviews' ),
-					'wp_url'      => 'https://wordpress.org/plugins/bp-user-profile-reviews/',
-					'icon'        => 'fas fa-user',
-				),
-				'5'  => array(
-					'name'        => esc_html__( 'BuddyPress Group Reviews', 'buddypress-recaptcha' ),
-					'slug'        => 'review-buddypress-groups',
-					'description' => esc_html__( 'This plugin allows the BuddyPress Members to give reviews to the BuddyPress groups on the site. The review form allows the users to give text review, even rate the group on the basis of multiple criterias.', 'buddypress-recaptcha' ),
-					'status'      => $this->wbcom_plugin_status( 'review-buddypress-groups' ),
-					'wp_url'      => 'https://wordpress.org/plugins/review-buddypress-groups/',
-					'icon'        => 'fas fa-users',
-				),
-				'6'  => array(
-					'name'        => esc_html__( 'BuddyPress Favorite Notification', 'buddypress-recaptcha' ),
-					'slug'        => 'bp-favorite-notification',
-					'description' => esc_html__( 'BuddyPress Favorite Notification adds a notification for BuddyPress activity.', 'buddypress-recaptcha' ),
-					'status'      => $this->wbcom_plugin_status( 'bp-favorite-notification' ),
-					'wp_url'      => 'https://wordpress.org/plugins/bp-favorite-notification/',
-					'icon'        => 'fas fa-bell',
-				),
-				'7'  => array(
-					'name'        => esc_html__( 'Custom Email Options', 'buddypress-recaptcha' ),
-					'slug'        => 'custom-email-options',
-					'description' => esc_html__( 'Override default email options of Worpdress.', 'buddypress-recaptcha' ),
-					'status'      => $this->wbcom_plugin_status( 'custom-email-options' ),
-					'wp_url'      => 'https://wordpress.org/plugins/custom-email-options/',
-					'icon'        => 'fas fa-at',
-				),
-				'8'  => array(
-					'name'        => esc_html__( 'BuddyPress Checkins', 'buddypress-recaptcha' ),
-					'slug'        => 'bp-check-in',
-					'description' => esc_html__( 'This plugin allows BuddyPress members to share their location when they are posting activities, you can add places where you visited, nearby locations based on google places.', 'buddypress-recaptcha' ),
-					'status'      => $this->wbcom_plugin_status( 'bp-check-in' ),
-					'wp_url'      => 'https://wordpress.org/plugins/bp-check-in/',
-					'icon'        => 'fas fa-map-marker-alt',
-				),
-				'9'  => array(
-					'name'        => esc_html__( 'BuddyPress Job Manager', 'buddypress-recaptcha' ),
-					'slug'        => 'bp-job-manager',
-					'description' => esc_html__( 'Incorporates BuddyPress with the WP Job Manager plugin by creating specific tabs in employer’s and candidate’s profiles.', 'buddypress-recaptcha' ),
-					'status'      => $this->wbcom_plugin_status( 'bp-job-manager' ),
-					'wp_url'      => 'https://wordpress.org/plugins/bp-job-manager/',
-					'icon'        => 'fas fa-briefcase',
-				),
-				'10' => array(
-					'name'        => esc_html__( 'BuddyPress user ToDo List', 'buddypress-recaptcha' ),
-					'slug'        => 'bp-user-to-do-list',
-					'description' => esc_html__( 'This plugin allows you to create your personal task list with timestamp. You can mark them complete when you are done with them. It will also send reminder when you have any overdue task.', 'buddypress-recaptcha' ),
-					'status'      => $this->wbcom_plugin_status( 'bp-user-to-do-list' ),
-					'wp_url'      => 'https://wordpress.org/plugins/bp-user-to-do-list/',
-					'icon'        => 'fas fa-list-ol',
-				),
-				'11' => array(
-					'name'        => esc_html__( 'Shortcodes for BuddyPress', 'buddypress-recaptcha' ),
-					'slug'        => 'shortcodes-for-buddypress',
-					'description' => esc_html__( 'This plugin will add an extended feature to the big name “BuddyPress” that will generate Shortcode for Listing Activity Streams , Members and Groups on any post/page in website.', 'buddypress-recaptcha' ),
-					'status'      => $this->wbcom_plugin_status( 'shortcodes-for-buddypress' ),
-					'wp_url'      => 'https://wordpress.org/plugins/shortcodes-for-buddypress/',
-					'icon'        => 'fas fa-code',
-				),
-				'12' => array(
-					'name'        => esc_html__( 'Woo Open Graph', 'buddypress-recaptcha' ),
-					'slug'        => 'woo-open-graph',
-					'description' => esc_html__( 'This plugin will add an extended feature to the big name “WooCommerce” that will adds well executed and accurate Open Graph Meta Tags to your site with title,description and WooCommerce featured image.', 'buddypress-recaptcha' ),
-					'status'      => $this->wbcom_plugin_status( 'woo-open-graph' ),
-					'wp_url'      => 'https://wordpress.org/plugins/woo-open-graph/',
-					'icon'        => 'fas fa-chart-bar',
-				),
-				'13' => array(
-					'name'        => esc_html__( 'BuddyPress Lock', 'buddypress-recaptcha' ),
-					'slug'        => 'lock-my-bp',
-					'description' => esc_html__( 'This plugin allows the administrator to lock the certain parts of their site. It help to create private BuddyPress community by locking certain BuddyPress Components, WordPress Pages, Custom Post Types for public view without using any membership plugin.', 'buddypress-recaptcha' ),
-					'status'      => $this->wbcom_plugin_status( 'lock-my-bp' ),
-					'wp_url'      => 'https://wordpress.org/plugins/lock-my-bp/',
-					'icon'        => 'fas fa-lock',
-				),
-				'14' => array(
-					'name'        => esc_html__( 'Woo Audio Preview', 'buddypress-recaptcha' ),
-					'slug'        => 'woo-audio-preview',
-					'description' => esc_html__( 'This plugin Allows playing the audio files in sample mode to prevent unauthorized downloading of the audio files. It helps to display sample files at single product page.', 'buddypress-recaptcha' ),
-					'status'      => $this->wbcom_plugin_status( 'woo-audio-preview' ),
-					'wp_url'      => 'https://wordpress.org/plugins/woo-audio-preview/',
-					'icon'        => 'fas fa-volume-up',
-				),
-				'15' => array(
-					'name'        => esc_html__( 'WordPress System Log', 'buddypress-recaptcha' ),
-					'slug'        => 'wp-system-log',
-					'description' => esc_html__( 'This plugin helps administrators of the site see their environment on which the site is currently running that includes WordPress environment, tha database it requires, Server Environment and the plugins installed and activated on the site.', 'buddypress-recaptcha' ),
-					'status'      => $this->wbcom_plugin_status( 'wp-system-log' ),
-					'wp_url'      => 'https://wordpress.org/plugins/wp-system-log/',
-					'icon'        => 'fas fa-file-alt',
-				),
-				'16' => array(
-					'name'        => esc_html__( 'BP Post From Anywhere', 'buddypress-recaptcha' ),
-					'slug'        => 'bp-post-from-anywhere',
-					'description' => esc_html__( 'This plugin will generate shortcode and widgets for post updates section for activities so you can post update from anywhere, it might be sidebar, some page or any template file.', 'buddypress-recaptcha' ),
-					'status'      => $this->wbcom_plugin_status( 'bp-post-from-anywhere' ),
-					'wp_url'      => 'https://wordpress.org/plugins/bp-post-from-anywhere/',
-					'icon'        => 'fas fa-edit',
-				),
-				'17' => array(
-					'name'        => esc_html__( 'Woo Document Preview', 'buddypress-recaptcha' ),
-					'slug'        => 'woo-document-preview',
-					'description' => esc_html__( 'This will allow you to add document preview at single product page. Which helps to offer more better idea when you are selling ebooks, pdf or some documents.', 'buddypress-recaptcha' ),
-					'status'      => $this->wbcom_plugin_status( 'woo-document-preview' ),
-					'wp_url'      => 'https://wordpress.org/plugins/woo-document-preview/',
-					'icon'        => 'fas fa-file',
-				),
-				'18' => array(
-					'name'        => esc_html__( 'WordPress Media Category', 'buddypress-recaptcha' ),
-					'slug'        => 'media-category',
-					'description' => esc_html__( 'This plugin helps administrators of the site categorize their wordpress media.', 'buddypress-recaptcha' ),
-					'status'      => $this->wbcom_plugin_status( 'media-category' ),
-					'wp_url'      => 'https://wordpress.org/plugins/media-category/',
-					'icon'        => 'fas fa-images',
-				),
-				'19' => array(
-					'name'        => esc_html__( 'Woo Price Quotes', 'buddypress-recaptcha' ),
-					'slug'        => 'woo-price-quote-inquiry',
-					'description' => esc_html__( 'This plugin helps in quoting the products that admin wishes to hide its purchasing details.', 'buddypress-recaptcha' ),
-					'status'      => $this->wbcom_plugin_status( 'woo-price-quote-inquiry' ),
-					'wp_url'      => 'https://wordpress.org/plugins/woo-price-quote-inquiry/',
-					'icon'        => 'fas fa-dollar-sign',
-				),
-			);
-			return $free_plugins;
-		}
-
-		/**
-		 * Function for get all wbcom paid plugin's details.
-		 *
-		 * @since 2.0.0
-		 * @access public
-		 */
-		public function wbcom_all_paid_plugins() {
-			$paid_plugins = array(
-				'0' => array(
-					'name'         => esc_html__( 'BuddyPress Moderation Pro', 'buddypress-recaptcha' ),
-					'description'  => esc_html__( 'BuddyPress Community Moderation offers a solution for site owners to keep their communities straight. With community policing strategy, members of the community have an option for moderation sitewide by attaching flags to content created within the various components.', 'buddypress-recaptcha' ),
-					'download_url' => 'https://wbcomdesigns.com/downloads/buddypress-moderation-pro/',
-					'icon'         => 'fas fa-exclamation-triangle',
-				),
-				'1' => array(
-					'name'         => esc_html__( 'BuddyPress Polls', 'buddypress-recaptcha' ),
-					'description'  => esc_html__( 'Use BuddyPress Polls plugin to create polls inside the activity, let your user response to your polls. Members can create pools like activities, easily votes on them.', 'buddypress-recaptcha' ),
-					'download_url' => 'https://wbcomdesigns.com/downloads/buddypress-polls/',
-					'icon'         => 'fas fa-poll',
-				),
-				'2' => array(
-					'name'         => esc_html__( 'BuddyPress Resume Manager', 'buddypress-recaptcha' ),
-					'description'  => esc_html__( 'BuddyPress Resume Manager adds a separate BuddyPress Resume menu at a user’s BuddyPress Profile Page to display individual member resume. We have added predefined fields for the resumes and site admin and enable and disable them.', 'buddypress-recaptcha' ),
-					'download_url' => 'https://wbcomdesigns.com/downloads/buddypress-resume-manager/',
-					'icon'         => 'fas fa-file',
-				),
-				'3' => array(
-					'name'         => esc_html__( 'BuddyPress Profanity', 'buddypress-recaptcha' ),
-					'description'  => esc_html__( 'Use BuddyPress Profanity plugin to censor content in your community! Easily Censor all the unwanted words in activities, private messages contents by specifying a list of keywords to be filtered.', 'buddypress-recaptcha' ),
-					'download_url' => 'https://wbcomdesigns.com/downloads/buddypress-profanity/',
-					'icon'         => 'fab fa-galactic-republic',
-				),
-				'4' => array(
-					'name'         => esc_html__( 'BuddyPress Private Community Pro', 'buddypress-recaptcha' ),
-					'description'  => esc_html__( 'This plugin offers a lockdown for BuddyPress Component and will ask users to log in go further to check profile or any other protected details.', 'buddypress-recaptcha' ),
-					'download_url' => 'https://wbcomdesigns.com/downloads/buddypress-private-community-pro/',
-					'icon'         => 'fas fa-user-lock',
-				),
-				'5' => array(
-					'name'         => esc_html__( 'BuddyPress Profile Pro', 'buddypress-recaptcha' ),
-					'description'  => esc_html__( 'This plugin gives you the power to extend BuddyPress Profiles with repeater fields and groups. You can easily add multiple field groups and display them at member’s profile.', 'buddypress-recaptcha' ),
-					'download_url' => 'https://wbcomdesigns.com/downloads/buddypress-profile-pro/',
-					'icon'         => 'far fa-user-circle',
-				),
-			);
-			return $paid_plugins;
-		}
 
 		/**
 		 * Function for check plugin is installed or not.
@@ -379,6 +194,7 @@ if ( ! class_exists( 'Wbcom_Admin_Settings' ) ) {
 						'ajax_url'        => admin_url( 'admin-ajax.php' ),
 						'activate_text'   => esc_html__( 'Activate', 'buddypress-recaptcha' ),
 						'deactivate_text' => esc_html__( 'Deactivate', 'buddypress-recaptcha' ),
+						'nonce'           => wp_create_nonce( 'wbcom_admin_setting_nonce' ),
 					)
 				);
 				wp_enqueue_script( 'wbcom_admin_setting_js' );
@@ -490,12 +306,6 @@ if ( ! class_exists( 'Wbcom_Admin_Settings' ) ) {
 			}
 			?>
 			<div id="wb_admin_header" class="wp-clearfix">
-
-				<div id="wb_admin_logo">
-					<img src="<?php echo esc_url( RFB_PLUGIN_URL . 'admin/wbcom/assets/imgs/logowbcom.png' ); ?>">
-					<div class="wb_admin_right"></div>
-				</div>
-
 				<nav id="wb_admin_nav">
 					<ul>
 						<li class="wb_admin_nav_item <?php echo esc_attr( $settings_active ); ?>">
@@ -507,13 +317,7 @@ if ( ! class_exists( 'Wbcom_Admin_Settings' ) ) {
 						<li class="wb_admin_nav_item <?php echo esc_attr( $plugin_active ); ?>">
 							<a href="<?php echo esc_url( get_admin_url() . 'admin.php?page=wbcom-plugins-page' ); ?>" id="wb_admin_nav_trigger_extensions">
 								<i class="fas fa-th"></i>
-								<h4><?php esc_html_e( 'Our Plugins', 'buddypress-recaptcha' ); ?></h4>
-							</a>
-						</li>
-						<li class="wb_admin_nav_item <?php echo esc_attr( $theme_active ); ?>">
-							<a href="<?php echo esc_url( get_admin_url() . 'admin.php?page=wbcom-themes-page' ); ?>" id="wb_admin_nav_trigger_themes">
-								<i class="fas fa-magic"></i>
-								<h4><?php esc_html_e( 'Our Themes', 'buddypress-recaptcha' ); ?></h4>
+								<h4><?php esc_html_e( 'Themes & Extension', 'buddypress-recaptcha' ); ?></h4>
 							</a>
 						</li>
 						<li class="wb_admin_nav_item <?php echo esc_attr( $support_active ); ?>">
