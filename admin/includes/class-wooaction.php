@@ -95,7 +95,10 @@ if ( ! class_exists( 'Wooaction' ) ) :
 							echo wp_kses_post( wpautop( wptexturize( $value['desc'] ) ) );
 							echo '</div>';
 						}
-						echo '<table class="form-table">' . "\n\n";
+						echo '<div class="wbcom-admin-option-wrap wbcom-admin-option-wrap-view">
+						';
+						echo '<div class="form-table">' . "\n\n";
+
 						if ( ! empty( $value['id'] ) ) {
 							do_action( 'woocommerce_settings_' . sanitize_title( $value['id'] ) );
 						}
@@ -106,7 +109,9 @@ if ( ! class_exists( 'Wooaction' ) ) :
 						if ( ! empty( $value['id'] ) ) {
 							do_action( 'woocommerce_settings_' . sanitize_title( $value['id'] ) . '_end' );
 						}
-						echo '</table>';
+						echo '</div>';
+						echo '</div>';
+
 						if ( ! empty( $value['id'] ) ) {
 							do_action( 'woocommerce_settings_' . sanitize_title( $value['id'] ) . '_after' );
 						}
@@ -127,11 +132,13 @@ if ( ! class_exists( 'Wooaction' ) ) :
 					case 'tel':
 						$option_value = $value['value'];
 
-						?><tr valign="top" class="">
-							<th scope="row" class="titledesc">
+						?><div class="wbcom-settings-section-wrap">
+						<div valign="top" class="">
+							<div scope="row" class="titledesc">
 								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?><?php echo wp_kses_post( $tooltip_html ); ?></label>
-							</th>
-							<td class="forminp forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?>">
+						   </div>
+							<div class="wbcom-settings-section-options">
+							<div class="forminp forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?>">
 								<input
 									name="<?php echo esc_attr( $value['id'] ); ?>"
 									id="<?php echo esc_attr( $value['id'] ); ?>"
@@ -142,8 +149,12 @@ if ( ! class_exists( 'Wooaction' ) ) :
 									placeholder="<?php echo esc_attr( $value['placeholder'] ); ?>"
 									<?php echo esc_attr( implode( ' ', $custom_attributes ) ); ?>
 									/><?php echo esc_html( $value['suffix'] ); ?><?php echo wp_kses_post( $description ); ?>
-							</td>
-						</tr>
+							</div>
+							</div>
+
+					</div>
+					</div>
+
 						<?php
 						break;
 
@@ -152,11 +163,13 @@ if ( ! class_exists( 'Wooaction' ) ) :
 						$option_value = $value['value'];
 
 						?>
-						<tr valign="top">
-							<th scope="row" class="titledesc">
+						<div class="wbcom-settings-section-wrap">
+						<div valign="top">
+							<div scope="row" class="titledesc">
 								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo wp_kses_post( $tooltip_html ); ?></label>
-							</th>
-							<td class="forminp forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?>">&lrm;
+					</div>
+					<div class="wbcom-settings-section-options">
+							<div class="forminp forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?>">&lrm;
 								<span class="colorpickpreview" style="background: <?php echo esc_attr( $option_value ); ?>">&nbsp;</span>
 								<input
 									name="<?php echo esc_attr( $value['id'] ); ?>"
@@ -170,8 +183,11 @@ if ( ! class_exists( 'Wooaction' ) ) :
 									<?php echo esc_attr( implode( ' ', $custom_attributes ) ); ?>
 									/>&lrm; <?php echo wp_kses_post( $description ); ?>
 									<div id="colorPickerDiv_<?php echo esc_attr( $value['id'] ); ?>" class="colorpickdiv" style="z-index: 100;background:#eee;border:1px solid #ccc;position:absolute;display:none;"></div>
-							</td>
-						</tr>
+							</div>
+					</div>
+					</div>
+					</div>
+
 						<?php
 						break;
 
@@ -180,11 +196,14 @@ if ( ! class_exists( 'Wooaction' ) ) :
 						$option_value = $value['value'];
 
 						?>
-						<tr valign="top">
-							<th scope="row" class="titledesc">
+						<div class="wbcom-settings-section-wrap">
+						<div valign="top">
+						<div class="wbcom-settings-section-options">
+							<div scope="row" class="titledesc">
 								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo wp_kses_post( $tooltip_html ); ?></label>
-							</th>
-							<td class="forminp forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?>">
+							</div>
+						   </div>
+							<div class="forminp forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?>">
 								<?php echo wp_kses_post( $description ); ?>
 
 								<textarea
@@ -195,8 +214,9 @@ if ( ! class_exists( 'Wooaction' ) ) :
 									placeholder="<?php echo esc_attr( $value['placeholder'] ); ?>"
 									<?php echo esc_attr( implode( ' ', $custom_attributes ) ); ?>
 									><?php echo esc_textarea( $option_value ); ?></textarea>
-							</td>
-						</tr>
+							</div>
+					</div>
+					</div>
 						<?php
 						break;
 
@@ -206,11 +226,14 @@ if ( ! class_exists( 'Wooaction' ) ) :
 						$option_value = $value['value'];
 
 						?>
-						<tr valign="top">
-							<th scope="row" class="titledesc">
+						<div class="wbcom-settings-section-wrap">
+						<div valign="top">
+						<div class="wbcom-settings-section-options">
+							<div scope="row" class="titledesc">
 								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo wp_kses_post( $tooltip_html ); ?></label>
-							</th>
-							<td class="forminp forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?>">
+					</div>
+						   </div>
+							<div class="forminp forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?>">
 								<select
 									name="<?php echo esc_attr( $value['id'] ); ?><?php echo ( 'multiselect' === $value['type'] ) ? '[]' : ''; ?>"
 									id="<?php echo esc_attr( $value['id'] ); ?>"
@@ -237,8 +260,10 @@ if ( ! class_exists( 'Wooaction' ) ) :
 									}
 									?>
 								</select> <?php echo wp_kses_post( $description ); ?>
-							</td>
-						</tr>
+							</div>
+								</div>
+								</div>
+
 						<?php
 						break;
 
@@ -247,11 +272,15 @@ if ( ! class_exists( 'Wooaction' ) ) :
 						$option_value = $value['value'];
 
 						?>
-						<tr valign="top">
-							<th scope="row" class="titledesc">
+						<div class="wbcom-settings-section-wrap">
+						<div valign="top">
+						<div class="wbcom-settings-section-options">
+							<div scope="row" class="titledesc">
 								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo wp_kses_post( $tooltip_html ); ?></label>
-							</th>
-							<td class="forminp forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?>">
+							</div>
+							</div>
+
+							<div class="forminp forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?>">
 								<fieldset>
 									<?php echo wp_kses_post( $description ); ?>
 									<ul>
@@ -274,8 +303,10 @@ if ( ! class_exists( 'Wooaction' ) ) :
 									?>
 									</ul>
 								</fieldset>
-							</td>
-						</tr>
+							</div>
+								</div>
+								</div>
+
 						<?php
 						break;
 
@@ -303,9 +334,10 @@ if ( ! class_exists( 'Wooaction' ) ) :
 						if ( ! isset( $value['checkboxgroup'] ) || 'start' === $value['checkboxgroup'] ) {
 
 							?>
-								<tr valign="top" class="<?php echo esc_attr( implode( ' ', $visibility_class ) ); ?>">
-									<th scope="row" class="titledesc"><?php echo esc_html( $value['title'] ); ?></th>
-									<td class="forminp forminp-checkbox">
+							 <div class="wbcom-settings-section-wrap">
+								<div valign="top" class="<?php echo esc_attr( implode( ' ', $visibility_class ) ); ?>">
+									<div scope="row" class="titledesc"><?php echo esc_html( $value['title'] ); ?></div>
+									<div class="forminp forminp-checkbox">
 										<fieldset>
 							<?php
 						} else {
@@ -337,8 +369,10 @@ if ( ! class_exists( 'Wooaction' ) ) :
 						if ( ! isset( $value['checkboxgroup'] ) || 'end' === $value['checkboxgroup'] ) {
 							?>
 										</fieldset>
-									</td>
-								</tr>
+									</div>
+						</div>
+						</div>
+
 							<?php
 						} else {
 							?>
@@ -363,18 +397,23 @@ if ( ! class_exists( 'Wooaction' ) ) :
 						}
 
 						?>
-						<tr valign="top">
-							<th scope="row" class="titledesc">
+						<div class="wbcom-settings-section-wrap">
+						<div valign="top">
+							<div scope="row" class="titledesc">
+							<div class="wbcom-settings-section-options">
 							<label><?php echo esc_html( $value['title'] ); ?> <?php echo esc_html( $tooltip_html . $disabled_message ); ?></label>
-						</th>
-							<td class="forminp image_width_settings">
+					</div>
+					</div>
+
+							<div class="forminp image_width_settings">
 
 								<input name="<?php echo esc_attr( $value['id'] ); ?>[width]" <?php echo esc_attr( $disabled_attr ); ?> id="<?php echo esc_attr( $value['id'] ); ?>-width" type="text" size="3" value="<?php echo esc_attr( $width ); ?>" /> &times; <input name="<?php echo esc_attr( $value['id'] ); ?>[height]" <?php echo esc_html( $disabled_attr ); ?> id="<?php echo esc_attr( $value['id'] ); ?>-height" type="text" size="3" value="<?php echo esc_attr( $height ); ?>" />
 
 								<label><input name="<?php echo esc_attr( $value['id'] ); ?>[crop]" <?php echo esc_attr( $disabled_attr ); ?> id="<?php echo esc_attr( $value['id'] ); ?>-crop" type="checkbox" value="1" <?php checked( 1, $crop ); ?> /> <?php esc_html_e( 'Hard crop?', 'buddypress-recaptcha' ); ?></label>
 
-								</td>
-						</tr>
+								</div>
+					</div>
+					</div>
 						<?php
 						break;
 
@@ -397,14 +436,18 @@ if ( ! class_exists( 'Wooaction' ) ) :
 						}
 
 						?>
-						<tr valign="top" class="single_select_page">
-							<th scope="row" class="titledesc">
+						<div class="wbcom-settings-section-wrap">
+						<div valign="top" class="single_select_page">
+						<div class="wbcom-settings-section-options">
+							<div scope="row" class="titledesc">
 								<label><?php echo esc_html( $value['title'] ); ?> <?php echo wp_kses_post( $tooltip_html ); ?></label>
-							</th>
-							<td class="forminp">
+						</div>
+						   </div>
+							<div class="forminp">
 								<?php echo wp_kses_post( str_replace( ' id=', " data-placeholder='" . esc_attr__( 'Select a page&hellip;', 'buddypress-recaptcha' ) . "' style='" . $value['css'] . "' class='" . $value['class'] . "' id=", wp_dropdown_pages( $args ) ) ); ?> <?php echo wp_kses_post( $description ); ?>
-							</td>
-						</tr>
+							</div>
+					</div>
+					</div>
 						<?php
 						break;
 
@@ -422,11 +465,14 @@ if ( ! class_exists( 'Wooaction' ) ) :
 							);
 						}
 						?>
-						<tr valign="top" class="single_select_page">
-							<th scope="row" class="titledesc">
+						<div class="wbcom-settings-section-wrap">
+						<div valign="top" class="single_select_page">
+							<div scope="row" class="titledesc">
+							<div class="wbcom-settings-section-options">
 								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo wp_kses_post( $tooltip_html ); ?></label>
-							</th>
-							<td class="forminp forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?>">
+						 </div>
+					</div>
+							<div class="forminp forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?>">
 								<select
 									name="<?php echo esc_attr( $value['id'] ); ?>"
 									id="<?php echo esc_attr( $value['id'] ); ?>"
@@ -444,8 +490,10 @@ if ( ! class_exists( 'Wooaction' ) ) :
 										</option>
 									<?php } ?>
 								</select> <?php echo wp_kses_post( $description ); ?>
-							</td>
-						</tr>
+							</div>
+									</div>
+									</div>
+
 						<?php
 						break;
 
@@ -462,15 +510,19 @@ if ( ! class_exists( 'Wooaction' ) ) :
 							$state   = '*';
 						}
 						?>
-						<tr valign="top">
-							<th scope="row" class="titledesc">
+						<div class="wbcom-settings-section-wrap">
+						<div valign="top">
+							<div scope="row" class="titledesc">
+							<div class="wbcom-settings-section-options">
 								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo wp_kses_post( $tooltip_html ); ?></label>
-							</th>
-							<td class="forminp"><select name="<?php echo esc_attr( $value['id'] ); ?>" style="<?php echo esc_attr( $value['css'] ); ?>" data-placeholder="<?php esc_attr_e( 'Choose a country / region&hellip;', 'buddypress-recaptcha' ); ?>" aria-label="<?php esc_attr_e( 'Country / Region', 'buddypress-recaptcha' ); ?>" class="wc-enhanced-select">
+					</div>
+					</div>
+							<div class="forminp"><select name="<?php echo esc_attr( $value['id'] ); ?>" style="<?php echo esc_attr( $value['css'] ); ?>" data-placeholder="<?php esc_attr_e( 'Choose a country / region&hellip;', 'buddypress-recaptcha' ); ?>" aria-label="<?php esc_attr_e( 'Country / Region', 'buddypress-recaptcha' ); ?>" class="wc-enhanced-select">
 								<?php WC()->countries->country_dropdown_options( $country, $state ); ?>
 							</select> <?php echo wp_kses_post( $description ); ?>
-							</td>
-						</tr>
+							</div>
+					</div>
+					</div>
 						<?php
 						break;
 
@@ -486,11 +538,14 @@ if ( ! class_exists( 'Wooaction' ) ) :
 
 						asort( $countries );
 						?>
-						<tr valign="top">
-							<th scope="row" class="titledesc">
+						<div class="wbcom-settings-section-wrap">
+						<div valign="top">
+							<div scope="row" class="titledesc">
+							<div class="wbcom-settings-section-options">
 								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo wp_kses_post( $tooltip_html ); ?></label>
-							</th>
-							<td class="forminp">
+							  </div>
+							 </div>
+							<div class="forminp">
 								<select multiple="multiple" name="<?php echo esc_attr( $value['id'] ); ?>[]" style="width:350px" data-placeholder="<?php esc_attr_e( 'Choose countries / regions&hellip;', 'buddypress-recaptcha' ); ?>" aria-label="<?php esc_attr_e( 'Country / Region', 'buddypress-recaptcha' ); ?>" class="wc-enhanced-select">
 									<?php
 									if ( ! empty( $countries ) ) {
@@ -500,8 +555,9 @@ if ( ! class_exists( 'Wooaction' ) ) :
 									}
 									?>
 								</select> <?php echo ( $description ) ? wp_kses_post( $description ) : ''; ?> <br /><a class="select_all button" href="#"><?php esc_html_e( 'Select all', 'buddypress-recaptcha' ); ?></a> <a class="select_none button" href="#"><?php esc_html_e( 'Select none', 'buddypress-recaptcha' ); ?></a>
-							</td>
-						</tr>
+							</div>
+								</div>
+								</div>
 						<?php
 						break;
 
@@ -515,11 +571,14 @@ if ( ! class_exists( 'Wooaction' ) ) :
 						);
 						$option_value = wc_parse_relative_date_option( $value['value'] );
 						?>
-						<tr valign="top">
-							<th scope="row" class="titledesc">
+						<div class="wbcom-settings-section-wrap">
+						<div valign="top">
+							<div scope="row" class="titledesc">
+							<div class="wbcom-settings-section-options">
 								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo wp_kses_post( $tooltip_html ); ?></label>
-							</th>
-							<td class="forminp">
+							</div>
+							 </div>
+							<div class="forminp">
 							<input
 									name="<?php echo esc_attr( $value['id'] ); ?>[number]"
 									id="<?php echo esc_attr( $value['id'] ); ?>"
@@ -539,8 +598,9 @@ if ( ! class_exists( 'Wooaction' ) ) :
 									}
 									?>
 								</select> <?php echo ( $description ) ? wp_kses_post( $description ) : ''; ?>
-							</td>
-						</tr>
+							</div>
+								</div>
+								</div>
 						<?php
 						break;
 
