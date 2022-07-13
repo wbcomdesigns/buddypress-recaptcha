@@ -195,48 +195,35 @@ class Recaptcha_For_BuddyPress_Admin {
 	 */
 	public function rfw_add_admin_register_setting() {
 		$this->plugin_settings_tabs['rfw-welcome']['name'] = esc_html__( 'Welcome', 'buddypress-recaptcha' );
-		$this->plugin_settings_tabs['rfw-welcome']['icon'] = 'dashicons-admin-home';
 
 		$this->plugin_settings_tabs['rfw-general']['name'] = esc_html__( 'General', 'buddypress-recaptcha' );
-		$this->plugin_settings_tabs['rfw-general']['icon'] = 'dashicons-admin-generic';
 
 		$this->plugin_settings_tabs['wp_login']['name'] = esc_html__( 'WP Login', 'buddypress-recaptcha' );
-		$this->plugin_settings_tabs['wp_login']['icon'] = 'dashicons-wordpress';
 
 		$this->plugin_settings_tabs['wp_register']['name'] = esc_html__( 'WP Registration', 'buddypress-recaptcha' );
-		$this->plugin_settings_tabs['wp_register']['icon'] = 'dashicons-buddicons-buddypress-logo';
 
 		$this->plugin_settings_tabs['wp_lostpassword']['name'] = esc_html__( 'WP Lost Password', 'buddypress-recaptcha' );
-		$this->plugin_settings_tabs['wp_lostpassword']['icon'] = 'dashicons-visibility';
 
 		$this->plugin_settings_tabs['woo_comments']['name'] = esc_html__( 'Post Comment Form', 'buddypress-recaptcha' );
-		$this->plugin_settings_tabs['woo_comments']['icon'] = 'dashicons-twitch';
 
 		if ( class_exists( 'BuddyPress' ) ) {
 			$this->plugin_settings_tabs['bp_register']['name'] = esc_html__( 'BP Registration', 'buddypress-recaptcha' );
-			$this->plugin_settings_tabs['bp_register']['icon'] = 'dashicons-buddicons-buddypress-logo';
 		}
 
 		if ( class_exists( 'bbPress' ) ) {
 			$this->plugin_settings_tabs['bb_press_topic']['name'] = esc_html__( 'bbPress Topic', 'buddypress-recaptcha' );
-			$this->plugin_settings_tabs['bb_press_topic']['icon'] = 'dashicons-editor-paste-text';
 
 			$this->plugin_settings_tabs['bb_press_reply']['name'] = esc_html__( 'bbPress Reply', 'buddypress-recaptcha' );
-			$this->plugin_settings_tabs['bb_press_reply']['icon'] = 'dashicons-editor-paste-text';
 		}
 
 		if ( class_exists( 'WooCommerce' ) ) {
 			$this->plugin_settings_tabs['signup']['name'] = esc_html__( 'Woo Registration', 'buddypress-recaptcha' );
-			$this->plugin_settings_tabs['signup']['icon'] = 'dashicons-buddicons-buddypress-logo';
 
 			$this->plugin_settings_tabs['login']['name'] = esc_html__( 'Woo Login', 'buddypress-recaptcha' );
-			$this->plugin_settings_tabs['login']['icon'] = 'dashicons-wordpress';
 
 			$this->plugin_settings_tabs['forgotpassword']['name'] = esc_html__( 'Woo Lost Password', 'buddypress-recaptcha' );
-			$this->plugin_settings_tabs['forgotpassword']['icon'] = 'dashicons-visibility';
 
 			$this->plugin_settings_tabs['guestcheckout']['name'] = esc_html__( 'Woo Checkout', 'buddypress-recaptcha' );
-			$this->plugin_settings_tabs['guestcheckout']['icon'] = 'dashicons-cart';
 
 		}
 
@@ -252,7 +239,7 @@ class Recaptcha_For_BuddyPress_Admin {
 		foreach ( $this->plugin_settings_tabs as $edd_tab => $tab_name ) {
 			$class     = ( $edd_tab === $current ) ? 'nav-tab-active' : '';
 			$page      = 'buddypress-recaptcha';
-			$tab_html .= '<li><a id="' . $edd_tab . '" class="nav-tab ' . $class . '" href="admin.php?page=' . $page . '&tab=' . $edd_tab . '"><span class="dashicons ' . $tab_name['icon'] . '"></span>&nbsp;' . $tab_name['name'] . '</a></li>';
+			$tab_html .= '<li><a id="' . $edd_tab . '" class="nav-tab ' . $class . '" href="admin.php?page=' . $page . '&tab=' . $edd_tab . '">' . $tab_name['name'] . '</a></li>';
 		}
 		$tab_html .= '</div></ul></div>';
 		echo wp_kses_post( $tab_html );

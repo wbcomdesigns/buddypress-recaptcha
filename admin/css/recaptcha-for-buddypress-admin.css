@@ -8,6 +8,37 @@
 /*--------------------------------------------------------------
 # Admin Tab Section 
 --------------------------------------------------------------*/
+.nav-tab-wrapper ul li a#rfw-general.nav-tab:before {
+    content: "\f111";
+}
+.nav-tab-wrapper ul li a#wp_login.nav-tab:before {
+    content: "\f120";
+}
+.nav-tab-wrapper ul li a#wp_register.nav-tab:before {
+    content: "\f448";
+}
+.nav-tab-wrapper ul li a#wp_lostpassword.nav-tab:before {
+    content: "\f177";
+}
+.nav-tab-wrapper ul li a#woo_comments.nav-tab:before {
+    content: "\f199";
+}
+.nav-tab-wrapper ul li a#bp_register.nav-tab:before {
+    content: "\f448";
+}
+.nav-tab-wrapper ul li a#signup.nav-tab:before {
+    content: "\f448";
+}
+.nav-tab-wrapper ul li a#login.nav-tab:before {
+    content: "\f120";
+}
+.nav-tab-wrapper ul li a#forgotpassword.nav-tab:before {
+   content: "\f177";
+}
+.nav-tab-wrapper ul li a#guestcheckout.nav-tab:before {
+   content: "\f174";
+}
+
 
 .rfw-tabs-section .nav-tab-wrapper ul li a.nav-tab span.dashicons {
   display: inline-block;
@@ -32,8 +63,20 @@
 /*--------------------------------------------------------------
 # Admin Tab Content 
 --------------------------------------------------------------*/
-.rfw-tab-content input[type="text"] {
-  width: 100%;
+#wb-recaptcha h2 {
+    margin-top: 0;
+    color: #2A32EF;
+    font-size: 20px;
+}
+.rfw-tab-content input[type="text"],
+.wbcom-settings-section-wrap select,
+.rfw-tab-content .wbcom-settings-section-options [type="number"] {
+    width: 100%;
+    border-radius: 7px;
+    box-shadow: none;
+    height: 40px;
+    border-color: #e0e0e0;
+    background-color: #fafafa;
 }
 
 .rfw-tab-content .woocommerce-save-button {

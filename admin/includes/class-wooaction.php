@@ -134,8 +134,9 @@ if ( ! class_exists( 'Wooaction' ) ) :
 
 						?><div class="wbcom-settings-section-wrap">
 						<div valign="top" class="">
-							<div scope="row" class="titledesc">
+							<div scope="row" class="wbcom-settings-section-options-heading titledesc">
 								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?><?php echo wp_kses_post( $tooltip_html ); ?></label>
+								<?php echo wp_kses_post( $description ); ?>
 						   </div>
 							<div class="wbcom-settings-section-options">
 							<div class="forminp forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?>">
@@ -148,7 +149,7 @@ if ( ! class_exists( 'Wooaction' ) ) :
 									class="<?php echo esc_attr( $value['class'] ); ?>"
 									placeholder="<?php echo esc_attr( $value['placeholder'] ); ?>"
 									<?php echo esc_attr( implode( ' ', $custom_attributes ) ); ?>
-									/><?php echo esc_html( $value['suffix'] ); ?><?php echo wp_kses_post( $description ); ?>
+									/><?php echo esc_html( $value['suffix'] ); ?>
 							</div>
 							</div>
 
@@ -165,8 +166,9 @@ if ( ! class_exists( 'Wooaction' ) ) :
 						?>
 						<div class="wbcom-settings-section-wrap">
 						<div valign="top">
-							<div scope="row" class="titledesc">
+							<div scope="row" class="wbcom-settings-section-options-heading titledesc">
 								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo wp_kses_post( $tooltip_html ); ?></label>
+								<?php echo wp_kses_post( $description ); ?>
 					</div>
 					<div class="wbcom-settings-section-options">
 							<div class="forminp forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?>">&lrm;
@@ -181,7 +183,7 @@ if ( ! class_exists( 'Wooaction' ) ) :
 									class="<?php echo esc_attr( $value['class'] ); ?>colorpick"
 									placeholder="<?php echo esc_attr( $value['placeholder'] ); ?>"
 									<?php echo esc_attr( implode( ' ', $custom_attributes ) ); ?>
-									/>&lrm; <?php echo wp_kses_post( $description ); ?>
+									/>&lrm; 
 									<div id="colorPickerDiv_<?php echo esc_attr( $value['id'] ); ?>" class="colorpickdiv" style="z-index: 100;background:#eee;border:1px solid #ccc;position:absolute;display:none;"></div>
 							</div>
 					</div>
@@ -199,12 +201,12 @@ if ( ! class_exists( 'Wooaction' ) ) :
 						<div class="wbcom-settings-section-wrap">
 						<div valign="top">
 						<div class="wbcom-settings-section-options">
-							<div scope="row" class="titledesc">
+							<div scope="row" class="wbcom-settings-section-options-heading titledesc">
 								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo wp_kses_post( $tooltip_html ); ?></label>
+								<?php echo wp_kses_post( $description ); ?>
 							</div>
 						   </div>
 							<div class="forminp forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?>">
-								<?php echo wp_kses_post( $description ); ?>
 
 								<textarea
 									name="<?php echo esc_attr( $value['id'] ); ?>"
@@ -229,8 +231,9 @@ if ( ! class_exists( 'Wooaction' ) ) :
 						<div class="wbcom-settings-section-wrap">
 						<div valign="top">
 						<div class="wbcom-settings-section-options">
-							<div scope="row" class="titledesc">
+							<div scope="row" class="wbcom-settings-section-options-heading titledesc">
 								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo wp_kses_post( $tooltip_html ); ?></label>
+								 <?php echo wp_kses_post( $description ); ?>
 					</div>
 						   </div>
 							<div class="forminp forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?>">
@@ -259,7 +262,7 @@ if ( ! class_exists( 'Wooaction' ) ) :
 										<?php
 									}
 									?>
-								</select> <?php echo wp_kses_post( $description ); ?>
+								</select>
 							</div>
 								</div>
 								</div>
@@ -275,7 +278,7 @@ if ( ! class_exists( 'Wooaction' ) ) :
 						<div class="wbcom-settings-section-wrap">
 						<div valign="top">
 						<div class="wbcom-settings-section-options">
-							<div scope="row" class="titledesc">
+							<div scope="row" class="wbcom-settings-section-options-heading titledesc">
 								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo wp_kses_post( $tooltip_html ); ?></label>
 							</div>
 							</div>
@@ -336,7 +339,10 @@ if ( ! class_exists( 'Wooaction' ) ) :
 							?>
 							 <div class="wbcom-settings-section-wrap">
 								<div valign="top" class="<?php echo esc_attr( implode( ' ', $visibility_class ) ); ?>">
-									<div scope="row" class="titledesc"><?php echo esc_html( $value['title'] ); ?></div>
+									<div scope="row" class="wbcom-settings-section-options-heading titledesc">
+										<label><?php echo esc_html( $value['title'] ); ?></label>
+									<p class="description"><?php echo wp_kses_post( $description ); ?></p>
+								</div>
 									<div class="forminp forminp-checkbox">
 										<fieldset>
 							<?php
@@ -362,7 +368,7 @@ if ( ! class_exists( 'Wooaction' ) ) :
 									value="1"
 									<?php checked( $option_value, 'yes' ); ?>
 									<?php echo esc_attr( implode( ' ', $custom_attributes ) ); ?>
-																		/> <p class="description"><?php echo wp_kses_post( $description ); ?></p>
+																		/> 
 							</label> <?php echo wp_kses_post( $tooltip_html ); ?>
 						<?php
 
@@ -399,7 +405,7 @@ if ( ! class_exists( 'Wooaction' ) ) :
 						?>
 						<div class="wbcom-settings-section-wrap">
 						<div valign="top">
-							<div scope="row" class="titledesc">
+							<div scope="row" class="wbcom-settings-section-options-heading titledesc">
 							<div class="wbcom-settings-section-options">
 							<label><?php echo esc_html( $value['title'] ); ?> <?php echo esc_html( $tooltip_html . $disabled_message ); ?></label>
 					</div>
@@ -439,12 +445,13 @@ if ( ! class_exists( 'Wooaction' ) ) :
 						<div class="wbcom-settings-section-wrap">
 						<div valign="top" class="single_select_page">
 						<div class="wbcom-settings-section-options">
-							<div scope="row" class="titledesc">
+							<div scope="row" class="wbcom-settings-section-options-heading titledesc">
 								<label><?php echo esc_html( $value['title'] ); ?> <?php echo wp_kses_post( $tooltip_html ); ?></label>
+								<?php echo wp_kses_post( $description ); ?>
 						</div>
 						   </div>
 							<div class="forminp">
-								<?php echo wp_kses_post( str_replace( ' id=', " data-placeholder='" . esc_attr__( 'Select a page&hellip;', 'buddypress-recaptcha' ) . "' style='" . $value['css'] . "' class='" . $value['class'] . "' id=", wp_dropdown_pages( $args ) ) ); ?> <?php echo wp_kses_post( $description ); ?>
+								<?php echo wp_kses_post( str_replace( ' id=', " data-placeholder='" . esc_attr__( 'Select a page&hellip;', 'buddypress-recaptcha' ) . "' style='" . $value['css'] . "' class='" . $value['class'] . "' id=", wp_dropdown_pages( $args ) ) ); ?> 
 							</div>
 					</div>
 					</div>
@@ -467,9 +474,10 @@ if ( ! class_exists( 'Wooaction' ) ) :
 						?>
 						<div class="wbcom-settings-section-wrap">
 						<div valign="top" class="single_select_page">
-							<div scope="row" class="titledesc">
-							<div class="wbcom-settings-section-options">
+							<div scope="row" class="wbcom-settings-section-options-heading titledesc">
+							<div class="wbcom-settings-section-options-heading">
 								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo wp_kses_post( $tooltip_html ); ?></label>
+								 <?php echo wp_kses_post( $description ); ?>
 						 </div>
 					</div>
 							<div class="forminp forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?>">
@@ -489,7 +497,7 @@ if ( ! class_exists( 'Wooaction' ) ) :
 										<?php echo esc_html( wp_strip_all_tags( $option_display_name ) ); ?>
 										</option>
 									<?php } ?>
-								</select> <?php echo wp_kses_post( $description ); ?>
+								</select>
 							</div>
 									</div>
 									</div>
@@ -512,14 +520,15 @@ if ( ! class_exists( 'Wooaction' ) ) :
 						?>
 						<div class="wbcom-settings-section-wrap">
 						<div valign="top">
-							<div scope="row" class="titledesc">
+							<div scope="row" class="wbcom-settings-section-options-heading">
 							<div class="wbcom-settings-section-options">
 								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo wp_kses_post( $tooltip_html ); ?></label>
+								<?php echo wp_kses_post( $description ); ?>
 					</div>
 					</div>
 							<div class="forminp"><select name="<?php echo esc_attr( $value['id'] ); ?>" style="<?php echo esc_attr( $value['css'] ); ?>" data-placeholder="<?php esc_attr_e( 'Choose a country / region&hellip;', 'buddypress-recaptcha' ); ?>" aria-label="<?php esc_attr_e( 'Country / Region', 'buddypress-recaptcha' ); ?>" class="wc-enhanced-select">
 								<?php WC()->countries->country_dropdown_options( $country, $state ); ?>
-							</select> <?php echo wp_kses_post( $description ); ?>
+							</select> 
 							</div>
 					</div>
 					</div>
@@ -540,7 +549,7 @@ if ( ! class_exists( 'Wooaction' ) ) :
 						?>
 						<div class="wbcom-settings-section-wrap">
 						<div valign="top">
-							<div scope="row" class="titledesc">
+							<div scope="row" class="wbcom-settings-section-options-heading titledesc">
 							<div class="wbcom-settings-section-options">
 								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo wp_kses_post( $tooltip_html ); ?></label>
 							  </div>
@@ -573,9 +582,10 @@ if ( ! class_exists( 'Wooaction' ) ) :
 						?>
 						<div class="wbcom-settings-section-wrap">
 						<div valign="top">
-							<div scope="row" class="titledesc">
+							<div scope="row" class="wbcom-settings-section-options-heading titledesc">
 							<div class="wbcom-settings-section-options">
 								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo wp_kses_post( $tooltip_html ); ?></label>
+								<?php echo ( $description ) ? wp_kses_post( $description ) : ''; ?>
 							</div>
 							 </div>
 							<div class="forminp">
@@ -597,7 +607,7 @@ if ( ! class_exists( 'Wooaction' ) ) :
 										echo '<option value="' . esc_attr( $value ) . '"' . selected( $option_value['unit'], $value, false ) . '>' . esc_html( $label ) . '</option>';
 									}
 									?>
-								</select> <?php echo ( $description ) ? wp_kses_post( $description ) : ''; ?>
+								</select> 
 							</div>
 								</div>
 								</div>
