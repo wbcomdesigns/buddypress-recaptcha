@@ -292,9 +292,6 @@ if ( ! class_exists( 'Wbcom_Admin_Settings' ) ) {
 				case 'wbcom-plugins-page':
 					$plugin_active = 'is_active';
 					break;
-				case 'wbcom-themes-page':
-					$theme_active = 'is_active';
-					break;
 				case 'wbcom-support-page':
 					$support_active = 'is_active';
 					break;
