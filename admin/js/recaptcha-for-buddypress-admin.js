@@ -35,33 +35,33 @@
 			hideshowfield(version);
 			function hideshowfield(version) {
 				if (version == 'v2' || version == 'undefined') {
-					$('#wc_settings_tab_recapcha_site_key_v3').closest("tr").hide();
-					$('#wc_settings_tab_recapcha_secret_key_v3').closest("tr").hide();
-					$('#wbc_recapcha_error_msg_v3_invalid_captcha').closest("tr").hide();
-					$('#wbc_recapcha_no_conflict_v3').closest("tr").hide();
-					$('#wbc_recapcha_error_msg_captcha_blank_v3').closest("tr").hide();
-					$('#wbc_recapcha_error_msg_captcha_no_response_v3').closest("tr").hide();
+					$('#wc_settings_tab_recapcha_site_key_v3').closest("div.wbcom-settings-section-wrap").hide();
+					$('#wc_settings_tab_recapcha_secret_key_v3').closest("div.wbcom-settings-section-wrap").hide();
+					$('#wbc_recapcha_error_msg_v3_invalid_captcha').closest("div.wbcom-settings-section-wrap").hide();
+					$('#wbc_recapcha_no_conflict_v3').closest("div.wbcom-settings-section-wrap").hide();
+					$('#wbc_recapcha_error_msg_captcha_blank_v3').closest("div.wbcom-settings-section-wrap").hide();
+					$('#wbc_recapcha_error_msg_captcha_no_response_v3').closest("div.wbcom-settings-section-wrap").hide();
 
-					$('#wc_settings_tab_recapcha_site_key').closest("tr").show();
-					$('#wc_settings_tab_recapcha_secret_key').closest("tr").show();
-					$('#wc_settings_tab_recapcha_error_msg_captcha_invalid').closest("tr").show();
-					$('#wbc_recapcha_no_conflict').closest("tr").show();
-					$('#wc_settings_tab_recapcha_error_msg_captcha_blank').closest("tr").show();
-					$('#wc_settings_tab_recapcha_error_msg_captcha_no_response').closest("tr").show();
+					$('#wc_settings_tab_recapcha_site_key').closest("div.wbcom-settings-section-wrap").show();
+					$('#wc_settings_tab_recapcha_secret_key').closest("div.wbcom-settings-section-wrap").show();
+					$('#wc_settings_tab_recapcha_error_msg_captcha_invalid').closest("div.wbcom-settings-section-wrap").show();
+					$('#wbc_recapcha_no_conflict').closest("div.wbcom-settings-section-wrap").show();
+					$('#wc_settings_tab_recapcha_error_msg_captcha_blank').closest("div.wbcom-settings-section-wrap").show();
+					$('#wc_settings_tab_recapcha_error_msg_captcha_no_response').closest("div.wbcom-settings-section-wrap").show();
 				} else {
-					$('#wc_settings_tab_recapcha_site_key_v3').closest("tr").show();
-					$('#wc_settings_tab_recapcha_secret_key_v3').closest("tr").show();
-					$('#wbc_recapcha_error_msg_v3_invalid_captcha').closest("tr").show();
-					$('#wbc_recapcha_no_conflict_v3').closest("tr").show();
-					$('#wbc_recapcha_error_msg_captcha_blank_v3').closest("tr").show();
-					$('#wbc_recapcha_error_msg_captcha_no_response_v3').closest("tr").show();
+					$('#wc_settings_tab_recapcha_site_key_v3').closest("div.wbcom-settings-section-wrap").show();
+					$('#wc_settings_tab_recapcha_secret_key_v3').closest("div.wbcom-settings-section-wrap").show();
+					$('#wbc_recapcha_error_msg_v3_invalid_captcha').closest("div.wbcom-settings-section-wrap").show();
+					$('#wbc_recapcha_no_conflict_v3').closest("div.wbcom-settings-section-wrap").show();
+					$('#wbc_recapcha_error_msg_captcha_blank_v3').closest("div.wbcom-settings-section-wrap").show();
+					$('#wbc_recapcha_error_msg_captcha_no_response_v3').closest("div.wbcom-settings-section-wrap").show();
 
-					$('#wc_settings_tab_recapcha_site_key').closest("tr").hide();
-					$('#wc_settings_tab_recapcha_secret_key').closest("tr").hide();
-					$('#wc_settings_tab_recapcha_error_msg_captcha_invalid').closest("tr").hide();
-					$('#wbc_recapcha_no_conflict').closest("tr").hide();
-					$('#wc_settings_tab_recapcha_error_msg_captcha_blank').closest("tr").hide();
-					$('#wc_settings_tab_recapcha_error_msg_captcha_no_response').closest("tr").hide();
+					$('#wc_settings_tab_recapcha_site_key').closest("div.wbcom-settings-section-wrap").hide();
+					$('#wc_settings_tab_recapcha_secret_key').closest("div.wbcom-settings-section-wrap").hide();
+					$('#wc_settings_tab_recapcha_error_msg_captcha_invalid').closest("div.wbcom-settings-section-wrap").hide();
+					$('#wbc_recapcha_no_conflict').closest("div.wbcom-settings-section-wrap").hide();
+					$('#wc_settings_tab_recapcha_error_msg_captcha_blank').closest("div.wbcom-settings-section-wrap").hide();
+					$('#wc_settings_tab_recapcha_error_msg_captcha_no_response').closest("div.wbcom-settings-section-wrap").hide();
 				}
 			}
 			$('input[type=radio][name=wbc_recapcha_version]').change(
