@@ -184,6 +184,7 @@ class Recaptcha_For_BuddyPress {
 		$this->loader->add_action( 'admin_menu', $plugin_admin, 'rfw_admin_menu', 100 );
 		$this->loader->add_filter( 'woocommerce_get_settings_pages', $plugin_admin, 'woocomm_load_custom_settings_tab' );
 		$this->loader->add_action( 'admin_init', $plugin_admin, 'rfw_add_admin_register_setting' );
+		$this->loader->add_action( 'admin_init', $plugin_admin, 'wbcom_hide_all_admin_notices_from_setting_page' );
 	}
 
 	/**

@@ -118,6 +118,23 @@ class Recaptcha_For_BuddyPress_Admin {
 		return $settings;
 	}
 
+
+	/**
+	 * Hide all notices from the setting page.
+	 *
+	 * @return void
+	 */
+	public function wbcom_hide_all_admin_notices_from_setting_page() {
+		$wbcom_pages_array  = array( 'wbcomplugins', 'wbcom-plugins-page', 'wbcom-support-page', 'buddypress-recaptcha' );
+		$wbcom_setting_page = filter_input( INPUT_GET, 'page' ) ? filter_input( INPUT_GET, 'page' ) : '';
+
+		if ( in_array( $wbcom_setting_page, $wbcom_pages_array, true ) ) {
+			remove_all_actions( 'admin_notices' );
+			remove_all_actions( 'all_admin_notices' );
+		}
+
+	}
+
 	/**
 	 * Add Woo Pincode Checker Menu in admin.
 	 *
