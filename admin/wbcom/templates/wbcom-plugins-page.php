@@ -22,7 +22,6 @@
 						<li><a href="javascript:void(0)" data-link="learndash_extension"><?php esc_html_e( 'LearnDash Extension', 'buddypress-recaptcha' ); ?></a></li>
 						<li><a href="javascript:void(0)" data-link="our_themes"><?php esc_html_e( 'Our Themes', 'buddypress-recaptcha' ); ?></a></li>
 					</ul>
-					<a href="https://wbcomdesigns.com/plugins/premium-buddypress-add-ons/" class="wbcom-addons-button" target="_blank"><?php esc_html_e( 'View More Extension', 'buddypress-recaptcha' ); ?></a>
 				</div>
 				<div id="wbcom_paid_extention" class="wbcom-addon-plugins-inner-wrapper">
 					<div class="wbcom-addons-plugins-card">
