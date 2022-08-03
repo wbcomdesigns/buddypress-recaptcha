@@ -6,8 +6,8 @@
   "description": "This is a short description of what the plugin does. It's displayed in the WordPress admin area.",
   "devDependencies": {
     "grunt": "^1.1.0",
-    "grunt-wp-i18n": "^1.0.3",
-    "minimist": ">=1.2.2"
+    "grunt-checktextdomain": "^1.0.1",
+    "grunt-wp-i18n": "^1.0.3"
   },
   "engines": {
     "node": "16.4.0",
