@@ -485,7 +485,7 @@ frm.submit();
 		$version            = get_option( 'wbc_recapcha_version' );
 		$disable_submit_btn = get_option( 'wbc_recapcha_disable_submitbtn_bbpress_reply' );
 		if ( 'v2' === $version ) {
-			if ( is_singular( 'topic' ) ) {
+			if ( is_singular( 'topic' ) ||  bp_is_active( 'groups' ) ) {
 				?>
 			<script type="text/javascript" async defers>
 				var anr_onloadCallback = function() {
