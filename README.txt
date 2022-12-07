@@ -3,8 +3,8 @@ Contributors: vapvarun,wbcomdesigns
 Donate link: https://wbcomdesigns.com/
 Tags: BuddyPress, WooCommmerce, bbPress
 Requires at least: 3.0.1
-Tested up to: 6.0.1
-Stable tag: 1.5.0
+Tested up to: 6.1.1
+Stable tag: 1.6.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -24,6 +24,10 @@ BuddyPress reCaptcha offers support for reCaptcha options for
 2. Activate the plugin through the 'Plugins' menu in WordPress.
 
 == Changelog ==
+= 1.6.0 =
+* Fix: (#67) Fixed single group forum reply in captcha not showing
+* Fix: Fixed buddyboss admin notice issue
+
 = 1.5.0 =
 * Fix: Fixed reCaptcha V3 admin UI
 * Fix: Hide admin notices and update admin theme extension & support title
