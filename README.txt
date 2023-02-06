@@ -24,6 +24,9 @@ BuddyPress reCaptcha offers support for reCaptcha options for
 2. Activate the plugin through the 'Plugins' menu in WordPress.
 
 == Changelog ==
+= 1.6.1 =
+* Fix: (#68)Fixed lost password captcha issue
+
 = 1.6.0 =
 * Fix: (#67) Fixed single group forum reply in captcha not showing
 * Fix: Fixed buddyboss admin notice issue
