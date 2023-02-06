@@ -404,9 +404,7 @@ class WoocommerceFilter {
 
 								if ( '' === trim( $recapcha_error_msg_captcha_invalid ) ) {
 
-									$validation_errors->add( 'g-recaptcha_error', '<strong>' . __( 'ERROR:00', 'buddypress-recaptcha' ) . '</strong> ' . __( 'Invalid recaptcha.', 'buddypress-recaptcha' ) );
-								} else {
-									$validation_errors->add( 'g-recaptcha_error', '<strong>' . __( 'ERROR:01', 'buddypress-recaptcha' ) . '</strong> ' . $recapcha_error_msg_captcha_invalid );
+									$validation_errors->add( 'g-recaptcha_error', '<strong>' . __( 'ERROR:00', 'buddypress-recaptcha' ) . '</strong> ' . __( $recapcha_error_msg_captcha_invalid, 'buddypress-recaptcha' ) );
 								}
 							}
 						} else {
