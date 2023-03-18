@@ -3,8 +3,8 @@ Contributors: vapvarun,wbcomdesigns
 Donate link: https://wbcomdesigns.com/
 Tags: BuddyPress, WooCommmerce, bbPress
 Requires at least: 3.0.1
-Tested up to: 6.1.1
-Stable tag: 1.6.0
+Tested up to: 6.2.0
+Stable tag: 1.6.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -24,6 +24,9 @@ BuddyPress reCaptcha offers support for reCaptcha options for
 2. Activate the plugin through the 'Plugins' menu in WordPress.
 
 == Changelog ==
+= 1.6.2 =
+* Fix:  Fixed Plugin redirect issue when multi plugin activate the same time
+
 = 1.6.1 =
 * Fix: (#68)Fixed lost password captcha issue
 
