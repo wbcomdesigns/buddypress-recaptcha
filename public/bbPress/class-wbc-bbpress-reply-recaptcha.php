@@ -485,51 +485,53 @@ frm.submit();
 		$version            = get_option( 'wbc_recapcha_version' );
 		$disable_submit_btn = get_option( 'wbc_recapcha_disable_submitbtn_bbpress_reply' );
 		if ( 'v2' === $version ) {
-			if ( is_singular( 'topic' ) ||  bp_is_active( 'groups' ) ) {
-				?>
-			<script type="text/javascript" async defers>
-				var anr_onloadCallback = function() {
-					for ( var i = 0; i < document.forms.length; i++ ) {
-						var form = document.forms[i];
-						var captcha_div = form.querySelector( '.anr_captcha_field_div' );
+			if( class_exists( 'BuddyPress' ) || class_exists( 'bbPress' ) ){
+				if ( is_singular( 'topic' ) ||  bp_is_active( 'groups' ) ) {
+					?>
+				<script type="text/javascript" async defers>
+					var anr_onloadCallback = function() {
+						for ( var i = 0; i < document.forms.length; i++ ) {
+							var form = document.forms[i];
+							var captcha_div = form.querySelector( '.anr_captcha_field_div' );
 
-						if ( null === captcha_div )
-							continue;
-						captcha_div.innerHTML = '';
-						( function( form ) {
-							var anr_captcha = grecaptcha.render( captcha_div,{
-								'sitekey' : '<?php echo esc_js( trim( get_option( 'wc_settings_tab_recapcha_site_key' ) ) ); ?>',
-								'size'  : '<?php echo esc_js( get_option( 'recapcha_size_bbpress_reply' ) ); ?>',
-								'theme' : '<?php echo esc_js( get_option( 'recapcha_theme_bbpress_reply' ) ); ?>'
-							});
-							if ( typeof jQuery !== 'undefined' ) {
-								jQuery( document.body ).on( 'checkout_error', function(){
-									grecaptcha.reset(anr_captcha);
+							if ( null === captcha_div )
+								continue;
+							captcha_div.innerHTML = '';
+							( function( form ) {
+								var anr_captcha = grecaptcha.render( captcha_div,{
+									'sitekey' : '<?php echo esc_js( trim( get_option( 'wc_settings_tab_recapcha_site_key' ) ) ); ?>',
+									'size'  : '<?php echo esc_js( get_option( 'recapcha_size_bbpress_reply' ) ); ?>',
+									'theme' : '<?php echo esc_js( get_option( 'recapcha_theme_bbpress_reply' ) ); ?>'
 								});
-							}
-							if ( typeof wpcf7 !== 'undefined' ) {
-								document.addEventListener( 'wpcf7submit', function() {
-									grecaptcha.reset(anr_captcha);
-								}, false );
-							}
-						})(form);
-					}
-				};
-			</script>
-				<?php
-				$language = trim( get_option( 'language' ) );
+								if ( typeof jQuery !== 'undefined' ) {
+									jQuery( document.body ).on( 'checkout_error', function(){
+										grecaptcha.reset(anr_captcha);
+									});
+								}
+								if ( typeof wpcf7 !== 'undefined' ) {
+									document.addEventListener( 'wpcf7submit', function() {
+										grecaptcha.reset(anr_captcha);
+									}, false );
+								}
+							})(form);
+						}
+					};
+				</script>
+					<?php
+					$language = trim( get_option( 'language' ) );
 
-				$lang = 'eng';
-				if ( $language ) {
-					$lang = '&hl=' . $language;
+					$lang = 'eng';
+					if ( $language ) {
+						$lang = '&hl=' . $language;
+					}
+					$bbpress_reply_recaptcha_class = new Recaptcha_bbPress_Reply();
+					$google_url                    = apply_filters( 'anr_v2_checkbox_script_api_src', sprintf( 'https://www.%s/recaptcha/api.js?onload=anr_onloadCallback&render=explicit' . $lang, $bbpress_reply_recaptcha_class->wbr_bbpress_reply_anr_recaptcha_domain() ), $lang );
+					?>
+		<script src="<?php echo esc_url( $google_url ); ?>"
+			async defer>
+		</script>
+					<?php
 				}
-				$bbpress_reply_recaptcha_class = new Recaptcha_bbPress_Reply();
-				$google_url                    = apply_filters( 'anr_v2_checkbox_script_api_src', sprintf( 'https://www.%s/recaptcha/api.js?onload=anr_onloadCallback&render=explicit' . $lang, $bbpress_reply_recaptcha_class->wbr_bbpress_reply_anr_recaptcha_domain() ), $lang );
-				?>
-	<script src="<?php echo esc_url( $google_url ); ?>"
-		async defer>
-	</script>
-				<?php
 			}
 		}
 	}
