@@ -42,7 +42,12 @@
 .nav-tab-wrapper ul li a#guestcheckout.nav-tab:before {
    content: "\f174";
 }
-
+.nav-tab-wrapper ul li a#bb_press_topic.nav-tab:before {
+   content: "\f450";
+}
+.nav-tab-wrapper ul li a#bb_press_reply.nav-tab:before {
+   content: "\f125";
+}
 
 .rfw-tabs-section .nav-tab-wrapper ul li a.nav-tab span.dashicons {
   display: inline-block;
