@@ -102,7 +102,9 @@ var verifyCallback_wp_register = function(response) {
 if(response.length!==0){
 				<?php if ( 'yes' === trim( $disable_submit_btn ) ) : ?>
 				jQuery('#submit').removeAttr("disabled");
+				jQuery('#signup_submit').removeAttr("disabled");
 				jQuery('#submit').removeAttr("title");
+				jQuery('#signup_submit').removeAttr("title");
 				<?php endif; ?>
 
 if (typeof woo_wp_register_captcha_verified === "function") {
