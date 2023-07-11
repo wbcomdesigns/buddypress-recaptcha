@@ -87,7 +87,7 @@ jQuery(document).ready(function(){
 	clearInterval(<?php echo esc_html( $intval_signup ); ?>);
 					<?php if ( 'yes' === trim( $disable_submit_btn ) ) : ?>
 					jQuery('#submit').attr("disabled", true);
-					console.log('close');
+					jQuery('#signup_submit').attr("disabled", true);
 						<?php if ( '' === $recapcha_error_msg_captcha_blank ) : ?>
 				jQuery('#submit').attr("title", "<?php echo esc_html( __( 'reCaptcha is a required field.', 'buddypress-recaptcha' ) ); ?>");
 		<?php else : ?>
