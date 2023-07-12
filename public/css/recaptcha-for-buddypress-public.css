@@ -38,3 +38,9 @@ label[for="comment_captcha"] {
   text-shadow: none !important;
   cursor: default;
 }
+
+/* css for disable create account button with buddyboss on registeration page */
+.register-page .signup-form #signup_submit:disabled {
+  color: #767676!important;
+  opacity: .4!important;
+}
