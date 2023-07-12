@@ -1,14 +1,14 @@
-# Copyright (C) 2022
+# Copyright (C) 2023
 # This file is distributed under the same license as the  package.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-08-03 13:36:29+00:00\n"
+"POT-Creation-Date: 2023-07-12 07:21:28+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2022-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: 2023-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Varun Dubey\n"
 "Language-Team: Wbcom Designs\n"
 "Language: en\n"
@@ -1917,9 +1917,9 @@ msgstr ""
 #: public/woocommerce-extra/WoocommerceAfterCheckoutValidation.php:217
 #: public/woocommerce-extra/WoocommerceFilter.php:90
 #: public/woocommerce-extra/WoocommerceFilter.php:251
-#: public/woocommerce-extra/WoocommerceFilter.php:425
-#: public/woocommerce-extra/WoocommerceFilter.php:596
-#: public/woocommerce-extra/WoocommerceFilter.php:794
+#: public/woocommerce-extra/WoocommerceFilter.php:423
+#: public/woocommerce-extra/WoocommerceFilter.php:594
+#: public/woocommerce-extra/WoocommerceFilter.php:792
 #: public/woocommerce-extra/WoocommerceProcessLoginErrors.php:101
 #: public/woocommerce-extra/WoocommerceReviewOrder.php:77
 #: public/woocommerce-extra/WoocommerceReviewOrder.php:151
@@ -1936,8 +1936,8 @@ msgstr ""
 msgid "reCaptcha is a required field."
 msgstr ""
 
-#: public/bp-classes/Regisrtationbp.php:276
-#: public/bp-classes/Regisrtationbp.php:281
+#: public/bp-classes/Regisrtationbp.php:278
+#: public/bp-classes/Regisrtationbp.php:283
 msgid "reCaptcha token is invalid"
 msgstr ""
 
@@ -1946,9 +1946,8 @@ msgstr ""
 #: public/woocommerce-extra/WoocommerceAfterCheckoutValidation.php:196
 #: public/woocommerce-extra/WoocommerceFilter.php:72
 #: public/woocommerce-extra/WoocommerceFilter.php:233
-#: public/woocommerce-extra/WoocommerceFilter.php:407
-#: public/woocommerce-extra/WoocommerceFilter.php:569
-#: public/woocommerce-extra/WoocommerceFilter.php:767
+#: public/woocommerce-extra/WoocommerceFilter.php:567
+#: public/woocommerce-extra/WoocommerceFilter.php:765
 #: public/woocommerce-extra/WoocommerceProcessLoginErrors.php:83
 #: public/woocommerce-extra/WoocommerceRegisterPost.php:75
 #: public/woocommerce-order/WoocommerceOrder.php:367
@@ -1960,11 +1959,11 @@ msgstr ""
 #: public/woocommerce-extra/WoocommerceAfterCheckoutValidation.php:209
 #: public/woocommerce-extra/WoocommerceFilter.php:81
 #: public/woocommerce-extra/WoocommerceFilter.php:242
-#: public/woocommerce-extra/WoocommerceFilter.php:416
-#: public/woocommerce-extra/WoocommerceFilter.php:582
-#: public/woocommerce-extra/WoocommerceFilter.php:687
-#: public/woocommerce-extra/WoocommerceFilter.php:780
-#: public/woocommerce-extra/WoocommerceFilter.php:885
+#: public/woocommerce-extra/WoocommerceFilter.php:414
+#: public/woocommerce-extra/WoocommerceFilter.php:580
+#: public/woocommerce-extra/WoocommerceFilter.php:685
+#: public/woocommerce-extra/WoocommerceFilter.php:778
+#: public/woocommerce-extra/WoocommerceFilter.php:883
 #: public/woocommerce-extra/WoocommerceProcessLoginErrors.php:92
 #: public/woocommerce-extra/WoocommerceRegisterPost.php:86
 #: public/woocommerce-order/WoocommerceOrder.php:387
@@ -1974,7 +1973,7 @@ msgstr ""
 #: public/woocommerce-extra/LostpasswordPost.php:108
 #: public/woocommerce-extra/WoocommerceAfterCheckoutValidation.php:143
 #: public/woocommerce-extra/WoocommerceAfterCheckoutValidation.php:224
-#: public/woocommerce-extra/WoocommerceFilter.php:434
+#: public/woocommerce-extra/WoocommerceFilter.php:432
 #: public/woocommerce-extra/WoocommerceProcessLoginErrors.php:110
 #: public/woocommerce-extra/WoocommerceRegisterPost.php:103
 #: public/woocommerce-order/WoocommerceOrder.php:413
@@ -1989,11 +1988,11 @@ msgstr ""
 #: public/woocommerce-extra/WoocommerceFilter.php:154
 #: public/woocommerce-extra/WoocommerceFilter.php:310
 #: public/woocommerce-extra/WoocommerceFilter.php:322
-#: public/woocommerce-extra/WoocommerceFilter.php:487
-#: public/woocommerce-extra/WoocommerceFilter.php:659
-#: public/woocommerce-extra/WoocommerceFilter.php:673
-#: public/woocommerce-extra/WoocommerceFilter.php:857
-#: public/woocommerce-extra/WoocommerceFilter.php:871
+#: public/woocommerce-extra/WoocommerceFilter.php:485
+#: public/woocommerce-extra/WoocommerceFilter.php:657
+#: public/woocommerce-extra/WoocommerceFilter.php:671
+#: public/woocommerce-extra/WoocommerceFilter.php:855
+#: public/woocommerce-extra/WoocommerceFilter.php:869
 #: public/woocommerce-extra/WoocommerceProcessLoginErrors.php:172
 #: public/woocommerce-extra/WoocommerceProcessLoginErrors.php:184
 #: public/woocommerce-extra/WoocommerceRegisterPost.php:157
@@ -2017,8 +2016,8 @@ msgstr ""
 #: public/woocommerce-extra/WoocommerceAfterCheckoutValidation.php:358
 #: public/woocommerce-extra/WoocommerceFilter.php:173
 #: public/woocommerce-extra/WoocommerceFilter.php:347
-#: public/woocommerce-extra/WoocommerceFilter.php:700
-#: public/woocommerce-extra/WoocommerceFilter.php:898
+#: public/woocommerce-extra/WoocommerceFilter.php:698
+#: public/woocommerce-extra/WoocommerceFilter.php:896
 #: public/woocommerce-extra/WoocommerceProcessLoginErrors.php:209
 #: public/woocommerce-extra/WoocommerceRegisterPost.php:194
 #: public/woocommerce-order/WoocommerceOrder.php:538
@@ -2134,35 +2133,31 @@ msgstr ""
 msgid "ERROR:00"
 msgstr ""
 
-#: public/woocommerce-extra/WoocommerceFilter.php:409
-msgid "ERROR:01"
-msgstr ""
-
-#: public/woocommerce-extra/WoocommerceFilter.php:416
+#: public/woocommerce-extra/WoocommerceFilter.php:414
 msgid "ERROR:02"
 msgstr ""
 
-#: public/woocommerce-extra/WoocommerceFilter.php:418
+#: public/woocommerce-extra/WoocommerceFilter.php:416
 msgid "ERROR:03"
 msgstr ""
 
-#: public/woocommerce-extra/WoocommerceFilter.php:425
+#: public/woocommerce-extra/WoocommerceFilter.php:423
 msgid "ERROR:04"
 msgstr ""
 
-#: public/woocommerce-extra/WoocommerceFilter.php:428
+#: public/woocommerce-extra/WoocommerceFilter.php:426
 msgid "ERROR:05"
 msgstr ""
 
-#: public/woocommerce-extra/WoocommerceFilter.php:434
+#: public/woocommerce-extra/WoocommerceFilter.php:432
 msgid "ERROR:06"
 msgstr ""
 
-#: public/woocommerce-extra/WoocommerceFilter.php:487
+#: public/woocommerce-extra/WoocommerceFilter.php:485
 msgid "ERROR:07"
 msgstr ""
 
-#: public/woocommerce-extra/WoocommerceFilter.php:489
+#: public/woocommerce-extra/WoocommerceFilter.php:487
 msgid "ERROR:08"
 msgstr ""
 
