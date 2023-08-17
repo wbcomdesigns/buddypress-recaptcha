@@ -17,6 +17,20 @@ if ( ! class_exists( 'Wbc_WooCommerce_Settings_Page' ) ) :
 	 * Template Class
 	 */
 	class Wbc_WooCommerce_Settings_Page {
+	
+		/**
+		 * id
+		 *
+		 * @var string
+		 */
+		protected $id    = '';
+
+		/**
+		 * label
+		 *
+		 * @var string
+		 */
+		protected $label = '';
 
 		/**
 		 * Template Class Doc Comment
