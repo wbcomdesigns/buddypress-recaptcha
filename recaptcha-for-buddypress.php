@@ -81,6 +81,9 @@ register_deactivation_hook( __FILE__, 'deactivate_recaptcha_for_woocommerce' );
  */
 require plugin_dir_path( __FILE__ ) . 'includes/class-recaptcha-for-buddypress.php';
 
+require_once __DIR__ . '/vendor/autoload.php';
+HardG\BuddyPress120URLPolyfills\Loader::init();
+
 /**
  * This Function checks the Woocommerce, BuddyPress and bbpress plugin is active or not.
  *
