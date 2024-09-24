@@ -3,7 +3,7 @@ Contributors: vapvarun,wbcomdesigns
 Donate link: https://wbcomdesigns.com/
 Tags: BuddyPress, WooCommmerce, bbPress
 Requires at least: 3.0.1
-Tested up to: 6.2.0
+Tested up to: 6.6.2
 Stable tag: 1.6.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -12,11 +12,38 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 Protect your community from malicious and automated attacks by using reCaptcha for BuddyPress.
 
+== Key Features ==
+
 BuddyPress reCaptcha offers support for reCaptcha options for
 1- Default WordPress login and register
 2- BuddyPress Register
 3- WooCommmerce My Account 
 4- New Topic creation for bbPress
+
+== Free Add-ons to Enhance Your BuddyPress or BuddyBoss Platform ==
+
+- **[BuddyPress Member Reviews](https://wordpress.org/plugins/bp-user-profile-reviews/)**: Allow members to add ratings or feedback for other community members.
+- **[BuddyPress Group Reviews](https://wordpress.org/plugins/review-buddypress-groups/)**: Enable group ratings and reviews.
+- **[BuddyPress Activity Social Share](https://wordpress.org/plugins/bp-activity-social-share/)**: Share activities on social platforms like Facebook, Twitter, and LinkedIn.
+- **[Private Community with BP Lock](https://wordpress.org/plugins/lock-my-bp/)**: Make your community private, only accessible to logged-in users, while keeping selected pages public.
+- **[BuddyPress Job Manager](https://wordpress.org/plugins/bp-job-manager/)**: Integrate WP Job Manager with BuddyPress.
+- **[Check-ins for BuddyPress Activity](https://wordpress.org/plugins/bp-check-in/)**: Let members add their location or check-ins to their BuddyPress activities.
+- **[BuddyPress Favorite Notification](https://wordpress.org/plugins/bp-favorite-notification/)**: Notify members when their activities receive likes or favorites.
+- **[Shortcodes & Elementor Widgets for BuddyPress](https://wordpress.org/plugins/shortcodes-for-buddypress/)**: Use shortcodes and Elementor widgets for displaying BuddyPress activities, member directories, and groups.
+
+== Premium Add-ons ==
+
+- **[BuddyPress Hashtags](https://wbcomdesigns.com/downloads/buddypress-hashtags/)**: Use hashtags in BuddyPress activities and bbPress topics.
+- **[BuddyPress Polls](https://wbcomdesigns.com/downloads/buddypress-polls/)**: Let members publish polls in BuddyPress or BuddyBoss activities and groups.
+- **[BuddyPress Quotes](https://wbcomdesigns.com/downloads/buddypress-quotes/)**: Enable members to post updates with colorful and interactive backgrounds.
+- **[BuddyPress Status & Reaction](https://wbcomdesigns.com/downloads/buddypress-status/)**: Let members set a status and offer reactions to activities.
+- **[BuddyPress Profanity](https://wbcomdesigns.com/downloads/buddypress-profanity/)**: Filter and censor inappropriate content in activities and messages.
+- **[BuddyPress Sticky Post](https://wbcomdesigns.com/downloads/buddypress-sticky-post/)**: Pin important activities to the top of the activity stream.
+- **[BuddyPress Auto Friends](https://wbcomdesigns.com/downloads/buddypress-auto-friends/)**: Automatically assign global friends to new members.
+- **[Shortcodes & Elementor Widgets for BuddyPress Pro](https://wbcomdesigns.com/downloads/shortcodes-for-buddypress-pro/)**: Use advanced shortcodes and Elementor widgets for BuddyPress content.
+
+
+
 
 == Installation ==
 
