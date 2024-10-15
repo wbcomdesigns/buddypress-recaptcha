@@ -23,14 +23,14 @@ if ( ! class_exists( 'Wbc_WooCommerce_Settings_Page' ) ) :
 		 *
 		 * @var string
 		 */
-		protected $id    = '';
+		public $id;
 
 		/**
 		 * label
 		 *
 		 * @var string
 		 */
-		protected $label = '';
+		public $label;
 
 		/**
 		 * Template Class Doc Comment
