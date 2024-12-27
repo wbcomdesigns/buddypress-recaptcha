@@ -486,7 +486,7 @@ frm.submit();
 		$disable_submit_btn = get_option( 'wbc_recapcha_disable_submitbtn_bbpress_reply' );
 		if ( 'v2' === $version ) {
 			if( class_exists( 'BuddyPress' ) || class_exists( 'bbPress' ) ){
-				if ( is_singular( 'topic' ) ||  bp_is_active( 'groups' ) ) {
+				if ( is_singular( 'topic' ) || ( function_exists( 'bp_is_active' ) && bp_is_active( 'groups' )) ) {
 					?>
 				<script type="text/javascript" async defers>
 					var anr_onloadCallback = function() {
