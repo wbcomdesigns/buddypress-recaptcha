@@ -130,7 +130,7 @@ class Recaptcha_For_BuddyPress_Public {
 		}
 
 		if ( 'v2' === strtolower( $woo_recaptcha_version ) ) {
-			$wbc_recapcha_v2_lang = esc_html( get_option( 'wbc_recapcha_v2_lang' ) );
+			$wbc_recapcha_v2_lang = get_option( 'wbc_recapcha_v2_lang' );
 			if ( '' !== $wbc_recapcha_v2_lang ) {
 				wp_register_script( 'wbc-woo-captcha', 'https://www.google.com/recaptcha/api.js?from=wbc_recaptcha&hl=' . $wbc_recapcha_v2_lang, array(), '1.0', true );
 				wp_register_script( 'wbc-woo-captcha-explicit', 'https://www.google.com/recaptcha/api.js?from=wbc_recaptcha&render=explicit&hl=' . $wbc_recapcha_v2_lang, array(), '2.0', true );

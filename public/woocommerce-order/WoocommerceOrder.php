@@ -1122,12 +1122,9 @@ class WoocommerceOrder {
 		// do_action( 'wbcom_recaptcha_add_comment_form' );
 		$recpatcha_system_ip = get_option( 'wbc_recapcha_ip_to_skip_captcha' );
 		if ( $recpatcha_system_ip && wb_recaptcha_restriction_recaptcha_by_ip() ) {
-			return $submit_button;
-			return false;
-		} else {
 			$this->woo_add_comment_form_captcha();
-			return $submit_button;
 		}
+		return apply_filters( 'woo_recaptcha_alter_post_comment_submit_button', $submit_button );
 	}
 
 	/**
@@ -1165,6 +1162,6 @@ class WoocommerceOrder {
 		}
 		$block_content = ob_get_contents();
 		ob_end_clean();
-		return $block_content;
+		return apply_filters( 'woo_recaptcha_alter_checkout_payment_block' , $block_content);
 	}
 }
