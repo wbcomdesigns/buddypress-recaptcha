@@ -28,5 +28,56 @@
 	 * Although scripts in the WordPress core, Plugins and Themes may be
 	 * practising this, we should strive to set a better example in our own work.
 	 */
+	jQuery( document ).ready(function() {
+		if (typeof (grecaptcha.render) !== 'undefined' && ( myCaptcha === undefined || myCaptcha === null ) ) {
+			try{
+			var myCaptcha=grecaptcha.render('g-recaptcha-checkout-wbc', {
+			'sitekey': bpRecaptcha.site_key,
+			'callback' : verifyCallback_add_guestcheckout
+			});
+			}catch(error){
+				console.log(error);
+			}
+			}
+			
+			
+			setTimeout(() => {
+				if ( 'yes' == bpRecaptcha.disable_submit_btn ){
+					jQuery(".wc-block-components-checkout-place-order-button").attr("disabled", true);
+					jQuery(".wc-block-components-checkout-place-order-button").removeAttr("title");
+				}
+				if ( 'yes' == bpRecaptcha.disable_submit_btn_login_checkout ){
+					jQuery(".wc-block-components-checkout-place-order-button").attr("disabled", true);
+				}
+			}, 200);
+		
+
+			
+	});
+	
+
+	var verifyCallback_add_guestcheckout = function(response) {
+
+		if(response.length!==0){
+
+				window.recap_val= response;
+				if (typeof woo_guest_checkout_recaptcha_verified === "function") {
+
+							woo_guest_checkout_recaptcha_verified(response);
+					}
+
+					if( 'yes' == wbc_recapcha_guest_recpacha_refersh_on_error ){
+						jQuery('body').on('checkout_error', function(){
+							grecaptcha.reset(window.myCaptcha); 
+							if ( 'yes' == bpRecaptcha.disable_submit_btn ){
+								jQuery(".wc-block-components-checkout-place-order-button").attr("disabled", true);
+							}
+							if ( 'yes' == bpRecaptcha.disable_submit_btn_login_checkout ){
+								jQuery(".wc-block-components-checkout-place-order-button").attr("disabled", true);
+							}
+					})                                                                                                    
+				}
+		}
+	};
 
 })( jQuery );
