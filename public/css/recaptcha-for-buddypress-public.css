@@ -22,6 +22,12 @@ label[for="comment_captcha"] {
   display: block !important;
 }
 
+button[disabled],
+input[disabled] {
+  cursor: default !important;
+  opacity: .4;
+}
+
 /*--------------------------------------------------------------
 ## Twentytwenty
 --------------------------------------------------------------*/
@@ -41,6 +47,6 @@ label[for="comment_captcha"] {
 
 /* css for disable create account button with buddyboss on registeration page */
 .register-page .signup-form #signup_submit:disabled {
-  color: #767676!important;
-  opacity: .4!important;
+  color: #767676 !important;
+  opacity: .4 !important;
 }
