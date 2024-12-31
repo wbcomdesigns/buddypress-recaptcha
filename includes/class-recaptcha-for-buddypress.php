@@ -279,8 +279,7 @@ class Recaptcha_For_BuddyPress {
 		add_action( 'woocommerce_payment_complete', array( $woocommerce_order, 'woo_payment_complete' ) );
 		add_action( 'woocommerce_before_add_to_cart_quantity', array( $woocommerce_order, 'woocommerce_payment_request_btn_captcha' ) );
 		add_filter( 'comment_form_submit_button', array( $woocommerce_order, 'woo_recaptcha_alter_post_comment_submit_button' ), 10, 2 );
-
-		// Extra actions.
+		add_filter( 'render_block_woocommerce/checkout-payment-block', array( $woocommerce_order, 'woo_recaptcha_alter_checkout_payment_block' ), 999, 1 ); // Before/After Payment block.
 		if ( $plugin_public->woo_recaptcha_check_is_ie_browser() ) {
 			add_action( 'wp_head', array( $plugin_public, 'woo_recaptcha_add_header_metadata_for_ie' ) );
 			add_action( 'login_head', array( $plugin_public, 'woo_recaptcha_add_header_metadata_for_ie' ) );

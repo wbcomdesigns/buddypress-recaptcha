@@ -92,8 +92,26 @@ class Recaptcha_For_BuddyPress_Public {
 		 * between the defined hooks and the functions defined in this
 		 * class.
 		 */
-
+		$site_key                          = get_option( 'wc_settings_tab_recapcha_site_key' );
+		$wbc_recapcha_checkout_action_v3 = get_option( 'wbc_recapcha_checkout_action_v3' );
+		if ( '' == $wbc_recapcha_checkout_action_v3 ) {
+			$wbc_recapcha_checkout_action_v3 = 'checkout';
+		}
+		$disable_submit_btn                = get_option( 'wbc_recapcha_disable_submitbtn_guestcheckout' );
+		$disable_submit_btn_login_checkout = get_option( 'wbc_recapcha_disable_submitbtn_logincheckout' );
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/recaptcha-for-buddypress-public.js', array( 'jquery' ), $this->version, false );
+		wp_localize_script(
+			$this->plugin_name,   // Handle of the script
+			'bpRecaptcha',              // JavaScript object name
+			array(
+				'ajax_url'            				  => admin_url( 'admin-ajax.php' ), // Passing AJAX URL to JS
+				'bpRecaptcha'     					  => wp_create_nonce( 'bpRecaptcha' ), // Security nonce
+				'site_key'      					  => $site_key,
+				'wbc_recapcha_checkout_action_v3'     => $wbc_recapcha_checkout_action_v3,
+				'disable_submit_btn'    			  => $disable_submit_btn,
+				'disable_submit_btn_login_checkout'   => $disable_submit_btn_login_checkout,
+			)
+		);
 		// wp_enqueue_script( 'wbc-woo-captcha' );
 		// wp_enqueue_script( 'wbc-woo-captcha-v3' );
 

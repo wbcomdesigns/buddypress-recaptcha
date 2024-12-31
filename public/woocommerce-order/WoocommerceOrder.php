@@ -189,17 +189,17 @@ class WoocommerceOrder {
 
 	var checkout_form = jQuery('form.checkout');
 
-	/*checkout_form.on('checkout_place_order', function () {
+	// checkout_form.on('checkout_place_order', function () {
 
-	grecaptcha.execute('<?php echo esc_html( $site_key ); ?>', { action: '<?php echo esc_html( $wbc_recapcha_checkout_action_v3 ); ?>' }).then(function (token) {
+	// grecaptcha.execute('<?php // echo esc_html( $site_key ); ?>', { action: '<?php // echo esc_html( $wbc_recapcha_checkout_action_v3 ); ?>' }).then(function (token) {
 
-	var recaptchaResponse = document.getElementById('wbc_checkout_token');
-	recaptchaResponse.value = token;
+	// var recaptchaResponse = document.getElementById('wbc_checkout_token');
+	// recaptchaResponse.value = token;
 
-	}, function (reason) {
+	// }, function (reason) {
 
-	});
-	});*/
+	// });
+	// });
 
 	jQuery(document).on('updated_checkout', function () {
 
@@ -572,7 +572,6 @@ class WoocommerceOrder {
 				delete_transient( $nonece );
 			}
 		}
-
 	}
 
 	/**
@@ -899,7 +898,6 @@ class WoocommerceOrder {
 				}
 			}
 		}
-
 	}
 
 	/**
@@ -1110,7 +1108,6 @@ class WoocommerceOrder {
 				<?php
 			}
 		}
-
 	}
 
 	/**
@@ -1131,5 +1128,43 @@ class WoocommerceOrder {
 			$this->woo_add_comment_form_captcha();
 			return $submit_button;
 		}
+	}
+
+	/**
+	 * Filters the submit button for the comment form to display.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @param string $submit_button HTML markup for the submit button.
+	 * @param array  $args          Arguments passed to comment_form().
+	 */
+	public function woo_recaptcha_alter_checkout_payment_block( $block_content ) {
+
+		ob_start();
+		echo $block_content;
+		$woo_recaptcha_version = get_option( 'wbc_recapcha_version' );
+		if ( '' == $woo_recaptcha_version ) {
+			$woo_recaptcha_version = 'v2';
+		}
+
+		if ( 'v2' == strtolower( $woo_recaptcha_version ) ) {
+
+			$disable_submit_btn       = get_option( 'wbc_recapcha_disable_submitbtn_payfororder' );
+			$site_key                 = get_option( 'wc_settings_tab_recapcha_site_key' );
+			$theme                    = get_option( 'wbc_recapcha_guestcheckout_theme' );
+			$size                     = get_option( 'wbc_recapcha_guestcheckout_size' );
+			$is_enabled               = get_option( 'wbc_recapcha_enable_on_payfororder' );
+			$is_enabled_logincheckout = get_option( 'wbc_recapcha_enable_on_logincheckout' );
+			$is_enabled_guest         = get_option( 'wbc_recapcha_enable_on_guestcheckout' );
+
+			if ( ( 'yes' == $is_enabled && ( ( isset( $_POST['woocommerce-pay-nonce'] ) && ! empty( $_POST['woocommerce-pay-nonce'] ) ) || ( isset( $_POST['_wpnonce'] ) && ! empty( $_POST['_wpnonce'] ) ) ) ) || ( 'yes' == $is_enabled_logincheckout && is_user_logged_in() ) || ( 'yes' == $is_enabled_guest && ! is_user_logged_in() ) ) {
+				?>
+					<div id="g-recaptcha-checkout-wbc" name="g-recaptcha" class="g-recaptcha-" data-callback="verifyCallback_add_guestcheckout"  data-sitekey="<?php echo esc_html( $site_key ); ?>" data-theme="<?php echo esc_html( $theme ); ?>" data-size="<?php echo esc_html( $size ); ?>"></div>
+				<?php
+			}
+		}
+		$block_content = ob_get_contents();
+		ob_end_clean();
+		return $block_content;
 	}
 }
