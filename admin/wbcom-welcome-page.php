@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<div class="wbcom-welcome-main-wrapper">
 		<div class="wbcom-welcome-head">			
 			<p class="wbcom-welcome-description">
-				<?php esc_html_e( 'BuddyPress reCaptcha allows users to check “User is authorised not a robot”.', 'buddypress-recaptcha' ); ?><br/>
+				<?php esc_html_e( 'BuddyPress reCaptcha allows users to verify that they are authorized and not a robot.', 'buddypress-recaptcha' ); ?><br/>
 				<?php esc_html_e( 'This plugin provide to check reCaptcha in WP Login page, WP Registration, WP Lost Password, BuddyPress Registration, WooCommerce Login, WooCommerce Registration, WooCommerce Lost Password, WooCommerce Order Page, BBPress Topic And reply pages', 'buddypress-recaptcha' ); ?></p>
 		</div><!-- .wbcom-welcome-head -->
 
