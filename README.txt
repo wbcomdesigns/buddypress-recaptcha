@@ -3,8 +3,8 @@ Contributors: vapvarun,wbcomdesigns
 Donate link: https://wbcomdesigns.com/
 Tags: BuddyPress, WooCommmerce, bbPress
 Requires at least: 3.0.1
-Tested up to: 6.6.2
-Stable tag: 1.6.3
+Tested up to: 6.7.2
+Stable tag: 1.7.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -51,6 +51,13 @@ BuddyPress reCaptcha offers support for reCaptcha options for
 2. Activate the plugin through the 'Plugins' menu in WordPress.
 
 == Changelog ==
+= 1.7.0 =
+* Fixed: Manage bbPress topic's reply button not disabling before captcha validation.
+* Improved: Added filters and removed escaping functions.
+* Fixed: Plugin content-related issues.
+* Updated: Renamed the menu "Post Comment Form" for better usability.
+* Resolved: reCAPTCHA issue with WooCommerce integration.
+
 = 1.6.3 =
 * Fix: (#73) Issue with BuddyBoss Registration button
 * Fix: (#71) Added admin topic and reply icons
