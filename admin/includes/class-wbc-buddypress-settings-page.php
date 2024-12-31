@@ -1292,7 +1292,7 @@ if ( ! class_exists( 'Wbc_WooCommerce_Settings_Page' ) ) :
 							'section_title_recpacha_on_woo_comment' => array(
 								'name' => __( 'reCaptcha On Comment Form', 'buddypress-recaptcha' ),
 								'type' => 'title',
-								'desc' => '',
+								'desc' => __( 'These reCaptcha settings apply to the WooCommerce product comment form and the blog comment form.', 'buddypress-recaptcha' ),
 								'id'   => 'wc_settings_tab_recapcha_woo_comment',
 							),
 
@@ -1341,7 +1341,7 @@ if ( ! class_exists( 'Wbc_WooCommerce_Settings_Page' ) ) :
 							'section_title_recpacha_on_woo_comment' => array(
 								'name' => __( 'reCaptcha On Comment Form', 'buddypress-recaptcha' ),
 								'type' => 'title',
-								'desc' => '',
+								'desc' => __( 'These reCaptcha settings apply to the WooCommerce product comment form and the blog comment form.', 'buddypress-recaptcha' ),
 								'id'   => 'wc_settings_tab_recapcha_woo_comment',
 							),
 
