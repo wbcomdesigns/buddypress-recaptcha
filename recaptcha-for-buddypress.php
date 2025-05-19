@@ -23,7 +23,6 @@
  * Text Domain:       buddypress-recaptcha
  * Domain Path:       /languages
  */
-
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
 	die;
@@ -156,17 +155,19 @@ add_action( 'activated_plugin', 'wb_recaptcha_activation_redirect_settings' );
  * @since    1.0.0
  */
 function run_recaptcha_for_woocommerce() {
-	require plugin_dir_path( __FILE__ ) . 'bp-recaptcha-update-checker/bp-recaptcha-update-checker.php';
-	$myUpdateChecker = Puc_v4_Factory::buildUpdateChecker(
-		'https://demos.wbcomdesigns.com/exporter/free-plugins/buddypress-recaptcha.json',
-		__FILE__, // Full path to the main plugin file or functions.php.
-		'buddypress-recaptcha'
-	);
 	$plugin          = new Recaptcha_For_BuddyPress();
 	$plugin->run();
 
 }
 run_recaptcha_for_woocommerce();
+
+require plugin_dir_path( __FILE__ ) . 'bp-recaptcha-update-checker/plugin-update-checker.php';
+	use YahnisElsts\PluginUpdateChecker\v5\PucFactory;
+	$myUpdateChecker = PucFactory::buildUpdateChecker(
+		'https://demos.wbcomdesigns.com/exporter/free-plugins/buddypress-recaptcha.json',
+		__FILE__, // Full path to the main plugin file or functions.php.
+		'buddypress-recaptcha'
+	);
 
 function wb_recaptcha_get_the_user_ip() {
 	$ipaddress = '';
