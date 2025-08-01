@@ -40,7 +40,7 @@ if ( ! class_exists( 'Wbc_WooCommerce_Settings_Page' ) ) :
 		public function __construct() {
 
 			$this->id    = 'wbc_woo_recaptcha';
-			$this->label = __( 'reCaptcha', 'buddypress-recaptcha' );
+			$this->label = 'reCaptcha';
 
 			include 'class-wooaction.php';
 		}
