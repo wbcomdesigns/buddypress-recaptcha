@@ -89,7 +89,7 @@ jQuery(document).ready(function(){
 					jQuery('#submit').attr("disabled", true);
 					jQuery('#signup_submit').attr("disabled", true);
 						<?php if ( '' === $recapcha_error_msg_captcha_blank ) : ?>
-				jQuery('#submit').attr("title", "<?php echo esc_html( __( 'reCaptcha is a required field.', 'buddypress-recaptcha' ) ); ?>");
+				jQuery('#submit').attr("title", "<?php echo esc_html( __( 'Please complete the security check to register.', 'buddypress-recaptcha' ) ); ?>");
 		<?php else : ?>
 						jQuery('#submit').attr("title", "<?php echo esc_html( $recapcha_error_msg_captcha_blank ); ?>");
 		<?php endif; ?>
@@ -275,12 +275,12 @@ frm.submit();
 				);
 				$response_data = json_decode( $verify_response['body'] );
 				if ( ! $response_data->success ) {
-					$error_meaasge                    = '<div class="bp-messages bp-feedback error"><span class="bp-icon" aria-hidden="true"></span><p>' . esc_html__( 'reCaptcha token is invalid', 'buddypress-recaptcha' ) . '</p></div>';
+					$error_meaasge                    = '<div class="bp-messages bp-feedback error"><span class="bp-icon" aria-hidden="true"></span><p>' . esc_html__( 'Security verification failed. Please try again.', 'buddypress-recaptcha' ) . '</p></div>';
 					$bp->signup->errors['accept_tos'] = $error_meaasge;
 				}
 			} else {
 				if ( 'yes' === $disable_submit_btn && empty( $_POST['g-recaptcha-response'] ) ) {
-					$error_meaasge                    = '<div class="bp-messages bp-feedback error"><span class="bp-icon" aria-hidden="true"></span><p>' . esc_html__( 'reCaptcha token is invalid', 'buddypress-recaptcha' ) . '</p></div>';
+					$error_meaasge                    = '<div class="bp-messages bp-feedback error"><span class="bp-icon" aria-hidden="true"></span><p>' . esc_html__( 'Security verification failed. Please try again.', 'buddypress-recaptcha' ) . '</p></div>';
 					$bp->signup->errors['accept_tos'] = $error_meaasge;
 				}
 			}

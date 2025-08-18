@@ -15,8 +15,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<div class="wbcom-welcome-main-wrapper">
 		<div class="wbcom-welcome-head">			
 			<p class="wbcom-welcome-description">
-				<?php esc_html_e( 'BuddyPress reCaptcha allows users to verify that they are authorized and not a robot.', 'buddypress-recaptcha' ); ?><br/>
-				<?php esc_html_e( 'This plugin provide to check reCaptcha in WP Login page, WP Registration, WP Lost Password, BuddyPress Registration, WooCommerce Login, WooCommerce Registration, WooCommerce Lost Password, WooCommerce Order Page, BBPress Topic And reply pages', 'buddypress-recaptcha' ); ?></p>
+				<?php esc_html_e( 'Protect your BuddyPress community from spam and bots with Google reCAPTCHA integration.', 'buddypress-recaptcha' ); ?><br/>
+				<?php esc_html_e( 'Add security checks to key areas: WordPress login/registration, BuddyPress signup, WooCommerce checkout, bbPress forums, and comment forms. Keep your community safe without disrupting the user experience.', 'buddypress-recaptcha' ); ?></p>
 		</div><!-- .wbcom-welcome-head -->
 
 		<div class="wbcom-welcome-content">
@@ -28,7 +28,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 					<div class="wbcom-support-info-widgets">
 						<div class="wbcom-support-inner">
 						<h3><span class="dashicons dashicons-book"></span><?php esc_html_e( 'Documentation', 'buddypress-recaptcha' ); ?></h3>
-						<p><?php esc_html_e( 'We have prepared an extensive guide on BuddyPress reCaptcha to learn all aspects of the plugin. You will find most of your answers here.', 'buddypress-recaptcha' ); ?></p>
+						<p><?php esc_html_e( 'Our comprehensive documentation covers everything from initial setup to advanced configurations. Find answers to common questions and best practices for optimal security.', 'buddypress-recaptcha' ); ?></p>
 						<a href="<?php echo esc_url( 'https://wbcomdesigns.com/docs/general/buddypress-recaptcha/' ); ?>" class="button button-primary button-welcome-support" target="_blank"><?php esc_html_e( 'Read Documentation', 'buddypress-recaptcha' ); ?></a>
 						</div>
 					</div>
@@ -36,14 +36,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 					<div class="wbcom-support-info-widgets">
 						<div class="wbcom-support-inner">
 						<h3><span class="dashicons dashicons-sos"></span><?php esc_html_e( 'Support Center', 'buddypress-recaptcha' ); ?></h3>
-						<p><?php esc_html_e( 'We strive to offer the best customer care via our support center. Once your theme is activated, you can ask us for help anytime.', 'buddypress-recaptcha' ); ?></p>
+						<p><?php esc_html_e( 'Our dedicated support team is here to help you protect your site. Get expert assistance with setup, troubleshooting, and optimization.', 'buddypress-recaptcha' ); ?></p>
 						<a href="<?php echo esc_url( 'https://wbcomdesigns.com/support/' ); ?>" class="button button-primary button-welcome-support" target="_blank"><?php esc_html_e( 'Get Support', 'buddypress-recaptcha' ); ?></a>
 					</div>
 					</div>
 					<div class="wbcom-support-info-widgets">
 						<div class="wbcom-support-inner">
 						<h3><span class="dashicons dashicons-admin-comments"></span><?php esc_html_e( 'Got Feedback?', 'buddypress-recaptcha' ); ?></h3>
-						<p><?php esc_html_e( 'We want to hear about your experience with the plugin. We would also love to hear any suggestions you may for future updates.', 'buddypress-recaptcha' ); ?></p>
+						<p><?php esc_html_e( 'Your feedback helps us improve! Share your experience and suggestions to help us make the plugin even better.', 'buddypress-recaptcha' ); ?></p>
 						<a href="<?php echo esc_url( 'https://wbcomdesigns.com/submit-review/' ); ?>" class="button button-primary button-welcome-support" target="_blank"><?php esc_html_e( 'Send Feedback', 'buddypress-recaptcha' ); ?></a>
 					</div>
 					</div>

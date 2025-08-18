@@ -85,7 +85,7 @@ jQuery(document).ready(function(){
 					jQuery('#bbp_reply_submit').attr("disabled", true);
 					console.log('close');
 						<?php if ( '' === $recapcha_error_msg_captcha_blank ) : ?>
-				jQuery('#bbp_reply_submit').attr("title", "<?php echo esc_html( __( 'reCaptcha is a required field.', 'buddypress-recaptcha' ) ); ?>");
+				jQuery('#bbp_reply_submit').attr("title", "<?php echo esc_html( __( 'Please complete the security check to submit your reply.', 'buddypress-recaptcha' ) ); ?>");
 		<?php else : ?>
 						jQuery('#bbp_reply_submit').attr("title", "<?php echo esc_html( $recapcha_error_msg_captcha_blank ); ?>");
 		<?php endif; ?>
@@ -458,11 +458,11 @@ frm.submit();
 			$is_enabled = get_option( 'recapcha_enable_on_bbpress_reply' );
 			if ( ! wb_recaptcha_restriction_recaptcha_by_ip() ) {
 				if ( 'yes' === $is_enabled && empty( $_POST['g-recaptcha-response'] ) ) {
-					bbp_add_error( 'anr_error', 'reCaptcha is required' );
+					bbp_add_error( 'anr_error', __( 'Please complete the security check to continue.', 'buddypress-recaptcha' ) );
 				}
 			}
 			if ( ! $this->wbr_bbpress_reply_recaptcha_verify() ) {
-				bbp_add_error( 'anr_error', $this->add_error_to_mgs() );
+				bbp_add_error( 'anr_error', __( 'Security verification failed. Please try again.', 'buddypress-recaptcha' ) );
 			}
 		} else {
 			$is_enabled = get_option( 'wbc_recapcha_enable_on_bbpress_reply' );
@@ -470,7 +470,7 @@ frm.submit();
 				bbp_add_error( 'anr_error', 'reCaptcha is required' );
 			}
 			if ( ! $this->wbr_bbpress_reply_recaptcha_verify() ) {
-				bbp_add_error( 'anr_error', $this->add_error_to_mgs() );
+				bbp_add_error( 'anr_error', __( 'Security verification failed. Please try again.', 'buddypress-recaptcha' ) );
 			}
 		}
 
