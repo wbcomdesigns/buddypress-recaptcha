@@ -35,7 +35,7 @@ module.exports = function (grunt) {
 						'!node_modules/**',
 						'!options/framework/**',
 						'!tests/**',
-            '!bp-recaptcha-update-checker'
+            '!bp-recaptcha-update-checker/**'
 							], // all php
           expand: true
 					}]

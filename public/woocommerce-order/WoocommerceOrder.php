@@ -364,7 +364,7 @@ class WoocommerceOrder {
 
 									if ( '' == trim( $recapcha_error_msg_captcha_invalid ) ) {
 
-										wc_add_notice( __( 'Invalid recaptcha.', 'buddypress-recaptcha' ), 'error' );
+										wc_add_notice( __( 'Security check failed. Please try again.', 'buddypress-recaptcha' ), 'error' );
 										return;
 
 									} else {
@@ -384,7 +384,7 @@ class WoocommerceOrder {
 
 								if ( '' == trim( $recapcha_error_msg_captcha_no_response ) ) {
 
-									wc_add_notice( __( 'Could not get response from recaptcha server.', 'buddypress-recaptcha' ), 'error' );
+									wc_add_notice( __( 'Unable to verify security check. Please refresh the page and try again.', 'buddypress-recaptcha' ), 'error' );
 									return;
 
 								} else {
@@ -398,7 +398,7 @@ class WoocommerceOrder {
 
 							if ( '' == trim( $recapcha_error_msg_captcha_blank ) ) {
 
-								wc_add_notice( __( 'reCaptcha is a required field.', 'buddypress-recaptcha' ), 'error' );
+								wc_add_notice( __( 'Please complete the security check to continue.', 'buddypress-recaptcha' ), 'error' );
 								return;
 
 							} else {
@@ -410,7 +410,7 @@ class WoocommerceOrder {
 					}
 				} else {
 
-					wc_add_notice( __( 'Could not verify request.', 'buddypress-recaptcha' ), 'error' );
+					wc_add_notice( __( 'Security verification failed. Please try again.', 'buddypress-recaptcha' ), 'error' );
 					return;
 
 				}
@@ -485,7 +485,7 @@ class WoocommerceOrder {
 
 								if ( '' == trim( $recapcha_error_msg_captcha_invalid ) ) {
 
-												wc_add_notice( __( 'Google reCAPTCHA verification failed, please try again later.', 'buddypress-recaptcha' ), 'error' );
+												wc_add_notice( __( 'Security verification failed. Please refresh and try again.', 'buddypress-recaptcha' ), 'error' );
 												return;
 
 								} else {
@@ -521,7 +521,7 @@ class WoocommerceOrder {
 
 							if ( '' == trim( $recapcha_error_msg_captcha_no_response ) ) {
 
-								wc_add_notice( __( 'Could not get response from reCAPTCHA server.', 'buddypress-recaptcha' ), 'error' );
+								wc_add_notice( __( 'Unable to verify security check. Please refresh the page and try again.', 'buddypress-recaptcha' ), 'error' );
 								return;
 
 							} else {
@@ -535,7 +535,7 @@ class WoocommerceOrder {
 
 						if ( '' == trim( $recapcha_error_msg_captcha_blank ) ) {
 
-							wc_add_notice( __( 'Google reCAPTCHA token is missing.', 'buddypress-recaptcha' ), 'error' );
+							wc_add_notice( __( 'Security check is required. Please refresh the page and try again.', 'buddypress-recaptcha' ), 'error' );
 							return;
 
 						} else {

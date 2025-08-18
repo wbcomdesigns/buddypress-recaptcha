@@ -100,14 +100,14 @@ add_action( 'plugins_loaded', 'wb_recaptcha_required_plugin_activation_check' );
  * Required plugins admin notice for reCaptcha for WooCommerce.
  */
 function wb_recaptcha_required_plugin_admin_notice() {
-	$wb_recaptcha   = __( 'reCaptcha for WooCommerce', 'buddypress-recaptcha' );
+	$wb_recaptcha   = __( 'BuddyPress reCAPTCHA Security', 'buddypress-recaptcha' );
 	$woo_plugin     = __( 'WooCommerce', 'buddypress-recaptcha' );
 	$bp_plugin      = __( 'BuddyPress', 'buddypress-recaptcha' );
 	$bbpress_plugin = __( 'bbPress', 'buddypress-recaptcha' );
 
 	echo '<div class="error"><p>'
 	/* translators: %1s: reCaptcha for WooCommerce, %2$s: WooCommerce, %3$s: BuddyPress, %4$s: bbPress,    */
-	. sprintf( esc_html__( '%1$s is ineffective as it requires %2$s or %3$s or %4$s to be installed and active.', 'buddypress-recaptcha' ), '<strong>' . esc_html( $wb_recaptcha ) . '</strong>', '<strong>' . esc_html( $woo_plugin ) . '</strong>', '<strong>' . esc_html( $bp_plugin ) . '</strong>', '<strong>' . esc_html( $bbpress_plugin ) . '</strong>' )
+	. sprintf( esc_html__( 'To protect your site from spam, %1$s needs at least one of these plugins: %2$s, %3$s, or %4$s. Please install and activate one to continue.', 'buddypress-recaptcha' ), '<strong>' . esc_html( $wb_recaptcha ) . '</strong>', '<strong>' . esc_html( $woo_plugin ) . '</strong>', '<strong>' . esc_html( $bp_plugin ) . '</strong>', '<strong>' . esc_html( $bbpress_plugin ) . '</strong>' )
 	. '</p></div>';
 	if ( null !== filter_input( INPUT_GET, 'activate' ) ) {
 		$activate = filter_input( INPUT_GET, 'activate' );
