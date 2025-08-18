@@ -323,7 +323,7 @@ frm.submit();
 		static $last_verify = null;
 		$nonce              = isset( $_POST['_wpnonce'] ) ? sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ) : '';
 		if ( isset( $_POST['_wpnonce'] ) && ! wp_verify_nonce( $nonce, 'bbp-new-topic' ) ) {
-			die( 'Busted!' );
+			return false;
 		}
 		if ( is_user_logged_in() ) {
 			return true;
@@ -373,18 +373,12 @@ frm.submit();
 
 			$result = json_decode( $request_body, true );
 			if ( isset( $result['success'] ) && true === $result['success'] ) {
-				if ( 'v3' === get_option( 'wbc_recapcha_version' ) ) {
-					$score  = isset( $result['score'] ) ? $result['score'] : 0;
-					$action = isset( $result['action'] ) ? $result['action'] : '';
-					$verify = anr_get_option( 'score', '0.5' ) <= $score && 'advanced_nocaptcha_recaptcha' === $action;
-				} else {
-					$verify = true;
-				}
+				$verify = true;
 			}
 			$verify      = apply_filters( 'anr_verify_captcha', $verify, $result, $response );
 			$last_verify = $verify;
 		} else {
-			$secre_key = trim( get_option( 'wc_settings_tab_recapcha_secret_key' ) );
+			$secre_key = trim( get_option( 'wc_settings_tab_recapcha_secret_key_v3' ) );
 			$remoteip  = isset( $_SERVER['REMOTE_ADDR'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) : '';
 			$verify    = false;
 
@@ -427,11 +421,13 @@ frm.submit();
 
 			$result = json_decode( $request_body, true );
 			if ( isset( $result['success'] ) && true === $result['success'] ) {
-				if ( 'v3' === get_option( 'wbc_recapcha_version' ) ) {
-					$score  = isset( $result['score'] ) ? $result['score'] : 0;
-					$action = isset( $result['action'] ) ? $result['action'] : '';
-					$verify = anr_get_option( 'score', '0.5' ) <= $score && 'advanced_nocaptcha_recaptcha' === $action;
-				} else {
+				// For v3, check score threshold
+				$score_threshold = get_option( 'wbc_recapcha_bbpress_topic_score_threshold_v3', '0.5' );
+				$score = isset( $result['score'] ) ? $result['score'] : 0;
+				$expected_action = get_option( 'wbc_recapcha_bbpress_topic_action_v3', 'bbPress_topic' );
+				$action = isset( $result['action'] ) ? $result['action'] : '';
+				
+				if ( $score >= $score_threshold && ( empty( $expected_action ) || $action === $expected_action ) ) {
 					$verify = true;
 				}
 			}
@@ -452,7 +448,7 @@ frm.submit();
 		$version = get_option( 'wbc_recapcha_version' );
 		$nonce   = isset( $_POST['_wpnonce'] ) ? sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ) : '';
 		if ( isset( $_POST['_wpnonce'] ) && ! wp_verify_nonce( $nonce, 'bbp-new-topic' ) ) {
-			die( 'Busted!' );
+			return false;
 		}
 		if ( 'v2' === $version ) {
 			$is_enabled = get_option( 'recapcha_enable_on_bbpress_topic' );

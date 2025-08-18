@@ -255,7 +255,7 @@ frm.submit();
 		$wbc_recapcha_enable_on_signup_bp = get_option( 'wbc_recapcha_enable_on_signup_bp' );
 		$nonce                            = isset( $_POST['_wpnonce'] ) ? sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ) : '';
 		if ( isset( $_POST['_wpnonce'] ) && ! wp_verify_nonce( $nonce, 'bp_new_signup' ) ) {
-			die( 'Busted!' );
+			return;
 		}
 		if ( 'yes' === $wbc_recapcha_enable_on_signup_bp ) {
 			if ( 'v2' !== $re_capcha_version ) {

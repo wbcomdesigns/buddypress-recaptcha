@@ -170,28 +170,17 @@ require plugin_dir_path( __FILE__ ) . 'bp-recaptcha-update-checker/plugin-update
 	);
 
 function wb_recaptcha_get_the_user_ip() {
+	// Only trust REMOTE_ADDR as other headers can be spoofed
 	$ipaddress = '';
-	if ( isset( $_SERVER['HTTP_CLIENT_IP'] ) ) {
-		$ipaddress = $_SERVER['HTTP_CLIENT_IP'];
-	}
-	if ( isset( $_SERVER['HTTP_X_FORWARDED_FOR'] ) ) {
-		$ipaddress = $_SERVER['HTTP_X_FORWARDED_FOR'];
-	}
-	if ( isset( $_SERVER['HTTP_X_FORWARDED'] ) ) {
-		$ipaddress = $_SERVER['HTTP_X_FORWARDED'];
-	}
-	if ( isset( $_SERVER['HTTP_FORWARDED_FOR'] ) ) {
-		$ipaddress = $_SERVER['HTTP_FORWARDED_FOR'];
-	}
-	if ( isset( $_SERVER['HTTP_FORWARDED'] ) ) {
-		$ipaddress = $_SERVER['HTTP_FORWARDED'];
-	}
 	if ( isset( $_SERVER['REMOTE_ADDR'] ) ) {
-		$ipaddress = $_SERVER['REMOTE_ADDR'];
+		$ipaddress = sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) );
+		// Validate IP address
+		if ( ! filter_var( $ipaddress, FILTER_VALIDATE_IP ) ) {
+			$ipaddress = '';
+		}
 	}
 
 	return $ipaddress;
-
 }
 
 
