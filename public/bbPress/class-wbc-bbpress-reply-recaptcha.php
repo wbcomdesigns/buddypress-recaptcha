@@ -322,7 +322,7 @@ frm.submit();
 		static $last_verify = null;
 		$nonce              = isset( $_POST['_wpnonce'] ) ? sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ) : '';
 		if ( isset( $_POST['_wpnonce'] ) && ! wp_verify_nonce( $nonce, 'bbp-new-reply' ) ) {
-			die( 'Busted!' );
+			return false;
 		}
 		if ( is_user_logged_in() ) {
 			return true;
@@ -383,7 +383,7 @@ frm.submit();
 			$verify      = apply_filters( 'anr_verify_captcha', $verify, $result, $response );
 			$last_verify = $verify;
 		} else {
-			$secre_key = trim( get_option( 'wc_settings_tab_recapcha_secret_key' ) );
+			$secre_key = trim( get_option( 'wc_settings_tab_recapcha_secret_key_v3' ) );
 			$remoteip  = isset( $_SERVER['REMOTE_ADDR'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) : '';
 			$verify    = false;
 
@@ -452,7 +452,7 @@ frm.submit();
 		$version = get_option( 'wbc_recapcha_version' );
 		$nonce   = isset( $_POST['_wpnonce'] ) ? sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ) : '';
 		if ( isset( $_POST['_wpnonce'] ) && ! wp_verify_nonce( $nonce, 'bbp-new-reply' ) ) {
-			die( 'Busted!' );
+			return false;
 		}
 		if ( 'v2' === $version ) {
 			$is_enabled = get_option( 'recapcha_enable_on_bbpress_reply' );
