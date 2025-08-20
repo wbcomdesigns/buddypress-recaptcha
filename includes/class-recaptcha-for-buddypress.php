@@ -66,8 +66,8 @@ class Recaptcha_For_BuddyPress {
 	 * @since    1.0.0
 	 */
 	public function __construct() {
-		if ( defined( ' RECAPTCHA_FOR_WOOCOMMERCE_VERSION' ) ) {
-			$this->version = RECAPTCHA_FOR_WOOCOMMERCE_VERSION;
+		if ( defined( 'RFB_PLUGIN_VERSION' ) ) {
+			$this->version = RFB_PLUGIN_VERSION;
 		} else {
 			$this->version = '1.0.0';
 		}
@@ -125,7 +125,7 @@ class Recaptcha_For_BuddyPress {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/wbcom/wbcom-admin-settings.php';
 		// LRL Class Files login, registration and lost password.
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/lrl-classes/Login.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/lrl-classes/Regisrtation.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/lrl-classes/Registration.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/lrl-classes/Lostpassword.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/woocommerce-lrl-classes/WoocommerceRegister.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/woocommerce-lrl-classes/WoocommerceLogin.php';
@@ -139,7 +139,7 @@ class Recaptcha_For_BuddyPress {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/woocommerce-order/WoocommerceOrder.php';
 
 		// Buddy Press.
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/bp-classes/Regisrtationbp.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/bp-classes/RegistrationBP.php';
 
 		// bbPress.
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/bbPress/class-wbc-bbpress-reply-recaptcha.php';
@@ -208,28 +208,28 @@ class Recaptcha_For_BuddyPress {
 
 		// Login, registration lost password.
 		$login        = new Login();
-		$regisrtation = new Regisrtation();
+		$registration = new Registration();
 		$lostpassword = new Lostpassword();
 		add_action( 'login_form', array( $login, 'woo_extra_wp_login_form' ) );
 		add_action( 'reign_recaptcha_after_login_form', array( $login, 'woo_extra_wp_login_form' ) );
 		add_action( 'buddyxpro_recaptcha_after_login_form', array( $login, 'woo_extra_wp_login_form' ) );
-		add_action( 'register_form', array( $regisrtation, 'woo_extra_wp_register_form' ) );
-		add_action( 'reign_recaptcha_after_register_form', array( $regisrtation, 'woo_extra_wp_register_form' ) );
-		add_action( 'buddyxpro_recaptcha_after_register_form', array( $regisrtation, 'woo_extra_wp_register_form' ) );
+		add_action( 'register_form', array( $registration, 'woo_extra_wp_register_form' ) );
+		add_action( 'reign_recaptcha_after_register_form', array( $registration, 'woo_extra_wp_register_form' ) );
+		add_action( 'buddyxpro_recaptcha_after_register_form', array( $registration, 'woo_extra_wp_register_form' ) );
 		add_action( 'lostpassword_form', array( $lostpassword, 'woo_extra_wp_lostpassword_form' ) );
 
 		$is_wp_login_recaptcha_enabled = get_option( 'wbc_recapcha_enable_on_wplogin' );
 		if ( 'yes' === $is_wp_login_recaptcha_enabled ) {
-			add_action( 'bppcp_after_login_form', array( $regisrtation, 'woo_extra_wp_register_form' ) );
-			add_action( 'bppcp_after_register_form', array( $regisrtation, 'woo_extra_wp_register_form' ) );
-			add_action( 'bp_lock_after_login_form', array( $regisrtation, 'woo_extra_wp_register_form' ) );
-			add_action( 'bp_lock_after_register_form', array( $regisrtation, 'woo_extra_wp_register_form' ) );
+			add_action( 'bppcp_after_login_form', array( $registration, 'woo_extra_wp_register_form' ) );
+			add_action( 'bppcp_after_register_form', array( $registration, 'woo_extra_wp_register_form' ) );
+			add_action( 'bp_lock_after_login_form', array( $registration, 'woo_extra_wp_register_form' ) );
+			add_action( 'bp_lock_after_register_form', array( $registration, 'woo_extra_wp_register_form' ) );
 		}
 
 		// Buddypress.
-		$regisrtation_bp = new Regisrtationbp();
-		add_action( 'bp_before_registration_submit_buttons', array( $regisrtation_bp, 'woo_extra_bp_register_form' ), 36 );
-		add_action( 'bp_signup_validate', array( $regisrtation_bp, 'innovage_validate_user_registration' ) );
+		$registration_bp = new RegistrationBP();
+		add_action( 'bp_before_registration_submit_buttons', array( $registration_bp, 'woo_extra_bp_register_form' ), 36 );
+		add_action( 'bp_signup_validate', array( $registration_bp, 'innovage_validate_user_registration' ) );
 		// add_action( 'bp_activity_entry_comments', array( $regisrtation_bp, 'form_field_bp' ) );
 		// add_action( 'bp_activity_post_form_options', array( $regisrtation_bp, 'form_field_bp' ) );
 
