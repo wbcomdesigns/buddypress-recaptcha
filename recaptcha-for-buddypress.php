@@ -57,7 +57,7 @@ if ( ! defined( 'RFB_PLUGIN_PATH' ) ) {
  * The code that runs during plugin activation.
  * This action is documented in includes/class- recaptcha-for-buddypress-activator.php
  */
-function activate_recaptcha_for_woocommerce() {
+function activate_recaptcha_for_buddypress() {
 	require_once plugin_dir_path( __FILE__ ) . 'includes/class-recaptcha-for-buddypress-activator.php';
 	Recaptcha_For_BuddyPress_Activator::activate();
 }
@@ -66,13 +66,13 @@ function activate_recaptcha_for_woocommerce() {
  * The code that runs during plugin deactivation.
  * This action is documented in includes/class- recaptcha-for-buddypress-deactivator.php
  */
-function deactivate_recaptcha_for_woocommerce() {
+function deactivate_recaptcha_for_buddypress() {
 	require_once plugin_dir_path( __FILE__ ) . 'includes/class-recaptcha-for-buddypress-deactivator.php';
 	Recaptcha_For_BuddyPress_Deactivator::deactivate();
 }
 
-register_activation_hook( __FILE__, 'activate_recaptcha_for_woocommerce' );
-register_deactivation_hook( __FILE__, 'deactivate_recaptcha_for_woocommerce' );
+register_activation_hook( __FILE__, 'activate_recaptcha_for_buddypress' );
+register_deactivation_hook( __FILE__, 'deactivate_recaptcha_for_buddypress' );
 
 /**
  * The core plugin class that is used to define internationalization,
@@ -87,7 +87,7 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-recaptcha-for-buddypress.p
  */
 function wb_recaptcha_required_plugin_activation_check() {
 	if ( class_exists( 'WooCommerce' ) || class_exists( 'BuddyPress' ) || class_exists( 'bbPress' ) ) {
-		register_activation_hook( __FILE__, 'activate_recaptcha_for_woocommerce' );
+		register_activation_hook( __FILE__, 'activate_recaptcha_for_buddypress' );
 	} else {
 		add_action( 'admin_notices', 'wb_recaptcha_required_plugin_admin_notice' );
 		add_action( 'admin_init', 'wb_recaptcha_existing_checkin_plugin' );
@@ -117,14 +117,13 @@ function wb_recaptcha_required_plugin_admin_notice() {
 
 
 /**
- * Function to remove buddypress recaptcha plugin if already exist.
+ * Deactivate the plugin if WooCommerce, BuddyPress, or bbPress is not active.
  *
  * @since 1.0.0
  */
 function wb_recaptcha_existing_checkin_plugin() {
-	$wb_recaptcha_plugin = plugin_dir_path( __DIR__ ) . 'buddypress-recaptcha/buddypress-recaptcha';
-	// Check to see if plugin is already active.
-	if ( is_plugin_active( plugin_basename( __FILE__ ) ) ) {
+	// Only deactivate if none of the required plugins are active
+	if ( ! class_exists( 'WooCommerce' ) && ! class_exists( 'BuddyPress' ) && ! class_exists( 'bbPress' ) ) {
 		deactivate_plugins( plugin_basename( __FILE__ ) );
 	}
 }
@@ -137,7 +136,10 @@ function wb_recaptcha_existing_checkin_plugin() {
 function wb_recaptcha_activation_redirect_settings( $plugin ) {
 
 	if ( plugin_basename( __FILE__ ) === $plugin && ( class_exists( 'WooCommerce' ) || class_exists( 'BuddyPress' ) || class_exists( 'bbPress' ) ) ) {
-		if ( isset( $_REQUEST['action'] ) && $_REQUEST['action']  == 'activate' && isset( $_REQUEST['plugin'] ) && $_REQUEST['plugin'] == $plugin) { //phpcs:ignore
+		$action = isset( $_GET['action'] ) ? sanitize_text_field( wp_unslash( $_GET['action'] ) ) : '';
+		$plugin_param = isset( $_GET['plugin'] ) ? sanitize_text_field( wp_unslash( $_GET['plugin'] ) ) : '';
+		
+		if ( 'activate' === $action && $plugin === $plugin_param ) {
 			wp_safe_redirect( admin_url( 'admin.php?page=buddypress-recaptcha' ) );
 			exit;
 		}
@@ -154,12 +156,12 @@ add_action( 'activated_plugin', 'wb_recaptcha_activation_redirect_settings' );
  *
  * @since    1.0.0
  */
-function run_recaptcha_for_woocommerce() {
+function run_recaptcha_for_buddypress() {
 	$plugin          = new Recaptcha_For_BuddyPress();
 	$plugin->run();
 
 }
-run_recaptcha_for_woocommerce();
+run_recaptcha_for_buddypress();
 
 require plugin_dir_path( __FILE__ ) . 'bp-recaptcha-update-checker/plugin-update-checker.php';
 	use YahnisElsts\PluginUpdateChecker\v5\PucFactory;
@@ -169,6 +171,12 @@ require plugin_dir_path( __FILE__ ) . 'bp-recaptcha-update-checker/plugin-update
 		'buddypress-recaptcha'
 	);
 
+/**
+ * Get the user's IP address safely.
+ *
+ * @since 1.0.0
+ * @return string The validated IP address or empty string if invalid.
+ */
 function wb_recaptcha_get_the_user_ip() {
 	// Only trust REMOTE_ADDR as other headers can be spoofed
 	$ipaddress = '';
@@ -184,13 +192,20 @@ function wb_recaptcha_get_the_user_ip() {
 }
 
 
+/**
+ * Check if the current user's IP is in the whitelist to skip captcha.
+ *
+ * @since 1.0.0
+ * @return bool True if IP is whitelisted, false otherwise.
+ */
 function wb_recaptcha_restriction_recaptcha_by_ip() {
-	$get_ip       = wb_recaptcha_get_the_user_ip();
-	$recpatcha_ip = get_option( 'wbc_recapcha_ip_to_skip_captcha' );
-	$explode      = $recpatcha_ip;
-	$explode_ip   = explode( ',', $explode );
-	if ( in_array( $get_ip, $explode_ip ) ) {
-		return true;
+	$user_ip         = wb_recaptcha_get_the_user_ip();
+	$whitelisted_ips = get_option( 'wbc_recapcha_ip_to_skip_captcha', '' );
+	
+	if ( empty( $whitelisted_ips ) || empty( $user_ip ) ) {
+		return false;
 	}
-	return false;
+	
+	$ip_list = array_map( 'trim', explode( ',', $whitelisted_ips ) );
+	return in_array( $user_ip, $ip_list, true );
 }

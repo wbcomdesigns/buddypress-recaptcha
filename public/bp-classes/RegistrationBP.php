@@ -19,7 +19,7 @@
  * @subpackage bp_recaptcha/public
  * @author     Wbcom Designs <admin@wbcomdesigns.com>
  */
-class Regisrtationbp {
+class RegistrationBP {
 
 	/**
 	 * Template Class Doc Comment
