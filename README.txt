@@ -3,8 +3,8 @@ Contributors: vapvarun,wbcomdesigns
 Donate link: https://wbcomdesigns.com/
 Tags: BuddyPress, WooCommmerce, bbPress
 Requires at least: 3.0.1
-Tested up to: 6.7.2
-Stable tag: 1.7.0
+Tested up to: 6.8.2
+Stable tag: 1.7.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -51,6 +51,13 @@ BuddyPress reCaptcha offers support for reCaptcha options for
 2. Activate the plugin through the 'Plugins' menu in WordPress.
 
 == Changelog ==
+= 1.7.1 =
+* Fixed: Undefined method calls causing compatibility issues.
+* Updated: Language files for improved translations.
+* Fixed: Incorrect usage of `_load_textdomain_just_in_time` function to comply with WordPress coding standards.
+* Updated: Plugin update checker version for reliable update handling.
+* Cleanup: Removed unwanted files and redundant code from wbcom folder.
+
 = 1.7.0 =
 * Fixed: Manage bbPress topic's reply button not disabling before captcha validation.
 * Improved: Added filters and removed escaping functions.
