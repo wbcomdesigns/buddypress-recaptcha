@@ -6,7 +6,7 @@
  * @since 1.0.0
  *
  * @package    Recaptcha_For_BuddyPress
- * @subpackage bp_recaptcha/public/bbPress
+ * @subpackage bp_recaptcha/public/bp-classes
  */
 
 /**
@@ -19,34 +19,33 @@
  * @subpackage bp_recaptcha/public
  * @author     Wbcom Designs <admin@wbcomdesigns.com>
  */
-class Recaptcha_bbPress_Topic {
+class Registrationbp {
 
 	/**
-	 * Render captcha on bbPress topic form
+	 * Render captcha on BuddyPress registration form
 	 */
-	public function wbr_bbpress_topic_form_field() {
+	public function woo_extra_bp_register_form() {
 		// Use the service manager to render captcha
 		if ( function_exists( 'wbc_captcha_service_manager' ) ) {
-			wbc_captcha_service_manager()->render( 'bbpress_topic' );
+			wbc_captcha_service_manager()->render( 'bp_register' );
+			do_action( 'bp_accept_tos_errors' );
 		}
 	}
 
 	/**
-	 * Verify captcha when creating a bbPress topic
+	 * Validate BuddyPress registration
 	 *
-	 * @param array $topic_data Topic data.
-	 * @return array|WP_Error
+	 * @return bool|WP_Error
 	 */
-	public function wbr_bbpress_topic_recaptcha_verify( $topic_data ) {
+	public function innovage_validate_user_registration() {
 		// Verify captcha using the service manager
 		if ( function_exists( 'wbc_verify_captcha' ) ) {
-			if ( ! wbc_verify_captcha( 'bbpress_topic' ) ) {
-				$error_message = wbc_get_captcha_error_message( 'bbpress_topic', 'invalid' );
-				bbp_add_error( 'bbp_topic_captcha', $error_message );
+			if ( ! wbc_verify_captcha( 'bp_register' ) ) {
+				$error_message = wbc_get_captcha_error_message( 'bp_register', 'invalid' );
+				buddypress()->signup->errors['bp_register_captcha'] = $error_message;
 				return new WP_Error( 'captcha_error', $error_message );
 			}
 		}
-
-		return $topic_data;
+		return true;
 	}
 }

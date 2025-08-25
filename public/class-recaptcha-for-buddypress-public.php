@@ -47,31 +47,17 @@ class Recaptcha_For_BuddyPress_Public {
 	 * @param      string $version    The version of this plugin.
 	 */
 	public function __construct( $plugin_name, $version ) {
-
 		$this->plugin_name = $plugin_name;
 		$this->version     = $version;
 	}
+
 	/**
 	 * Register the stylesheets for the public-facing side of the site.
 	 *
 	 * @since    1.0.0
 	 */
 	public function enqueue_styles() {
-
-		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in Recaptcha_For_BuddyPress_Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The Recaptcha_For_BuddyPress_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
-		 */
-
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/recaptcha-for-buddypress-public.css', array(), $this->version, 'all' );
-
 	}
 
 	/**
@@ -80,290 +66,179 @@ class Recaptcha_For_BuddyPress_Public {
 	 * @since    1.0.0
 	 */
 	public function enqueue_scripts() {
-
-		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in Recaptcha_For_BuddyPress_Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The Recaptcha_For_BuddyPress_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
-		 */
-		$site_key                          = get_option( 'wc_settings_tab_recapcha_site_key' );
-		$wbc_recapcha_checkout_action_v3 = get_option( 'wbc_recapcha_checkout_action_v3' );
-		if ( '' == $wbc_recapcha_checkout_action_v3 ) {
-			$wbc_recapcha_checkout_action_v3 = 'checkout';
+		// Get service manager
+		if ( ! function_exists( 'wbc_captcha_service_manager' ) ) {
+			return;
 		}
-		$disable_submit_btn                = get_option( 'wbc_recapcha_disable_submitbtn_guestcheckout' );
-		$disable_submit_btn_login_checkout = get_option( 'wbc_recapcha_disable_submitbtn_logincheckout' );
+
+		$service_manager = wbc_captcha_service_manager();
+		if ( ! $service_manager ) {
+			return;
+		}
+
+		$active_service = $service_manager->get_active_service();
+		if ( ! $active_service || ! $active_service->is_configured() ) {
+			return;
+		}
+
+		// Get site key for localization
+		$site_key = $active_service->get_site_key();
+
+		// Enqueue public script
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/recaptcha-for-buddypress-public.js', array( 'jquery' ), $this->version, false );
+		
+		// Localize script with necessary data
 		wp_localize_script(
-			$this->plugin_name,   // Handle of the script
-			'bpRecaptcha',              // JavaScript object name
+			$this->plugin_name,
+			'bpRecaptcha',
 			array(
-				'ajax_url'            				  => admin_url( 'admin-ajax.php' ), // Passing AJAX URL to JS
-				'bpRecaptcha'     					  => wp_create_nonce( 'bpRecaptcha' ), // Security nonce
-				'site_key'      					  => $site_key,
-				'wbc_recapcha_checkout_action_v3'     => $wbc_recapcha_checkout_action_v3,
-				'disable_submit_btn'    			  => $disable_submit_btn,
-				'disable_submit_btn_login_checkout'   => $disable_submit_btn_login_checkout,
+				'ajax_url'     => admin_url( 'admin-ajax.php' ),
+				'nonce'        => wp_create_nonce( 'bpRecaptcha' ),
+				'site_key'     => $site_key,
+				'service_id'   => $active_service->get_service_id(),
 			)
 		);
-		// wp_enqueue_script( 'wbc-woo-captcha' );
-		// wp_enqueue_script( 'wbc-woo-captcha-v3' );
-
 	}
 
 	/**
-	 * Function load the recaptcha css and js.
+	 * Load captcha scripts and styles dynamically
 	 *
-	 * @return void
+	 * @since    1.0.0
 	 */
 	public function woo_recaptcha_load_styles_and_js() {
-
-		$woo_recaptcha_version = get_option( 'wbc_recapcha_version' );
-		if ( '' === $woo_recaptcha_version ) {
-			$woo_recaptcha_version = 'v2';
+		// Get service manager
+		if ( ! function_exists( 'wbc_captcha_service_manager' ) ) {
+			return;
 		}
 
-		if ( 'v2' === strtolower( $woo_recaptcha_version ) ) {
-			$wbc_recapcha_v2_lang = get_option( 'wbc_recapcha_v2_lang' );
-			if ( '' !== $wbc_recapcha_v2_lang ) {
-				wp_register_script( 'wbc-woo-captcha', 'https://www.google.com/recaptcha/api.js?from=wbc_recaptcha&hl=' . $wbc_recapcha_v2_lang, array(), '1.0', true );
-				wp_register_script( 'wbc-woo-captcha-explicit', 'https://www.google.com/recaptcha/api.js?from=wbc_recaptcha&render=explicit&hl=' . $wbc_recapcha_v2_lang, array(), '2.0', true );
-			} else {
-				wp_register_script( 'wbc-woo-captcha', 'https://www.google.com/recaptcha/api.js?from=wbc_recaptcha', array(), '1.0', true );
-				wp_register_script( 'wbc-woo-captcha-explicit', 'https://www.google.com/recaptcha/api.js?from=wbc_recaptcha&render=explicit', array(), '2.0', true );
-			}
-			$is_enabled                         = get_option( 'wbc_recapcha_enable_on_guestcheckout' );
-			$is_enabled_logincheckout           = get_option( 'wbc_recapcha_enable_on_logincheckout' );
-			$wbc_recapcha_enable_on_payfororder = get_option( 'wbc_recapcha_enable_on_payfororder' );
-			$wbc_recapcha_no_conflict           = get_option( 'wbc_recapcha_no_conflict' );
-			
-			if ( function_exists( 'is_wc_endpoint_url' ) ) {
-				if ( is_user_logged_in() && is_wc_endpoint_url( get_option( 'woocommerce_myaccount_add_payment_method_endpoint', 'add-payment-method' ) ) ) {
+		$service_manager = wbc_captcha_service_manager();
+		if ( ! $service_manager ) {
+			return;
+		}
 
-					if ( 'yes' === $wbc_recapcha_no_conflict ) {
+		$active_service = $service_manager->get_active_service();
+		if ( ! $active_service || ! $active_service->is_configured() ) {
+			return;
+		}
 
-						global $wp_scripts;
-
-						$urls = array( 'google.com/recaptcha', 'gstatic.com/recaptcha' );
-
-						foreach ( $wp_scripts->queue as $handle ) {
-
-							foreach ( $urls as $url ) {
-								if ( false !== strpos( $wp_scripts->registered[ $handle ]->src, $url ) && ( 'wbc-woo-captcha' !== $handle && 'wbc-woo-captcha-v3' !== $handle ) ) {
-									wp_dequeue_script( $handle );
-									wp_deregister_script( $handle );
-									break;
-								}
-							}
-						}
-					}
-					wp_enqueue_script( 'wbc-woo-captcha' );
-				}
-			}
-
-			if ( function_exists( 'is_checkout' ) ) {
-				if ( 'yes' === $is_enabled && ( ! is_user_logged_in() || 'yes' === $wbc_recapcha_enable_on_payfororder ) && is_checkout() ) {
-
-					if ( 'yes' === $wbc_recapcha_no_conflict ) {
-
-						global $wp_scripts;
-
-						$urls = array( 'google.com/recaptcha', 'gstatic.com/recaptcha' );
-
-						foreach ( $wp_scripts->queue as $handle ) {
-
-							foreach ( $urls as $url ) {
-								if ( false !== strpos( $wp_scripts->registered[ $handle ]->src, $url ) && ( 'wbc-woo-captcha' !== $handle && 'wbc-woo-captcha-v3' !== $handle ) ) {
-									wp_dequeue_script( $handle );
-									wp_deregister_script( $handle );
-									break;
-								}
-							}
-						}
-					}
-				wp_enqueue_script( 'wbc-woo-captcha-explicit' );
-				} elseif ( ( 'yes' === $is_enabled_logincheckout || 'yes' === $wbc_recapcha_enable_on_payfororder ) && is_user_logged_in() && is_checkout() ) {
-
-					if ( 'yes' === $wbc_recapcha_no_conflict ) {
-
-						global $wp_scripts;
-
-						$urls = array( 'google.com/recaptcha', 'gstatic.com/recaptcha' );
-
-						foreach ( $wp_scripts->queue as $handle ) {
-
-							foreach ( $urls as $url ) {
-								if ( false !== strpos( $wp_scripts->registered[ $handle ]->src, $url ) && ( 'wbc-woo-captcha' !== $handle && 'wbc-woo-captcha-v3' !== $handle ) ) {
-									wp_dequeue_script( $handle );
-									wp_deregister_script( $handle );
-									break;
-								}
-							}
-						}
-					}
-					wp_enqueue_script( 'wbc-woo-captcha-explicit' );
-				}
-			}
-		} else {
-
-			$site_key = get_option( 'wc_settings_tab_recapcha_site_key_v3' );
-			wp_register_script( 'wbc-woo-captcha-v3', 'https://www.google.com/recaptcha/api.js?from=wbc_recaptcha&render=' . esc_html( $site_key ), array( 'jquery' ), '1.0', true );
-			$is_enabled                         = get_option( 'wbc_recapcha_enable_on_guestcheckout' );
-			$is_enabled_logincheckout           = get_option( 'wbc_recapcha_enable_on_logincheckout' );
-			$wbc_recapcha_enable_on_payfororder = get_option( 'wbc_recapcha_enable_on_payfororder' );
-			$wbc_recapcha_no_conflict           = get_option( 'wbc_recapcha_no_conflict_v3' );
-			$wbc_is_enabled_bbpress_reply       = get_option( 'wbc_recapcha_enable_on_bbpress_reply' );
-			$wbc_is_enabled_bbpress_topic       = get_option( 'wbc_recapcha_enable_on_bbpress_topic' );
-
+		// Check if we need to load scripts on specific pages
+		$should_load = false;
 		
-			if ( is_user_logged_in() && function_exists( 'is_wc_endpoint_url' ) && is_wc_endpoint_url( get_option( 'woocommerce_myaccount_add_payment_method_endpoint', 'add-payment-method' ) ) ) {
-				
-				if ( 'yes' === $wbc_recapcha_no_conflict ) {
-
-					global $wp_scripts;
-
-					$urls = array( 'google.com/recaptcha', 'gstatic.com/recaptcha' );
-
-					foreach ( $wp_scripts->queue as $handle ) {
-
-						foreach ( $urls as $url ) {
-							if ( false !== strpos( $wp_scripts->registered[ $handle ]->src, $url ) && ( 'wbc-woo-captcha' !== $handle && 'wbc-woo-captcha-v3' !== $handle ) ) {
-								wp_dequeue_script( $handle );
-								wp_deregister_script( $handle );
-								break;
-							}
-						}
-					}
-				}
-				wp_enqueue_script( 'wbc-woo-captcha-v3' );
+		// Check WooCommerce pages
+		if ( function_exists( 'is_checkout' ) && is_checkout() ) {
+			$is_enabled_guest = get_option( 'wbc_recapcha_enable_on_guestcheckout' );
+			$is_enabled_login = get_option( 'wbc_recapcha_enable_on_logincheckout' );
+			
+			if ( ( ! is_user_logged_in() && 'yes' === $is_enabled_guest ) || 
+				 ( is_user_logged_in() && 'yes' === $is_enabled_login ) ) {
+				$should_load = true;
 			}
+		}
 
-			if ( 'yes' === $is_enabled && ( ! is_user_logged_in() || 'yes' === $wbc_recapcha_enable_on_payfororder ) && is_checkout() ) {
-				
-				if ( 'yes' === $wbc_recapcha_no_conflict ) {
+		// Check My Account pages
+		if ( function_exists( 'is_wc_endpoint_url' ) && is_user_logged_in() ) {
+			if ( is_wc_endpoint_url( get_option( 'woocommerce_myaccount_add_payment_method_endpoint', 'add-payment-method' ) ) ) {
+				$should_load = true;
+			}
+		}
 
-					global $wp_scripts;
+		// Check bbPress pages
+		if ( function_exists( 'is_singular' ) ) {
+			if ( is_singular( 'topic' ) && 'yes' === get_option( 'wbc_recapcha_enable_on_bbpress_reply' ) ) {
+				$should_load = true;
+			}
+			if ( is_singular( 'forum' ) && 'yes' === get_option( 'wbc_recapcha_enable_on_bbpress_topic' ) ) {
+				$should_load = true;
+			}
+		}
 
-					$urls = array( 'google.com/recaptcha', 'gstatic.com/recaptcha' );
-
-					foreach ( $wp_scripts->queue as $handle ) {
-
-						foreach ( $urls as $url ) {
-							if ( false !== strpos( $wp_scripts->registered[ $handle ]->src, $url ) && ( 'wbc-woo-captcha' !== $handle && 'wbc-woo-captcha-v3' !== $handle ) ) {
-								wp_dequeue_script( $handle );
-								wp_deregister_script( $handle );
-								break;
-							}
-						}
-					}
-				}
-							wp_enqueue_script( 'wbc-woo-captcha-v3' );
-			} elseif ( ('yes' === $is_enabled_logincheckout || 'yes' === $wbc_recapcha_enable_on_payfororder ) && is_user_logged_in() && is_checkout() ) {
-				
-				if ( 'yes' === $wbc_recapcha_no_conflict ) {
-
-					global $wp_scripts;
-
-					$urls = array( 'google.com/recaptcha', 'gstatic.com/recaptcha' );
-
-					foreach ( $wp_scripts->queue as $handle ) {
-
-						foreach ( $urls as $url ) {
-							if ( false !== strpos( $wp_scripts->registered[ $handle ]->src, $url ) && ( 'wbc-woo-captcha' !== $handle && 'wbc-woo-captcha-v3' !== $handle ) ) {
-								wp_dequeue_script( $handle );
-								wp_deregister_script( $handle );
-								break;
-							}
-						}
-					}
-				}
-				wp_enqueue_script( 'wbc-woo-captcha-v3' );
-			} elseif ( ( 'yes' === $wbc_is_enabled_bbpress_reply ) && is_user_logged_in() && is_singular( 'topic' ) ) {
-				
-				if ( 'yes' === $wbc_recapcha_no_conflict ) {
-
-					global $wp_scripts;
-
-					$urls = array( 'google.com/recaptcha', 'gstatic.com/recaptcha' );
-
-					foreach ( $wp_scripts->queue as $handle ) {
-
-						foreach ( $urls as $url ) {
-							if ( false !== strpos( $wp_scripts->registered[ $handle ]->src, $url ) && ( 'wbc-woo-captcha' !== $handle && 'wbc-woo-captcha-v3' !== $handle ) ) {
-								wp_dequeue_script( $handle );
-								wp_deregister_script( $handle );
-								break;
-							}
-						}
-					}
-				}
-				wp_enqueue_script( 'wbc-woo-captcha-v3' );
-			} elseif ( ( 'yes' === $wbc_is_enabled_bbpress_topic ) && is_user_logged_in() && is_singular( 'forum' ) ) {
-				
-				if ( 'yes' === $wbc_recapcha_no_conflict ) {
-
-					global $wp_scripts;
-
-					$urls = array( 'google.com/recaptcha', 'gstatic.com/recaptcha' );
-
-					foreach ( $wp_scripts->queue as $handle ) {
-
-						foreach ( $urls as $url ) {
-							if ( false !== strpos( $wp_scripts->registered[ $handle ]->src, $url ) && ( 'wbc-woo-captcha' !== $handle && 'wbc-woo-captcha-v3' !== $handle ) ) {
-								wp_dequeue_script( $handle );
-								wp_deregister_script( $handle );
-								break;
-							}
-						}
-					}
-				}
-				wp_enqueue_script( 'wbc-woo-captcha-v3' );
+		// Load scripts if needed
+		if ( $should_load ) {
+			// Handle no-conflict mode
+			$this->handle_no_conflict_mode();
+			
+			// Enqueue service-specific scripts
+			if ( method_exists( $active_service, 'enqueue_scripts' ) ) {
+				$active_service->enqueue_scripts( 'global' );
 			}
 		}
 	}
 
 	/**
-	 * Function added the header meta data.
+	 * Handle no-conflict mode to prevent conflicts with other captcha plugins
+	 */
+	private function handle_no_conflict_mode() {
+		$no_conflict = get_option( 'wbc_recapcha_no_conflict' );
+		if ( 'yes' !== $no_conflict ) {
+			return;
+		}
+
+		global $wp_scripts;
+		if ( ! isset( $wp_scripts->queue ) ) {
+			return;
+		}
+
+		$urls = array( 'google.com/recaptcha', 'gstatic.com/recaptcha', 'cloudflare.com/turnstile' );
+
+		foreach ( $wp_scripts->queue as $handle ) {
+			// Skip our own scripts
+			if ( strpos( $handle, 'wbc-' ) === 0 || strpos( $handle, 'buddypress-recaptcha' ) !== false ) {
+				continue;
+			}
+
+			if ( ! isset( $wp_scripts->registered[ $handle ] ) ) {
+				continue;
+			}
+
+			foreach ( $urls as $url ) {
+				if ( false !== strpos( $wp_scripts->registered[ $handle ]->src, $url ) ) {
+					wp_dequeue_script( $handle );
+					wp_deregister_script( $handle );
+					break;
+				}
+			}
+		}
+	}
+
+	/**
+	 * Add header metadata for IE compatibility
 	 */
 	public function woo_recaptcha_add_header_metadata_for_ie() {
-		echo '<meta http-equiv="X-UA-Compatible" content="IE=edge" />';
+		if ( $this->woo_recaptcha_check_is_ie_browser() ) {
+			echo '<meta http-equiv="X-UA-Compatible" content="IE=edge" />';
+		}
 	}
 
 	/**
-	 * Function return's the goole recaptcha api url.
+	 * Add defer attribute to recaptcha scripts
 	 *
-	 * @param  string $url Get a Google recaptcha api url.
-	 * @return string $url Return the URL.
+	 * @param  string $url Script URL
+	 * @return string Modified URL
 	 */
 	public function google_recaptcha_defer_parsing_of_js( $url ) {
-		if ( strpos( $url, 'https://www.google.com/recaptcha/api.js?from=wbc_recaptcha' ) !== false ) {
+		if ( strpos( $url, 'recaptcha/api.js' ) !== false || strpos( $url, 'turnstile/v0/api.js' ) !== false ) {
 			return str_replace( ' src', ' defer src', $url );
 		}
 		return $url;
 	}
 
 	/**
-	 * Function checks the browser is IE or not.
+	 * Check if browser is Internet Explorer
+	 *
+	 * @return bool
 	 */
 	public function woo_recaptcha_check_is_ie_browser() {
 		if ( ! isset( $_SERVER['HTTP_USER_AGENT'] ) ) {
 			return false;
 		}
-		$bad_browser = preg_match( '~MSIE|Internet Explorer~i', sanitize_text_field( wp_unslash( $_SERVER['HTTP_USER_AGENT'] ) ) ) || preg_match( '~Trident/7.0(.*)?; rv:11.0~', sanitize_text_field( wp_unslash( $_SERVER['HTTP_USER_AGENT'] ) ) );
-		return $bad_browser;
+		$user_agent = sanitize_text_field( wp_unslash( $_SERVER['HTTP_USER_AGENT'] ) );
+		return preg_match( '~MSIE|Internet Explorer~i', $user_agent ) || preg_match( '~Trident/7.0(.*)?; rv:11.0~', $user_agent );
 	}
 
 	/**
-	 * Function load the language file.
+	 * Load language files
 	 */
 	public function woo_load_lang_for_woo_recaptcha() {
-
 		load_plugin_textdomain( 'buddypress-recaptcha', false, basename( dirname( __FILE__ ) ) . '/languages/' );
 	}
 }

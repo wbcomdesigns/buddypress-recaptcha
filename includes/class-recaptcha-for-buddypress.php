@@ -66,8 +66,8 @@ class Recaptcha_For_BuddyPress {
 	 * @since    1.0.0
 	 */
 	public function __construct() {
-		if ( defined( ' RECAPTCHA_FOR_WOOCOMMERCE_VERSION' ) ) {
-			$this->version = RECAPTCHA_FOR_WOOCOMMERCE_VERSION;
+		if ( defined( 'RFB_PLUGIN_VERSION' ) ) {
+			$this->version = RFB_PLUGIN_VERSION;
 		} else {
 			$this->version = '1.0.0';
 		}
@@ -105,6 +105,38 @@ class Recaptcha_For_BuddyPress {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-recaptcha-for-buddypress-loader.php';
 
 		/**
+		 * Service architecture classes
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/captcha-service-interface.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-captcha-service-base.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-captcha-service-manager.php';
+
+		/**
+		 * Helper functions for consistent reCAPTCHA version handling.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/recaptcha-helper-functions.php';
+
+		/**
+		 * Option name compatibility for handling typos in option names.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/option-name-compatibility.php';
+
+		/**
+		 * Captcha verification helper functions.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/captcha-verification-helper.php';
+
+		/**
+		 * Settings integration for service architecture.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-settings-integration.php';
+
+		/**
+		 * Settings migration for simplified settings.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-settings-migration.php';
+
+		/**
 		 * The class responsible for defining internationalization functionality
 		 * of the plugin.
 		 */
@@ -125,7 +157,7 @@ class Recaptcha_For_BuddyPress {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/wbcom/wbcom-admin-settings.php';
 		// LRL Class Files login, registration and lost password.
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/lrl-classes/Login.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/lrl-classes/Regisrtation.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/lrl-classes/Registration.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/lrl-classes/Lostpassword.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/woocommerce-lrl-classes/WoocommerceRegister.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/woocommerce-lrl-classes/WoocommerceLogin.php';
@@ -139,13 +171,18 @@ class Recaptcha_For_BuddyPress {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/woocommerce-order/WoocommerceOrder.php';
 
 		// Buddy Press.
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/bp-classes/Regisrtationbp.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/bp-classes/Registrationbp.php';
 
 		// bbPress.
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/bbPress/class-wbc-bbpress-reply-recaptcha.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/bbPress/class-wbc-bbpress-topic-recaptcha.php';
 
 		$this->loader = new Recaptcha_For_BuddyPress_Loader();
+
+		// Check and run settings migration if needed
+		if ( class_exists( 'WBC_Settings_Migration' ) && WBC_Settings_Migration::is_migration_needed() ) {
+			add_action( 'admin_init', array( 'WBC_Settings_Migration', 'migrate' ), 5 );
+		}
 
 	}
 
@@ -207,98 +244,128 @@ class Recaptcha_For_BuddyPress {
 		add_action( 'login_enqueue_scripts', array( $plugin_public, 'woo_recaptcha_load_styles_and_js' ), 9999 );
 
 		// Login, registration lost password.
+		if ( ! class_exists( 'Login' ) ) {
+			error_log( 'BuddyPress reCAPTCHA: Login class not found' );
+			return;
+		}
+		if ( ! class_exists( 'Registration' ) ) {
+			error_log( 'BuddyPress reCAPTCHA: Registration class not found' );
+			return;
+		}
+		if ( ! class_exists( 'Lostpassword' ) ) {
+			error_log( 'BuddyPress reCAPTCHA: Lostpassword class not found' );
+			return;
+		}
+		
 		$login        = new Login();
-		$regisrtation = new Regisrtation();
+		$registration = new Registration();
 		$lostpassword = new Lostpassword();
 		add_action( 'login_form', array( $login, 'woo_extra_wp_login_form' ) );
 		add_action( 'reign_recaptcha_after_login_form', array( $login, 'woo_extra_wp_login_form' ) );
 		add_action( 'buddyxpro_recaptcha_after_login_form', array( $login, 'woo_extra_wp_login_form' ) );
-		add_action( 'register_form', array( $regisrtation, 'woo_extra_wp_register_form' ) );
-		add_action( 'reign_recaptcha_after_register_form', array( $regisrtation, 'woo_extra_wp_register_form' ) );
-		add_action( 'buddyxpro_recaptcha_after_register_form', array( $regisrtation, 'woo_extra_wp_register_form' ) );
+		add_action( 'register_form', array( $registration, 'woo_extra_wp_register_form' ) );
+		add_action( 'reign_recaptcha_after_register_form', array( $registration, 'woo_extra_wp_register_form' ) );
+		add_action( 'buddyxpro_recaptcha_after_register_form', array( $registration, 'woo_extra_wp_register_form' ) );
 		add_action( 'lostpassword_form', array( $lostpassword, 'woo_extra_wp_lostpassword_form' ) );
 
 		$is_wp_login_recaptcha_enabled = get_option( 'wbc_recapcha_enable_on_wplogin' );
 		if ( 'yes' === $is_wp_login_recaptcha_enabled ) {
-			add_action( 'bppcp_after_login_form', array( $regisrtation, 'woo_extra_wp_register_form' ) );
-			add_action( 'bppcp_after_register_form', array( $regisrtation, 'woo_extra_wp_register_form' ) );
-			add_action( 'bp_lock_after_login_form', array( $regisrtation, 'woo_extra_wp_register_form' ) );
-			add_action( 'bp_lock_after_register_form', array( $regisrtation, 'woo_extra_wp_register_form' ) );
+			add_action( 'bppcp_after_login_form', array( $registration, 'woo_extra_wp_register_form' ) );
+			add_action( 'bppcp_after_register_form', array( $registration, 'woo_extra_wp_register_form' ) );
+			add_action( 'bp_lock_after_login_form', array( $registration, 'woo_extra_wp_register_form' ) );
+			add_action( 'bp_lock_after_register_form', array( $registration, 'woo_extra_wp_register_form' ) );
 		}
 
-		// Buddypress.
-		$regisrtation_bp = new Regisrtationbp();
-		add_action( 'bp_before_registration_submit_buttons', array( $regisrtation_bp, 'woo_extra_bp_register_form' ), 36 );
-		add_action( 'bp_signup_validate', array( $regisrtation_bp, 'innovage_validate_user_registration' ) );
-		// add_action( 'bp_activity_entry_comments', array( $regisrtation_bp, 'form_field_bp' ) );
-		// add_action( 'bp_activity_post_form_options', array( $regisrtation_bp, 'form_field_bp' ) );
+		// Buddypress - only load if BuddyPress is active.
+		if ( class_exists( 'BuddyPress' ) ) {
+			$registration_bp = new Registrationbp();
+			add_action( 'bp_before_registration_submit_buttons', array( $registration_bp, 'woo_extra_bp_register_form' ), 36 );
+			add_action( 'bp_signup_validate', array( $registration_bp, 'innovage_validate_user_registration' ) );
+			// add_action( 'bp_activity_entry_comments', array( $registration_bp, 'form_field_bp' ) );
+			// add_action( 'bp_activity_post_form_options', array( $registration_bp, 'form_field_bp' ) );
+		}
 
-		$bbpress_topic_class = new Recaptcha_bbPress_Topic();
-		add_action( 'bbp_theme_before_topic_form_submit_wrapper', array( $bbpress_topic_class, 'wbr_bbpress_topic_form_field' ), 99 );
-		add_action( 'bbp_new_topic_pre_extras', array( $bbpress_topic_class, 'wbr_bbpress_topic_new_verify' ) );
-		add_action( 'wp_enqueue_scripts', array( $bbpress_topic_class, 'wbr_bbpress_topic_v2_checkbox_script' ) );
+		// bbPress - only load if bbPress is active.
+		if ( class_exists( 'bbPress' ) ) {
+			$bbpress_topic_class = new Recaptcha_bbPress_Topic();
+			// Priority 99 ensures reCAPTCHA appears after other form fields
+			add_action( 'bbp_theme_before_topic_form_submit_wrapper', array( $bbpress_topic_class, 'wbr_bbpress_topic_form_field' ), 99 );
+			add_action( 'bbp_new_topic_pre_extras', array( $bbpress_topic_class, 'wbr_bbpress_topic_recaptcha_verify' ) );
+			// Remove non-existent method call: wbr_bbpress_topic_v2_checkbox_script
 
-		$bbpress_reply_class = new Recaptcha_bbPress_Reply();
-		add_action( 'bbp_theme_before_reply_form_submit_wrapper', array( $bbpress_reply_class, 'wbr_bbpress_reply_form_field_reply' ), 99 );
-		add_action( 'bbp_new_reply_pre_extras', array( $bbpress_reply_class, 'wbr_bbpress_reply_verify' ) );
-		add_action( 'wp_enqueue_scripts', array( $bbpress_reply_class, 'wbr_bbpress_reply_v2_checkbox_script' ) );
-		// Woocommerce Login registration and lost form.
-		$woocommerce_register      = new WoocommerceRegister();
-		$woocommerce_login         = new WoocommerceLogin();
-		$woocommerce_lost_password = new WoocommerceLostpassword();
-		add_action( 'woocommerce_register_form', array( $woocommerce_register, 'woo_extra_register_fields' ) );
-		add_action( 'woocommerce_login_form', array( $woocommerce_login, 'woo_extra_login_fields' ) );
-		add_action( 'woocommerce_lostpassword_form', array( $woocommerce_lost_password, 'woo_extra_lostpassword_fields' ) );
+			$bbpress_reply_class = new Recaptcha_bbPress_Reply();
+			// Priority 99 ensures reCAPTCHA appears after other form fields
+			add_action( 'bbp_theme_before_reply_form_submit_wrapper', array( $bbpress_reply_class, 'wbr_bbpress_reply_form_field_reply' ), 99 );
+			add_action( 'bbp_new_reply_pre_extras', array( $bbpress_reply_class, 'wbr_bbpress_reply_recaptcha_verify' ) );
+			// Remove non-existent method call: wbr_bbpress_reply_v2_checkbox_script
+		}
+		// Woocommerce - only load if WooCommerce is active.
+		if ( class_exists( 'WooCommerce' ) ) {
+			// Woocommerce Login registration and lost form.
+			$woocommerce_register      = new WoocommerceRegister();
+			$woocommerce_login         = new WoocommerceLogin();
+			$woocommerce_lost_password = new WoocommerceLostpassword();
+			add_action( 'woocommerce_register_form', array( $woocommerce_register, 'woo_extra_register_fields' ) );
+			add_action( 'woocommerce_login_form', array( $woocommerce_login, 'woo_extra_login_fields' ) );
+			add_action( 'woocommerce_lostpassword_form', array( $woocommerce_lost_password, 'woo_extra_lostpassword_fields' ) );
 
-		// Woocommerce extra.
-		$woocommerce_review_order              = new WoocommerceReviewOrder();
-		$woocommerce_register_post             = new WoocommerceRegisterPost();
-		$lost_password_post                    = new LostpasswordPost();
-		$woocommerce_process_login_errors      = new WoocommerceProcessLoginErrors();
-		$woocommerce_after_checkout_validation = new WoocommerceAfterCheckoutValidation();
-		add_action( 'woocommerce_review_order_before_submit', array( $woocommerce_review_order, 'woo_extra_checkout_fields' ) );
-		add_action( 'woocommerce_register_post', array( $woocommerce_register_post, 'woocomm_validate_signup_captcha' ), 10, 3 );
-		add_action( 'lostpassword_post', array( $lost_password_post, 'woocomm_validate_lostpassword_captcha' ), 10, 1 );
-		add_action( 'woocommerce_process_login_errors', array( $woocommerce_process_login_errors, 'woocomm_validate_login_captcha' ), 10, 3 );
-		add_action( 'woocommerce_after_checkout_validation', array( $woocommerce_after_checkout_validation, 'woocomm_validate_checkout_captcha' ), 10, 2 );
+			// Woocommerce extra.
+			$woocommerce_review_order              = new WoocommerceReviewOrder();
+			$woocommerce_register_post             = new WoocommerceRegisterPost();
+			$lost_password_post                    = new LostpasswordPost();
+			$woocommerce_process_login_errors      = new WoocommerceProcessLoginErrors();
+			$woocommerce_after_checkout_validation = new WoocommerceAfterCheckoutValidation();
+			add_action( 'woocommerce_review_order_before_submit', array( $woocommerce_review_order, 'woo_extra_checkout_fields' ) );
+			add_action( 'woocommerce_register_post', array( $woocommerce_register_post, 'woocomm_validate_signup_captcha' ), 10, 3 );
+			add_action( 'lostpassword_post', array( $lost_password_post, 'woocomm_validate_lostpassword_captcha' ), 10, 1 );
+			add_action( 'woocommerce_process_login_errors', array( $woocommerce_process_login_errors, 'woocomm_validate_login_captcha' ), 10, 3 );
+			add_action( 'woocommerce_after_checkout_validation', array( $woocommerce_after_checkout_validation, 'woocomm_validate_checkout_captcha' ), 10, 2 );
+		}
 
 		// Woocommerce Filter.
 		$woocommerce_filter = new WoocommerceFilter();
 		add_filter( 'wp_authenticate_user', array( $woocommerce_filter, 'woo_wp_verify_login_captcha' ), 10, 2 );
 		add_filter( 'register_post', array( $woocommerce_filter, 'woo_verify_wp_register_captcha' ), 10, 3 );
-		add_filter( 'lostpassword_post', array( $woocommerce_filter, 'woo_verify_wp_lostpassword_captcha' ), 10, 1 );
+		// Priority 20 to run after WooCommerce's handler at priority 10
+		add_action( 'lostpassword_post', array( $woocommerce_filter, 'woo_verify_wp_lostpassword_captcha' ), 20, 1 );
 		add_filter( 'wpforms_frontend_recaptcha_noconflict', array( $woocommerce_filter, 'woo_remove_no_conflict' ) );
 
-		add_filter( 'preprocess_comment', array( $woocommerce_filter, 'woo_check_review_captcha' ) );
-		add_filter( 'preprocess_comment', array( $woocommerce_filter, 'woo_check_comment_captcha' ) );
+		// Comment validation - using single handler for all comment types
+		add_filter( 'preprocess_comment', array( $woocommerce_filter, 'woo_check_comment_captcha' ), 10 );
 
-		// Woocommerce Order.
-		$woocommerce_order = new WoocommerceOrder();
-		add_action( 'woocommerce_pay_order_before_submit', array( $woocommerce_order, 'woo_extra_checkout_fields_pay_order' ) );
-		add_action( 'woocommerce_before_pay_action', array( $woocommerce_order, 'woo_verify_pay_order_captcha' ) );
-		add_action( 'woocommerce_payment_complete', array( $woocommerce_order, 'woo_payment_complete' ) );
-		add_action( 'woocommerce_before_add_to_cart_quantity', array( $woocommerce_order, 'woocommerce_payment_request_btn_captcha' ) );
+		// Woocommerce Order - only load if WooCommerce is active.
+		if ( class_exists( 'WooCommerce' ) ) {
+			$woocommerce_order = new WoocommerceOrder();
+			add_action( 'woocommerce_pay_order_before_submit', array( $woocommerce_order, 'woo_extra_checkout_fields_pay_order' ) );
+			add_action( 'woocommerce_before_pay_action', array( $woocommerce_order, 'woo_verify_pay_order_captcha' ) );
+			add_action( 'woocommerce_payment_complete', array( $woocommerce_order, 'woo_payment_complete' ) );
+			add_action( 'woocommerce_before_add_to_cart_quantity', array( $woocommerce_order, 'woocommerce_payment_request_btn_captcha' ) );
+			// Priority 999 ensures reCAPTCHA is added to checkout blocks last
+			add_filter( 'render_block_woocommerce/checkout-payment-block', array( $woocommerce_order, 'woo_recaptcha_alter_checkout_payment_block' ), 999, 1 );
+		}
+		
+		// Comment form submit button - general WordPress hook
+		if ( ! isset( $woocommerce_order ) ) {
+			$woocommerce_order = new WoocommerceOrder();
+		}
 		add_filter( 'comment_form_submit_button', array( $woocommerce_order, 'woo_recaptcha_alter_post_comment_submit_button' ), 10, 2 );
-		add_filter( 'render_block_woocommerce/checkout-payment-block', array( $woocommerce_order, 'woo_recaptcha_alter_checkout_payment_block' ), 999, 1 ); // Before/After Payment block.
 		if ( $plugin_public->woo_recaptcha_check_is_ie_browser() ) {
 			add_action( 'wp_head', array( $plugin_public, 'woo_recaptcha_add_header_metadata_for_ie' ) );
 			add_action( 'login_head', array( $plugin_public, 'woo_recaptcha_add_header_metadata_for_ie' ) );
 			add_filter( 'script_loader_tag', array( $plugin_public, 'google_recaptcha_defer_parsing_of_js' ), 10 );
 		}
 
-		$re_capcha_version = get_option( 'wbc_recapcha_version' );
-		if ( '' === $re_capcha_version ) {
-			$re_capcha_version = 'v2';
-		}
-
-		if ( 'v2' === strtolower( $re_capcha_version ) ) {
-			$wbc_recapcha_custom_wp_login_form_login = get_option( 'wbc_recapcha_custom_wp_login_form_login' );
-			if ( 'yes' === $wbc_recapcha_custom_wp_login_form_login ) {
-				add_filter( 'login_form_middle', array( $woocommerce_login, 'woo_extra_login_fields' ), 10, 2 );
+		// Custom login form integration - only if WooCommerce is active
+		if ( class_exists( 'WooCommerce' ) ) {
+			// Check if custom login form is enabled (works for all service types)
+			$custom_login_enabled = get_option( 'wbc_recapcha_custom_wp_login_form_login' );
+			if ( 'yes' !== $custom_login_enabled ) {
+				// Check v3 specific option for backward compatibility
+				$custom_login_enabled = get_option( 'wbc_recapcha__v3_custom_wp_login_form_login' );
 			}
-		} else {
-			$wbc_recapcha__v3_custom_wp_login_form_login = get_option( 'wbc_recapcha__v3_custom_wp_login_form_login' );
-			if ( 'yes' === $wbc_recapcha__v3_custom_wp_login_form_login ) {
+			
+			if ( 'yes' === $custom_login_enabled ) {
+				$woocommerce_login = new WoocommerceLogin();
 				add_filter( 'login_form_middle', array( $woocommerce_login, 'woo_extra_login_fields' ), 10, 2 );
 			}
 		}

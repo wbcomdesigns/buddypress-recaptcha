@@ -182,15 +182,3 @@ function wb_recaptcha_get_the_user_ip() {
 
 	return $ipaddress;
 }
-
-
-function wb_recaptcha_restriction_recaptcha_by_ip() {
-	$get_ip       = wb_recaptcha_get_the_user_ip();
-	$recpatcha_ip = get_option( 'wbc_recapcha_ip_to_skip_captcha' );
-	$explode      = $recpatcha_ip;
-	$explode_ip   = explode( ',', $explode );
-	if ( in_array( $get_ip, $explode_ip ) ) {
-		return true;
-	}
-	return false;
-}
