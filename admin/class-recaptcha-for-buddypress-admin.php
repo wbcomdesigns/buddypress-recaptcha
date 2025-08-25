@@ -59,7 +59,13 @@ class Recaptcha_For_BuddyPress_Admin {
 
 		$this->plugin_name = $plugin_name;
 		$this->version     = $version;
-		include plugin_dir_path( __FILE__ ) . 'includes/class-wbc-buddypress-settings-page.php';
+		// Use simplified settings page if enabled
+		$use_simplified = get_option( 'wbc_use_simplified_settings', 'yes' );
+		if ( 'yes' === $use_simplified ) {
+			include plugin_dir_path( __FILE__ ) . 'includes/class-wbc-buddypress-settings-page-simplified.php';
+		} else {
+			include plugin_dir_path( __FILE__ ) . 'includes/class-wbc-buddypress-settings-page.php';
+		}
 	}
 
 	/**
@@ -82,6 +88,12 @@ class Recaptcha_For_BuddyPress_Admin {
 		 */
 
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/recaptcha-for-buddypress-admin.css', array(), $this->version, 'all' );
+		
+		// Enqueue card styles for appearance settings
+		$use_simplified = get_option( 'wbc_use_simplified_settings', 'yes' );
+		if ( 'yes' === $use_simplified ) {
+			wp_enqueue_style( $this->plugin_name . '-cards', plugin_dir_url( __FILE__ ) . 'css/recaptcha-appearance-cards.css', array(), $this->version, 'all' );
+		}
 
 	}
 
@@ -104,7 +116,13 @@ class Recaptcha_For_BuddyPress_Admin {
 		 * class.
 		 */
 
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/recaptcha-for-buddypress-admin.js', array( 'jquery' ), $this->version, false );
+		// Use simplified JavaScript if simplified settings are enabled
+		$use_simplified = get_option( 'wbc_use_simplified_settings', 'yes' );
+		if ( 'yes' === $use_simplified ) {
+			wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/recaptcha-for-buddypress-admin-simplified.js', array( 'jquery' ), $this->version, false );
+		} else {
+			wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/recaptcha-for-buddypress-admin.js', array( 'jquery' ), $this->version, false );
+		}
 
 	}
 
@@ -158,7 +176,13 @@ class Recaptcha_For_BuddyPress_Admin {
 	 * Template Class.
 	 */
 	public function rfw_admin_settings_page() {
-		$wbc_woo_commerce_settings_page = new Wbc_WooCommerce_Settings_Page();
+		// Use simplified settings page if enabled
+		$use_simplified = get_option( 'wbc_use_simplified_settings', 'yes' );
+		if ( 'yes' === $use_simplified ) {
+			$wbc_woo_commerce_settings_page = new Wbc_WooCommerce_Settings_Page_Simplified();
+		} else {
+			$wbc_woo_commerce_settings_page = new Wbc_WooCommerce_Settings_Page();
+		}
 		$current                        = ( filter_input( INPUT_GET, 'tab' ) !== null ) ? filter_input( INPUT_GET, 'tab' ) : 'rfw-welcome';
 		?>
 
@@ -211,37 +235,63 @@ class Recaptcha_For_BuddyPress_Admin {
 	 * Register all settings.
 	 */
 	public function rfw_add_admin_register_setting() {
-		$this->plugin_settings_tabs['rfw-welcome']['name'] = esc_html__( 'Welcome', 'buddypress-recaptcha' );
+		// Use simplified settings if enabled
+		$use_simplified = get_option( 'wbc_use_simplified_settings', 'yes' );
+		
+		if ( 'yes' === $use_simplified ) {
+			// Simplified tab structure
+			$this->plugin_settings_tabs['rfw-welcome']['name'] = esc_html__( 'Welcome', 'buddypress-recaptcha' );
+			$this->plugin_settings_tabs['rfw-general']['name'] = esc_html__( 'Service Config', 'buddypress-recaptcha' );
+			$this->plugin_settings_tabs['wordpress']['name'] = esc_html__( 'WordPress', 'buddypress-recaptcha' );
+			
+			if ( class_exists( 'WooCommerce' ) ) {
+				$this->plugin_settings_tabs['woocommerce']['name'] = esc_html__( 'WooCommerce', 'buddypress-recaptcha' );
+			}
+			
+			if ( class_exists( 'BuddyPress' ) ) {
+				$this->plugin_settings_tabs['buddypress']['name'] = esc_html__( 'BuddyPress', 'buddypress-recaptcha' );
+			}
+			
+			if ( class_exists( 'bbPress' ) ) {
+				$this->plugin_settings_tabs['bbpress']['name'] = esc_html__( 'bbPress', 'buddypress-recaptcha' );
+			}
+			
+			$this->plugin_settings_tabs['appearance']['name'] = esc_html__( 'Appearance', 'buddypress-recaptcha' );
+			$this->plugin_settings_tabs['advanced']['name'] = esc_html__( 'Advanced', 'buddypress-recaptcha' );
+		} else {
+			// Original tab structure
+			$this->plugin_settings_tabs['rfw-welcome']['name'] = esc_html__( 'Welcome', 'buddypress-recaptcha' );
 
-		$this->plugin_settings_tabs['rfw-general']['name'] = esc_html__( 'General', 'buddypress-recaptcha' );
+			$this->plugin_settings_tabs['rfw-general']['name'] = esc_html__( 'General', 'buddypress-recaptcha' );
 
-		$this->plugin_settings_tabs['wp_login']['name'] = esc_html__( 'WP Login', 'buddypress-recaptcha' );
+			$this->plugin_settings_tabs['wp_login']['name'] = esc_html__( 'WP Login', 'buddypress-recaptcha' );
 
-		$this->plugin_settings_tabs['wp_register']['name'] = esc_html__( 'WP Registration', 'buddypress-recaptcha' );
+			$this->plugin_settings_tabs['wp_register']['name'] = esc_html__( 'WP Registration', 'buddypress-recaptcha' );
 
-		$this->plugin_settings_tabs['wp_lostpassword']['name'] = esc_html__( 'WP Lost Password', 'buddypress-recaptcha' );
+			$this->plugin_settings_tabs['wp_lostpassword']['name'] = esc_html__( 'WP Lost Password', 'buddypress-recaptcha' );
 
-		$this->plugin_settings_tabs['woo_comments']['name'] = esc_html__( 'Post Comment Form', 'buddypress-recaptcha' );
+			$this->plugin_settings_tabs['woo_comments']['name'] = esc_html__( 'Post Comment Form', 'buddypress-recaptcha' );
 
-		if ( class_exists( 'BuddyPress' ) ) {
-			$this->plugin_settings_tabs['bp_register']['name'] = esc_html__( 'BP Registration', 'buddypress-recaptcha' );
-		}
+			if ( class_exists( 'BuddyPress' ) ) {
+				$this->plugin_settings_tabs['bp_register']['name'] = esc_html__( 'BP Registration', 'buddypress-recaptcha' );
+			}
 
-		if ( class_exists( 'bbPress' ) ) {
-			$this->plugin_settings_tabs['bb_press_topic']['name'] = esc_html__( 'bbPress Topic', 'buddypress-recaptcha' );
+			if ( class_exists( 'bbPress' ) ) {
+				$this->plugin_settings_tabs['bb_press_topic']['name'] = esc_html__( 'bbPress Topic', 'buddypress-recaptcha' );
 
-			$this->plugin_settings_tabs['bb_press_reply']['name'] = esc_html__( 'bbPress Reply', 'buddypress-recaptcha' );
-		}
+				$this->plugin_settings_tabs['bb_press_reply']['name'] = esc_html__( 'bbPress Reply', 'buddypress-recaptcha' );
+			}
 
-		if ( class_exists( 'WooCommerce' ) ) {
-			$this->plugin_settings_tabs['signup']['name'] = esc_html__( 'Woo Registration', 'buddypress-recaptcha' );
+			if ( class_exists( 'WooCommerce' ) ) {
+				$this->plugin_settings_tabs['signup']['name'] = esc_html__( 'Woo Registration', 'buddypress-recaptcha' );
 
-			$this->plugin_settings_tabs['login']['name'] = esc_html__( 'Woo Login', 'buddypress-recaptcha' );
+				$this->plugin_settings_tabs['login']['name'] = esc_html__( 'Woo Login', 'buddypress-recaptcha' );
 
-			$this->plugin_settings_tabs['forgotpassword']['name'] = esc_html__( 'Woo Lost Password', 'buddypress-recaptcha' );
+				$this->plugin_settings_tabs['forgotpassword']['name'] = esc_html__( 'Woo Lost Password', 'buddypress-recaptcha' );
 
-			$this->plugin_settings_tabs['guestcheckout']['name'] = esc_html__( 'Woo Checkout', 'buddypress-recaptcha' );
+				$this->plugin_settings_tabs['guestcheckout']['name'] = esc_html__( 'Woo Checkout', 'buddypress-recaptcha' );
 
+			}
 		}
 
 	}

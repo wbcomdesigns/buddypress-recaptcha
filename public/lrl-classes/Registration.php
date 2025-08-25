@@ -19,34 +19,31 @@
  * @subpackage bp_recaptcha/public
  * @author     Wbcom Designs <admin@wbcomdesigns.com>
  */
-class Lostpassword {
+class Registration {
 
 	/**
-	 * Render captcha on lost password form
+	 * Render captcha on registration form
 	 */
-	public function woo_extra_wp_lostpassword_form() {
+	public function woo_extra_wp_register_form() {
 		// Use the service manager to render captcha
 		if ( function_exists( 'wbc_captcha_service_manager' ) ) {
-			wbc_captcha_service_manager()->render( 'wp_lostpassword' );
+			wbc_captcha_service_manager()->render( 'wp_register' );
 		}
 	}
 
 	/**
-	 * Verify captcha on lost password submission
+	 * Validate registration form captcha
 	 *
-	 * @param WP_Error $errors Errors object.
+	 * @param WP_Error $errors               Registration errors.
+	 * @param string   $sanitized_user_login Sanitized username.
+	 * @param string   $user_email           User email.
 	 * @return WP_Error
 	 */
-	public function woo_extra_check_for_wp_lostpassword( $errors ) {
-		// Skip if we don't have a user login submitted
-		if ( empty( $_POST['user_login'] ) ) {
-			return $errors;
-		}
-
+	public function woo_extra_validate_extra_register_fields( $errors, $sanitized_user_login, $user_email ) {
 		// Verify captcha using the service manager
 		if ( function_exists( 'wbc_verify_captcha' ) ) {
-			if ( ! wbc_verify_captcha( 'wp_lostpassword' ) ) {
-				$error_message = wbc_get_captcha_error_message( 'wp_lostpassword', 'invalid' );
+			if ( ! wbc_verify_captcha( 'wp_register' ) ) {
+				$error_message = wbc_get_captcha_error_message( 'wp_register', 'invalid' );
 				$errors->add( 'captcha_error', $error_message );
 			}
 		}
