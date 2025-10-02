@@ -292,17 +292,17 @@ if ( ! class_exists( 'Wbc_WooCommerce_Settings_Page_Simplified' ) ) :
 					'name'  => __( 'ALTCHA Settings', 'buddypress-recaptcha' ),
 					'type'  => 'title',
 					'id'    => 'wbc_altcha_settings',
-					'desc'  => __( 'Configure ALTCHA - Privacy-first, self-hosted captcha. No external API required.', 'buddypress-recaptcha' ),
+					'desc'  => __( 'Configure ALTCHA - Privacy-first, self-hosted captcha. No external API required.<br><strong>⚠️ HTTPS Required:</strong> ALTCHA requires a secure context (HTTPS) to work due to Web Crypto API requirements.', 'buddypress-recaptcha' ),
 					'class' => 'wbc-service-settings wbc-service-altcha',
 				),
 
 				array(
 					'name'        => __( 'HMAC Key', 'buddypress-recaptcha' ),
-					'type'        => 'password',
+					'type'        => 'text',
 					'id'          => 'wbc_altcha_hmac_key',
-					'desc'        => __( 'Enter a secret HMAC key for challenge signing. Generate a random string (32+ characters recommended).', 'buddypress-recaptcha' ),
-					'placeholder' => __( 'Your HMAC secret key', 'buddypress-recaptcha' ),
-					'class'       => 'wbc-service-field wbc-service-altcha',
+					'desc'        => __( 'Enter a secret HMAC key for challenge signing. <button type="button" class="button button-secondary wbc-generate-hmac-key" style="margin-left: 10px;">Generate Random Key</button>', 'buddypress-recaptcha' ),
+					'placeholder' => __( 'Your HMAC secret key (32+ characters recommended)', 'buddypress-recaptcha' ),
+					'class'       => 'wbc-service-field wbc-service-altcha wbc-altcha-hmac-input',
 				),
 
 				array(
@@ -355,6 +355,65 @@ if ( ! class_exists( 'Wbc_WooCommerce_Settings_Page_Simplified' ) ) :
 					'type'  => 'sectionend',
 					'id'    => 'wbc_altcha_settings',
 					'class' => 'wbc-service-settings wbc-service-altcha',
+				),
+
+				// hCaptcha Settings
+				array(
+					'name'  => __( 'hCaptcha Settings', 'buddypress-recaptcha' ),
+					'type'  => 'title',
+					'id'    => 'wbc_hcaptcha_settings',
+					'desc'  => __( 'Configure hCaptcha - Privacy-focused alternative to reCAPTCHA. Get your keys from <a href="https://www.hcaptcha.com/" target="_blank">hCaptcha.com</a>', 'buddypress-recaptcha' ),
+					'class' => 'wbc-service-settings wbc-service-hcaptcha',
+				),
+
+				array(
+					'name'        => __( 'Site Key', 'buddypress-recaptcha' ),
+					'type'        => 'text',
+					'id'          => 'wbc_hcaptcha_site_key',
+					'desc'        => __( 'Enter your hCaptcha site key (automatically uses hCaptcha plugin settings if installed)', 'buddypress-recaptcha' ),
+					'placeholder' => __( 'Your site key', 'buddypress-recaptcha' ),
+					'class'       => 'wbc-service-field wbc-service-hcaptcha',
+				),
+
+				array(
+					'name'        => __( 'Secret Key', 'buddypress-recaptcha' ),
+					'type'        => 'password',
+					'id'          => 'wbc_hcaptcha_secret_key',
+					'desc'        => __( 'Enter your hCaptcha secret key (automatically uses hCaptcha plugin settings if installed)', 'buddypress-recaptcha' ),
+					'placeholder' => __( 'Your secret key', 'buddypress-recaptcha' ),
+					'class'       => 'wbc-service-field wbc-service-hcaptcha',
+				),
+
+				array(
+					'name'    => __( 'Theme', 'buddypress-recaptcha' ),
+					'type'    => 'select',
+					'id'      => 'wbc_hcaptcha_theme',
+					'desc'    => __( 'Widget theme', 'buddypress-recaptcha' ),
+					'options' => array(
+						'light' => __( 'Light', 'buddypress-recaptcha' ),
+						'dark'  => __( 'Dark', 'buddypress-recaptcha' ),
+					),
+					'default' => 'light',
+					'class'   => 'wbc-service-field wbc-service-hcaptcha',
+				),
+
+				array(
+					'name'    => __( 'Size', 'buddypress-recaptcha' ),
+					'type'    => 'select',
+					'id'      => 'wbc_hcaptcha_size',
+					'desc'    => __( 'Widget size', 'buddypress-recaptcha' ),
+					'options' => array(
+						'normal'  => __( 'Normal', 'buddypress-recaptcha' ),
+						'compact' => __( 'Compact', 'buddypress-recaptcha' ),
+					),
+					'default' => 'normal',
+					'class'   => 'wbc-service-field wbc-service-hcaptcha',
+				),
+
+				array(
+					'type'  => 'sectionend',
+					'id'    => 'wbc_hcaptcha_settings',
+					'class' => 'wbc-service-settings wbc-service-hcaptcha',
 				),
 			);
 

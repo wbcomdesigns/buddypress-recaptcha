@@ -75,6 +75,10 @@ class WBC_Captcha_Service_Manager {
 				'file'  => 'class-altcha-service.php',
 				'class' => 'WBC_Altcha_Service',
 			),
+			'hcaptcha' => array(
+				'file'  => 'class-hcaptcha-service.php',
+				'class' => 'WBC_HCaptcha_Service',
+			),
 		);
 
 		foreach ( $default_services as $service_key => $service_config ) {
