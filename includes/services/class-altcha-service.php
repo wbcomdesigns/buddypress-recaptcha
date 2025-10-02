@@ -180,6 +180,51 @@ class WBC_Altcha_Service extends WBC_Captcha_Service_Base {
 	}
 
 	/**
+	 * Check if HTTPS is required and available
+	 *
+	 * @return bool
+	 */
+	private function is_secure_context() {
+		// Check if HTTPS is enabled
+		if ( is_ssl() ) {
+			return true;
+		}
+
+		// Allow local development environments
+		if ( defined( 'WP_ENVIRONMENT_TYPE' ) && 'local' === WP_ENVIRONMENT_TYPE ) {
+			return true;
+		}
+
+		// Allow localhost and 127.0.0.1
+		$host = isset( $_SERVER['HTTP_HOST'] ) ? $_SERVER['HTTP_HOST'] : '';
+		if ( in_array( $host, array( 'localhost', '127.0.0.1', '::1' ), true ) ) {
+			return true;
+		}
+
+		// Allow .local domains (common in local dev)
+		if ( preg_match( '/\.local$/i', $host ) ) {
+			return true;
+		}
+
+		// Allow .test domains (Laravel Valet, etc.)
+		if ( preg_match( '/\.test$/i', $host ) ) {
+			return true;
+		}
+
+		// Allow .dev domains (though deprecated, some still use it)
+		if ( preg_match( '/\.dev$/i', $host ) ) {
+			return true;
+		}
+
+		// Check for WP_DEBUG mode as an override (optional, can be removed if too permissive)
+		if ( defined( 'WP_DEBUG' ) && WP_DEBUG && defined( 'WP_LOCAL_DEV' ) && WP_LOCAL_DEV ) {
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
 	 * Render the captcha field
 	 *
 	 * @param string $context The context where captcha is rendered
@@ -189,6 +234,21 @@ class WBC_Altcha_Service extends WBC_Captcha_Service_Base {
 	public function render( $context, $args = array() ) {
 		$hmac_key = $this->get_site_key();
 		if ( empty( $hmac_key ) ) {
+			return;
+		}
+
+		// Check for secure context (HTTPS required for Web Crypto API)
+		if ( ! $this->is_secure_context() ) {
+			?>
+			<div class="wbc_captcha_field wbc_altcha_field">
+				<div class="wbc-altcha-warning" style="padding: 10px; background: #fff3cd; border: 1px solid #ffc107; border-radius: 4px; color: #856404;">
+					<strong><?php esc_html_e( 'ALTCHA requires HTTPS or localhost:', 'buddypress-recaptcha' ); ?></strong>
+					<p><?php esc_html_e( 'ALTCHA uses Web Crypto API which requires a secure context (HTTPS). For local development, use localhost or .local/.test domains.', 'buddypress-recaptcha' ); ?></p>
+					<p><strong><?php esc_html_e( 'Your current host:', 'buddypress-recaptcha' ); ?></strong> <?php echo esc_html( isset( $_SERVER['HTTP_HOST'] ) ? $_SERVER['HTTP_HOST'] : 'unknown' ); ?></p>
+					<p><?php esc_html_e( 'For production: Enable HTTPS. For local testing: Use localhost, 127.0.0.1, or .local domains.', 'buddypress-recaptcha' ); ?></p>
+				</div>
+			</div>
+			<?php
 			return;
 		}
 

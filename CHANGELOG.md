@@ -1,6 +1,6 @@
 # Changelog
 
-## Version 2.1.0 - ALTCHA Integration
+## Version 2.1.0 - ALTCHA & hCaptcha Integration
 
 ### 🎯 New Features
 
@@ -19,20 +19,35 @@
 - Auto-verify modes: manual, onload, onfocus, onsubmit
 - Seamless integration with all existing form contexts
 
+#### hCaptcha Service Support
+- **Added**: hCaptcha privacy-focused captcha service
+- **Privacy-focused**: Drop-in replacement for reCAPTCHA
+- **GDPR compliant**: EU-based, privacy-first approach
+- **Accessible**: WCAG 2.1 AA compliant
+- **Integrates**: Uses hCaptcha plugin settings if installed
+- **Standalone**: Works independently without hCaptcha plugin
+
 ### 📁 Files Added
 ```
 includes/services/class-altcha-service.php    - ALTCHA service implementation
-includes/lib/altcha/class-altcha-lib.php      - ALTCHA verification library
-includes/lib/altcha/helpers.php               - ALTCHA helper functions
+includes/services/class-hcaptcha-service.php  - hCaptcha service implementation
 public/js/altcha.min.js                       - ALTCHA widget (30KB)
 ```
 
 ### 📝 Settings Added
+
+**ALTCHA:**
 - HMAC Key (secret key for challenge signing)
 - Complexity (Max Number for proof-of-work)
 - Challenge Expiration (seconds)
 - Auto Verify mode
 - Hide Logo option
+
+**hCaptcha:**
+- Site Key (auto-detects from hCaptcha plugin)
+- Secret Key (auto-detects from hCaptcha plugin)
+- Theme (light/dark)
+- Size (normal/compact)
 
 ---
 

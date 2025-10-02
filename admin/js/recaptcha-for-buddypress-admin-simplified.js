@@ -191,6 +191,31 @@
 		
 		// Add helper links on page load
 		addHelperLinks();
+
+		/**
+		 * Generate random HMAC key for ALTCHA
+		 */
+		$('.wbc-generate-hmac-key').on('click', function(e) {
+			e.preventDefault();
+
+			// Generate a random 64-character hex string (32 bytes)
+			var key = '';
+			var chars = '0123456789abcdef';
+			for (var i = 0; i < 64; i++) {
+				key += chars.charAt(Math.floor(Math.random() * chars.length));
+			}
+
+			// Set the generated key
+			$('#wbc_altcha_hmac_key').val(key);
+
+			// Show feedback
+			var $btn = $(this);
+			var originalText = $btn.text();
+			$btn.text('Key Generated!').prop('disabled', true);
+			setTimeout(function() {
+				$btn.text(originalText).prop('disabled', false);
+			}, 2000);
+		});
 		
 		/**
 		 * Handle tab switching for better UX

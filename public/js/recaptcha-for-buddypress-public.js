@@ -29,7 +29,8 @@
 	 * practising this, we should strive to set a better example in our own work.
 	 */
 	jQuery( document ).ready(function() {
-		if (typeof (grecaptcha.render) !== 'undefined' && ( myCaptcha === undefined || myCaptcha === null ) ) {
+		// Only attempt reCAPTCHA rendering if grecaptcha is available (i.e., reCAPTCHA v2/v3 is selected)
+		if (typeof grecaptcha !== 'undefined' && typeof grecaptcha.render !== 'undefined' && ( typeof myCaptcha === 'undefined' || myCaptcha === null ) ) {
 			try{
 			var myCaptcha=grecaptcha.render('g-recaptcha-checkout-wbc', {
 			'sitekey': bpRecaptcha.site_key,
