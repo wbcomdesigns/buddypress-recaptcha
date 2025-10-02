@@ -56,17 +56,36 @@ class WBC_Captcha_Service_Manager {
 	 * Register default services
 	 */
 	private function register_default_services() {
-		// Register reCAPTCHA v2
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/services/class-recaptcha-v2-service.php';
-		$this->register_service( new WBC_Recaptcha_V2_Service() );
+		$services_dir = plugin_dir_path( dirname( __FILE__ ) ) . 'includes/services/';
 
-		// Register reCAPTCHA v3
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/services/class-recaptcha-v3-service.php';
-		$this->register_service( new WBC_Recaptcha_V3_Service() );
+		$default_services = array(
+			'recaptcha-v2' => array(
+				'file'  => 'class-recaptcha-v2-service.php',
+				'class' => 'WBC_Recaptcha_V2_Service',
+			),
+			'recaptcha-v3' => array(
+				'file'  => 'class-recaptcha-v3-service.php',
+				'class' => 'WBC_Recaptcha_V3_Service',
+			),
+			'turnstile' => array(
+				'file'  => 'class-turnstile-service.php',
+				'class' => 'WBC_Turnstile_Service',
+			),
+			'altcha' => array(
+				'file'  => 'class-altcha-service.php',
+				'class' => 'WBC_Altcha_Service',
+			),
+		);
 
-		// Register Turnstile
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/services/class-turnstile-service.php';
-		$this->register_service( new WBC_Turnstile_Service() );
+		foreach ( $default_services as $service_key => $service_config ) {
+			$file_path = $services_dir . $service_config['file'];
+			if ( file_exists( $file_path ) ) {
+				require_once $file_path;
+				if ( class_exists( $service_config['class'] ) ) {
+					$this->register_service( new $service_config['class']() );
+				}
+			}
+		}
 
 		// Allow plugins to register additional services
 		do_action( 'wbc_register_captcha_services', $this );
@@ -106,7 +125,7 @@ class WBC_Captcha_Service_Manager {
 		}
 		
 		// Check reCAPTCHA v3
-		$v3_site = get_option( 'wc_settings_tab_recapcha_site_key_v3' );
+		$v3_site = get_option( 'wbc_recaptcha_v3_site_key' );
 		if ( ! empty( $v3_site ) ) {
 			return 'recaptcha_v3';
 		}
@@ -176,8 +195,8 @@ class WBC_Captcha_Service_Manager {
 	public function render( $context, $args = array() ) {
 		try {
 			// Check IP restriction
-			$recpatcha_system_ip = get_option( 'wbc_recapcha_ip_to_skip_captcha' );
-			if ( $recpatcha_system_ip && function_exists( 'wb_recaptcha_restriction_recaptcha_by_ip' ) && wb_recaptcha_restriction_recaptcha_by_ip() ) {
+			$recaptcha_system_ip = get_option( 'wbc_recaptcha_ip_to_skip_captcha' );
+			if ( $recaptcha_system_ip && function_exists( 'wb_recaptcha_restriction_recaptcha_by_ip' ) && wb_recaptcha_restriction_recaptcha_by_ip() ) {
 				$this->log_debug( 'Skipping captcha render due to IP whitelist', $context );
 				return;
 			}
