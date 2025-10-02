@@ -38,7 +38,7 @@ if ( ! class_exists( 'Wbc_WooCommerce_Settings_Page_Simplified' ) ) :
 			$this->id    = 'wbc_woo_recaptcha';
 			$this->label = 'reCaptcha';
 
-			include 'class-wooaction.php';
+			include 'class-settings-renderer.php';
 			
 			// Initialize settings
 			add_action( 'admin_init', array( $this, 'init_settings' ) );
@@ -52,6 +52,35 @@ if ( ! class_exists( 'Wbc_WooCommerce_Settings_Page_Simplified' ) ) :
 			if ( class_exists( 'WBC_Settings_Integration' ) ) {
 				WBC_Settings_Integration::init();
 			}
+		}
+
+		/**
+		 * Get available captcha services dynamically
+		 *
+		 * @return array Service ID => Service Name
+		 */
+		private function get_available_services() {
+			$services = array();
+
+			if ( function_exists( 'wbc_captcha_service_manager' ) ) {
+				$service_manager = wbc_captcha_service_manager();
+				$registered_services = $service_manager->get_services();
+
+				foreach ( $registered_services as $service_id => $service ) {
+					$services[ $service_id ] = $service->get_service_name();
+				}
+			}
+
+			// Fallback if service manager is not available
+			if ( empty( $services ) ) {
+				$services = array(
+					'recaptcha_v2' => __( 'Google reCAPTCHA v2 (Checkbox)', 'buddypress-recaptcha' ),
+					'recaptcha_v3' => __( 'Google reCAPTCHA v3 (Invisible)', 'buddypress-recaptcha' ),
+					'turnstile'    => __( 'Cloudflare Turnstile', 'buddypress-recaptcha' ),
+				);
+			}
+
+			return $services;
 		}
 
 		/**
@@ -138,11 +167,7 @@ if ( ! class_exists( 'Wbc_WooCommerce_Settings_Page_Simplified' ) ) :
 					'name'    => __( 'Active Captcha Service', 'buddypress-recaptcha' ),
 					'type'    => 'select',
 					'id'      => 'wbc_captcha_service',
-					'options' => array(
-						'recaptcha_v2' => __( 'Google reCAPTCHA v2 (Checkbox)', 'buddypress-recaptcha' ),
-						'recaptcha_v3' => __( 'Google reCAPTCHA v3 (Invisible)', 'buddypress-recaptcha' ),
-						'turnstile'    => __( 'Cloudflare Turnstile', 'buddypress-recaptcha' ),
-					),
+					'options' => $this->get_available_services(),
 					'default' => 'recaptcha_v2',
 					'desc'    => __( 'Select which captcha service to use across your site', 'buddypress-recaptcha' ),
 				),
@@ -163,7 +188,7 @@ if ( ! class_exists( 'Wbc_WooCommerce_Settings_Page_Simplified' ) ) :
 				array(
 					'name'        => __( 'Site Key', 'buddypress-recaptcha' ),
 					'type'        => 'text',
-					'id'          => 'wc_settings_tab_recapcha_site_key',
+					'id'          => 'wbc_recaptcha_v2_site_key',
 					'desc'        => __( 'Enter your Google reCAPTCHA v2 site key', 'buddypress-recaptcha' ),
 					'placeholder' => __( 'Your site key', 'buddypress-recaptcha' ),
 					'class'       => 'wbc-service-field wbc-service-recaptcha_v2',
@@ -172,7 +197,7 @@ if ( ! class_exists( 'Wbc_WooCommerce_Settings_Page_Simplified' ) ) :
 				array(
 					'name'        => __( 'Secret Key', 'buddypress-recaptcha' ),
 					'type'        => 'password',
-					'id'          => 'wc_settings_tab_recapcha_secret_key',
+					'id'          => 'wbc_recaptcha_v2_secret_key',
 					'desc'        => __( 'Enter your Google reCAPTCHA v2 secret key', 'buddypress-recaptcha' ),
 					'placeholder' => __( 'Your secret key', 'buddypress-recaptcha' ),
 					'class'       => 'wbc-service-field wbc-service-recaptcha_v2',
@@ -195,7 +220,7 @@ if ( ! class_exists( 'Wbc_WooCommerce_Settings_Page_Simplified' ) ) :
 				array(
 					'name'        => __( 'Site Key', 'buddypress-recaptcha' ),
 					'type'        => 'text',
-					'id'          => 'wc_settings_tab_recapcha_site_key_v3',
+					'id'          => 'wbc_recaptcha_v3_site_key',
 					'desc'        => __( 'Enter your Google reCAPTCHA v3 site key', 'buddypress-recaptcha' ),
 					'placeholder' => __( 'Your site key', 'buddypress-recaptcha' ),
 					'class'       => 'wbc-service-field wbc-service-recaptcha_v3',
@@ -204,7 +229,7 @@ if ( ! class_exists( 'Wbc_WooCommerce_Settings_Page_Simplified' ) ) :
 				array(
 					'name'        => __( 'Secret Key', 'buddypress-recaptcha' ),
 					'type'        => 'password',
-					'id'          => 'wc_settings_tab_recapcha_secret_key_v3',
+					'id'          => 'wbc_recaptcha_v3_secret_key',
 					'desc'        => __( 'Enter your Google reCAPTCHA v3 secret key', 'buddypress-recaptcha' ),
 					'placeholder' => __( 'Your secret key', 'buddypress-recaptcha' ),
 					'class'       => 'wbc-service-field wbc-service-recaptcha_v3',
@@ -260,6 +285,76 @@ if ( ! class_exists( 'Wbc_WooCommerce_Settings_Page_Simplified' ) ) :
 					'type'  => 'sectionend',
 					'id'    => 'wbc_turnstile_settings',
 					'class' => 'wbc-service-settings wbc-service-turnstile',
+				),
+
+				// ALTCHA Settings
+				array(
+					'name'  => __( 'ALTCHA Settings', 'buddypress-recaptcha' ),
+					'type'  => 'title',
+					'id'    => 'wbc_altcha_settings',
+					'desc'  => __( 'Configure ALTCHA - Privacy-first, self-hosted captcha. No external API required.', 'buddypress-recaptcha' ),
+					'class' => 'wbc-service-settings wbc-service-altcha',
+				),
+
+				array(
+					'name'        => __( 'HMAC Key', 'buddypress-recaptcha' ),
+					'type'        => 'password',
+					'id'          => 'wbc_altcha_hmac_key',
+					'desc'        => __( 'Enter a secret HMAC key for challenge signing. Generate a random string (32+ characters recommended).', 'buddypress-recaptcha' ),
+					'placeholder' => __( 'Your HMAC secret key', 'buddypress-recaptcha' ),
+					'class'       => 'wbc-service-field wbc-service-altcha',
+				),
+
+				array(
+					'name'    => __( 'Complexity (Max Number)', 'buddypress-recaptcha' ),
+					'type'    => 'number',
+					'id'      => 'wbc_altcha_max_number',
+					'desc'    => __( 'Maximum number for proof-of-work challenge (higher = harder, recommended: 50000-100000)', 'buddypress-recaptcha' ),
+					'default' => '100000',
+					'class'   => 'wbc-service-field wbc-service-altcha',
+				),
+
+				array(
+					'name'    => __( 'Challenge Expiration', 'buddypress-recaptcha' ),
+					'type'    => 'number',
+					'id'      => 'wbc_altcha_expires',
+					'desc'    => __( 'Time in seconds before challenge expires (recommended: 3600)', 'buddypress-recaptcha' ),
+					'default' => '3600',
+					'class'   => 'wbc-service-field wbc-service-altcha',
+				),
+
+				array(
+					'name'    => __( 'Auto Verify', 'buddypress-recaptcha' ),
+					'type'    => 'select',
+					'id'      => 'wbc_altcha_auto_verify',
+					'desc'    => __( 'When to automatically start verification', 'buddypress-recaptcha' ),
+					'options' => array(
+						'off'      => __( 'Manual (User clicks checkbox)', 'buddypress-recaptcha' ),
+						'onload'   => __( 'On page load', 'buddypress-recaptcha' ),
+						'onfocus'  => __( 'On form focus', 'buddypress-recaptcha' ),
+						'onsubmit' => __( 'On form submit', 'buddypress-recaptcha' ),
+					),
+					'default' => 'off',
+					'class'   => 'wbc-service-field wbc-service-altcha',
+				),
+
+				array(
+					'name'    => __( 'Hide Logo', 'buddypress-recaptcha' ),
+					'type'    => 'select',
+					'id'      => 'wbc_altcha_hide_logo',
+					'desc'    => __( 'Hide the ALTCHA logo from the widget', 'buddypress-recaptcha' ),
+					'options' => array(
+						'no'  => __( 'No', 'buddypress-recaptcha' ),
+						'yes' => __( 'Yes', 'buddypress-recaptcha' ),
+					),
+					'default' => 'no',
+					'class'   => 'wbc-service-field wbc-service-altcha',
+				),
+
+				array(
+					'type'  => 'sectionend',
+					'id'    => 'wbc_altcha_settings',
+					'class' => 'wbc-service-settings wbc-service-altcha',
 				),
 			);
 
@@ -756,7 +851,7 @@ if ( ! class_exists( 'Wbc_WooCommerce_Settings_Page_Simplified' ) ) :
 			}
 
 			// Output the settings
-			Wooaction::output_fields( $settings );
+			WBC_Settings_Renderer::output_fields( $settings );
 		}
 
 		/**
@@ -795,7 +890,7 @@ if ( ! class_exists( 'Wbc_WooCommerce_Settings_Page_Simplified' ) ) :
 			}
 
 			// Save the settings
-			Wooaction::save_fields( $settings );
+			WBC_Settings_Renderer::save_fields( $settings );
 
 			// Trigger settings saved action
 			do_action( 'wbc_recaptcha_settings_saved', $section );

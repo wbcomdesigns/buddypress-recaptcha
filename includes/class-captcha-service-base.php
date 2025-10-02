@@ -158,18 +158,18 @@ abstract class WBC_Captcha_Service_Base implements WBC_Captcha_Service_Interface
 	 */
 	protected function get_context_option_map() {
 		return array(
-			'wp_login' => 'wbc_recapcha_enable_on_wplogin',
-			'wp_register' => 'wbc_recapcha_enable_on_wpregister',
-			'wp_lostpassword' => 'wbc_recapcha_enable_on_wplostpassword',
-			'woo_login' => 'wbc_recapcha_enable_on_login',
-			'woo_register' => 'wbc_recapcha_enable_on_signup',
-			'woo_lostpassword' => 'wbc_recapcha_enable_on_lostpassword',
-			'bp_register' => 'wbc_recapcha_enable_on_signup_bp',
-			'bbpress_topic' => 'recapcha_enable_on_bbpress_topic',
-			'bbpress_reply' => 'recapcha_enable_on_bbpress_reply',
-			'woo_checkout_guest' => 'wbc_recapcha_enable_on_guestcheckout',
-			'woo_checkout_login' => 'wbc_recapcha_enable_on_logincheckout',
-			'comment' => 'wbc_recapcha_enable_on_comment',
+			'wp_login' => 'wbc_recaptcha_enable_on_wplogin',
+			'wp_register' => 'wbc_recaptcha_enable_on_wpregister',
+			'wp_lostpassword' => 'wbc_recaptcha_enable_on_wplostpassword',
+			'woo_login' => 'wbc_recaptcha_enable_on_login',
+			'woo_register' => 'wbc_recaptcha_enable_on_signup',
+			'woo_lostpassword' => 'wbc_recaptcha_enable_on_lostpassword',
+			'bp_register' => 'wbc_recaptcha_enable_on_signup_bp',
+			'bbpress_topic' => 'wbc_recaptcha_enable_on_bbpress_topic',
+			'bbpress_reply' => 'wbc_recaptcha_enable_on_bbpress_reply',
+			'woo_checkout_guest' => 'wbc_recaptcha_enable_on_guestcheckout',
+			'woo_checkout_login' => 'wbc_recaptcha_enable_on_logincheckout',
+			'comment' => 'wbc_recaptcha_enable_on_comment',
 		);
 	}
 
@@ -364,8 +364,8 @@ abstract class WBC_Captcha_Service_Base implements WBC_Captcha_Service_Interface
 		}
 
 		// Check IP restriction
-		$recpatcha_system_ip = get_option( 'wbc_recapcha_ip_to_skip_captcha' );
-		if ( $recpatcha_system_ip && function_exists( 'wb_recaptcha_restriction_recaptcha_by_ip' ) && wb_recaptcha_restriction_recaptcha_by_ip() ) {
+		$recaptcha_system_ip = get_option( 'wbc_recaptcha_ip_to_skip_captcha' );
+		if ( $recaptcha_system_ip && function_exists( 'wb_recaptcha_restriction_recaptcha_by_ip' ) && wb_recaptcha_restriction_recaptcha_by_ip() ) {
 			return false;
 		}
 
@@ -386,8 +386,8 @@ abstract class WBC_Captcha_Service_Base implements WBC_Captcha_Service_Interface
 		}
 
 		// Check IP restriction
-		$recpatcha_system_ip = get_option( 'wbc_recapcha_ip_to_skip_captcha' );
-		if ( $recpatcha_system_ip && function_exists( 'wb_recaptcha_restriction_recaptcha_by_ip' ) && wb_recaptcha_restriction_recaptcha_by_ip() ) {
+		$recaptcha_system_ip = get_option( 'wbc_recaptcha_ip_to_skip_captcha' );
+		if ( $recaptcha_system_ip && function_exists( 'wb_recaptcha_restriction_recaptcha_by_ip' ) && wb_recaptcha_restriction_recaptcha_by_ip() ) {
 			return false;
 		}
 

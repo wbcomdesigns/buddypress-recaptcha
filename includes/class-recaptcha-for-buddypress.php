@@ -137,6 +137,11 @@ class Recaptcha_For_BuddyPress {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-settings-migration.php';
 
 		/**
+		 * Option name migration for standardized naming.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-option-migration.php';
+
+		/**
 		 * The class responsible for defining internationalization functionality
 		 * of the plugin.
 		 */
@@ -201,6 +206,18 @@ class Recaptcha_For_BuddyPress {
 
 		$this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain' );
 
+		// Run option migration
+		$this->loader->add_action( 'plugins_loaded', $this, 'run_option_migration' );
+
+	}
+
+	/**
+	 * Run option name migration
+	 *
+	 * @since 2.0.0
+	 */
+	public function run_option_migration() {
+		WBC_Option_Migration::migrate();
 	}
 
 	/**
@@ -268,7 +285,7 @@ class Recaptcha_For_BuddyPress {
 		add_action( 'buddyxpro_recaptcha_after_register_form', array( $registration, 'woo_extra_wp_register_form' ) );
 		add_action( 'lostpassword_form', array( $lostpassword, 'woo_extra_wp_lostpassword_form' ) );
 
-		$is_wp_login_recaptcha_enabled = get_option( 'wbc_recapcha_enable_on_wplogin' );
+		$is_wp_login_recaptcha_enabled = get_option( 'wbc_recaptcha_enable_on_wplogin' );
 		if ( 'yes' === $is_wp_login_recaptcha_enabled ) {
 			add_action( 'bppcp_after_login_form', array( $registration, 'woo_extra_wp_register_form' ) );
 			add_action( 'bppcp_after_register_form', array( $registration, 'woo_extra_wp_register_form' ) );
@@ -358,10 +375,10 @@ class Recaptcha_For_BuddyPress {
 		// Custom login form integration - only if WooCommerce is active
 		if ( class_exists( 'WooCommerce' ) ) {
 			// Check if custom login form is enabled (works for all service types)
-			$custom_login_enabled = get_option( 'wbc_recapcha_custom_wp_login_form_login' );
+			$custom_login_enabled = get_option( 'wbc_recaptcha_custom_wp_login_form_login' );
 			if ( 'yes' !== $custom_login_enabled ) {
 				// Check v3 specific option for backward compatibility
-				$custom_login_enabled = get_option( 'wbc_recapcha__v3_custom_wp_login_form_login' );
+				$custom_login_enabled = get_option( 'wbc_recaptcha_v3_custom_wp_login_form_login' );
 			}
 			
 			if ( 'yes' === $custom_login_enabled ) {

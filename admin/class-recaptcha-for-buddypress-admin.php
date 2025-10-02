@@ -59,7 +59,7 @@ class Recaptcha_For_BuddyPress_Admin {
 
 		$this->plugin_name = $plugin_name;
 		$this->version     = $version;
-		include plugin_dir_path( __FILE__ ) . 'includes/class-wbc-buddypress-settings-page-simplified.php';
+		include plugin_dir_path( __FILE__ ) . 'includes/class-wbc-buddypress-settings-page.php';
 	}
 
 	/**

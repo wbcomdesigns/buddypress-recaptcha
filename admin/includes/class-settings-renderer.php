@@ -9,14 +9,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-if ( ! class_exists( 'Wooaction' ) ) :
+if ( ! class_exists( 'WBC_Settings_Renderer' ) ) :
 
 	/**
-	 * Exit if accessed directly.
+	 * Settings renderer class for form fields
 	 *
-	 * @package Exit if accessed directly.
+	 * @package Recaptcha_For_BuddyPress
 	 */
-	class Wooaction {
+	class WBC_Settings_Renderer {
 		/**
 		 * Template Class Doc Comment
 		 *

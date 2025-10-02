@@ -48,7 +48,7 @@ class WBC_Recaptcha_V2_Service extends WBC_Captcha_Service_Base {
 	 * @return string
 	 */
 	public function get_site_key() {
-		return trim( get_option( 'wc_settings_tab_recapcha_site_key' ) );
+		return trim( get_option( 'wbc_recaptcha_v2_site_key' ) );
 	}
 
 	/**
@@ -57,7 +57,7 @@ class WBC_Recaptcha_V2_Service extends WBC_Captcha_Service_Base {
 	 * @return string
 	 */
 	public function get_secret_key() {
-		return trim( get_option( 'wc_settings_tab_recapcha_secret_key' ) );
+		return trim( get_option( 'wbc_recaptcha_v2_secret_key' ) );
 	}
 
 	/**
