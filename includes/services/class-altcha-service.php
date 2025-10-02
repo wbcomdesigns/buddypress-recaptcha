@@ -6,10 +6,14 @@
  * @since      2.0.0
  */
 
-// Load ALTCHA library if not already loaded
-if ( ! class_exists( 'AltchaPlugin' ) ) {
-	require_once plugin_dir_path( dirname( __FILE__ ) ) . 'lib/altcha/helpers.php';
-	require_once plugin_dir_path( dirname( __FILE__ ) ) . 'lib/altcha/class-altcha-lib.php';
+// Load ALTCHA verification library if standalone altcha-spam-protection plugin not active
+if ( ! class_exists( 'AltchaPlugin' ) && ! is_plugin_active( 'altcha-spam-protection/altcha.php' ) ) {
+	// Define a minimal wrapper for ALTCHA verification
+	if ( ! function_exists( 'altcha_random_secret' ) ) {
+		function altcha_random_secret( $length = 64 ) {
+			return bin2hex( random_bytes( $length / 2 ) );
+		}
+	}
 }
 
 /**
@@ -18,22 +22,10 @@ if ( ! class_exists( 'AltchaPlugin' ) ) {
 class WBC_Altcha_Service extends WBC_Captcha_Service_Base {
 
 	/**
-	 * ALTCHA library instance
-	 *
-	 * @var AltchaPlugin
-	 */
-	private $altcha_lib;
-
-	/**
-	 * Constructor - Initialize library
+	 * Constructor
 	 */
 	public function __construct() {
 		parent::__construct();
-
-		// Initialize ALTCHA library
-		if ( class_exists( 'AltchaPlugin' ) && isset( AltchaPlugin::$instance ) ) {
-			$this->altcha_lib = AltchaPlugin::$instance;
-		}
 	}
 
 	/**
@@ -156,16 +148,24 @@ class WBC_Altcha_Service extends WBC_Captcha_Service_Base {
 			return false;
 		}
 
-		// Use ALTCHA library if available
-		if ( $this->altcha_lib ) {
+		// Use ALTCHA plugin if available
+		if ( class_exists( 'AltchaPlugin' ) && isset( AltchaPlugin::$instance ) ) {
 			$complexity = intval( get_option( 'wbc_altcha_max_number', 100000 ) );
 			$expires = intval( get_option( 'wbc_altcha_expires', 3600 ) );
-			return $this->altcha_lib->generate_challenge( $hmac_key, $complexity, $expires );
+			return AltchaPlugin::$instance->generate_challenge( $hmac_key, $complexity, $expires );
 		}
 
-		// Fallback to manual generation
+		// Self-hosted generation
 		$salt = bin2hex( random_bytes( 16 ) );
 		$max_number = intval( get_option( 'wbc_altcha_max_number', 100000 ) );
+		$expires = intval( get_option( 'wbc_altcha_expires', 3600 ) );
+
+		// Add expiration to salt
+		if ( $expires > 0 ) {
+			$salt = $salt . '?expires=' . ( time() + $expires );
+		}
+
+		// Generate random number
 		$number = rand( 1, $max_number );
 		$challenge = hash( 'sha256', $salt . $number );
 		$signature = hash_hmac( 'sha256', $challenge, $hmac_key );
@@ -244,11 +244,11 @@ class WBC_Altcha_Service extends WBC_Captcha_Service_Base {
 			return false;
 		}
 
-		// Use ALTCHA library for verification (required for self-hosted)
-		if ( $this->altcha_lib ) {
-			$verified = $this->altcha_lib->verify( $response, $hmac_key );
+		// Use ALTCHA plugin if available
+		if ( class_exists( 'AltchaPlugin' ) && isset( AltchaPlugin::$instance ) ) {
+			$verified = AltchaPlugin::$instance->verify( $response, $hmac_key );
 		} else {
-			// Fallback to manual verification
+			// Self-hosted verification
 			$verified = $this->verify_solution( $response, $hmac_key );
 		}
 
