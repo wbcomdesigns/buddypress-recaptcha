@@ -161,14 +161,6 @@ function run_recaptcha_for_woocommerce() {
 }
 run_recaptcha_for_woocommerce();
 
-require plugin_dir_path( __FILE__ ) . 'bp-recaptcha-update-checker/plugin-update-checker.php';
-	use YahnisElsts\PluginUpdateChecker\v5\PucFactory;
-	$myUpdateChecker = PucFactory::buildUpdateChecker(
-		'https://demos.wbcomdesigns.com/exporter/free-plugins/buddypress-recaptcha.json',
-		__FILE__, // Full path to the main plugin file or functions.php.
-		'buddypress-recaptcha'
-	);
-
 function wb_recaptcha_get_the_user_ip() {
 	// Only trust REMOTE_ADDR as other headers can be spoofed
 	$ipaddress = '';
