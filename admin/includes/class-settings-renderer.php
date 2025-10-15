@@ -614,6 +614,57 @@ if ( ! class_exists( 'WBC_Settings_Renderer' ) ) :
 						<?php
 						break;
 
+					// Custom HTML content
+					case 'custom':
+						if ( ! empty( $value['default'] ) ) {
+							// Allow form elements in custom HTML
+							$allowed_html = array_merge(
+								wp_kses_allowed_html( 'post' ),
+								array(
+									'input' => array(
+										'type' => array(),
+										'name' => array(),
+										'value' => array(),
+										'id' => array(),
+										'class' => array(),
+										'checked' => array(),
+										'disabled' => array(),
+										'readonly' => array(),
+										'placeholder' => array(),
+										'min' => array(),
+										'max' => array(),
+										'step' => array(),
+									),
+									'select' => array(
+										'name' => array(),
+										'id' => array(),
+										'class' => array(),
+										'multiple' => array(),
+										'style' => array(),
+									),
+									'option' => array(
+										'value' => array(),
+										'selected' => array(),
+									),
+									'button' => array(
+										'type' => array(),
+										'class' => array(),
+										'id' => array(),
+										'name' => array(),
+										'value' => array(),
+										'style' => array(),
+									),
+								)
+							);
+
+							echo '<div class="wbcom-settings-section-wrap">';
+							echo '<div class="wbcom-custom-field">';
+							echo wp_kses( $value['default'], $allowed_html );
+							echo '</div>';
+							echo '</div>';
+						}
+						break;
+
 					// Default: run an action.
 					default:
 						do_action( 'woocommerce_admin_field_' . $value['type'], $value );
