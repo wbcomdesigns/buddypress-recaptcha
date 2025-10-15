@@ -8,45 +8,28 @@
 /*--------------------------------------------------------------
 # Admin Tab Section 
 --------------------------------------------------------------*/
+/* Welcome Tab */
+.nav-tab-wrapper ul li a#rfw-welcome.nav-tab:before {
+    content: "\f319";
+}
+
+/* Quick Setup Tab */
 .nav-tab-wrapper ul li a#rfw-general.nav-tab:before {
     content: "\f111";
+}
+
+/* Protection Tab */
+.nav-tab-wrapper ul li a#protection.nav-tab:before {
+    content: "\f332";
+}
+
+/* Advanced Tab */
+.nav-tab-wrapper ul li a#advanced.nav-tab:before {
+    content: "\f108";
 }
 .wbcom-wrap .notice.notice-error.is-dismissible.learndash-license-is-dismissible,
 .wbcom-wrap .notice.notice-error {
   display: none !important;
-}
-.nav-tab-wrapper ul li a#wp_login.nav-tab:before {
-    content: "\f120";
-}
-.nav-tab-wrapper ul li a#wp_register.nav-tab:before {
-    content: "\f448";
-}
-.nav-tab-wrapper ul li a#wp_lostpassword.nav-tab:before {
-    content: "\f177";
-}
-.nav-tab-wrapper ul li a#woo_comments.nav-tab:before {
-    content: "\f199";
-}
-.nav-tab-wrapper ul li a#bp_register.nav-tab:before {
-    content: "\f448";
-}
-.nav-tab-wrapper ul li a#signup.nav-tab:before {
-    content: "\f448";
-}
-.nav-tab-wrapper ul li a#login.nav-tab:before {
-    content: "\f120";
-}
-.nav-tab-wrapper ul li a#forgotpassword.nav-tab:before {
-   content: "\f177";
-}
-.nav-tab-wrapper ul li a#guestcheckout.nav-tab:before {
-   content: "\f174";
-}
-.nav-tab-wrapper ul li a#bb_press_topic.nav-tab:before {
-   content: "\f450";
-}
-.nav-tab-wrapper ul li a#bb_press_reply.nav-tab:before {
-   content: "\f125";
 }
 
 .rfw-tabs-section .nav-tab-wrapper ul li a.nav-tab span.dashicons {
@@ -70,30 +53,84 @@
 }
 
 /*--------------------------------------------------------------
-# Admin Tab Content 
+# Admin Tab Content
 --------------------------------------------------------------*/
 #wb-recaptcha h2 {
     margin-top: 0;
     color: #2A32EF;
     font-size: 20px;
 }
+
+/* Uniform input styling for all input types */
 .rfw-tab-content input[type="text"],
+.rfw-tab-content input[type="password"],
+.rfw-tab-content input[type="email"],
+.rfw-tab-content input[type="url"],
+.rfw-tab-content input[type="number"],
 .wbcom-settings-section-wrap select,
-.rfw-tab-content .wbcom-settings-section-options [type="number"] {
-    width: 100%;
-    border-radius: 7px;
+.rfw-tab-content .wbc-secret-key-input {
+    width: 400px !important;
+    max-width: 100% !important;
+    display: inline-block !important;
+    vertical-align: middle !important;
+    border-radius: 4px;
     box-shadow: none;
-    height: 40px;
-    border-color: #e0e0e0;
-    background-color: #fafafa;
+    height: 32px;
+    border: 1px solid #8c8f94;
+    background-color: #fff;
+    padding: 0 8px;
+    font-size: 14px;
+    line-height: 2;
+}
+
+/* Ensure select boxes match input height */
+.wbcom-settings-section-wrap select {
+    height: 32px !important;
+    padding: 2px 24px 2px 8px;
+}
+
+/* Number inputs specific width */
+.rfw-tab-content input[type="number"] {
+    width: 100px !important;
+}
+
+/* Textarea styling */
+.rfw-tab-content textarea {
+    width: 400px !important;
+    max-width: 100% !important;
+    border-radius: 4px;
+    border: 1px solid #8c8f94;
+    background-color: #fff;
+    padding: 8px;
+    font-size: 14px;
+}
+
+/* Focus states for all inputs */
+.rfw-tab-content input[type="text"]:focus,
+.rfw-tab-content input[type="password"]:focus,
+.rfw-tab-content input[type="email"]:focus,
+.rfw-tab-content input[type="url"]:focus,
+.rfw-tab-content input[type="number"]:focus,
+.wbcom-settings-section-wrap select:focus,
+.rfw-tab-content textarea:focus,
+.rfw-tab-content .wbc-secret-key-input:focus {
+    border-color: #2271b1;
+    box-shadow: 0 0 0 1px #2271b1;
+    outline: 2px solid transparent;
 }
 
 .rfw-tab-content .woocommerce-save-button {
   margin-top: 15px;
 }
 
+/* Enable tab icons */
 .nav-tab-wrapper ul li a.nav-tab:before {
-  display: none;
+  display: inline-block;
+  font-family: 'dashicons';
+  font-size: 16px;
+  margin-right: 6px;
+  vertical-align: middle;
+  line-height: 1;
 }
 .hide {
   display: none;
@@ -101,4 +138,664 @@
 
 h1.wbcom-plugin-heading {
   display: block !important;
+}
+
+/*--------------------------------------------------------------
+# Secret Key Input Styling
+--------------------------------------------------------------*/
+.wbc-secret-key-input {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif !important;
+  letter-spacing: normal !important;
+  -webkit-text-security: none !important;
+}
+
+/* Style the toggle and copy buttons */
+.wbc-toggle-visibility,
+.wbc-copy-key,
+.wbc-generate-hmac-key {
+  display: inline-block !important;
+  vertical-align: middle !important;
+  height: 32px !important;
+  line-height: 30px !important;
+  padding: 0 12px !important;
+  min-width: 40px !important;
+  font-size: 14px !important;
+  border: 1px solid #8c8f94 !important;
+  background: #f6f7f7 !important;
+  color: #50575e !important;
+  cursor: pointer !important;
+  border-radius: 4px !important;
+  margin-left: 8px !important;
+  transition: all 0.2s ease !important;
+  white-space: nowrap !important;
+}
+
+.wbc-toggle-visibility:hover,
+.wbc-copy-key:hover,
+.wbc-generate-hmac-key:hover {
+  background: #f0f0f1 !important;
+  border-color: #50575e !important;
+  color: #0a0a0a !important;
+}
+
+.wbc-toggle-visibility:focus,
+.wbc-copy-key:focus,
+.wbc-generate-hmac-key:focus {
+  border-color: #2271b1 !important;
+  box-shadow: 0 0 0 1px #2271b1 !important;
+  outline: 2px solid transparent !important;
+}
+
+/* Input and button container */
+.wbc-input-button-group {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+}
+
+/* Ensure buttons stay inline with inputs */
+.wbcom-settings-section-wrap td,
+.form-table td {
+  white-space: nowrap;
+}
+
+/* Force inline display for input groups */
+.wbc-settings-section-wrap td input[type="text"],
+.wbc-settings-section-wrap td input[type="password"],
+.wbc-settings-section-wrap td input[type="email"],
+.wbc-settings-section-wrap td input[type="url"],
+.wbc-settings-section-wrap td .wbc-secret-key-input,
+.form-table td input[type="text"],
+.form-table td input[type="password"],
+.form-table td input[type="email"],
+.form-table td input[type="url"],
+.form-table td .wbc-secret-key-input {
+  display: inline-block !important;
+  vertical-align: middle !important;
+}
+
+/* Adjust for smaller screens */
+@media screen and (max-width: 782px) {
+  .rfw-tab-content input[type="text"],
+  .rfw-tab-content input[type="password"],
+  .rfw-tab-content input[type="email"],
+  .rfw-tab-content input[type="url"],
+  .rfw-tab-content .wbc-secret-key-input,
+  .rfw-tab-content textarea {
+    width: 100% !important;
+  }
+
+  .wbcom-settings-section-wrap td,
+  .form-table td {
+    white-space: normal;
+  }
+
+  .wbc-toggle-visibility,
+  .wbc-copy-key,
+  .wbc-generate-hmac-key {
+    margin-top: 8px !important;
+    margin-left: 0 !important;
+    margin-right: 8px !important;
+  }
+
+  .wbc-input-button-group {
+    flex-wrap: wrap !important;
+  }
+}
+
+/* Service key field wrapper styling */
+.wbc-service-keys {
+  transition: all 0.3s ease;
+}
+
+/* Ensure proper spacing in form table */
+.form-table th {
+  padding: 20px 10px 20px 0;
+  vertical-align: top;
+  width: 200px;
+}
+
+.form-table td {
+  padding: 15px 10px;
+  line-height: 1.3;
+  vertical-align: middle;
+}
+
+/* Checkbox and radio button styling */
+.rfw-tab-content input[type="checkbox"],
+.rfw-tab-content input[type="radio"] {
+  margin: 0 8px 0 0 !important;
+  vertical-align: middle !important;
+}
+
+/* Description text styling */
+.form-table .description,
+.wbc-settings-section-wrap .description {
+  display: block;
+  margin-top: 5px;
+  color: #646970;
+  font-size: 13px;
+  font-style: normal;
+}
+
+/* Service selection cards */
+.wbc-service-selector {
+  display: block;
+  margin-bottom: 20px;
+}
+
+.wbc-service-option {
+  display: block;
+  margin-bottom: 15px;
+  padding: 20px;
+  border: 3px solid #ddd;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  background: #fff;
+}
+
+.wbc-service-option:hover {
+  border-color: #999;
+  transform: translateY(-2px);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* SELECTED STATE - Make it SUPER obvious */
+/* Using :has() selector for browsers that support it */
+.wbc-service-option:has(input[type="radio"]:checked) {
+  background: linear-gradient(135deg, #0073aa 0%, #005a87 100%);
+  border-color: #0073aa;
+  border-width: 4px;
+  box-shadow: 0 4px 12px rgba(0, 115, 170, 0.3);
+  transform: scale(1.02);
+}
+
+.wbc-service-option:has(input[type="radio"]:checked) .wbc-service-name,
+.wbc-service-option:has(input[type="radio"]:checked) .wbc-service-desc {
+  color: white !important;
+}
+
+.wbc-service-option:has(input[type="radio"]:checked) .wbc-service-badge {
+  background: white;
+  color: #0073aa;
+}
+
+.wbc-service-option:has(input[type="radio"]:checked)::before {
+  content: '✓';
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  width: 40px;
+  height: 40px;
+  background: white;
+  color: #0073aa;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: bold;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+/* Fallback using JavaScript-added class for all browsers */
+.wbc-service-option.wbc-selected {
+  background: linear-gradient(135deg, #0073aa 0%, #005a87 100%) !important;
+  border-color: #0073aa !important;
+  border-width: 4px !important;
+  box-shadow: 0 4px 12px rgba(0, 115, 170, 0.3) !important;
+  transform: scale(1.02) !important;
+}
+
+.wbc-service-option.wbc-selected .wbc-service-name,
+.wbc-service-option.wbc-selected .wbc-service-desc {
+  color: white !important;
+}
+
+.wbc-service-option.wbc-selected .wbc-service-badge {
+  background: white !important;
+  color: #0073aa !important;
+}
+
+.wbc-service-option.wbc-selected::before {
+  content: '✓';
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  width: 40px;
+  height: 40px;
+  background: white;
+  color: #0073aa;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: bold;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+.wbc-service-option input[type="radio"] {
+  margin-right: 12px;
+  width: 24px;
+  height: 24px;
+  vertical-align: middle;
+  margin-top: -3px;
+  cursor: pointer;
+  accent-color: #0073aa;
+}
+
+.wbc-service-option input[type="radio"]:checked {
+  transform: scale(1.2);
+}
+
+.wbc-service-name {
+  font-size: 16px;
+  font-weight: 600;
+  display: inline-block;
+  margin-bottom: 5px;
+}
+
+.wbc-service-desc {
+  color: #666;
+  margin-left: 36px;
+  font-size: 14px;
+  display: block;
+  line-height: 1.5;
+}
+
+.wbc-service-badge {
+  background: #0073aa;
+  color: white;
+  padding: 3px 10px;
+  border-radius: 4px;
+  font-size: 11px;
+  margin-left: 8px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.wbc-service-keys {
+  transition: opacity 0.3s ease;
+}
+
+.wbc-service-keys[style*="display: none"] {
+  opacity: 0;
+}
+
+.wbc-service-docs {
+  animation: fadeIn 0.3s ease;
+}
+
+.wbc-hidden {
+  display: none !important;
+}
+
+.wbc-active {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Guide boxes */
+.wbc-guide-box {
+  background: #f9f9f9;
+  padding: 20px;
+  border-radius: 5px;
+  margin: 15px 0;
+}
+
+.wbc-guide-box h3 {
+  margin-top: 0;
+  margin-bottom: 15px;
+}
+
+.wbc-guide-google {
+  border-left: 4px solid #0073aa;
+}
+
+.wbc-guide-cloudflare {
+  border-left: 4px solid #f48120;
+}
+
+.wbc-guide-hcaptcha {
+  border-left: 4px solid #7c3aed;
+}
+
+.wbc-guide-altcha {
+  border-left: 4px solid #10b981;
+}
+
+.wbc-guide-steps {
+  line-height: 1.8;
+  padding-left: 20px;
+}
+
+.wbc-guide-note {
+  margin-top: 15px;
+  padding: 10px;
+  background: #fff;
+  border-radius: 3px;
+  margin-bottom: 0;
+}
+
+.wbc-guide-warning {
+  margin-top: 15px;
+  padding: 10px;
+  background: #fff3cd;
+  border-radius: 3px;
+  margin-bottom: 0;
+}
+
+/* Info box */
+.wbc-info-box {
+  background: #fff9e6;
+  border-left: 4px solid #f0b429;
+  padding: 20px;
+  margin: 20px 0;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.wbc-info-box p {
+  color: #856404;
+  line-height: 1.6;
+  margin: 0;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+/* Ensure consistent button styling across the plugin */
+.button,
+.button-primary,
+.button-secondary {
+  height: 32px !important;
+  line-height: 30px !important;
+  padding: 0 12px !important;
+  font-size: 13px !important;
+  vertical-align: middle !important;
+}
+
+/* Make Save Selection button bigger and more prominent */
+.button-hero {
+  height: 48px !important;
+  line-height: 46px !important;
+  padding: 0 30px !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  box-shadow: 0 3px 8px rgba(0, 115, 170, 0.3);
+  margin-top: 10px !important;
+}
+
+.button-hero:hover {
+  box-shadow: 0 4px 12px rgba(0, 115, 170, 0.4);
+  transform: translateY(-1px);
+}
+
+/* Protection Settings - Toggle Switch Layout */
+.wbc-protection-group {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 12px;
+  padding: 10px 0;
+}
+
+.wbc-protection-item {
+  background: #fff;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 16px 18px;
+  transition: all 0.2s ease;
+}
+
+.wbc-protection-item:hover {
+  border-color: #0073aa;
+  box-shadow: 0 2px 12px rgba(0, 115, 170, 0.15);
+}
+
+.wbc-protection-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  margin: 0;
+  width: 100%;
+  gap: 15px;
+}
+
+.wbc-protection-title-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+}
+
+.wbc-protection-title {
+  display: block;
+  font-weight: 600;
+  font-size: 14px;
+  color: #1d2327;
+  line-height: 1.4;
+}
+
+/* Tooltip Styles */
+.wbc-tooltip {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.wbc-tooltip-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  background: #0073aa;
+  color: white;
+  border-radius: 50%;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: help;
+  transition: all 0.2s ease;
+}
+
+.wbc-tooltip:hover .wbc-tooltip-icon {
+  background: #005a87;
+  transform: scale(1.1);
+}
+
+.wbc-tooltip-text {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 8px);
+  transform: translateX(-50%);
+  background: #1d2327;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.4;
+  white-space: nowrap;
+  max-width: 280px;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.2s ease;
+  pointer-events: none;
+  z-index: 1000;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.wbc-tooltip-text::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-top-color: #1d2327;
+}
+
+.wbc-tooltip:hover .wbc-tooltip-text {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Toggle Switch Styling */
+.wbc-toggle-wrapper {
+  position: relative;
+  display: inline-block;
+  width: 48px;
+  height: 26px;
+  flex-shrink: 0;
+}
+
+.wbc-toggle-input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+  position: absolute;
+}
+
+.wbc-toggle-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.3s;
+  border-radius: 26px;
+}
+
+.wbc-toggle-slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: 0.3s;
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+/* Checked state */
+.wbc-toggle-input:checked + .wbc-toggle-slider {
+  background-color: #46b450; /* WordPress green for "ON" */
+}
+
+.wbc-toggle-input:checked + .wbc-toggle-slider:before {
+  transform: translateX(22px);
+}
+
+.wbc-toggle-input:focus + .wbc-toggle-slider {
+  box-shadow: 0 0 0 2px rgba(70, 180, 80, 0.3);
+}
+
+/* Checked item state */
+.wbc-protection-item:has(.wbc-toggle-input:checked) {
+  border-color: #46b450;
+  background: #f7fcf7;
+}
+
+.wbc-protection-item:has(.wbc-toggle-input:checked) .wbc-protection-title {
+  color: #0a6e0e;
+}
+
+/* Responsive */
+@media screen and (max-width: 782px) {
+  .wbc-protection-group {
+    grid-template-columns: 1fr;
+  }
+
+  .wbc-tooltip-text {
+    white-space: normal;
+    max-width: 220px;
+    left: auto;
+    right: 0;
+    transform: none;
+  }
+
+  .wbc-tooltip-text::after {
+    left: auto;
+    right: 12px;
+    transform: none;
+  }
+}
+
+/*--------------------------------------------------------------
+# Advanced Tab Styling
+--------------------------------------------------------------*/
+/* Section title enhancement */
+#wb-recaptcha h2 {
+  margin-bottom: 20px;
+}
+
+/* Section description styling */
+#wb-recaptcha h2 + p {
+  margin-top: -10px;
+  margin-bottom: 25px;
+  color: #50575e;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* Advanced tab form table improvements */
+.rfw-tab-content .form-table {
+  background: #fff;
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 30px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.rfw-tab-content .form-table th {
+  font-weight: 600;
+  color: #1d2327;
+  font-size: 14px;
+}
+
+/* Make textarea more visible with better styling */
+.rfw-tab-content textarea#wbc_recaptcha_ip_to_skip_captcha {
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', monospace;
+  font-size: 13px;
+  line-height: 1.6;
+  resize: vertical;
+  background: #fafafa;
+}
+
+.rfw-tab-content textarea#wbc_recaptcha_ip_to_skip_captcha:focus {
+  background: #fff;
+}
+
+/* Info callout box for Advanced tab */
+.wbc-advanced-info {
+  background: linear-gradient(135deg, #e8f4f8 0%, #f0f9fc 100%);
+  border-left: 4px solid #0073aa;
+  padding: 16px 20px;
+  margin: 20px 0;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.wbc-advanced-info p {
+  margin: 0;
+  color: #1d2327;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.wbc-advanced-info strong {
+  color: #0073aa;
 }
