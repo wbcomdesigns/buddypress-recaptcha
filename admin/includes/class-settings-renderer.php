@@ -657,10 +657,8 @@ if ( ! class_exists( 'WBC_Settings_Renderer' ) ) :
 								)
 							);
 
-							echo '<div class="wbcom-settings-section-wrap">';
 							echo '<div class="wbcom-custom-field">';
 							echo wp_kses( $value['default'], $allowed_html );
-							echo '</div>';
 							echo '</div>';
 						}
 						break;

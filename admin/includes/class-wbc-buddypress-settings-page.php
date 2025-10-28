@@ -849,11 +849,11 @@ if ( ! class_exists( 'WBC_BuddyPress_Settings_Page' ) ) :
 			);
 
 			// Appearance settings
-			$settings[] = array(
-				'name' => esc_html__( 'Appearance', 'buddypress-recaptcha' ),
-				'type' => 'title',
-				'id'   => 'wbc_appearance_section',
-			);
+			// $settings[] = array(
+			// 	'name' => esc_html__( 'Appearanceee', 'buddypress-recaptcha' ),
+			// 	'type' => 'title',
+			// 	'id'   => 'wbc_appearance_section',
+			// );
 
 			$service = get_option( 'wbc_captcha_service', 'recaptcha_v2' );
 
@@ -883,10 +883,10 @@ if ( ! class_exists( 'WBC_BuddyPress_Settings_Page' ) ) :
 				);
 			}
 
-			$settings[] = array(
-				'type' => 'sectionend',
-				'id'   => 'wbc_appearance_section',
-			);
+			// $settings[] = array(
+			// 	'type' => 'sectionend',
+			// 	'id'   => 'wbc_appearance_section',
+			// );
 
 			// Advanced options
 			$settings[] = array(
