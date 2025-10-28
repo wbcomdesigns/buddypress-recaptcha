@@ -172,7 +172,7 @@ class Recaptcha_For_BuddyPress_Admin {
 				add_submenu_page( 'wbcomplugins', esc_html__( 'General', 'buddypress-recaptcha' ), esc_html__( 'General', 'buddypress-recaptcha' ), 'manage_options', 'wbcomplugins' );
 			}
 
-			add_submenu_page( 'wbcomplugins', esc_html__( 'Wbcom CAPTCHA Manager', 'buddypress-recaptcha' ), esc_html__( 'Wbcom CAPTCHA Manager', 'buddypress-recaptcha' ), 'manage_options', 'buddypress-recaptcha', array( $this, 'rfw_admin_settings_page' ) );
+			add_submenu_page( 'wbcomplugins', esc_html__( 'Wbcom CAPTCHA Manager', 'buddypress-recaptcha' ), esc_html__( 'CAPTCHA', 'buddypress-recaptcha' ), 'manage_options', 'buddypress-recaptcha', array( $this, 'rfw_admin_settings_page' ) );
 		}
 	}
 
