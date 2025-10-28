@@ -674,164 +674,29 @@ if ( ! class_exists( 'WBC_BuddyPress_Settings_Page' ) ) :
 		 *
 		 * @return array
 		 */
-		public function wbc_protection_settings() {
-			$settings = array(
-				array(
-					'name' => esc_html__( 'Form Protection Settings', 'buddypress-recaptcha' ),
-					'type' => 'title',
-					'desc' => esc_html__( 'Choose which forms to protect from spam and bots. Enable protection where you need it most.', 'buddypress-recaptcha' ),
-					'id'   => 'wbc_protection_main',
-				),
-			);
-
-			// Core WordPress Forms - Grouped Layout
-			$settings[] = array(
-				'name' => esc_html__( 'WordPress Core Forms', 'buddypress-recaptcha' ),
+	public function wbc_protection_settings() {
+		$settings = array(
+			array(
+				'name' => esc_html__( 'Form Protection Settings', 'buddypress-recaptcha' ),
 				'type' => 'title',
-				'id'   => 'wbc_wp_protection',
-			);
+				'desc' => esc_html__( 'Choose which forms to protect from spam and bots. Enable protection where you need it most.', 'buddypress-recaptcha' ),
+				'id'   => 'wbc_protection_main',
+			),
+		);
 
-			$settings[] = array(
-				'name'    => '',
-				'type'    => 'custom',
-				'id'      => 'wbc_wp_forms_group',
-				'default' => $this->wbc_protection_checkbox_group( array(
-					array(
-						'id'      => 'wbc_recaptcha_enable_on_wplogin',
-						'label'   => __( 'Login Form', 'buddypress-recaptcha' ),
-						'desc'    => __( 'Protect against brute force login attacks', 'buddypress-recaptcha' ),
-						'default' => 'yes',
-					),
-					array(
-						'id'      => 'wbc_recaptcha_enable_on_wpregister',
-						'label'   => __( 'Registration Form', 'buddypress-recaptcha' ),
-						'desc'    => __( 'Prevent spam account registrations', 'buddypress-recaptcha' ),
-						'default' => 'yes',
-					),
-					array(
-						'id'      => 'wbc_recaptcha_enable_on_wplostpassword',
-						'label'   => __( 'Lost Password Form', 'buddypress-recaptcha' ),
-						'desc'    => __( 'Secure password reset requests', 'buddypress-recaptcha' ),
-						'default' => 'no',
-					),
-					array(
-						'id'      => 'wbc_recaptcha_enable_on_comment',
-						'label'   => __( 'Comment Forms', 'buddypress-recaptcha' ),
-						'desc'    => __( 'Stop spam comments on posts and pages', 'buddypress-recaptcha' ),
-						'default' => 'yes',
-					),
-				) ),
-			);
+		// Load modular settings system
+		require_once plugin_dir_path( __FILE__ ) . 'settings-modules/class-wbc-settings-module-loader.php';
 
-			$settings[] = array(
-				'type' => 'sectionend',
-				'id'   => 'wbc_wp_protection',
-			);
+		// Get all protection settings from active modules only
+		$module_settings = wbc_settings_module_loader()->get_all_protection_settings();
 
-			// WooCommerce Forms (if active)
-			if ( class_exists( 'WooCommerce' ) ) {
-				$settings[] = array(
-					'name' => esc_html__( 'WooCommerce Forms', 'buddypress-recaptcha' ),
-					'type' => 'title',
-					'id'   => 'wbc_woo_protection',
-				);
-
-				$settings[] = array(
-					'name'    => '',
-					'type'    => 'custom',
-					'id'      => 'wbc_woo_forms_group',
-					'default' => $this->wbc_protection_checkbox_group( array(
-						array(
-							'id'      => 'wbc_recaptcha_enable_on_login',
-							'label'   => __( 'Customer Login', 'buddypress-recaptcha' ),
-							'desc'    => __( 'Protect customer account login', 'buddypress-recaptcha' ),
-							'default' => 'no',
-						),
-						array(
-							'id'      => 'wbc_recaptcha_enable_on_signup',
-							'label'   => __( 'Customer Registration', 'buddypress-recaptcha' ),
-							'desc'    => __( 'Prevent fake customer accounts', 'buddypress-recaptcha' ),
-							'default' => 'yes',
-						),
-						array(
-							'id'      => 'wbc_recaptcha_enable_on_guestcheckout',
-							'label'   => __( 'Guest Checkout', 'buddypress-recaptcha' ),
-							'desc'    => __( 'Protect checkout from bots', 'buddypress-recaptcha' ),
-							'default' => 'yes',
-						),
-					) ),
-				);
-
-				$settings[] = array(
-					'type' => 'sectionend',
-					'id'   => 'wbc_woo_protection',
-				);
-			}
-
-			// BuddyPress Forms (if active)
-			if ( class_exists( 'BuddyPress' ) ) {
-				$settings[] = array(
-					'name' => esc_html__( 'BuddyPress Forms', 'buddypress-recaptcha' ),
-					'type' => 'title',
-					'id'   => 'wbc_bp_protection',
-				);
-
-				$settings[] = array(
-					'name'    => '',
-					'type'    => 'custom',
-					'id'      => 'wbc_bp_forms_group',
-					'default' => $this->wbc_protection_checkbox_group( array(
-						array(
-							'id'      => 'wbc_recaptcha_enable_on_buddypress',
-							'label'   => __( 'Member Registration', 'buddypress-recaptcha' ),
-							'desc'    => __( 'Protect community registration', 'buddypress-recaptcha' ),
-							'default' => 'yes',
-						),
-					) ),
-				);
-
-				$settings[] = array(
-					'type' => 'sectionend',
-					'id'   => 'wbc_bp_protection',
-				);
-			}
-
-			// bbPress Forms (if active)
-			if ( class_exists( 'bbPress' ) ) {
-				$settings[] = array(
-					'name' => esc_html__( 'bbPress Forum Forms', 'buddypress-recaptcha' ),
-					'type' => 'title',
-					'id'   => 'wbc_bbpress_protection',
-				);
-
-				$settings[] = array(
-					'name'    => '',
-					'type'    => 'custom',
-					'id'      => 'wbc_bbpress_forms_group',
-					'default' => $this->wbc_protection_checkbox_group( array(
-						array(
-							'id'      => 'wbc_recaptcha_enable_on_bbpress_topic',
-							'label'   => __( 'New Topics', 'buddypress-recaptcha' ),
-							'desc'    => __( 'Prevent spam topics', 'buddypress-recaptcha' ),
-							'default' => 'yes',
-						),
-						array(
-							'id'      => 'wbc_recaptcha_enable_on_bbpress_reply',
-							'label'   => __( 'Topic Replies', 'buddypress-recaptcha' ),
-							'desc'    => __( 'Stop spam replies', 'buddypress-recaptcha' ),
-							'default' => 'yes',
-						),
-					) ),
-				);
-
-				$settings[] = array(
-					'type' => 'sectionend',
-					'id'   => 'wbc_bbpress_protection',
-				);
-			}
-
-			return apply_filters( 'wbc_recaptcha_protection_settings', $settings );
+		// Merge module settings into main settings array
+		if ( ! empty( $module_settings ) ) {
+			$settings = array_merge( $settings, $module_settings );
 		}
+
+		return apply_filters( 'wbc_recaptcha_protection_settings', $settings );
+	}
 
 		/**
 		 * Get combined advanced settings (appearance + advanced)
@@ -2398,39 +2263,27 @@ if ( ! class_exists( 'WBC_BuddyPress_Settings_Page' ) ) :
 		/**
 		 * Save protection checkbox fields from custom HTML
 		 */
-		private function wbc_save_protection_fields() {
-			// Define all protection checkbox IDs
-			$checkbox_ids = array(
-				// WordPress Core
-				'wbc_recaptcha_enable_on_wplogin',
-				'wbc_recaptcha_enable_on_wpregister',
-				'wbc_recaptcha_enable_on_wplostpassword',
-				'wbc_recaptcha_enable_on_comment',
-				// WooCommerce
-				'wbc_recaptcha_enable_on_login',
-				'wbc_recaptcha_enable_on_signup',
-				'wbc_recaptcha_enable_on_guestcheckout',
-				// BuddyPress
-				'wbc_recaptcha_enable_on_buddypress',
-				// bbPress
-				'wbc_recaptcha_enable_on_bbpress_topic',
-				'wbc_recaptcha_enable_on_bbpress_reply',
-			);
+	private function wbc_save_protection_fields() {
+		// Load modular settings system
+		require_once plugin_dir_path( __FILE__ ) . 'settings-modules/class-wbc-settings-module-loader.php';
 
-			// Save each checkbox (yes if checked, no if not)
-			foreach ( $checkbox_ids as $checkbox_id ) {
-				$value = isset( $_POST[ $checkbox_id ] ) ? 'yes' : 'no';
-				update_option( $checkbox_id, $value );
-			}
+		// Get all checkbox IDs from active modules only
+		$checkbox_ids = wbc_settings_module_loader()->get_all_checkbox_ids();
 
-			// Show success message
-			add_settings_error(
-				'wbc_recaptcha_messages',
-				'wbc_recaptcha_message',
-				__( 'Protection settings saved successfully.', 'buddypress-recaptcha' ),
-				'updated'
-			);
+		// Save each checkbox (yes if checked, no if not)
+		foreach ( $checkbox_ids as $checkbox_id ) {
+			$value = isset( $_POST[ $checkbox_id ] ) ? 'yes' : 'no';
+			update_option( $checkbox_id, $value );
 		}
+
+		// Show success message
+		add_settings_error(
+			'wbc_recaptcha_messages',
+			'wbc_recaptcha_message',
+			__( 'Protection settings saved successfully.', 'buddypress-recaptcha' ),
+			'updated'
+		);
+	}
 
 		public function wbc_save( $current = '' ) {
 			// Use the passed parameter or fall back to global
