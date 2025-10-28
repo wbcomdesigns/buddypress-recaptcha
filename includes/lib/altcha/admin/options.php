@@ -30,12 +30,12 @@ function altcha_options_page_html()
     </div>
 
     <div style="flex-grow: 1;">
-      <div class="altcha-title"><?php echo esc_html__('ALTCHA', 'altcha-spam-protection'); ?></div>
-      <div class="altcha-subtitle"><?php echo esc_html__('A Privacy-Friendly Captcha Alternative.', 'altcha-spam-protection'); ?></div>
+      <div class="altcha-title"><?php echo esc_html__('ALTCHA', 'buddypress-recaptcha'); ?></div>
+      <div class="altcha-subtitle"><?php echo esc_html__('A Privacy-Friendly Captcha Alternative.', 'buddypress-recaptcha'); ?></div>
     </div>
 
     <div>
-      <div style="margin-bottom: 0.3rem;"><b><?php echo esc_html__('Do you like ALTCHA?', 'altcha-spam-protection'); ?></b></div>
+      <div style="margin-bottom: 0.3rem;"><b><?php echo esc_html__('Do you like ALTCHA?', 'buddypress-recaptcha'); ?></b></div>
       <div style="display:flex;gap: 0.5rem;">
         <a href="https://wordpress.org/support/plugin/altcha-spam-protection/reviews/?filter=5#new-post" target="_blank" style="display: inline-flex; gap: 0.5rem;">
           <span style="display: inline-flex; gap: 0.1rem;">
@@ -45,7 +45,7 @@ function altcha_options_page_html()
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#FFCC00" width="18" height="18"><path d="M12.0006 18.26L4.94715 22.2082L6.52248 14.2799L0.587891 8.7918L8.61493 7.84006L12.0006 0.5L15.3862 7.84006L23.4132 8.7918L17.4787 14.2799L19.054 22.2082L12.0006 18.26Z"></path></svg>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#FFCC00" width="18" height="18"><path d="M12.0006 18.26L4.94715 22.2082L6.52248 14.2799L0.587891 8.7918L8.61493 7.84006L12.0006 0.5L15.3862 7.84006L23.4132 8.7918L17.4787 14.2799L19.054 22.2082L12.0006 18.26Z"></path></svg>
           </span>
-          <span><?php echo esc_html__('Review it!', 'altcha-spam-protection'); ?></span>
+          <span><?php echo esc_html__('Review it!', 'buddypress-recaptcha'); ?></span>
         </a>
       </div>
     </div>
@@ -70,7 +70,7 @@ function altcha_options_page_html()
           esc_html__(
               /* translators: %1$s is the plugin version, and %2$s is the widget version */
               'ALTCHA Spam Protection for WordPress, plugin version %1$s, widget version %2$s',
-              'altcha-spam-protection',
+              'buddypress-recaptcha',
           ),
           AltchaPlugin::$version,
           AltchaPlugin::$widget_version,
@@ -82,7 +82,7 @@ function altcha_options_page_html()
           esc_html__(
             /* translators: the placeholders are opening and closing tags for a link (<a> tag) */
             'Please give ALTCHA a %s★★★★★ rating%s on WordPress.org to help us get the word out.',
-            'altcha-spam-protection',
+            'buddypress-recaptcha',
           ),
           '<a href="https://wordpress.org/support/plugin/altcha-spam-protection/reviews/?filter=5#new-post" target="_blank">',
           '</a>',
@@ -90,7 +90,7 @@ function altcha_options_page_html()
       </p>
       <p>
         <a href="https://github.com/altcha-org/altcha" target="_blank" style="display: inline-flex; gap: 0.3rem;">
-          <span><?php echo esc_html__('Star ALTCHA on GitHub!', 'altcha-spam-protection'); ?></span>
+          <span><?php echo esc_html__('Star ALTCHA on GitHub!', 'buddypress-recaptcha'); ?></span>
         </a>
       </p>
       <p><?php
@@ -98,14 +98,14 @@ function altcha_options_page_html()
           esc_html__(
             /* translators: the placeholder is a clickable link to altcha.org */
             'To access the ALTCHA\'s cloud API, you need an API Key. Visit %s for more information.',
-            'altcha-spam-protection',
+            'buddypress-recaptcha',
           ),
           '<a href="https://altcha.org" target="_blank">altcha.org</a>',
         );
       ?></p>
 
       <div>
-        <a href="https://altcha.org/docs/api/api_keys/" target="_blank"><?php echo esc_html__('Create an API Key →', 'altcha-spam-protection'); ?></a>
+        <a href="https://altcha.org/docs/api/api_keys/" target="_blank"><?php echo esc_html__('Create an API Key →', 'buddypress-recaptcha'); ?></a>
       </div>
     </div>
   </div>
@@ -120,7 +120,7 @@ function altcha_general_section_callback()
         esc_html__(
           /* translators: the placeholders are opening and closing tags for bold */
           'The %sSelf-hosted%s mode does not require an API Key and runs fully within your WordPress installation, without any external services.',
-          'altcha-spam-protection',
+          'buddypress-recaptcha',
         ),
         '<b>',
         '</b>',
@@ -132,7 +132,7 @@ function altcha_general_section_callback()
         esc_html__(
           /* translators: the placeholder will be replaced with the domain name */
           'Your domain name for the API Key: %s',
-          'altcha-spam-protection',
+          'buddypress-recaptcha',
         ),
         '<b>' . esc_html(AltchaPlugin::$hostname) . '</b>',
       );
@@ -149,7 +149,7 @@ function altcha_spam_filter_section_callback()
         esc_html__(
           /* translators: the first two placeholders will be replaced with opening and closing tags for a link (<a> tag), the other two with opening and closing tags for bold (<b> tag). The two pairs may be swapped with each other, but the two tags within pairs may not. */
           'The %1$sSpam Filter%2$s is %3$savailable only in the API mode%4$s with a valid API Key.',
-          'altcha-spam-protection',
+          'buddypress-recaptcha',
         ),
         '<a href="https://altcha.org/docs/api/spam-filter-api" target="_blank">',
         '</a>',
@@ -165,7 +165,7 @@ function altcha_widget_section_callback()
 {
   ?>
 
-    <p><?php echo esc_html__('Customize the widget to fit your needs.', 'altcha-spam-protection'); ?></p>
+    <p><?php echo esc_html__('Customize the widget to fit your needs.', 'buddypress-recaptcha'); ?></p>
 
   <?php
 }
@@ -174,7 +174,7 @@ function altcha_integrations_section_callback()
 {
   ?>
 
-    <p><?php echo esc_html__('Activate ALTCHA for these integrations:', 'altcha-spam-protection'); ?></p>
+    <p><?php echo esc_html__('Activate ALTCHA for these integrations:', 'buddypress-recaptcha'); ?></p>
 
   <?php
 }
@@ -183,7 +183,7 @@ function altcha_wordpress_section_callback()
 {
   ?>
 
-    <p><?php echo esc_html__('Activate ALTCHA for the core Wordpress functionality:', 'altcha-spam-protection'); ?></p>
+    <p><?php echo esc_html__('Activate ALTCHA for the core Wordpress functionality:', 'buddypress-recaptcha'); ?></p>
 
   <?php
 }
