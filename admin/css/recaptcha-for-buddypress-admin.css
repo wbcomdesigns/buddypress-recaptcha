@@ -261,6 +261,18 @@ h1.wbcom-plugin-heading {
   vertical-align: middle;
 }
 
+.wbcom-admin-option-wrap-view .form-table {
+  margin-top: 0;
+}
+
+.wbcom-admin-option-wrap-view .form-table .wbcom-admin-option-wrap {
+  padding: 0;
+}
+
+#wb-recaptcha .wbcom-admin-option-wrap-view .form-table h2:first-child {
+  margin-top: 0;
+}
+
 /* Checkbox and radio button styling */
 .rfw-tab-content input[type="checkbox"],
 .rfw-tab-content input[type="radio"] {
@@ -281,7 +293,6 @@ h1.wbcom-plugin-heading {
 /* Service selection cards */
 .wbc-service-selector {
   display: block;
-  margin-bottom: 20px;
 }
 
 .wbc-service-option {
@@ -294,6 +305,10 @@ h1.wbcom-plugin-heading {
   transition: all 0.2s ease;
   position: relative;
   background: #fff;
+}
+
+.wbc-service-option:last-child {
+  margin-bottom: 0;
 }
 
 .wbc-service-option:hover {
@@ -385,6 +400,18 @@ h1.wbcom-plugin-heading {
   margin-top: -3px;
   cursor: pointer;
   accent-color: #0073aa;
+  position: relative;
+}
+
+.wbc-service-option input[type="radio"]:checked::before {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  width: 10px;
+  height: 10px;
 }
 
 .wbc-service-option input[type="radio"]:checked {
@@ -416,6 +443,7 @@ h1.wbcom-plugin-heading {
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  white-space: nowrap;
 }
 
 .wbc-service-keys {
@@ -512,7 +540,7 @@ h1.wbcom-plugin-heading {
 }
 
 /* Ensure consistent button styling across the plugin */
-.button,
+/* .button,
 .button-primary,
 .button-secondary {
   height: 32px !important;
@@ -520,7 +548,7 @@ h1.wbcom-plugin-heading {
   padding: 0 12px !important;
   font-size: 13px !important;
   vertical-align: middle !important;
-}
+} */
 
 /* Make Save Selection button bigger and more prominent */
 .button-hero {
@@ -738,7 +766,7 @@ h1.wbcom-plugin-heading {
 --------------------------------------------------------------*/
 /* Section title enhancement */
 #wb-recaptcha h2 {
-  margin-bottom: 20px;
+  margin: 20px 0;
 }
 
 /* Section description styling */
@@ -751,14 +779,14 @@ h1.wbcom-plugin-heading {
 }
 
 /* Advanced tab form table improvements */
-.rfw-tab-content .form-table {
+/* .rfw-tab-content .form-table {
   background: #fff;
   border: 1px solid #e5e5e5;
   border-radius: 8px;
   padding: 20px;
   margin-bottom: 30px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-}
+} */
 
 .rfw-tab-content .form-table th {
   font-weight: 600;
