@@ -170,6 +170,9 @@ abstract class WBC_Captcha_Service_Base implements WBC_Captcha_Service_Interface
 			'woo_checkout_guest' => 'wbc_recaptcha_enable_on_guestcheckout',
 			'woo_checkout_login' => 'wbc_recaptcha_enable_on_logincheckout',
 			'comment' => 'wbc_recaptcha_enable_on_comment',
+			// FluentCart contexts
+			'fluent_cart_login' => 'wbc_recaptcha_enable_on_fluentcart_login',
+			'fluent_cart_register' => 'wbc_recaptcha_enable_on_fluentcart_register',
 		);
 	}
 
@@ -261,8 +264,10 @@ abstract class WBC_Captcha_Service_Base implements WBC_Captcha_Service_Interface
 			'bbpress_reply' => 'bbpress-reply-nonce',
 			'woo_checkout' => 'woo-checkout-nonce',
 			'comment' => 'comment-nonce',
+			'fluent_cart_login' => 'fluent-cart-login-nonce',
+			'fluent_cart_register' => 'fluent-cart-register-nonce',
 		);
-		
+
 		return isset( $nonce_actions[ $context ] ) ? $nonce_actions[ $context ] : $context . '-nonce';
 	}
 
@@ -285,8 +290,10 @@ abstract class WBC_Captcha_Service_Base implements WBC_Captcha_Service_Interface
 			'bbpress_reply' => '#new-post',
 			'woo_checkout' => 'form.checkout',
 			'comment' => '#commentform',
+			'fluent_cart_login' => '.fct-login-form',
+			'fluent_cart_register' => '.fct-registration-form',
 		);
-		
+
 		return isset( $selectors[ $context ] ) ? $selectors[ $context ] : '#' . $context . '-form';
 	}
 

@@ -6,7 +6,7 @@
 	<div class="wbcom-wrap wbcom-plugin-wrapper">
 		<div class="wbcom_admin_header-wrapper">
 			<div id="wb_admin_plugin_name">
-				<?php esc_html_e( 'BuddyPress reCaptcha', 'buddypress-recaptcha' ); ?>
+				<?php esc_html_e( 'Wbcom CAPTCHA Manager', 'buddypress-recaptcha' ); ?>
 				<span>
 				<?php
 				/* translators: %s: */

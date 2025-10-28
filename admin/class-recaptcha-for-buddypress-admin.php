@@ -172,7 +172,7 @@ class Recaptcha_For_BuddyPress_Admin {
 				add_submenu_page( 'wbcomplugins', esc_html__( 'General', 'buddypress-recaptcha' ), esc_html__( 'General', 'buddypress-recaptcha' ), 'manage_options', 'wbcomplugins' );
 			}
 
-			add_submenu_page( 'wbcomplugins', esc_html__( 'BuddyPress reCaptcha', 'buddypress-recaptcha' ), esc_html__( 'BuddyPress reCaptcha', 'buddypress-recaptcha' ), 'manage_options', 'buddypress-recaptcha', array( $this, 'rfw_admin_settings_page' ) );
+			add_submenu_page( 'wbcomplugins', esc_html__( 'Wbcom CAPTCHA Manager', 'buddypress-recaptcha' ), esc_html__( 'Wbcom CAPTCHA Manager', 'buddypress-recaptcha' ), 'manage_options', 'buddypress-recaptcha', array( $this, 'rfw_admin_settings_page' ) );
 		}
 	}
 
@@ -194,7 +194,7 @@ class Recaptcha_For_BuddyPress_Admin {
 			<div class="wbcom-wrap">
 					<div class="wbcom_admin_header-wrapper">
 						<div id="wb_admin_plugin_name">
-							<?php esc_html_e( 'BuddyPress reCaptcha', 'buddypress-recaptcha' ); ?>
+							<?php esc_html_e( 'Wbcom CAPTCHA Manager', 'buddypress-recaptcha' ); ?>
 							<span><?php 
 							/* translators: %s: */
 							printf( esc_html__( 'Version %s', 'buddypress-recaptcha' ), esc_attr( RFB_PLUGIN_VERSION ) ); 

@@ -360,6 +360,23 @@ class Recaptcha_For_BuddyPress {
 			// Priority 999 ensures reCAPTCHA is added to checkout blocks last
 			add_filter( 'render_block_woocommerce/checkout-payment-block', array( $woocommerce_order, 'woo_recaptcha_alter_checkout_payment_block' ), 999, 1 );
 		}
+
+		// FluentCart - only load if FluentCart is active.
+		if ( class_exists( 'FluentCart\App\App' ) || defined( 'FLUENT_CART_VERSION' ) ) {
+			// Load FluentCart integration classes
+			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/fluentcart-extra/FluentCartRegistration.php';
+			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/fluentcart-extra/FluentCartLogin.php';
+
+			// FluentCart Registration
+			$fluentcart_registration = new FluentCartRegistration();
+			add_action( 'fluent_cart/views/checkout_page_registration_form', array( $fluentcart_registration, 'render_registration_captcha' ), 10, 1 );
+			add_filter( 'register_post', array( $fluentcart_registration, 'validate_wp_registration_captcha' ), 10, 3 );
+
+			// FluentCart Login
+			$fluentcart_login = new FluentCartLogin();
+			add_action( 'fluent_cart/views/checkout_page_login_form', array( $fluentcart_login, 'render_login_captcha' ), 10, 1 );
+			add_filter( 'authenticate', array( $fluentcart_login, 'validate_login_captcha' ), 20, 3 );
+		}
 		
 		// Comment form submit button - general WordPress hook
 		if ( ! isset( $woocommerce_order ) ) {
