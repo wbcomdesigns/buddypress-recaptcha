@@ -51,7 +51,8 @@ class WBC_Setup_Wizard {
 	 * Show the setup wizard
 	 */
 	public function setup_wizard() {
-		if ( empty( $_GET['page'] ) || 'wbc-setup' !== $_GET['page'] ) {
+		$page = filter_input( INPUT_GET, 'page', FILTER_SANITIZE_SPECIAL_CHARS );
+		if ( empty( $page ) || 'wbc-setup' !== $page ) {
 			return;
 		}
 

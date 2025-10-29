@@ -299,8 +299,6 @@ class Recaptcha_For_BuddyPress {
 			$registration_bp = new Registrationbp();
 			add_action( 'bp_before_registration_submit_buttons', array( $registration_bp, 'woo_extra_bp_register_form' ), 36 );
 			add_action( 'bp_signup_validate', array( $registration_bp, 'innovage_validate_user_registration' ) );
-			// add_action( 'bp_activity_entry_comments', array( $registration_bp, 'form_field_bp' ) );
-			// add_action( 'bp_activity_post_form_options', array( $registration_bp, 'form_field_bp' ) );
 		}
 
 		// bbPress - only load if bbPress is active.
