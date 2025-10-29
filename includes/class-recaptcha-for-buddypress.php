@@ -173,7 +173,7 @@ class Recaptcha_For_BuddyPress {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/woocommerce-extra/WoocommerceProcessLoginErrors.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/woocommerce-extra/WoocommerceAfterCheckoutValidation.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/woocommerce-extra/WoocommerceFilter.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/woocommerce-order/WoocommerceOrder.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/woocommerce-extra/WoocommerceOrder.php';
 
 		// Buddy Press.
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/bp-classes/Registrationbp.php';
