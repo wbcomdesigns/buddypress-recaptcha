@@ -377,12 +377,7 @@ class Recaptcha_For_BuddyPress {
 			add_action( 'fluent_cart/views/checkout_page_login_form', array( $fluentcart_login, 'render_login_captcha' ), 10, 1 );
 			add_filter( 'authenticate', array( $fluentcart_login, 'validate_login_captcha' ), 20, 3 );
 		}
-		
-		// Comment form submit button - general WordPress hook
-		if ( ! isset( $woocommerce_order ) ) {
-			$woocommerce_order = new WoocommerceOrder();
-		}
-		add_filter( 'comment_form_submit_button', array( $woocommerce_order, 'woo_recaptcha_alter_post_comment_submit_button' ), 10, 2 );
+
 		if ( $plugin_public->woo_recaptcha_check_is_ie_browser() ) {
 			add_action( 'wp_head', array( $plugin_public, 'woo_recaptcha_add_header_metadata_for_ie' ) );
 			add_action( 'login_head', array( $plugin_public, 'woo_recaptcha_add_header_metadata_for_ie' ) );
