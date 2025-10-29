@@ -148,6 +148,17 @@ class WBC_Turnstile_Service extends WBC_Captcha_Service_Base {
 			return true; // If not configured, don't block
 		}
 
+		// Verify nonce if present
+		$context = isset( $args['context'] ) ? $args['context'] : '';
+		if ( ! empty( $context ) ) {
+			$nonce_action = $this->get_nonce_action( $context );
+			if ( isset( $_POST[ $nonce_action ] ) ) {
+				if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST[ $nonce_action ] ) ), $nonce_action ) ) {
+					return false;
+				}
+			}
+		}
+
 		if ( empty( $response ) ) {
 			return false;
 		}
@@ -159,13 +170,13 @@ class WBC_Turnstile_Service extends WBC_Captcha_Service_Base {
 		);
 
 		$result = $this->make_verify_request( $this->get_verify_endpoint(), $params );
-		
+
 		if ( ! $result || ! is_array( $result ) ) {
 			return false;
 		}
 
 		$verified = isset( $result['success'] ) && true === $result['success'];
-		
+
 		return apply_filters( 'wbc_captcha_verified', $verified, $result, $response, $this->get_service_id() );
 	}
 
