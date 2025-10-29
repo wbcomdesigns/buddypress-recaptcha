@@ -1,4 +1,5 @@
 <?php
+
 /**
  * The public-facing functionality of the plugin.
  *
@@ -19,26 +20,26 @@
  * @subpackage bp_recaptcha/public
  * @author     Wbcom Designs <admin@wbcomdesigns.com>
  */
-class WoocommerceLostpassword {
+class Woocommerce_Register {
 
 	/**
-	 * Function displays the woocommerce lost password captcha.
+	 * Function displays the woocommerce registration captcha.
 	 *
 	 * @return void
 	 */
-	public function woo_extra_lostpassword_fields() {
+	public function woo_extra_register_fields() {
 		// Use the service manager to render captcha
 		if ( function_exists( 'wbc_captcha_service_manager' ) ) {
-			wbc_captcha_service_manager()->render( 'woo_lostpassword' );
+			wbc_captcha_service_manager()->render( 'woo_register' );
 		}
 	}
 
 	/**
-	 * Validate captcha on WooCommerce lost password
-	 * Note: Actual validation is handled by LostpasswordPost class
+	 * Validate captcha on WooCommerce registration
+	 * Note: Actual validation is handled by WoocommerceRegisterPost class
 	 */
-	public function validate_lostpassword_captcha() {
+	public function validate_register_captcha() {
 		// This method is kept for backward compatibility
-		// Actual validation happens in LostpasswordPost
+		// Actual validation happens in WoocommerceRegisterPost
 	}
 }

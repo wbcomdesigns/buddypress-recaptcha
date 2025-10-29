@@ -164,16 +164,16 @@ class Recaptcha_For_BuddyPress {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/lrl-classes/Login.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/lrl-classes/Registration.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/lrl-classes/Lostpassword.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/woocommerce-lrl-classes/WoocommerceRegister.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/woocommerce-lrl-classes/WoocommerceLogin.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/woocommerce-lrl-classes/WoocommerceLostpassword.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/woocommerce-extra/WoocommerceReviewOrder.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/woocommerce-extra/WoocommerceRegisterPost.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/woocommerce-lrl-classes/Woocommerce_Register.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/woocommerce-lrl-classes/Woocommerce_Login.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/woocommerce-lrl-classes/Woocommerce_Lostpassword.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/woocommerce-extra/Woocommerce_Review_Order.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/woocommerce-extra/Woocommerce_Register_Post.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/woocommerce-extra/LostpasswordPost.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/woocommerce-extra/WoocommerceProcessLoginErrors.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/woocommerce-extra/WoocommerceAfterCheckoutValidation.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/woocommerce-extra/WoocommerceFilter.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/woocommerce-extra/WoocommerceOrder.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/woocommerce-extra/Woocommerce_Process_Login_Errors.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/woocommerce-extra/Woocommerce_After_Checkout_Validation.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/woocommerce-extra/Woocommerce_Filter.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/woocommerce-extra/Woocommerce_Order.php';
 
 		// Buddy Press.
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/bp-classes/Registrationbp.php';
@@ -318,19 +318,19 @@ class Recaptcha_For_BuddyPress {
 		// Woocommerce - only load if WooCommerce is active.
 		if ( class_exists( 'WooCommerce' ) ) {
 			// Woocommerce Login registration and lost form.
-			$woocommerce_register      = new WoocommerceRegister();
-			$woocommerce_login         = new WoocommerceLogin();
-			$woocommerce_lost_password = new WoocommerceLostpassword();
+			$woocommerce_register      = new Woocommerce_Register();
+			$woocommerce_login         = new Woocommerce_Login();
+			$woocommerce_lost_password = new Woocommerce_Lostpassword();
 			add_action( 'woocommerce_register_form', array( $woocommerce_register, 'woo_extra_register_fields' ) );
 			add_action( 'woocommerce_login_form', array( $woocommerce_login, 'woo_extra_login_fields' ) );
 			add_action( 'woocommerce_lostpassword_form', array( $woocommerce_lost_password, 'woo_extra_lostpassword_fields' ) );
 
 			// Woocommerce extra.
-			$woocommerce_review_order              = new WoocommerceReviewOrder();
-			$woocommerce_register_post             = new WoocommerceRegisterPost();
+			$woocommerce_review_order              = new Woocommerce_Review_Order();
+			$woocommerce_register_post             = new Woocommerce_Register_Post();
 			$lost_password_post                    = new LostpasswordPost();
-			$woocommerce_process_login_errors      = new WoocommerceProcessLoginErrors();
-			$woocommerce_after_checkout_validation = new WoocommerceAfterCheckoutValidation();
+			$woocommerce_process_login_errors      = new Woocommerce_Process_Login_Errors();
+			$woocommerce_after_checkout_validation = new Woocommerce_After_Checkout_Validation();
 			add_action( 'woocommerce_review_order_before_submit', array( $woocommerce_review_order, 'woo_extra_checkout_fields' ) );
 			add_action( 'woocommerce_register_post', array( $woocommerce_register_post, 'woocomm_validate_signup_captcha' ), 10, 3 );
 			add_action( 'lostpassword_post', array( $lost_password_post, 'woocomm_validate_lostpassword_captcha' ), 10, 1 );
@@ -339,7 +339,7 @@ class Recaptcha_For_BuddyPress {
 		}
 
 		// Woocommerce Filter.
-		$woocommerce_filter = new WoocommerceFilter();
+		$woocommerce_filter = new Woocommerce_Filter();
 		add_filter( 'wp_authenticate_user', array( $woocommerce_filter, 'woo_wp_verify_login_captcha' ), 10, 2 );
 		add_filter( 'register_post', array( $woocommerce_filter, 'woo_verify_wp_register_captcha' ), 10, 3 );
 		// Priority 20 to run after WooCommerce's handler at priority 10
@@ -351,7 +351,7 @@ class Recaptcha_For_BuddyPress {
 
 		// Woocommerce Order - only load if WooCommerce is active.
 		if ( class_exists( 'WooCommerce' ) ) {
-			$woocommerce_order = new WoocommerceOrder();
+			$woocommerce_order = new Woocommerce_Order();
 			add_action( 'woocommerce_pay_order_before_submit', array( $woocommerce_order, 'woo_extra_checkout_fields_pay_order' ) );
 			add_action( 'woocommerce_before_pay_action', array( $woocommerce_order, 'woo_verify_pay_order_captcha' ) );
 			add_action( 'woocommerce_payment_complete', array( $woocommerce_order, 'woo_payment_complete' ) );
@@ -363,16 +363,16 @@ class Recaptcha_For_BuddyPress {
 		// FluentCart - only load if FluentCart is active.
 		if ( class_exists( 'FluentCart\App\App' ) || defined( 'FLUENT_CART_VERSION' ) ) {
 			// Load FluentCart integration classes
-			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/fluentcart-extra/FluentCartRegistration.php';
-			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/fluentcart-extra/FluentCartLogin.php';
+			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/fluentcart-extra/Fluent_Cart_Registration.php';
+			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/fluentcart-extra/Fluent_Cart_Login.php';
 
 			// FluentCart Registration
-			$fluentcart_registration = new FluentCartRegistration();
+			$fluentcart_registration = new Fluent_Cart_Registration();
 			add_action( 'fluent_cart/views/checkout_page_registration_form', array( $fluentcart_registration, 'render_registration_captcha' ), 10, 1 );
 			add_filter( 'register_post', array( $fluentcart_registration, 'validate_wp_registration_captcha' ), 10, 3 );
 
 			// FluentCart Login
-			$fluentcart_login = new FluentCartLogin();
+			$fluentcart_login = new Fluent_Cart_Login();
 			add_action( 'fluent_cart/views/checkout_page_login_form', array( $fluentcart_login, 'render_login_captcha' ), 10, 1 );
 			add_filter( 'authenticate', array( $fluentcart_login, 'validate_login_captcha' ), 20, 3 );
 		}
@@ -393,7 +393,7 @@ class Recaptcha_For_BuddyPress {
 			}
 			
 			if ( 'yes' === $custom_login_enabled ) {
-				$woocommerce_login = new WoocommerceLogin();
+				$woocommerce_login = new Woocommerce_Login();
 				add_filter( 'login_form_middle', array( $woocommerce_login, 'woo_extra_login_fields' ), 10, 2 );
 			}
 		}

@@ -19,7 +19,7 @@
  * @subpackage bp_recaptcha/public
  * @author     Wbcom Designs <admin@wbcomdesigns.com>
  */
-class WoocommerceOrder {
+class Woocommerce_Order {
 
 	/**
 	 * Function displays the woocommerce checkout pay order captcha.

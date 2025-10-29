@@ -1,5 +1,4 @@
 <?php
-
 /**
  * The public-facing functionality of the plugin.
  *
@@ -20,26 +19,26 @@
  * @subpackage bp_recaptcha/public
  * @author     Wbcom Designs <admin@wbcomdesigns.com>
  */
-class WoocommerceRegister {
+class Woocommerce_Login {
 
 	/**
-	 * Function displays the woocommerce registration captcha.
+	 * Function displays the woocommerce login captcha.
 	 *
 	 * @return void
 	 */
-	public function woo_extra_register_fields() {
+	public function woo_extra_login_fields() {
 		// Use the service manager to render captcha
 		if ( function_exists( 'wbc_captcha_service_manager' ) ) {
-			wbc_captcha_service_manager()->render( 'woo_register' );
+			wbc_captcha_service_manager()->render( 'woo_login' );
 		}
 	}
 
 	/**
-	 * Validate captcha on WooCommerce registration
-	 * Note: Actual validation is handled by WoocommerceRegisterPost class
+	 * Validate captcha on WooCommerce login
+	 * Note: Actual validation is handled by WoocommerceProcessLoginErrors class
 	 */
-	public function validate_register_captcha() {
+	public function validate_login_captcha() {
 		// This method is kept for backward compatibility
-		// Actual validation happens in WoocommerceRegisterPost
+		// Actual validation happens in WoocommerceProcessLoginErrors
 	}
 }

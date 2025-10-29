@@ -19,7 +19,7 @@
  * @subpackage bp_recaptcha/public
  * @author     Wbcom Designs <admin@wbcomdesigns.com>
  */
-class WoocommerceAfterCheckoutValidation {
+class Woocommerce_After_Checkout_Validation {
 
 	/**
 	 * Validate checkout captcha

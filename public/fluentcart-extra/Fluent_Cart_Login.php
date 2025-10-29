@@ -21,7 +21,7 @@
  * @subpackage bp_recaptcha/public/fluentcart-extra
  * @author     Wbcom Designs <admin@wbcomdesigns.com>
  */
-class FluentCartLogin {
+class Fluent_Cart_Login {
 
 	/**
 	 * Render CAPTCHA on login form
