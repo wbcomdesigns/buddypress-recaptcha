@@ -196,7 +196,11 @@ class WBC_Altcha_Service extends WBC_Captcha_Service_Base {
 		}
 
 		// Allow localhost and 127.0.0.1
-		$host = isset( $_SERVER['HTTP_HOST'] ) ? $_SERVER['HTTP_HOST'] : '';
+		$host = filter_input( INPUT_SERVER, 'HTTP_HOST', FILTER_SANITIZE_SPECIAL_CHARS );
+		if ( empty( $host ) ) {
+			return false;
+		}
+
 		if ( in_array( $host, array( 'localhost', '127.0.0.1', '::1' ), true ) ) {
 			return true;
 		}
@@ -239,12 +243,14 @@ class WBC_Altcha_Service extends WBC_Captcha_Service_Base {
 
 		// Check for secure context (HTTPS required for Web Crypto API)
 		if ( ! $this->is_secure_context() ) {
+			$current_host = filter_input( INPUT_SERVER, 'HTTP_HOST', FILTER_SANITIZE_SPECIAL_CHARS );
+			$current_host = ! empty( $current_host ) ? $current_host : 'unknown';
 			?>
 			<div class="wbc_captcha_field wbc_altcha_field">
 				<div class="wbc-altcha-warning" style="padding: 10px; background: #fff3cd; border: 1px solid #ffc107; border-radius: 4px; color: #856404;">
 					<strong><?php esc_html_e( 'ALTCHA requires HTTPS or localhost:', 'buddypress-recaptcha' ); ?></strong>
 					<p><?php esc_html_e( 'ALTCHA uses Web Crypto API which requires a secure context (HTTPS). For local development, use localhost or .local/.test domains.', 'buddypress-recaptcha' ); ?></p>
-					<p><strong><?php esc_html_e( 'Your current host:', 'buddypress-recaptcha' ); ?></strong> <?php echo esc_html( isset( $_SERVER['HTTP_HOST'] ) ? $_SERVER['HTTP_HOST'] : 'unknown' ); ?></p>
+					<p><strong><?php esc_html_e( 'Your current host:', 'buddypress-recaptcha' ); ?></strong> <?php echo esc_html( $current_host ); ?></p>
 					<p><?php esc_html_e( 'For production: Enable HTTPS. For local testing: Use localhost, 127.0.0.1, or .local domains.', 'buddypress-recaptcha' ); ?></p>
 				</div>
 			</div>
@@ -323,20 +329,36 @@ class WBC_Altcha_Service extends WBC_Captcha_Service_Base {
 	 * @return bool
 	 */
 	private function verify_solution( $payload, $hmac_key ) {
-		$data = json_decode( base64_decode( $payload ) );
+		// Validate base64 encoding
+		if ( ! preg_match( '/^[A-Za-z0-9+\/=]+$/', $payload ) ) {
+			return false;
+		}
 
-		if ( ! $data ) {
+		$decoded = base64_decode( $payload, true );
+		if ( false === $decoded ) {
+			return false;
+		}
+
+		$data = json_decode( $decoded );
+		if ( ! is_object( $data ) ) {
+			return false;
+		}
+
+		// Validate required properties exist
+		if ( ! isset( $data->algorithm, $data->challenge, $data->salt, $data->signature, $data->number ) ) {
 			return false;
 		}
 
 		// Check expiration if present
-		$salt_url = wp_parse_url( $data->salt );
-		if ( isset( $salt_url['query'] ) && ! empty( $salt_url['query'] ) ) {
-			parse_str( $salt_url['query'], $salt_params );
-			if ( ! empty( $salt_params['expires'] ) ) {
-				$expires = intval( $salt_params['expires'], 10 );
-				if ( $expires > 0 && $expires < time() ) {
-					return false;
+		if ( is_string( $data->salt ) ) {
+			$salt_url = wp_parse_url( $data->salt );
+			if ( is_array( $salt_url ) && isset( $salt_url['query'] ) && ! empty( $salt_url['query'] ) ) {
+				parse_str( $salt_url['query'], $salt_params );
+				if ( ! empty( $salt_params['expires'] ) ) {
+					$expires = intval( $salt_params['expires'], 10 );
+					if ( $expires > 0 && $expires < time() ) {
+						return false;
+					}
 				}
 			}
 		}
