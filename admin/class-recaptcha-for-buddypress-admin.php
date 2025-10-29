@@ -81,8 +81,11 @@ class Recaptcha_For_BuddyPress_Admin {
 		 * class.
 		 */
 
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/recaptcha-for-buddypress-admin.css', array(), $this->version, 'all' );
-		wp_enqueue_style( $this->plugin_name . '-cards', plugin_dir_url( __FILE__ ) . 'css/recaptcha-appearance-cards.css', array(), $this->version, 'all' );
+		// Only load on our plugin pages
+		if ( isset( $_GET['page'] ) && ( $_GET['page'] === 'buddypress-recaptcha' || $_GET['page'] === 'wbcomplugins' || $_GET['page'] === 'wbcom-plugins-page' || $_GET['page'] === 'wbcom-support-page' ) ) {
+			wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/recaptcha-for-buddypress-admin.css', array(), $this->version, 'all' );
+			wp_enqueue_style( $this->plugin_name . '-cards', plugin_dir_url( __FILE__ ) . 'css/recaptcha-appearance-cards.css', array(), $this->version, 'all' );
+		}
 
 	}
 
