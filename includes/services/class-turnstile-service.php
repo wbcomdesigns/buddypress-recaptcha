@@ -105,13 +105,13 @@ class WBC_Turnstile_Service extends WBC_Captcha_Service_Base {
 		
 		// Render HTML
 		?>
-		<input type="hidden" autocomplete="off" name="<?php echo esc_attr( $nonce_action ); ?>" value="<?php echo esc_html( wp_create_nonce( $nonce_action ) ); ?>" />
+		<input type="hidden" autocomplete="off" name="<?php echo esc_attr( $nonce_action ); ?>" value="<?php echo esc_attr( wp_create_nonce( $nonce_action ) ); ?>" />
 		<p class="wbc_captcha_field wbc_turnstile_field">
-			<div id="<?php echo esc_attr( $div_id ); ?>" 
-				 class="cf-turnstile" 
-				 data-sitekey="<?php echo esc_html( $site_key ); ?>"
-				 data-theme="<?php echo esc_html( $theme ); ?>"
-				 data-size="<?php echo esc_html( $size ); ?>"
+			<div id="<?php echo esc_attr( $div_id ); ?>"
+				 class="cf-turnstile"
+				 data-sitekey="<?php echo esc_attr( $site_key ); ?>"
+				 data-theme="<?php echo esc_attr( $theme ); ?>"
+				 data-size="<?php echo esc_attr( $size ); ?>"
 				 data-callback="<?php echo esc_attr( $callback ); ?>"></div>
 			<br/>
 		</p>
