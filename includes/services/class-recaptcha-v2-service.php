@@ -339,7 +339,7 @@ class WBC_Recaptcha_V2_Service extends WBC_Captcha_Service_Base {
 	 * @param string $context
 	 * @return string
 	 */
-	private function get_error_message( $context ) {
+	public function get_error_message( $context ) {
 		$error_msg = get_option( 'wc_settings_tab_recapcha_error_msg_captcha_blank' );
 		$error_msg = str_replace( '[recaptcha]', 'reCAPTCHA', $error_msg );
 		
