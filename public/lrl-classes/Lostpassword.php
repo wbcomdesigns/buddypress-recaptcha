@@ -30,27 +30,4 @@ class Lostpassword {
 			wbc_captcha_service_manager()->render( 'wp_lostpassword' );
 		}
 	}
-
-	/**
-	 * Verify captcha on lost password submission
-	 *
-	 * @param WP_Error $errors Errors object.
-	 * @return WP_Error
-	 */
-	public function woo_extra_check_for_wp_lostpassword( $errors ) {
-		// Skip if we don't have a user login submitted
-		if ( empty( $_POST['user_login'] ) ) {
-			return $errors;
-		}
-
-		// Verify captcha using the service manager
-		if ( function_exists( 'wbc_verify_captcha' ) ) {
-			if ( ! wbc_verify_captcha( 'wp_lostpassword' ) ) {
-				$error_message = wbc_get_captcha_error_message( 'wp_lostpassword', 'invalid' );
-				$errors->add( 'captcha_error', $error_message );
-			}
-		}
-
-		return $errors;
-	}
 }
