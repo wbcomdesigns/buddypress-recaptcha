@@ -214,9 +214,7 @@ class Recaptcha_For_BuddyPress_Admin {
 						// Process form submission
 						$nonce = isset( $_POST['bp_recaptcha_submit_fields_nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['bp_recaptcha_submit_fields_nonce'] ) ) : '';
 						if ( isset( $_POST['bp_recaptcha_submit_fields_nonce'] ) && wp_verify_nonce( $nonce, 'bp_recaptcha_submit_nonce' ) ) {
-							if ( $_POST ) {
-								$wbc_settings_page->wbc_save( $current );
-							}
+							$wbc_settings_page->wbc_save( $current );
 						}
 
 						// Display success/error messages

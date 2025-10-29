@@ -30,33 +30,4 @@ class Login {
 			wbc_captcha_service_manager()->render( 'wp_login' );
 		}
 	}
-
-	/**
-	 * Verify captcha on login attempt
-	 *
-	 * @param WP_User|WP_Error $user     User object or error.
-	 * @param string           $password User password.
-	 * @return WP_User|WP_Error
-	 */
-	public function woo_extra_check_for_wp_login( $user, $password ) {
-		// Skip if already an error
-		if ( is_wp_error( $user ) ) {
-			return $user;
-		}
-
-		// Skip for empty credentials
-		if ( empty( $_POST['log'] ) || empty( $_POST['pwd'] ) ) {
-			return $user;
-		}
-
-		// Verify captcha using the service manager
-		if ( function_exists( 'wbc_verify_captcha' ) ) {
-			if ( ! wbc_verify_captcha( 'wp_login' ) ) {
-				$error_message = wbc_get_captcha_error_message( 'wp_login', 'invalid' );
-				return new WP_Error( 'captcha_error', $error_message );
-			}
-		}
-
-		return $user;
-	}
 }
