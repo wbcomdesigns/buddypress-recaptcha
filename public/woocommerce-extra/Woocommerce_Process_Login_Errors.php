@@ -19,7 +19,7 @@
  * @subpackage bp_recaptcha/public
  * @author     Wbcom Designs <admin@wbcomdesigns.com>
  */
-class WoocommerceProcessLoginErrors {
+class Woocommerce_Process_Login_Errors {
 
 	/**
 	 * Validate login captcha

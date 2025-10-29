@@ -19,26 +19,20 @@
  * @subpackage bp_recaptcha/public
  * @author     Wbcom Designs <admin@wbcomdesigns.com>
  */
-class WoocommerceLogin {
+class Woocommerce_Review_Order {
 
 	/**
-	 * Function displays the woocommerce login captcha.
+	 * This Function displays the woocommerce extra checkout field.
 	 *
 	 * @return void
 	 */
-	public function woo_extra_login_fields() {
+	public function woo_extra_checkout_fields() {
+		// Determine checkout context (guest or logged-in)
+		$context = is_user_logged_in() ? 'woo_checkout_login' : 'woo_checkout_guest';
+		
 		// Use the service manager to render captcha
 		if ( function_exists( 'wbc_captcha_service_manager' ) ) {
-			wbc_captcha_service_manager()->render( 'woo_login' );
+			wbc_captcha_service_manager()->render( $context );
 		}
-	}
-
-	/**
-	 * Validate captcha on WooCommerce login
-	 * Note: Actual validation is handled by WoocommerceProcessLoginErrors class
-	 */
-	public function validate_login_captcha() {
-		// This method is kept for backward compatibility
-		// Actual validation happens in WoocommerceProcessLoginErrors
 	}
 }

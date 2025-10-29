@@ -19,7 +19,7 @@
  * @subpackage bp_recaptcha/public
  * @author     Wbcom Designs <admin@wbcomdesigns.com>
  */
-class WoocommerceRegisterPost {
+class Woocommerce_Register_Post {
 
 	/**
 	 * Validate signup captcha
