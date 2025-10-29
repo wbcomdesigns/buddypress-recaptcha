@@ -306,6 +306,17 @@ class WBC_Altcha_Service extends WBC_Captcha_Service_Base {
 			return false; // ALTCHA requires HMAC key
 		}
 
+		// Verify nonce if present
+		$context = isset( $args['context'] ) ? $args['context'] : '';
+		if ( ! empty( $context ) ) {
+			$nonce_action = $this->get_nonce_action( $context );
+			if ( isset( $_POST[ $nonce_action ] ) ) {
+				if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST[ $nonce_action ] ) ), $nonce_action ) ) {
+					return false;
+				}
+			}
+		}
+
 		if ( empty( $response ) ) {
 			return false;
 		}
