@@ -33,11 +33,6 @@ class WBC_Settings_Integration {
 			// Force reinitialization on next request
 			update_option( 'wbc_captcha_service_reinit', true );
 		}
-		
-		// Log service change for debugging
-		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-			error_log( sprintf( 'BuddyPress reCAPTCHA: Service changed from %s to %s', $old_value, $new_value ) );
-		}
 	}
 	
 	/**
@@ -84,14 +79,6 @@ class WBC_Settings_Integration {
 		// If current value uses underscore, update to hyphen
 		if ( isset( $id_map[ $current_service ] ) ) {
 			update_option( 'wbc_captcha_service', $id_map[ $current_service ] );
-
-			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-				error_log( sprintf(
-					'BuddyPress reCAPTCHA: Fixed service ID from %s to %s',
-					$current_service,
-					$id_map[ $current_service ]
-				) );
-			}
 		}
 
 		// Mark as done
