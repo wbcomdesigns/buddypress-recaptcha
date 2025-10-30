@@ -145,7 +145,7 @@ class Woocommerce_Order {
 		if ( function_exists( 'wbc_verify_captcha' ) ) {
 			if ( ! wbc_verify_captcha( 'comment_form' ) ) {
 				$error_msg = wbc_get_captcha_error_message( 'comment_form', 'invalid' );
-				wp_die( 
+				wp_die(
 					esc_html( $error_msg ),
 					esc_html__( 'Comment Submission Failed', 'buddypress-recaptcha' ),
 					array( 'response' => 403, 'back_link' => true )
@@ -154,5 +154,52 @@ class Woocommerce_Order {
 		}
 
 		return $commentdata;
+	}
+
+	/**
+	 * Modify WooCommerce Blocks checkout payment block to include CAPTCHA
+	 *
+	 * This method is called by the 'render_block_woocommerce/checkout-payment-block' filter
+	 * to inject CAPTCHA fields into the WooCommerce Blocks checkout experience.
+	 *
+	 * @param string $block_content The block content from WooCommerce Blocks
+	 * @return string Modified block content with CAPTCHA field appended
+	 * @since 2.0.0
+	 */
+	public function woo_recaptcha_alter_checkout_payment_block( $block_content ) {
+		// Check if we should display CAPTCHA for checkout
+		// For guest checkout
+		$guest_checkout_enabled = get_option( 'wbc_recapcha_enable_on_guestcheckout' );
+		// For logged-in checkout
+		$login_checkout_enabled = get_option( 'wbc_recapcha_enable_on_logincheckout' );
+
+		// Determine which context to use based on user login status
+		$should_show = false;
+		$context = '';
+
+		if ( is_user_logged_in() && 'yes' === $login_checkout_enabled ) {
+			$should_show = true;
+			$context = 'woo_checkout_login';
+		} elseif ( ! is_user_logged_in() && 'yes' === $guest_checkout_enabled ) {
+			$should_show = true;
+			$context = 'woo_checkout_guest';
+		}
+
+		// If CAPTCHA is not enabled for this checkout type, return original content
+		if ( ! $should_show || empty( $context ) ) {
+			return $block_content;
+		}
+
+		// Render CAPTCHA using service manager
+		ob_start();
+		if ( function_exists( 'wbc_captcha_service_manager' ) ) {
+			echo '<div class="wbc-checkout-captcha-wrapper" style="margin: 20px 0;">';
+			wbc_captcha_service_manager()->render( $context );
+			echo '</div>';
+		}
+		$captcha_html = ob_get_clean();
+
+		// Append CAPTCHA to the block content
+		return $block_content . $captcha_html;
 	}
 }
