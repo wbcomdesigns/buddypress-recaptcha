@@ -164,7 +164,7 @@ abstract class WBC_Captcha_Service_Base implements WBC_Captcha_Service_Interface
 			'woo_login' => 'wbc_recaptcha_enable_on_login',
 			'woo_register' => 'wbc_recaptcha_enable_on_signup',
 			'woo_lostpassword' => 'wbc_recaptcha_enable_on_lostpassword',
-			'bp_register' => 'wbc_recaptcha_enable_on_signup_bp',
+			'bp_register' => 'wbc_recaptcha_enable_on_buddypress',  // Fixed: admin saves as 'buddypress' not 'signup_bp'
 			'bbpress_topic' => 'wbc_recaptcha_enable_on_bbpress_topic',
 			'bbpress_reply' => 'wbc_recaptcha_enable_on_bbpress_reply',
 			'woo_checkout_guest' => 'wbc_recaptcha_enable_on_guestcheckout',
