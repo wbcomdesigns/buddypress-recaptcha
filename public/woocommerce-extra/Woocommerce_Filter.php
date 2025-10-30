@@ -86,7 +86,7 @@ class Woocommerce_Filter {
 	public function woo_display_comment_captcha() {
 		// Use the service manager to render captcha
 		if ( function_exists( 'wbc_captcha_service_manager' ) ) {
-			wbc_captcha_service_manager()->render( 'comment_form' );
+			wbc_captcha_service_manager()->render( 'comment' );
 		}
 	}
 
@@ -113,9 +113,9 @@ class Woocommerce_Filter {
 
 		// Verify captcha
 		if ( function_exists( 'wbc_verify_captcha' ) ) {
-			if ( ! wbc_verify_captcha( 'comment_form' ) ) {
-				$error_msg = wbc_get_captcha_error_message( 'comment_form', 'invalid' );
-				wp_die( 
+			if ( ! wbc_verify_captcha( 'comment' ) ) {
+				$error_msg = wbc_get_captcha_error_message( 'comment', 'invalid' );
+				wp_die(
 					esc_html( $error_msg ),
 					esc_html__( 'Comment Submission Failed', 'buddypress-recaptcha' ),
 					array( 'response' => 403, 'back_link' => true )

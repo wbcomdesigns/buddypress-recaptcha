@@ -111,7 +111,7 @@ class Woocommerce_Order {
 		// Add captcha field
 		ob_start();
 		if ( function_exists( 'wbc_captcha_service_manager' ) ) {
-			wbc_captcha_service_manager()->render( 'comment_form' );
+			wbc_captcha_service_manager()->render( 'comment' );
 		}
 		$captcha_html = ob_get_clean();
 
@@ -154,6 +154,50 @@ class Woocommerce_Order {
 		}
 
 		return $commentdata;
+	}
+
+	/**
+	 * Add CAPTCHA to WooCommerce product review form
+	 *
+	 * WooCommerce builds the comment form fields manually and passes them to comment_form(),
+	 * which bypasses the standard comment_form_fields filter. We need to hook into
+	 * WooCommerce's specific filter to add CAPTCHA to the fields array.
+	 *
+	 * @param array $comment_form Comment form arguments
+	 * @return array Modified comment form arguments with CAPTCHA field
+	 */
+	public function woo_product_review_captcha_field( $comment_form ) {
+		// Check if captcha is enabled for comments
+		$is_enabled = get_option( 'wbc_recapcha_enable_on_comment' );
+		if ( 'yes' !== $is_enabled ) {
+			return $comment_form;
+		}
+
+		// Skip for logged-in users if configured
+		if ( is_user_logged_in() ) {
+			$skip_for_logged_in = get_option( 'wbc_recapcha_skip_comment_for_logged_in' );
+			if ( 'yes' === $skip_for_logged_in ) {
+				return $comment_form;
+			}
+		}
+
+		// Generate captcha HTML
+		ob_start();
+		if ( function_exists( 'wbc_captcha_service_manager' ) ) {
+			echo '<div class="woo-comment-captcha">';
+			wbc_captcha_service_manager()->render( 'comment' );
+			echo '</div>';
+		}
+		$captcha_html = ob_get_clean();
+
+		// Add captcha to fields array (WooCommerce manually builds this array)
+		if ( ! isset( $comment_form['fields'] ) ) {
+			$comment_form['fields'] = array();
+		}
+
+		$comment_form['fields']['captcha'] = $captcha_html;
+
+		return $comment_form;
 	}
 
 	/**

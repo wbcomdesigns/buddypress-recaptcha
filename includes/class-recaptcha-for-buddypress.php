@@ -359,6 +359,8 @@ class Recaptcha_For_BuddyPress {
 			add_action( 'woocommerce_before_add_to_cart_quantity', array( $woocommerce_order, 'woocommerce_payment_request_btn_captcha' ) );
 			// Priority 999 ensures reCAPTCHA is added to checkout blocks last
 			add_filter( 'render_block_woocommerce/checkout-payment-block', array( $woocommerce_order, 'woo_recaptcha_alter_checkout_payment_block' ), 999, 1 );
+			// Add CAPTCHA to WooCommerce product review forms
+			add_filter( 'woocommerce_product_review_comment_form_args', array( $woocommerce_order, 'woo_product_review_captcha_field' ), 10 );
 		}
 
 		// FluentCart - only load if FluentCart is active.
