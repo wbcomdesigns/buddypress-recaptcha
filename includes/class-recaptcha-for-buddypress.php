@@ -295,9 +295,13 @@ class Recaptcha_For_BuddyPress {
 		}
 
 		// Buddypress - only load if BuddyPress is active.
-		// Hook into bp_init to ensure BuddyPress is fully loaded before registering hooks
 		if ( class_exists( 'BuddyPress' ) ) {
-			add_action( 'bp_init', array( $this, 'register_buddypress_hooks' ), 10 );
+			// If bp_init already fired, register immediately, otherwise hook into bp_init
+			if ( did_action( 'bp_init' ) ) {
+				$this->register_buddypress_hooks();
+			} else {
+				add_action( 'bp_init', array( $this, 'register_buddypress_hooks' ), 10 );
+			}
 		}
 
 		// bbPress - only load if bbPress is active.
