@@ -278,21 +278,8 @@ class WBC_Recaptcha_V2_Service extends WBC_Captcha_Service_Base {
 	 * @return string
 	 */
 	private function get_theme_for_context( $context ) {
-		$option_map = array(
-			'wp_login' => 'wbc_recapcha_wplogin_theme',
-			'wp_register' => 'wbc_recapcha_wpregister_theme',
-			'wp_lostpassword' => 'wbc_recapcha_wplostpassword_theme',
-			'woo_login' => 'wbc_recapcha_login_theme',
-			'woo_register' => 'wbc_recapcha_signup_theme',
-			'woo_lostpassword' => 'wbc_recapcha_lostpassword_theme',
-			'bp_register' => 'wbc_recapcha_signup_theme_bp',
-			'bbpress_topic' => 'recapcha_theme_bbpress_topic',
-			'bbpress_reply' => 'recapcha_theme_bbpress_reply',
-			'woo_checkout' => 'wbc_recapcha_guestcheckout_theme',
-		);
-		
-		$option_name = isset( $option_map[ $context ] ) ? $option_map[ $context ] : '';
-		return $option_name ? get_option( $option_name, 'light' ) : 'light';
+		// Use the global theme setting configured in admin
+		return get_option( 'wbc_recaptcha_theme', 'light' );
 	}
 
 	/**
@@ -302,21 +289,8 @@ class WBC_Recaptcha_V2_Service extends WBC_Captcha_Service_Base {
 	 * @return string
 	 */
 	private function get_size_for_context( $context ) {
-		$option_map = array(
-			'wp_login' => 'wbc_recapcha_wplogin_size',
-			'wp_register' => 'wbc_recapcha_wpregister_size',
-			'wp_lostpassword' => 'wbc_recapcha_wplostpassword_size',
-			'woo_login' => 'wbc_recapcha_login_size',
-			'woo_register' => 'wbc_recapcha_signup_size',
-			'woo_lostpassword' => 'wbc_recapcha_lostpassword_size',
-			'bp_register' => 'wbc_recapcha_signup_size_bp',
-			'bbpress_topic' => 'recapcha_size_bbpress_topic',
-			'bbpress_reply' => 'recapcha_size_bbpress_reply',
-			'woo_checkout' => 'wbc_recapcha_guestcheckout_size',
-		);
-		
-		$option_name = isset( $option_map[ $context ] ) ? $option_map[ $context ] : '';
-		return $option_name ? get_option( $option_name, 'normal' ) : 'normal';
+		// Use the global size setting configured in admin
+		return get_option( 'wbc_recaptcha_size', 'normal' );
 	}
 
 	/**
