@@ -347,7 +347,7 @@ class Recaptcha_For_BuddyPress {
 		add_filter( 'wpforms_frontend_recaptcha_noconflict', array( $woocommerce_filter, 'woo_remove_no_conflict' ) );
 
 		// Comment validation - using single handler for all comment types
-		add_filter( 'preprocess_comment', array( $woocommerce_filter, 'woo_check_comment_captcha' ), 10 );
+		add_filter( 'preprocess_comment', array( $woocommerce_filter, 'woo_verify_comment_captcha' ), 10 );
 
 		// Woocommerce Order - only load if WooCommerce is active.
 		if ( class_exists( 'WooCommerce' ) ) {
