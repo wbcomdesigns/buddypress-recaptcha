@@ -102,9 +102,10 @@ class WBC_HCaptcha_Service extends WBC_Captcha_Service_Base {
 			return;
 		}
 
-		// Get settings
-		$theme = get_option( 'wbc_hcaptcha_theme', 'light' );
-		$size = get_option( 'wbc_hcaptcha_size', 'normal' );
+		// Get settings - use the global reCAPTCHA theme/size options
+		// (admin panel provides shared theme/size controls for reCAPTCHA v2 and hCaptcha)
+		$theme = get_option( 'wbc_recaptcha_theme', 'light' );
+		$size = get_option( 'wbc_recaptcha_size', 'normal' );
 
 		// Generate unique ID
 		$div_id = 'h-captcha-' . $context . '-wbc';
