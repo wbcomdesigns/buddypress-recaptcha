@@ -346,12 +346,13 @@ class Recaptcha_For_BuddyPress {
 		add_action( 'lostpassword_post', array( $woocommerce_filter, 'woo_verify_wp_lostpassword_captcha' ), 20, 1 );
 		add_filter( 'wpforms_frontend_recaptcha_noconflict', array( $woocommerce_filter, 'woo_remove_no_conflict' ) );
 
-		// Comment validation - using single handler for all comment types
+		// Comment form display and validation
+		$woocommerce_order = new Woocommerce_Order();
+		add_filter( 'comment_form_fields', array( $woocommerce_order, 'woo_comment_form_captcha_field' ), 10 );
 		add_filter( 'preprocess_comment', array( $woocommerce_filter, 'woo_verify_comment_captcha' ), 10 );
 
 		// Woocommerce Order - only load if WooCommerce is active.
 		if ( class_exists( 'WooCommerce' ) ) {
-			$woocommerce_order = new Woocommerce_Order();
 			add_action( 'woocommerce_pay_order_before_submit', array( $woocommerce_order, 'woo_extra_checkout_fields_pay_order' ) );
 			add_action( 'woocommerce_before_pay_action', array( $woocommerce_order, 'woo_verify_pay_order_captcha' ) );
 			add_action( 'woocommerce_payment_complete', array( $woocommerce_order, 'woo_payment_complete' ) );
