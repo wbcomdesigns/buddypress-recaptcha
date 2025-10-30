@@ -46,14 +46,56 @@ class WBC_Settings_Integration {
 	public static function maybe_migrate_settings() {
 		// Check if we've already migrated
 		if ( get_option( 'wbc_settings_migrated_2_0' ) ) {
+			// Run service ID fix migration (for existing 2.0 installations)
+			self::maybe_fix_service_id_underscores();
 			return;
 		}
-		
+
 		// Perform migration
 		self::migrate_settings();
-		
+
 		// Mark as migrated
 		update_option( 'wbc_settings_migrated_2_0', true );
+	}
+
+	/**
+	 * Fix service ID underscores to hyphens (for existing installations)
+	 *
+	 * Prior to commit 1c8c962, service IDs were saved with underscores (recaptcha_v2)
+	 * but service manager expected hyphens (recaptcha-v2). This migration fixes
+	 * existing installations that have the old underscore format.
+	 *
+	 * @since 1.7.3
+	 */
+	private static function maybe_fix_service_id_underscores() {
+		// Check if we've already done this fix
+		if ( get_option( 'wbc_service_id_hyphen_fix_done' ) ) {
+			return;
+		}
+
+		$current_service = get_option( 'wbc_captcha_service' );
+
+		// Map old underscore IDs to new hyphen IDs
+		$id_map = array(
+			'recaptcha_v2' => 'recaptcha-v2',
+			'recaptcha_v3' => 'recaptcha-v3',
+		);
+
+		// If current value uses underscore, update to hyphen
+		if ( isset( $id_map[ $current_service ] ) ) {
+			update_option( 'wbc_captcha_service', $id_map[ $current_service ] );
+
+			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+				error_log( sprintf(
+					'BuddyPress reCAPTCHA: Fixed service ID from %s to %s',
+					$current_service,
+					$id_map[ $current_service ]
+				) );
+			}
+		}
+
+		// Mark as done
+		update_option( 'wbc_service_id_hyphen_fix_done', true );
 	}
 	
 	/**

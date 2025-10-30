@@ -60,6 +60,11 @@ class Recaptcha_For_BuddyPress_Admin {
 		$this->plugin_name = $plugin_name;
 		$this->version     = $version;
 		include plugin_dir_path( __FILE__ ) . 'includes/class-wbc-buddypress-settings-page.php';
+
+		// Initialize settings integration for migrations
+		if ( class_exists( 'WBC_Settings_Integration' ) ) {
+			WBC_Settings_Integration::init();
+		}
 	}
 
 	/**
