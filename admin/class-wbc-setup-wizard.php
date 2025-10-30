@@ -642,6 +642,12 @@ class WBC_Setup_Wizard {
 		);
 		$service_name = isset( $service_names[$service] ) ? $service_names[$service] : $service;
 
+		// Check for error message from save function
+		$error_message = get_transient( 'wbc_setup_keys_error' );
+		if ( $error_message ) {
+			delete_transient( 'wbc_setup_keys_error' );
+		}
+
 		$signup_urls = array(
 			'recaptcha_v2' => 'https://www.google.com/recaptcha/admin',
 			'recaptcha_v3' => 'https://www.google.com/recaptcha/admin',
@@ -651,6 +657,12 @@ class WBC_Setup_Wizard {
 		);
 		?>
 		<h2><?php echo sprintf( esc_html__( 'Configure %s', 'buddypress-recaptcha' ), esc_html( $service_name ) ); ?></h2>
+
+		<?php if ( $error_message ) : ?>
+			<div class="notice notice-error" style="margin: 15px 0; padding: 10px;">
+				<p><strong><?php esc_html_e( 'Error:', 'buddypress-recaptcha' ); ?></strong> <?php echo esc_html( $error_message ); ?></p>
+			</div>
+		<?php endif; ?>
 
 		<?php if ( 'altcha' === $service ) : ?>
 			<p><?php esc_html_e( 'ALTCHA is a self-hosted solution that doesn\'t require external API keys. Just generate a secret key below.', 'buddypress-recaptcha' ); ?></p>
@@ -747,12 +759,27 @@ class WBC_Setup_Wizard {
 		$service = get_option( 'wbc_captcha_service', 'recaptcha_v2' );
 
 		if ( 'altcha' === $service ) {
-			if ( isset( $_POST['wbc_altcha_hmac_key'] ) ) {
-				update_option( 'wbc_altcha_hmac_key', sanitize_text_field( $_POST['wbc_altcha_hmac_key'] ) );
+			$hmac_key = isset( $_POST['wbc_altcha_hmac_key'] ) ? sanitize_text_field( $_POST['wbc_altcha_hmac_key'] ) : '';
+
+			// Validate HMAC key is not empty
+			if ( empty( $hmac_key ) ) {
+				set_transient( 'wbc_setup_keys_error', __( 'Please enter or generate an HMAC secret key.', 'buddypress-recaptcha' ), 45 );
+				wp_safe_redirect( esc_url_raw( add_query_arg( 'step', 'keys', remove_query_arg( 'activate_error' ) ) ) );
+				exit;
 			}
+
+			update_option( 'wbc_altcha_hmac_key', $hmac_key );
 		} else {
 			$site_key = isset( $_POST['site_key'] ) ? sanitize_text_field( $_POST['site_key'] ) : '';
 			$secret_key = isset( $_POST['secret_key'] ) ? sanitize_text_field( $_POST['secret_key'] ) : '';
+
+			// Validate that both keys are not empty
+			if ( empty( $site_key ) || empty( $secret_key ) ) {
+				$error_msg = __( 'Both Site Key and Secret Key are required. Please enter valid API keys.', 'buddypress-recaptcha' );
+				set_transient( 'wbc_setup_keys_error', $error_msg, 45 );
+				wp_safe_redirect( esc_url_raw( add_query_arg( 'step', 'keys', remove_query_arg( 'activate_error' ) ) ) );
+				exit;
+			}
 
 			$key_map = array(
 				'recaptcha_v2' => array( 'wbc_recaptcha_v2_site_key', 'wbc_recaptcha_v2_secret_key' ),
