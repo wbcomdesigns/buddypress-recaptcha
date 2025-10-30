@@ -16,7 +16,7 @@ class WBC_Recaptcha_V3_Service extends WBC_Captcha_Service_Base {
 	 *
 	 * @var string
 	 */
-	protected $id = 'recaptcha_v3';
+	protected $id = 'recaptcha-v3';
 
 	/**
 	 * Service name
@@ -350,6 +350,22 @@ class WBC_Recaptcha_V3_Service extends WBC_Captcha_Service_Base {
 	}
 
 	/**
+	 * Enqueue scripts for a specific context
+	 *
+	 * Required by WBC_Captcha_Service_Interface. Called by service manager.
+	 *
+	 * @param string $context The context where scripts are needed
+	 * @return void
+	 */
+	public function enqueue_scripts( $context = '' ) {
+		if ( ! $this->is_configured() ) {
+			return;
+		}
+
+		$this->enqueue_script();
+	}
+
+	/**
 	 * Check if scripts should be enqueued
 	 *
 	 * @return void
@@ -439,36 +455,52 @@ class WBC_Recaptcha_V3_Service extends WBC_Captcha_Service_Base {
 	 * @return void
 	 */
 	private function add_inline_script( $context, $site_key, $action, $token_field_id ) {
+		// Generate token function with error handling
 		$script = "
-		grecaptcha.ready(function() {
-			grecaptcha.execute('" . esc_js( $site_key ) . "', {action: '" . esc_js( $action ) . "'}).then(function(token) {
-				var tokenField = document.getElementById('" . esc_js( $token_field_id ) . "');
-				if (tokenField) {
-					tokenField.value = token;
+		(function() {
+			var siteKey = '" . esc_js( $site_key ) . "';
+			var action = '" . esc_js( $action ) . "';
+			var tokenFieldId = '" . esc_js( $token_field_id ) . "';
+
+			// Function to generate and set token
+			function generateToken() {
+				grecaptcha.execute(siteKey, {action: action})
+					.then(function(token) {
+						var tokenField = document.getElementById(tokenFieldId);
+						if (tokenField) {
+							tokenField.value = token;
+						}
+					})
+					.catch(function(error) {
+						console.error('reCAPTCHA v3 error:', error);
+						// Still allow form submission even if reCAPTCHA fails
+						// Server-side will handle missing token appropriately
+					});
+			}
+
+			// Generate initial token on page load
+			grecaptcha.ready(function() {
+				generateToken();
+
+				// Regenerate token every 110 seconds (token expires in 120 seconds)
+				// This ensures we always have a fresh token
+				setInterval(function() {
+					generateToken();
+				}, 110000);
+			});
+
+			// Also regenerate token on form submission to ensure freshness
+			document.addEventListener('DOMContentLoaded', function() {
+				var tokenField = document.getElementById(tokenFieldId);
+				if (tokenField && tokenField.form) {
+					tokenField.form.addEventListener('submit', function(e) {
+						// Regenerate token on submit for maximum freshness
+						generateToken();
+					}, false);
 				}
 			});
-		});";
-
-		// Check if token should be regenerated periodically
-		$regenerate_options = array(
-			'wp_login'     => get_option( 'wbc_recapcha_wp_disable_submit_token_generation_v3_woo_login' ),
-			'wp_register'  => get_option( 'wbc_recapcha_wp_disable_submit_token_generation_v3_woo_signup' ),
-			'woo_checkout_guest' => get_option( 'wbc_recapcha_wp_disable_to_woo_checkout' ),
-			'bbpress_topic' => get_option( 'wbc_recapcha_bbpress_topic_submit_token_generation_v3' ),
-			'bbpress_reply' => get_option( 'wbc_recapcha_bbpress_reply_submit_token_generation_v3' )
-		);
-
-		if ( isset( $regenerate_options[ $context ] ) && 'yes' === $regenerate_options[ $context ] ) {
-			$script .= "
-			setInterval(function() {
-				grecaptcha.execute('" . esc_js( $site_key ) . "', {action: '" . esc_js( $action ) . "'}).then(function(token) {
-					var tokenField = document.getElementById('" . esc_js( $token_field_id ) . "');
-					if (tokenField) {
-						tokenField.value = token;
-					}
-				});
-			}, 110000); // Refresh every 110 seconds (token expires in 2 minutes)";
-		}
+		})();
+		";
 
 		wp_add_inline_script( 'wbc-recaptcha-v3', $script );
 	}

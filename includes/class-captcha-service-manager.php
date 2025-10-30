@@ -131,11 +131,11 @@ class WBC_Captcha_Service_Manager {
 		// Check reCAPTCHA v3
 		$v3_site = get_option( 'wbc_recaptcha_v3_site_key' );
 		if ( ! empty( $v3_site ) ) {
-			return 'recaptcha_v3';
+			return 'recaptcha-v3';
 		}
-		
+
 		// Default to reCAPTCHA v2
-		return 'recaptcha_v2';
+		return 'recaptcha-v2';
 	}
 
 	/**
