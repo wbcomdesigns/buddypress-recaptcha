@@ -295,10 +295,13 @@ class Recaptcha_For_BuddyPress {
 		}
 
 		// Buddypress - only load if BuddyPress is active.
+		// Hook into bp_init to ensure BuddyPress is fully loaded before registering hooks
 		if ( class_exists( 'BuddyPress' ) ) {
-			$registration_bp = new Registrationbp();
-			add_action( 'bp_before_registration_submit_buttons', array( $registration_bp, 'woo_extra_bp_register_form' ), 36 );
-			add_action( 'bp_signup_validate', array( $registration_bp, 'innovage_validate_user_registration' ) );
+			add_action( 'bp_init', function() {
+				$registration_bp = new Registrationbp();
+				add_action( 'bp_before_registration_submit_buttons', array( $registration_bp, 'woo_extra_bp_register_form' ), 36 );
+				add_action( 'bp_signup_validate', array( $registration_bp, 'innovage_validate_user_registration' ) );
+			} );
 		}
 
 		// bbPress - only load if bbPress is active.
