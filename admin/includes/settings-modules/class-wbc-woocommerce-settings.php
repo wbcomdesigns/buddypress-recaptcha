@@ -62,10 +62,22 @@ class WBC_WooCommerce_Settings extends WBC_Settings_Module_Abstract {
 					'default' => 'yes',
 				),
 				array(
+					'id'      => 'wbc_recaptcha_enable_on_lostpassword',
+					'label'   => __( 'Lost Password', 'buddypress-recaptcha' ),
+					'desc'    => __( 'Protect password reset from abuse', 'buddypress-recaptcha' ),
+					'default' => 'no',
+				),
+				array(
 					'id'      => 'wbc_recaptcha_enable_on_guestcheckout',
 					'label'   => __( 'Guest Checkout', 'buddypress-recaptcha' ),
-					'desc'    => __( 'Protect checkout from bots', 'buddypress-recaptcha' ),
+					'desc'    => __( 'Protect checkout from bots (not logged in)', 'buddypress-recaptcha' ),
 					'default' => 'yes',
+				),
+				array(
+					'id'      => 'wbc_recaptcha_enable_on_logincheckout',
+					'label'   => __( 'Logged-in Checkout', 'buddypress-recaptcha' ),
+					'desc'    => __( 'Protect checkout for logged-in users', 'buddypress-recaptcha' ),
+					'default' => 'no',
 				),
 			)
 		);
@@ -80,7 +92,9 @@ class WBC_WooCommerce_Settings extends WBC_Settings_Module_Abstract {
 		return array(
 			'wbc_recaptcha_enable_on_login',
 			'wbc_recaptcha_enable_on_signup',
+			'wbc_recaptcha_enable_on_lostpassword',
 			'wbc_recaptcha_enable_on_guestcheckout',
+			'wbc_recaptcha_enable_on_logincheckout',
 		);
 	}
 }
