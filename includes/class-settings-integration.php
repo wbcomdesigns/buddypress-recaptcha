@@ -65,16 +65,16 @@ class WBC_Settings_Integration {
 			// Try to determine from old version setting
 			$version = get_option( 'wbc_recapcha_version' );
 			if ( 'v3' === strtolower( $version ) ) {
-				$service = 'recaptcha_v3';
+				$service = 'recaptcha-v3';
 			} elseif ( 'v2' === strtolower( $version ) ) {
-				$service = 'recaptcha_v2';
+				$service = 'recaptcha-v2';
 			} else {
 				// Check which keys are configured
 				$v3_site = get_option( 'wc_settings_tab_recapcha_site_key_v3' );
 				if ( ! empty( $v3_site ) ) {
-					$service = 'recaptcha_v3';
+					$service = 'recaptcha-v3';
 				} else {
-					$service = 'recaptcha_v2';
+					$service = 'recaptcha-v2';
 				}
 			}
 			update_option( 'wbc_captcha_service', $service );

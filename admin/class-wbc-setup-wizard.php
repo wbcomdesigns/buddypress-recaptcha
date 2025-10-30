@@ -555,21 +555,21 @@ class WBC_Setup_Wizard {
 	 * Service selection step
 	 */
 	public function wbc_setup_service() {
-		$selected_service = get_option( 'wbc_captcha_service', 'recaptcha_v2' );
+		$selected_service = get_option( 'wbc_captcha_service', 'recaptcha-v2' );
 		?>
 		<h2><?php esc_html_e( 'Choose Your Captcha Service', 'buddypress-recaptcha' ); ?></h2>
 		<p><?php esc_html_e( 'Select the captcha service that best fits your needs. Each service has its own advantages.', 'buddypress-recaptcha' ); ?></p>
 
 		<div class="wbc-service-cards">
-			<div class="wbc-service-card recommended" data-service="recaptcha_v2">
-				<input type="radio" name="wbc_captcha_service" value="recaptcha_v2" id="service_recaptcha_v2" <?php checked( $selected_service, 'recaptcha_v2' ); ?> style="display:none">
+			<div class="wbc-service-card recommended" data-service="recaptcha-v2">
+				<input type="radio" name="wbc_captcha_service" value="recaptcha-v2" id="service_recaptcha-v2" <?php checked( $selected_service, 'recaptcha-v2' ); ?> style="display:none">
 				<div class="wbc-service-icon">✅</div>
 				<div class="wbc-service-name"><?php esc_html_e( 'Google reCAPTCHA v2', 'buddypress-recaptcha' ); ?></div>
 				<div class="wbc-service-desc"><?php esc_html_e( 'Classic checkbox, most reliable', 'buddypress-recaptcha' ); ?></div>
 			</div>
 
-			<div class="wbc-service-card" data-service="recaptcha_v3">
-				<input type="radio" name="wbc_captcha_service" value="recaptcha_v3" id="service_recaptcha_v3" <?php checked( $selected_service, 'recaptcha_v3' ); ?> style="display:none">
+			<div class="wbc-service-card" data-service="recaptcha-v3">
+				<input type="radio" name="wbc_captcha_service" value="recaptcha-v3" id="service_recaptcha-v3" <?php checked( $selected_service, 'recaptcha-v3' ); ?> style="display:none">
 				<div class="wbc-service-icon">👻</div>
 				<div class="wbc-service-name"><?php esc_html_e( 'Google reCAPTCHA v3', 'buddypress-recaptcha' ); ?></div>
 				<div class="wbc-service-desc"><?php esc_html_e( 'Invisible, score-based', 'buddypress-recaptcha' ); ?></div>
@@ -621,7 +621,7 @@ class WBC_Setup_Wizard {
 	public function wbc_setup_service_save() {
 		check_admin_referer( 'wbc-setup' );
 
-		$service = isset( $_POST['wbc_captcha_service'] ) ? sanitize_text_field( $_POST['wbc_captcha_service'] ) : 'recaptcha_v2';
+		$service = isset( $_POST['wbc_captcha_service'] ) ? sanitize_text_field( $_POST['wbc_captcha_service'] ) : 'recaptcha-v2';
 		update_option( 'wbc_captcha_service', $service );
 
 		wp_safe_redirect( esc_url_raw( $this->get_next_step_link() ) );
@@ -632,10 +632,10 @@ class WBC_Setup_Wizard {
 	 * API Keys step
 	 */
 	public function wbc_setup_keys() {
-		$service = get_option( 'wbc_captcha_service', 'recaptcha_v2' );
+		$service = get_option( 'wbc_captcha_service', 'recaptcha-v2' );
 		$service_names = array(
-			'recaptcha_v2' => 'Google reCAPTCHA v2',
-			'recaptcha_v3' => 'Google reCAPTCHA v3',
+			'recaptcha-v2' => 'Google reCAPTCHA v2',
+			'recaptcha-v3' => 'Google reCAPTCHA v3',
 			'turnstile' => 'Cloudflare Turnstile',
 			'hcaptcha' => 'hCaptcha',
 			'altcha' => 'ALTCHA',
@@ -649,8 +649,8 @@ class WBC_Setup_Wizard {
 		}
 
 		$signup_urls = array(
-			'recaptcha_v2' => 'https://www.google.com/recaptcha/admin',
-			'recaptcha_v3' => 'https://www.google.com/recaptcha/admin',
+			'recaptcha-v2' => 'https://www.google.com/recaptcha/admin',
+			'recaptcha-v3' => 'https://www.google.com/recaptcha/admin',
 			'turnstile' => 'https://dash.cloudflare.com/sign-up?to=/:account/turnstile',
 			'hcaptcha' => 'https://www.hcaptcha.com/signup-interstitial',
 			'altcha' => '#',
@@ -729,8 +729,8 @@ class WBC_Setup_Wizard {
 	 */
 	private function get_site_key( $service ) {
 		$key_map = array(
-			'recaptcha_v2' => 'wbc_recaptcha_v2_site_key',
-			'recaptcha_v3' => 'wbc_recaptcha_v3_site_key',
+			'recaptcha-v2' => 'wbc_recaptcha-v2_site_key',
+			'recaptcha-v3' => 'wbc_recaptcha-v3_site_key',
 			'turnstile' => 'wbc_turnstile_site_key',
 			'hcaptcha' => 'wbc_hcaptcha_site_key',
 		);
@@ -742,8 +742,8 @@ class WBC_Setup_Wizard {
 	 */
 	private function get_secret_key( $service ) {
 		$key_map = array(
-			'recaptcha_v2' => 'wbc_recaptcha_v2_secret_key',
-			'recaptcha_v3' => 'wbc_recaptcha_v3_secret_key',
+			'recaptcha-v2' => 'wbc_recaptcha-v2_secret_key',
+			'recaptcha-v3' => 'wbc_recaptcha-v3_secret_key',
 			'turnstile' => 'wbc_turnstile_secret_key',
 			'hcaptcha' => 'wbc_hcaptcha_secret_key',
 		);
@@ -756,7 +756,7 @@ class WBC_Setup_Wizard {
 	public function wbc_setup_keys_save() {
 		check_admin_referer( 'wbc-setup' );
 
-		$service = get_option( 'wbc_captcha_service', 'recaptcha_v2' );
+		$service = get_option( 'wbc_captcha_service', 'recaptcha-v2' );
 
 		if ( 'altcha' === $service ) {
 			$hmac_key = isset( $_POST['wbc_altcha_hmac_key'] ) ? sanitize_text_field( $_POST['wbc_altcha_hmac_key'] ) : '';
@@ -782,8 +782,8 @@ class WBC_Setup_Wizard {
 			}
 
 			$key_map = array(
-				'recaptcha_v2' => array( 'wbc_recaptcha_v2_site_key', 'wbc_recaptcha_v2_secret_key' ),
-				'recaptcha_v3' => array( 'wbc_recaptcha_v3_site_key', 'wbc_recaptcha_v3_secret_key' ),
+				'recaptcha-v2' => array( 'wbc_recaptcha-v2_site_key', 'wbc_recaptcha-v2_secret_key' ),
+				'recaptcha-v3' => array( 'wbc_recaptcha-v3_site_key', 'wbc_recaptcha-v3_secret_key' ),
 				'turnstile' => array( 'wbc_turnstile_site_key', 'wbc_turnstile_secret_key' ),
 				'hcaptcha' => array( 'wbc_hcaptcha_site_key', 'wbc_hcaptcha_secret_key' ),
 			);

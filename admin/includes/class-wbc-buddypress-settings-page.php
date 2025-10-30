@@ -60,8 +60,8 @@ if ( ! class_exists( 'WBC_BuddyPress_Settings_Page' ) ) :
 		 * @return array
 		 */
 		public function wbc_quick_setup_settings() {
-			// Default to recaptcha_v2 if nothing is selected
-			$active_service = get_option( 'wbc_captcha_service', 'recaptcha_v2' );
+			// Default to recaptcha-v2 if nothing is selected
+			$active_service = get_option( 'wbc_captcha_service', 'recaptcha-v2' );
 			$has_service = ! empty( $active_service );
 
 			$settings = array(
@@ -161,8 +161,8 @@ if ( ! class_exists( 'WBC_BuddyPress_Settings_Page' ) ) :
 		 */
 		private function wbc_service_display_name( $service ) {
 			$names = array(
-				'recaptcha_v2' => __( 'Google reCAPTCHA v2', 'buddypress-recaptcha' ),
-				'recaptcha_v3' => __( 'Google reCAPTCHA v3', 'buddypress-recaptcha' ),
+				'recaptcha-v2' => __( 'Google reCAPTCHA v2', 'buddypress-recaptcha' ),
+				'recaptcha-v3' => __( 'Google reCAPTCHA v3', 'buddypress-recaptcha' ),
 				'turnstile'    => __( 'Cloudflare Turnstile', 'buddypress-recaptcha' ),
 				'hcaptcha'     => __( 'hCaptcha', 'buddypress-recaptcha' ),
 				'altcha'       => __( 'ALTCHA', 'buddypress-recaptcha' ),
@@ -177,7 +177,7 @@ if ( ! class_exists( 'WBC_BuddyPress_Settings_Page' ) ) :
 		 * @return string Complete HTML for all service fields
 		 */
 		private function wbc_all_service_key_fields_html( $active_service ) {
-			$services = array( 'recaptcha_v2', 'recaptcha_v3', 'turnstile', 'hcaptcha', 'altcha' );
+			$services = array( 'recaptcha-v2', 'recaptcha-v3', 'turnstile', 'hcaptcha', 'altcha' );
 			$html = '';
 
 			foreach ( $services as $service ) {
@@ -203,7 +203,7 @@ if ( ! class_exists( 'WBC_BuddyPress_Settings_Page' ) ) :
 			$html = '';
 
 			switch ( $service ) {
-				case 'recaptcha_v2':
+				case 'recaptcha-v2':
 					$site_key = get_option( 'wbc_recaptcha_v2_site_key', '' );
 					$secret_key = get_option( 'wbc_recaptcha_v2_secret_key', '' );
 
@@ -228,7 +228,7 @@ if ( ! class_exists( 'WBC_BuddyPress_Settings_Page' ) ) :
 					);
 					break;
 
-				case 'recaptcha_v3':
+				case 'recaptcha-v3':
 					$site_key = get_option( 'wbc_recaptcha_v3_site_key', '' );
 					$secret_key = get_option( 'wbc_recaptcha_v3_secret_key', '' );
 					$threshold = get_option( 'wbc_recaptcha_v3_score_threshold', '0.5' );
@@ -479,7 +479,7 @@ if ( ! class_exists( 'WBC_BuddyPress_Settings_Page' ) ) :
 			$wrapper_class .= $is_active ? ' wbc-active' : ' wbc-hidden';
 
 			switch ( $service ) {
-				case 'recaptcha_v2':
+				case 'recaptcha-v2':
 					$fields[] = array(
 						'type' => 'custom',
 						'id'   => 'wbc_recaptcha_v2_wrapper_start',
@@ -513,7 +513,7 @@ if ( ! class_exists( 'WBC_BuddyPress_Settings_Page' ) ) :
 					);
 					break;
 
-				case 'recaptcha_v3':
+				case 'recaptcha-v3':
 					$fields[] = array(
 						'type' => 'custom',
 						'id'   => 'wbc_recaptcha_v3_wrapper_start',
@@ -720,9 +720,9 @@ if ( ! class_exists( 'WBC_BuddyPress_Settings_Page' ) ) :
 			// 	'id'   => 'wbc_appearance_section',
 			// );
 
-			$service = get_option( 'wbc_captcha_service', 'recaptcha_v2' );
+			$service = get_option( 'wbc_captcha_service', 'recaptcha-v2' );
 
-			if ( in_array( $service, array( 'recaptcha_v2', 'hcaptcha' ) ) ) {
+			if ( in_array( $service, array( 'recaptcha-v2', 'hcaptcha' ) ) ) {
 				$settings[] = array(
 					'name'    => __( 'Theme', 'buddypress-recaptcha' ),
 					'type'    => 'select',
@@ -788,10 +788,10 @@ if ( ! class_exists( 'WBC_BuddyPress_Settings_Page' ) ) :
 		 * Get current site key based on active service
 		 */
 		private function wbc_current_site_key() {
-			$service = get_option( 'wbc_captcha_service', 'recaptcha_v2' );
+			$service = get_option( 'wbc_captcha_service', 'recaptcha-v2' );
 			$key_map = array(
-				'recaptcha_v2' => 'wbc_recaptcha_v2_site_key',
-				'recaptcha_v3' => 'wbc_recaptcha_v3_site_key',
+				'recaptcha-v2' => 'wbc_recaptcha_v2_site_key',
+				'recaptcha-v3' => 'wbc_recaptcha_v3_site_key',
 				'turnstile' => 'wbc_turnstile_site_key',
 				'hcaptcha' => 'wbc_hcaptcha_site_key',
 			);
@@ -802,10 +802,10 @@ if ( ! class_exists( 'WBC_BuddyPress_Settings_Page' ) ) :
 		 * Get current secret key based on active service
 		 */
 		private function wbc_current_secret_key() {
-			$service = get_option( 'wbc_captcha_service', 'recaptcha_v2' );
+			$service = get_option( 'wbc_captcha_service', 'recaptcha-v2' );
 			$key_map = array(
-				'recaptcha_v2' => 'wbc_recaptcha_v2_secret_key',
-				'recaptcha_v3' => 'wbc_recaptcha_v3_secret_key',
+				'recaptcha-v2' => 'wbc_recaptcha_v2_secret_key',
+				'recaptcha-v3' => 'wbc_recaptcha_v3_secret_key',
 				'turnstile' => 'wbc_turnstile_secret_key',
 				'hcaptcha' => 'wbc_hcaptcha_secret_key',
 				'altcha' => 'wbc_altcha_hmac_key',
@@ -818,8 +818,8 @@ if ( ! class_exists( 'WBC_BuddyPress_Settings_Page' ) ) :
 		 */
 		private function wbc_service_signup_links() {
 			$links = array(
-				'recaptcha_v2' => array( 'Google reCAPTCHA', 'https://www.google.com/recaptcha/admin' ),
-				'recaptcha_v3' => array( 'Google reCAPTCHA', 'https://www.google.com/recaptcha/admin' ),
+				'recaptcha-v2' => array( 'Google reCAPTCHA', 'https://www.google.com/recaptcha/admin' ),
+				'recaptcha-v3' => array( 'Google reCAPTCHA', 'https://www.google.com/recaptcha/admin' ),
 				'turnstile' => array( 'Cloudflare Turnstile', 'https://dash.cloudflare.com/sign-up' ),
 				'hcaptcha' => array( 'hCaptcha', 'https://www.hcaptcha.com/signup-interstitial' ),
 			);
@@ -847,12 +847,12 @@ if ( ! class_exists( 'WBC_BuddyPress_Settings_Page' ) ) :
 		 */
 		private function wbc_service_selector_html( $active_service ) {
 			$services = array(
-				'recaptcha_v2' => array(
+				'recaptcha-v2' => array(
 					'name' => __( 'Google reCAPTCHA v2', 'buddypress-recaptcha' ),
 					'desc' => __( 'Shows the familiar "I\'m not a robot" checkbox', 'buddypress-recaptcha' ),
 					'badge' => __( 'Most Popular', 'buddypress-recaptcha' ),
 				),
-				'recaptcha_v3' => array(
+				'recaptcha-v3' => array(
 					'name' => __( 'Google reCAPTCHA v3', 'buddypress-recaptcha' ),
 					'desc' => __( 'Invisible verification with score-based detection', 'buddypress-recaptcha' ),
 				),
@@ -898,8 +898,8 @@ if ( ! class_exists( 'WBC_BuddyPress_Settings_Page' ) ) :
 		private function wbc_simple_documentation( $service ) {
 			// Simple guide for each service
 			$guides = array(
-				'recaptcha_v2' => $this->wbc_simple_recaptcha_v2_guide(),
-				'recaptcha_v3' => $this->wbc_simple_recaptcha_v3_guide(),
+				'recaptcha-v2' => $this->wbc_simple_recaptcha_v2_guide(),
+				'recaptcha-v3' => $this->wbc_simple_recaptcha_v3_guide(),
 				'turnstile' => $this->wbc_simple_turnstile_guide(),
 				'hcaptcha' => $this->wbc_simple_hcaptcha_guide(),
 				'altcha' => $this->wbc_simple_altcha_guide(),
@@ -1035,8 +1035,8 @@ if ( ! class_exists( 'WBC_BuddyPress_Settings_Page' ) ) :
 
 			// Service-specific documentation
 			$docs = array(
-				'recaptcha_v2' => $this->wbc_recaptcha_v2_docs(),
-				'recaptcha_v3' => $this->wbc_recaptcha_v3_docs(),
+				'recaptcha-v2' => $this->wbc_recaptcha_v2_docs(),
+				'recaptcha-v3' => $this->wbc_recaptcha_v3_docs(),
 				'turnstile' => $this->wbc_turnstile_docs(),
 				'hcaptcha' => $this->wbc_hcaptcha_docs(),
 				'altcha' => $this->wbc_altcha_docs(),
@@ -1360,8 +1360,8 @@ if ( ! class_exists( 'WBC_BuddyPress_Settings_Page' ) ) :
 			// Fallback if service manager is not available
 			if ( empty( $services ) ) {
 				$services = array(
-					'recaptcha_v2' => __( 'Google reCAPTCHA v2 (Checkbox)', 'buddypress-recaptcha' ),
-					'recaptcha_v3' => __( 'Google reCAPTCHA v3 (Invisible)', 'buddypress-recaptcha' ),
+					'recaptcha-v2' => __( 'Google reCAPTCHA v2 (Checkbox)', 'buddypress-recaptcha' ),
+					'recaptcha-v3' => __( 'Google reCAPTCHA v3 (Invisible)', 'buddypress-recaptcha' ),
 					'turnstile'    => __( 'Cloudflare Turnstile', 'buddypress-recaptcha' ),
 				);
 			}
@@ -1454,7 +1454,7 @@ if ( ! class_exists( 'WBC_BuddyPress_Settings_Page' ) ) :
 					'type'    => 'select',
 					'id'      => 'wbc_captcha_service',
 					'options' => $this->wbc_available_services(),
-					'default' => 'recaptcha_v2',
+					'default' => 'recaptcha-v2',
 					'desc'    => __( 'Select which captcha service to use across your site', 'buddypress-recaptcha' ),
 				),
 
@@ -1468,7 +1468,7 @@ if ( ! class_exists( 'WBC_BuddyPress_Settings_Page' ) ) :
 					'name'  => __( 'Google reCAPTCHA v2 Settings', 'buddypress-recaptcha' ),
 					'type'  => 'title',
 					'id'    => 'wbc_recaptcha_v2_settings',
-					'class' => 'wbc-service-settings wbc-service-recaptcha_v2',
+					'class' => 'wbc-service-settings wbc-service-recaptcha-v2',
 				),
 
 				array(
@@ -1477,7 +1477,7 @@ if ( ! class_exists( 'WBC_BuddyPress_Settings_Page' ) ) :
 					'id'          => 'wbc_recaptcha_v2_site_key',
 					'desc'        => __( 'Enter your Google reCAPTCHA v2 site key', 'buddypress-recaptcha' ),
 					'placeholder' => __( 'Your site key', 'buddypress-recaptcha' ),
-					'class'       => 'wbc-service-field wbc-service-recaptcha_v2',
+					'class'       => 'wbc-service-field wbc-service-recaptcha-v2',
 				),
 
 				array(
@@ -1486,13 +1486,13 @@ if ( ! class_exists( 'WBC_BuddyPress_Settings_Page' ) ) :
 					'id'          => 'wbc_recaptcha_v2_secret_key',
 					'desc'        => __( 'Enter your Google reCAPTCHA v2 secret key', 'buddypress-recaptcha' ),
 					'placeholder' => __( 'Your secret key', 'buddypress-recaptcha' ),
-					'class'       => 'wbc-service-field wbc-service-recaptcha_v2',
+					'class'       => 'wbc-service-field wbc-service-recaptcha-v2',
 				),
 
 				array(
 					'type'  => 'sectionend',
 					'id'    => 'wbc_recaptcha_v2_settings',
-					'class' => 'wbc-service-settings wbc-service-recaptcha_v2',
+					'class' => 'wbc-service-settings wbc-service-recaptcha-v2',
 				),
 
 				// reCAPTCHA v3 Settings
@@ -1500,7 +1500,7 @@ if ( ! class_exists( 'WBC_BuddyPress_Settings_Page' ) ) :
 					'name'  => __( 'Google reCAPTCHA v3 Settings', 'buddypress-recaptcha' ),
 					'type'  => 'title',
 					'id'    => 'wbc_recaptcha_v3_settings',
-					'class' => 'wbc-service-settings wbc-service-recaptcha_v3',
+					'class' => 'wbc-service-settings wbc-service-recaptcha-v3',
 				),
 
 				array(
@@ -1509,7 +1509,7 @@ if ( ! class_exists( 'WBC_BuddyPress_Settings_Page' ) ) :
 					'id'          => 'wbc_recaptcha_v3_site_key',
 					'desc'        => __( 'Enter your Google reCAPTCHA v3 site key', 'buddypress-recaptcha' ),
 					'placeholder' => __( 'Your site key', 'buddypress-recaptcha' ),
-					'class'       => 'wbc-service-field wbc-service-recaptcha_v3',
+					'class'       => 'wbc-service-field wbc-service-recaptcha-v3',
 				),
 
 				array(
@@ -1518,7 +1518,7 @@ if ( ! class_exists( 'WBC_BuddyPress_Settings_Page' ) ) :
 					'id'          => 'wbc_recaptcha_v3_secret_key',
 					'desc'        => __( 'Enter your Google reCAPTCHA v3 secret key', 'buddypress-recaptcha' ),
 					'placeholder' => __( 'Your secret key', 'buddypress-recaptcha' ),
-					'class'       => 'wbc-service-field wbc-service-recaptcha_v3',
+					'class'       => 'wbc-service-field wbc-service-recaptcha-v3',
 				),
 
 				array(
@@ -1532,13 +1532,13 @@ if ( ! class_exists( 'WBC_BuddyPress_Settings_Page' ) ) :
 						'max'  => '1',
 						'step' => '0.1',
 					),
-					'class'   => 'wbc-service-field wbc-service-recaptcha_v3',
+					'class'   => 'wbc-service-field wbc-service-recaptcha-v3',
 				),
 
 				array(
 					'type'  => 'sectionend',
 					'id'    => 'wbc_recaptcha_v3_settings',
-					'class' => 'wbc-service-settings wbc-service-recaptcha_v3',
+					'class' => 'wbc-service-settings wbc-service-recaptcha-v3',
 				),
 
 				// Turnstile Settings
@@ -1935,7 +1935,7 @@ if ( ! class_exists( 'WBC_BuddyPress_Settings_Page' ) ) :
 					),
 					'default' => 'light',
 					'desc'    => __( 'Color theme for reCAPTCHA v2 widget', 'buddypress-recaptcha' ),
-					'class'   => 'wbc-service-specific wbc-service-recaptcha_v2',
+					'class'   => 'wbc-service-specific wbc-service-recaptcha-v2',
 				),
 
 				array(
@@ -1948,7 +1948,7 @@ if ( ! class_exists( 'WBC_BuddyPress_Settings_Page' ) ) :
 					),
 					'default' => 'normal',
 					'desc'    => __( 'Size of the reCAPTCHA v2 widget', 'buddypress-recaptcha' ),
-					'class'   => 'wbc-service-specific wbc-service-recaptcha_v2',
+					'class'   => 'wbc-service-specific wbc-service-recaptcha-v2',
 				),
 
 				array(
@@ -1962,7 +1962,7 @@ if ( ! class_exists( 'WBC_BuddyPress_Settings_Page' ) ) :
 					),
 					'default' => 'bottomright',
 					'desc'    => __( 'Position of the reCAPTCHA v3 badge', 'buddypress-recaptcha' ),
-					'class'   => 'wbc-service-specific wbc-service-recaptcha_v3',
+					'class'   => 'wbc-service-specific wbc-service-recaptcha-v3',
 				),
 
 				// For Turnstile
@@ -2046,7 +2046,7 @@ if ( ! class_exists( 'WBC_BuddyPress_Settings_Page' ) ) :
 					'id'      => 'wbc_recapcha_disable_submitbtn',
 					'desc'    => __( 'Disable submit button until captcha is completed (reCAPTCHA v2 only)', 'buddypress-recaptcha' ),
 					'default' => 'no',
-					'class'   => 'wbc-service-specific wbc-service-recaptcha_v2',
+					'class'   => 'wbc-service-specific wbc-service-recaptcha-v2',
 				),
 
 				array(

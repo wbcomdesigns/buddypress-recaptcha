@@ -72,9 +72,9 @@ class WBC_Settings_Migration {
 		// Check for existing version setting
 		$version = get_option( 'wbc_recapcha_version' );
 		if ( 'v3' === $version ) {
-			return 'recaptcha_v3';
+			return 'recaptcha-v3';
 		} elseif ( 'v2' === $version ) {
-			return 'recaptcha_v2';
+			return 'recaptcha-v2';
 		}
 		
 		// Check for Turnstile keys
@@ -88,18 +88,18 @@ class WBC_Settings_Migration {
 		$v3_site_key = get_option( 'wc_settings_tab_recapcha_site_key_v3' );
 		$v3_secret_key = get_option( 'wc_settings_tab_recapcha_secret_key_v3' );
 		if ( ! empty( $v3_site_key ) && ! empty( $v3_secret_key ) ) {
-			return 'recaptcha_v3';
+			return 'recaptcha-v3';
 		}
 		
 		// Check for v2 keys
 		$v2_site_key = get_option( 'wc_settings_tab_recapcha_site_key' );
 		$v2_secret_key = get_option( 'wc_settings_tab_recapcha_secret_key' );
 		if ( ! empty( $v2_site_key ) && ! empty( $v2_secret_key ) ) {
-			return 'recaptcha_v2';
+			return 'recaptcha-v2';
 		}
 		
 		// Default to v2 if nothing is detected
-		return 'recaptcha_v2';
+		return 'recaptcha-v2';
 	}
 	
 	/**
@@ -155,7 +155,7 @@ class WBC_Settings_Migration {
 		$theme = get_option( 'wbc_recaptcha_theme' );
 		if ( false === $theme ) {
 			// Check for v2-specific theme option
-			$theme = get_option( 'wbc_recaptcha_v2_theme' );
+			$theme = get_option( 'wbc_recaptcha-v2_theme' );
 		}
 		if ( false !== $theme ) {
 			update_option( 'wbc_recaptcha_theme', $theme );
@@ -165,7 +165,7 @@ class WBC_Settings_Migration {
 		$size = get_option( 'wbc_recaptcha_size' );
 		if ( false === $size ) {
 			// Check for v2-specific size option
-			$size = get_option( 'wbc_recaptcha_v2_size' );
+			$size = get_option( 'wbc_recaptcha-v2_size' );
 		}
 		if ( false !== $size ) {
 			update_option( 'wbc_recaptcha_size', $size );
@@ -173,13 +173,13 @@ class WBC_Settings_Migration {
 		}
 		
 		// Migrate reCAPTCHA v3 badge position
-		$badge = get_option( 'wbc_recaptcha_v3_badge' );
+		$badge = get_option( 'wbc_recaptcha-v3_badge' );
 		if ( false === $badge ) {
 			// Check for alternative naming
 			$badge = get_option( 'wbc_recaptcha_badge_v3' );
 		}
 		if ( false !== $badge ) {
-			update_option( 'wbc_recaptcha_v3_badge', $badge );
+			update_option( 'wbc_recaptcha-v3_badge', $badge );
 			$results['migrated'][] = 'reCAPTCHA v3 badge position';
 		}
 		
@@ -256,13 +256,13 @@ class WBC_Settings_Migration {
 		}
 		
 		// Migrate v3 score threshold
-		$score_threshold = get_option( 'wbc_recaptcha_v3_score_threshold' );
+		$score_threshold = get_option( 'wbc_recaptcha-v3_score_threshold' );
 		if ( false === $score_threshold ) {
 			// Check alternative naming
 			$score_threshold = get_option( 'wbc_recaptcha_score_threshold_v3' );
 		}
 		if ( false !== $score_threshold ) {
-			update_option( 'wbc_recaptcha_v3_score_threshold', $score_threshold );
+			update_option( 'wbc_recaptcha-v3_score_threshold', $score_threshold );
 			$results['migrated'][] = 'reCAPTCHA v3 score threshold';
 		}
 	}
