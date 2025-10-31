@@ -86,6 +86,7 @@ class WBC_Settings_Module_Loader {
 		require_once $modules_dir . 'class-wbc-ninjaforms-settings.php';
 		require_once $modules_dir . 'class-wbc-forminator-settings.php';
 		require_once $modules_dir . 'class-wbc-elementorpro-settings.php';
+		require_once $modules_dir . 'class-wbc-divi-settings.php';
 	}
 
 	/**
@@ -123,6 +124,9 @@ class WBC_Settings_Module_Loader {
 
 		// Elementor Pro (conditional)
 		$this->register_module( new WBC_ElementorPro_Settings() );
+
+		// Divi Builder (conditional)
+		$this->register_module( new WBC_Divi_Settings() );
 
 		/**
 		 * Allow third-party plugins to register custom settings modules

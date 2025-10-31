@@ -196,6 +196,9 @@ class Recaptcha_For_BuddyPress {
 		// Elementor Pro.
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/elementorpro-classes/ElementorPro_Form.php';
 
+		// Divi Builder.
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/divi-classes/Divi_Form.php';
+
 		// bbPress.
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/bbPress/class-wbc-bbpress-reply-recaptcha.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/bbPress/class-wbc-bbpress-topic-recaptcha.php';
@@ -332,6 +335,9 @@ class Recaptcha_For_BuddyPress {
 
 		// Elementor Pro - register hooks after plugins are loaded
 		add_action( 'plugins_loaded', array( $this, 'register_elementorpro_hooks' ), 20 );
+
+		// Divi Builder - register hooks after plugins are loaded
+		add_action( 'plugins_loaded', array( $this, 'register_divi_hooks' ), 20 );
 
 		// bbPress - only load if bbPress is active.
 		if ( class_exists( 'bbPress' ) ) {
@@ -600,6 +606,28 @@ class Recaptcha_For_BuddyPress {
 
 		// Validate CAPTCHA on Elementor Pro form submission
 		add_action( 'elementor_pro/forms/validation', array( $elementorpro_form, 'validate_elementorpro_captcha' ), 10, 2 );
+	}
+
+	/**
+	 * Register Divi Builder hooks
+	 *
+	 * Only registers if Divi Builder is active.
+	 *
+	 * @since     2.0.0
+	 */
+	public function register_divi_hooks() {
+		// Only load if Divi Builder is active
+		if ( ! defined( 'ET_BUILDER_VERSION' ) ) {
+			return;
+		}
+
+		$divi_form = new Divi_Form();
+
+		// Render CAPTCHA in Divi contact forms (priority 10)
+		add_filter( 'et_pb_contact_form_module_output', array( $divi_form, 'render_divi_captcha' ), 10, 2 );
+
+		// Validate CAPTCHA on Divi form submission
+		add_filter( 'et_contact_form_before_send', array( $divi_form, 'validate_divi_captcha' ), 10, 1 );
 	}
 
 }
