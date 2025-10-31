@@ -186,6 +186,7 @@ abstract class WBC_Captcha_Service_Base implements WBC_Captcha_Service_Interface
 			'um_login' => 'wbc_recaptcha_enable_on_um_login',
 			'um_register' => 'wbc_recaptcha_enable_on_um_register',
 			'um_password' => 'wbc_recaptcha_enable_on_um_password',
+			'widget_login' => 'wbc_recaptcha_enable_on_widget_login',
 		);
 	}
 
@@ -293,6 +294,7 @@ abstract class WBC_Captcha_Service_Base implements WBC_Captcha_Service_Interface
 			'um_login' => 'um-login-nonce',
 			'um_register' => 'um-register-nonce',
 			'um_password' => 'um-password-nonce',
+			'widget_login' => 'widget-login-nonce',
 		);
 
 		return isset( $nonce_actions[ $context ] ) ? $nonce_actions[ $context ] : $context . '-nonce';
@@ -333,6 +335,7 @@ abstract class WBC_Captcha_Service_Base implements WBC_Captcha_Service_Interface
 			'um_login' => '.um-form.um-login',
 			'um_register' => '.um-form.um-register',
 			'um_password' => '.um-form.um-password',
+			'widget_login' => '#wbc-ajax-login-form',
 		);
 
 		return isset( $selectors[ $context ] ) ? $selectors[ $context ] : '#' . $context . '-form';
@@ -373,6 +376,7 @@ abstract class WBC_Captcha_Service_Base implements WBC_Captcha_Service_Interface
 			'um_login' => '.um-button[type="submit"]',
 			'um_register' => '.um-button[type="submit"]',
 			'um_password' => '.um-button[type="submit"]',
+			'widget_login' => '.wbc-login-button',
 		);
 
 		return isset( $selectors[ $context ] ) ? $selectors[ $context ] : '#submit';
