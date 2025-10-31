@@ -87,6 +87,7 @@ class WBC_Settings_Module_Loader {
 		require_once $modules_dir . 'class-wbc-forminator-settings.php';
 		require_once $modules_dir . 'class-wbc-elementorpro-settings.php';
 		require_once $modules_dir . 'class-wbc-divi-settings.php';
+		require_once $modules_dir . 'class-wbc-edd-settings.php';
 	}
 
 	/**
@@ -127,6 +128,9 @@ class WBC_Settings_Module_Loader {
 
 		// Divi Builder (conditional)
 		$this->register_module( new WBC_Divi_Settings() );
+
+		// Easy Digital Downloads (conditional)
+		$this->register_module( new WBC_EDD_Settings() );
 
 		/**
 		 * Allow third-party plugins to register custom settings modules
