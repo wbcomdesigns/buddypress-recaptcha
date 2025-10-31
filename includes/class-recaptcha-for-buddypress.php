@@ -178,6 +178,12 @@ class Recaptcha_For_BuddyPress {
 		// Buddy Press.
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/bp-classes/Registrationbp.php';
 
+		// Contact Form 7.
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/cf7-classes/CF7_Form.php';
+
+		// WPForms.
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/wpforms-classes/WPForms_Form.php';
+
 		// bbPress.
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/bbPress/class-wbc-bbpress-reply-recaptcha.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/bbPress/class-wbc-bbpress-topic-recaptcha.php';
@@ -297,6 +303,12 @@ class Recaptcha_For_BuddyPress {
 		// Buddypress - register hooks via bp_init (will only fire if BuddyPress is active)
 		add_action( 'bp_init', array( $this, 'register_buddypress_hooks' ), 10 );
 
+		// Contact Form 7 - register hooks after plugins are loaded
+		add_action( 'plugins_loaded', array( $this, 'register_cf7_hooks' ), 20 );
+
+		// WPForms - register hooks after plugins are loaded
+		add_action( 'plugins_loaded', array( $this, 'register_wpforms_hooks' ), 20 );
+
 		// bbPress - only load if bbPress is active.
 		if ( class_exists( 'bbPress' ) ) {
 			$bbpress_topic_class = new Recaptcha_bbPress_Topic();
@@ -359,22 +371,6 @@ class Recaptcha_For_BuddyPress {
 			add_filter( 'woocommerce_product_review_comment_form_args', array( $woocommerce_order, 'woo_product_review_captcha_field' ), 10 );
 		}
 
-		// FluentCart - only load if FluentCart is active.
-		if ( class_exists( 'FluentCart\App\App' ) || defined( 'FLUENT_CART_VERSION' ) ) {
-			// Load FluentCart integration classes
-			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/fluentcart-extra/Fluent_Cart_Registration.php';
-			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/fluentcart-extra/Fluent_Cart_Login.php';
-
-			// FluentCart Registration
-			$fluentcart_registration = new Fluent_Cart_Registration();
-			add_action( 'fluent_cart/views/checkout_page_registration_form', array( $fluentcart_registration, 'render_registration_captcha' ), 10, 1 );
-			add_filter( 'register_post', array( $fluentcart_registration, 'validate_wp_registration_captcha' ), 10, 3 );
-
-			// FluentCart Login
-			$fluentcart_login = new Fluent_Cart_Login();
-			add_action( 'fluent_cart/views/checkout_page_login_form', array( $fluentcart_login, 'render_login_captcha' ), 10, 1 );
-			add_filter( 'authenticate', array( $fluentcart_login, 'validate_login_captcha' ), 20, 3 );
-		}
 
 		if ( $plugin_public->woo_recaptcha_check_is_ie_browser() ) {
 			add_action( 'wp_head', array( $plugin_public, 'woo_recaptcha_add_header_metadata_for_ie' ) );
@@ -448,6 +444,50 @@ class Recaptcha_For_BuddyPress {
 		$registration_bp = new Registrationbp();
 		add_action( 'bp_before_registration_submit_buttons', array( $registration_bp, 'woo_extra_bp_register_form' ), 36 );
 		add_action( 'bp_signup_validate', array( $registration_bp, 'innovage_validate_user_registration' ) );
+	}
+
+	/**
+	 * Register Contact Form 7 hooks
+	 *
+	 * Only registers if Contact Form 7 plugin is active.
+	 *
+	 * @since     2.0.0
+	 */
+	public function register_cf7_hooks() {
+		// Only load if Contact Form 7 is active
+		if ( ! class_exists( 'WPCF7' ) ) {
+			return;
+		}
+
+		$cf7_form = new CF7_Form();
+
+		// Render CAPTCHA in CF7 forms
+		add_filter( 'wpcf7_form_elements', array( $cf7_form, 'render_cf7_captcha' ), 10, 1 );
+
+		// Validate CAPTCHA on CF7 form submission
+		add_filter( 'wpcf7_validate', array( $cf7_form, 'validate_cf7_captcha' ), 20, 2 );
+	}
+
+	/**
+	 * Register WPForms hooks
+	 *
+	 * Only registers if WPForms plugin is active.
+	 *
+	 * @since     2.0.0
+	 */
+	public function register_wpforms_hooks() {
+		// Only load if WPForms is active
+		if ( ! function_exists( 'wpforms' ) ) {
+			return;
+		}
+
+		$wpforms_form = new WPForms_Form();
+
+		// Render CAPTCHA in WPForms forms (priority 19 to appear before submit button)
+		add_action( 'wpforms_frontend_output', array( $wpforms_form, 'render_wpforms_captcha' ), 19, 5 );
+
+		// Validate CAPTCHA on WPForms form submission
+		add_action( 'wpforms_process', array( $wpforms_form, 'validate_wpforms_captcha' ), 10, 3 );
 	}
 
 }
