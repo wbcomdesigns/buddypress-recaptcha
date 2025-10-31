@@ -24,42 +24,10 @@ class WBC_Login_Block {
 	 * Register the block
 	 */
 	public function register_block() {
-		// Register the block
-		register_block_type(
-			'wbc/login-widget',
+		// Register the block using block.json
+		register_block_type_from_metadata(
+			plugin_dir_path( dirname( __FILE__ ) ) . 'blocks/login-widget',
 			array(
-				'api_version'     => 2,
-				'title'           => __( 'CAPTCHA Login', 'buddypress-recaptcha' ),
-				'description'     => __( 'Secure AJAX login form with CAPTCHA protection', 'buddypress-recaptcha' ),
-				'category'        => 'widgets',
-				'icon'            => 'lock',
-				'keywords'        => array( 'login', 'captcha', 'secure', 'ajax', 'recaptcha', 'authentication' ),
-				'supports'        => array(
-					'align'  => array( 'wide', 'full' ),
-					'html'   => false,
-				),
-				'attributes'      => array(
-					'welcomeMessage' => array(
-						'type'    => 'string',
-						'default' => __( 'Welcome back, {username}!', 'buddypress-recaptcha' ),
-					),
-					'redirectUrl' => array(
-						'type'    => 'string',
-						'default' => home_url(),
-					),
-					'showLostPassword' => array(
-						'type'    => 'boolean',
-						'default' => true,
-					),
-					'showRegisterLink' => array(
-						'type'    => 'boolean',
-						'default' => true,
-					),
-					'showProfileLink' => array(
-						'type'    => 'boolean',
-						'default' => true,
-					),
-				),
 				'render_callback' => array( $this, 'render_block' ),
 			)
 		);
@@ -76,9 +44,9 @@ class WBC_Login_Block {
 		$instance = array(
 			'welcome_message'     => ! empty( $attributes['welcomeMessage'] ) ? $attributes['welcomeMessage'] : __( 'Welcome back, {username}!', 'buddypress-recaptcha' ),
 			'redirect_url'        => ! empty( $attributes['redirectUrl'] ) ? $attributes['redirectUrl'] : home_url(),
-			'show_lost_password'  => ! empty( $attributes['showLostPassword'] ) ? 'yes' : 'no',
-			'show_register_link'  => ! empty( $attributes['showRegisterLink'] ) ? 'yes' : 'no',
-			'show_profile_link'   => ! empty( $attributes['showProfileLink'] ) ? 'yes' : 'no',
+			'show_lost_password'  => isset( $attributes['showLostPassword'] ) && $attributes['showLostPassword'] ? 'yes' : 'no',
+			'show_register_link'  => isset( $attributes['showRegisterLink'] ) && $attributes['showRegisterLink'] ? 'yes' : 'no',
+			'show_profile_link'   => isset( $attributes['showProfileLink'] ) && $attributes['showProfileLink'] ? 'yes' : 'no',
 		);
 
 		// Start output buffering
