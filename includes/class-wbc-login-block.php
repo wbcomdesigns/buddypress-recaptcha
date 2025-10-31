@@ -28,6 +28,16 @@ class WBC_Login_Block {
 		register_block_type(
 			'wbc/login-widget',
 			array(
+				'api_version'     => 2,
+				'title'           => __( 'CAPTCHA Login', 'buddypress-recaptcha' ),
+				'description'     => __( 'Secure AJAX login form with CAPTCHA protection', 'buddypress-recaptcha' ),
+				'category'        => 'widgets',
+				'icon'            => 'lock',
+				'keywords'        => array( 'login', 'captcha', 'secure', 'ajax', 'recaptcha', 'authentication' ),
+				'supports'        => array(
+					'align'  => array( 'wide', 'full' ),
+					'html'   => false,
+				),
 				'attributes'      => array(
 					'welcomeMessage' => array(
 						'type'    => 'string',
