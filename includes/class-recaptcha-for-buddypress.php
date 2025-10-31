@@ -490,8 +490,14 @@ class Recaptcha_For_BuddyPress {
 	 */
 	public function register_buddypress_hooks() {
 		$registration_bp = new Registrationbp();
+
+		// Member registration hooks
 		add_action( 'bp_before_registration_submit_buttons', array( $registration_bp, 'woo_extra_bp_register_form' ), 36 );
 		add_action( 'bp_signup_validate', array( $registration_bp, 'innovage_validate_user_registration' ) );
+
+		// Group creation hooks
+		add_action( 'bp_after_group_details_creation_step', array( $registration_bp, 'render_bp_group_create_captcha' ), 10 );
+		add_action( 'groups_group_before_save', array( $registration_bp, 'validate_bp_group_create_captcha' ), 10 );
 	}
 
 	/**

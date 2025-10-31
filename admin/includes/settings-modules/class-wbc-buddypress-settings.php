@@ -55,6 +55,12 @@ class WBC_BuddyPress_Settings extends WBC_Settings_Module_Abstract {
 					'desc'    => __( 'Protect community registration', 'buddypress-recaptcha' ),
 					'default' => 'yes',
 				),
+				array(
+					'id'      => 'wbc_recaptcha_enable_on_bp_group_create',
+					'label'   => __( 'Group Creation', 'buddypress-recaptcha' ),
+					'desc'    => __( 'Protect group creation form from spam', 'buddypress-recaptcha' ),
+					'default' => 'yes',
+				),
 			)
 		);
 	}
@@ -67,6 +73,7 @@ class WBC_BuddyPress_Settings extends WBC_Settings_Module_Abstract {
 	public function get_checkbox_ids() {
 		return array(
 			'wbc_recaptcha_enable_on_buddypress',
+			'wbc_recaptcha_enable_on_bp_group_create',
 		);
 	}
 }
