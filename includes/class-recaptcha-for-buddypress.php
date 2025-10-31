@@ -187,6 +187,9 @@ class Recaptcha_For_BuddyPress {
 		// Gravity Forms.
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/gravityforms-classes/GravityForms_Form.php';
 
+		// Ninja Forms.
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/ninjaforms-classes/NinjaForms_Form.php';
+
 		// bbPress.
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/bbPress/class-wbc-bbpress-reply-recaptcha.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/bbPress/class-wbc-bbpress-topic-recaptcha.php';
@@ -314,6 +317,9 @@ class Recaptcha_For_BuddyPress {
 
 		// Gravity Forms - register hooks after plugins are loaded
 		add_action( 'plugins_loaded', array( $this, 'register_gravityforms_hooks' ), 20 );
+
+		// Ninja Forms - register hooks after plugins are loaded
+		add_action( 'plugins_loaded', array( $this, 'register_ninjaforms_hooks' ), 20 );
 
 		// bbPress - only load if bbPress is active.
 		if ( class_exists( 'bbPress' ) ) {
@@ -516,6 +522,28 @@ class Recaptcha_For_BuddyPress {
 
 		// Validate CAPTCHA on Gravity Forms form submission
 		add_filter( 'gform_validation', array( $gravityforms_form, 'validate_gravityforms_captcha' ), 10, 1 );
+	}
+
+	/**
+	 * Register Ninja Forms hooks
+	 *
+	 * Only registers if Ninja Forms plugin is active.
+	 *
+	 * @since     2.0.0
+	 */
+	public function register_ninjaforms_hooks() {
+		// Only load if Ninja Forms is active
+		if ( ! class_exists( 'Ninja_Forms' ) ) {
+			return;
+		}
+
+		$ninjaforms_form = new NinjaForms_Form();
+
+		// Render CAPTCHA in Ninja Forms (priority 999 to appear at the end)
+		add_action( 'ninja_forms_display_after_fields', array( $ninjaforms_form, 'render_ninjaforms_captcha' ), 999 );
+
+		// Validate CAPTCHA on Ninja Forms form submission
+		add_filter( 'ninja_forms_submit_data', array( $ninjaforms_form, 'validate_ninjaforms_captcha' ), 10, 1 );
 	}
 
 }

@@ -173,6 +173,7 @@ abstract class WBC_Captcha_Service_Base implements WBC_Captcha_Service_Interface
 			'cf7' => 'wbc_recaptcha_enable_on_cf7',
 			'wpforms' => 'wbc_recaptcha_enable_on_wpforms',
 			'gravityforms' => 'wbc_recaptcha_enable_on_gravityforms',
+			'ninjaforms' => 'wbc_recaptcha_enable_on_ninjaforms',
 		);
 	}
 
@@ -267,6 +268,7 @@ abstract class WBC_Captcha_Service_Base implements WBC_Captcha_Service_Interface
 			'cf7' => 'cf7-nonce',
 			'wpforms' => 'wpforms-nonce',
 			'gravityforms' => 'gravityforms-nonce',
+			'ninjaforms' => 'ninjaforms-nonce',
 		);
 
 		return isset( $nonce_actions[ $context ] ) ? $nonce_actions[ $context ] : $context . '-nonce';
@@ -294,6 +296,7 @@ abstract class WBC_Captcha_Service_Base implements WBC_Captcha_Service_Interface
 			'cf7' => '.wpcf7-form',
 			'wpforms' => '.wpforms-form',
 			'gravityforms' => '.gform_wrapper form',
+			'ninjaforms' => '.nf-form-content',
 		);
 
 		return isset( $selectors[ $context ] ) ? $selectors[ $context ] : '#' . $context . '-form';
@@ -321,6 +324,7 @@ abstract class WBC_Captcha_Service_Base implements WBC_Captcha_Service_Interface
 			'cf7' => '.wpcf7-submit',
 			'wpforms' => '.wpforms-submit',
 			'gravityforms' => '.gform_button',
+			'ninjaforms' => '.nf-element .submit-container input[type="button"]',
 		);
 
 		return isset( $selectors[ $context ] ) ? $selectors[ $context ] : '#submit';
