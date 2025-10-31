@@ -184,6 +184,9 @@ class Recaptcha_For_BuddyPress {
 		// WPForms.
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/wpforms-classes/WPForms_Form.php';
 
+		// Gravity Forms.
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/gravityforms-classes/GravityForms_Form.php';
+
 		// bbPress.
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/bbPress/class-wbc-bbpress-reply-recaptcha.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/bbPress/class-wbc-bbpress-topic-recaptcha.php';
@@ -308,6 +311,9 @@ class Recaptcha_For_BuddyPress {
 
 		// WPForms - register hooks after plugins are loaded
 		add_action( 'plugins_loaded', array( $this, 'register_wpforms_hooks' ), 20 );
+
+		// Gravity Forms - register hooks after plugins are loaded
+		add_action( 'plugins_loaded', array( $this, 'register_gravityforms_hooks' ), 20 );
 
 		// bbPress - only load if bbPress is active.
 		if ( class_exists( 'bbPress' ) ) {
@@ -488,6 +494,28 @@ class Recaptcha_For_BuddyPress {
 
 		// Validate CAPTCHA on WPForms form submission
 		add_action( 'wpforms_process', array( $wpforms_form, 'validate_wpforms_captcha' ), 10, 3 );
+	}
+
+	/**
+	 * Register Gravity Forms hooks
+	 *
+	 * Only registers if Gravity Forms plugin is active.
+	 *
+	 * @since     2.0.0
+	 */
+	public function register_gravityforms_hooks() {
+		// Only load if Gravity Forms is active
+		if ( ! class_exists( 'GFForms' ) ) {
+			return;
+		}
+
+		$gravityforms_form = new GravityForms_Form();
+
+		// Render CAPTCHA in Gravity Forms (priority 10)
+		add_filter( 'gform_get_form_filter', array( $gravityforms_form, 'render_gravityforms_captcha' ), 10, 2 );
+
+		// Validate CAPTCHA on Gravity Forms form submission
+		add_filter( 'gform_validation', array( $gravityforms_form, 'validate_gravityforms_captcha' ), 10, 1 );
 	}
 
 }
