@@ -208,6 +208,11 @@ class Recaptcha_For_BuddyPress {
 		// Ultimate Member.
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/ultimatemember-classes/UltimateMember_Form.php';
 
+		// Login Widget and Block.
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/widgets/class-wbc-login-widget.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wbc-login-block.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wbc-ajax-login-handler.php';
+
 		// bbPress.
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/bbPress/class-wbc-bbpress-reply-recaptcha.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/bbPress/class-wbc-bbpress-topic-recaptcha.php';
@@ -356,6 +361,13 @@ class Recaptcha_For_BuddyPress {
 
 		// Ultimate Member - register hooks after plugins are loaded
 		add_action( 'plugins_loaded', array( $this, 'register_ultimatemember_hooks' ), 20 );
+
+		// Register AJAX Login Widget and Block
+		add_action( 'widgets_init', array( $this, 'register_login_widget' ) );
+		add_action( 'init', array( $this, 'register_login_block' ) );
+		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_login_widget_assets' ) );
+		add_action( 'wp_ajax_wbc_ajax_login', array( $this, 'handle_ajax_login' ) );
+		add_action( 'wp_ajax_nopriv_wbc_ajax_login', array( $this, 'handle_ajax_login' ) );
 
 		// bbPress - only load if bbPress is active.
 		if ( class_exists( 'bbPress' ) ) {
@@ -728,6 +740,74 @@ class Recaptcha_For_BuddyPress {
 		add_action( 'um_submit_form_errors_hook', array( $um_form, 'validate_um_login_captcha' ), 10, 1 );
 		add_action( 'um_submit_form_errors_hook', array( $um_form, 'validate_um_register_captcha' ), 10, 1 );
 		add_action( 'um_submit_form_errors_hook', array( $um_form, 'validate_um_password_captcha' ), 10, 1 );
+	}
+
+	/**
+	 * Register login widget
+	 *
+	 * @since     2.0.0
+	 */
+	public function register_login_widget() {
+		register_widget( 'WBC_Login_Widget' );
+	}
+
+	/**
+	 * Register login block
+	 *
+	 * @since     2.0.0
+	 */
+	public function register_login_block() {
+		$block = new WBC_Login_Block();
+		$block->register_block();
+	}
+
+	/**
+	 * Enqueue login widget assets
+	 *
+	 * @since     2.0.0
+	 */
+	public function enqueue_login_widget_assets() {
+		// Enqueue CSS
+		wp_enqueue_style(
+			'wbc-ajax-login',
+			plugin_dir_url( dirname( __FILE__ ) ) . 'public/css/wbc-ajax-login.css',
+			array(),
+			$this->version,
+			'all'
+		);
+
+		// Enqueue JavaScript
+		wp_enqueue_script(
+			'wbc-ajax-login',
+			plugin_dir_url( dirname( __FILE__ ) ) . 'public/js/wbc-ajax-login.js',
+			array( 'jquery' ),
+			$this->version,
+			true
+		);
+
+		// Get current CAPTCHA service
+		$service_id = get_option( 'wbc_recaptcha_service', 'recaptcha_v2_checkbox' );
+
+		// Localize script
+		wp_localize_script(
+			'wbc-ajax-login',
+			'wbcAjaxLogin',
+			array(
+				'ajaxurl'        => admin_url( 'admin-ajax.php' ),
+				'recaptchaType'  => $service_id,
+				'errorMessage'   => __( 'An error occurred. Please try again.', 'buddypress-recaptcha' ),
+			)
+		);
+	}
+
+	/**
+	 * Handle AJAX login request
+	 *
+	 * @since     2.0.0
+	 */
+	public function handle_ajax_login() {
+		$handler = new WBC_AJAX_Login_Handler();
+		$handler->handle_ajax_login();
 	}
 
 }
