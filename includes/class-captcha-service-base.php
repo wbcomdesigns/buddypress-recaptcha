@@ -177,6 +177,9 @@ abstract class WBC_Captcha_Service_Base implements WBC_Captcha_Service_Interface
 			'forminator' => 'wbc_recaptcha_enable_on_forminator',
 			'elementorpro' => 'wbc_recaptcha_enable_on_elementorpro',
 			'divi' => 'wbc_recaptcha_enable_on_divi',
+			'edd_checkout' => 'wbc_recaptcha_enable_on_edd_checkout',
+			'edd_login' => 'wbc_recaptcha_enable_on_edd_login',
+			'edd_register' => 'wbc_recaptcha_enable_on_edd_register',
 		);
 	}
 
@@ -275,6 +278,9 @@ abstract class WBC_Captcha_Service_Base implements WBC_Captcha_Service_Interface
 			'forminator' => 'forminator-nonce',
 			'elementorpro' => 'elementorpro-nonce',
 			'divi' => 'divi-nonce',
+			'edd_checkout' => 'edd-checkout-nonce',
+			'edd_login' => 'edd-login-nonce',
+			'edd_register' => 'edd-register-nonce',
 		);
 
 		return isset( $nonce_actions[ $context ] ) ? $nonce_actions[ $context ] : $context . '-nonce';
@@ -306,6 +312,9 @@ abstract class WBC_Captcha_Service_Base implements WBC_Captcha_Service_Interface
 			'forminator' => '.forminator-ui',
 			'elementorpro' => '.elementor-form',
 			'divi' => '.et_pb_contact_form',
+			'edd_checkout' => '#edd_purchase_form',
+			'edd_login' => '#edd_login_form',
+			'edd_register' => '#edd_register_form',
 		);
 
 		return isset( $selectors[ $context ] ) ? $selectors[ $context ] : '#' . $context . '-form';
@@ -337,6 +346,9 @@ abstract class WBC_Captcha_Service_Base implements WBC_Captcha_Service_Interface
 			'forminator' => '.forminator-button-submit',
 			'elementorpro' => '.elementor-button',
 			'divi' => '.et_pb_contact_submit',
+			'edd_checkout' => '#edd-purchase-button',
+			'edd_login' => '#edd_login_submit',
+			'edd_register' => '#edd_register_submit',
 		);
 
 		return isset( $selectors[ $context ] ) ? $selectors[ $context ] : '#submit';

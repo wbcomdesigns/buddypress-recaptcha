@@ -199,6 +199,9 @@ class Recaptcha_For_BuddyPress {
 		// Divi Builder.
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/divi-classes/Divi_Form.php';
 
+		// Easy Digital Downloads.
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/edd-classes/EDD_Form.php';
+
 		// bbPress.
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/bbPress/class-wbc-bbpress-reply-recaptcha.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/bbPress/class-wbc-bbpress-topic-recaptcha.php';
@@ -338,6 +341,9 @@ class Recaptcha_For_BuddyPress {
 
 		// Divi Builder - register hooks after plugins are loaded
 		add_action( 'plugins_loaded', array( $this, 'register_divi_hooks' ), 20 );
+
+		// Easy Digital Downloads - register hooks after plugins are loaded
+		add_action( 'plugins_loaded', array( $this, 'register_edd_hooks' ), 20 );
 
 		// bbPress - only load if bbPress is active.
 		if ( class_exists( 'bbPress' ) ) {
@@ -628,6 +634,32 @@ class Recaptcha_For_BuddyPress {
 
 		// Validate CAPTCHA on Divi form submission
 		add_filter( 'et_contact_form_before_send', array( $divi_form, 'validate_divi_captcha' ), 10, 1 );
+	}
+
+	/**
+	 * Register Easy Digital Downloads hooks
+	 *
+	 * Only registers if Easy Digital Downloads plugin is active.
+	 *
+	 * @since     2.0.0
+	 */
+	public function register_edd_hooks() {
+		// Only load if Easy Digital Downloads is active
+		if ( ! class_exists( 'Easy_Digital_Downloads' ) ) {
+			return;
+		}
+
+		$edd_form = new EDD_Form();
+
+		// Render CAPTCHA in EDD forms
+		add_action( 'edd_purchase_form_before_submit', array( $edd_form, 'render_edd_checkout_captcha' ), 10 );
+		add_action( 'edd_login_fields_after', array( $edd_form, 'render_edd_login_captcha' ), 10 );
+		add_action( 'edd_register_fields_after', array( $edd_form, 'render_edd_register_captcha' ), 10 );
+
+		// Validate CAPTCHA on EDD form submissions
+		add_action( 'edd_checkout_error_checks', array( $edd_form, 'validate_edd_checkout_captcha' ), 10, 2 );
+		add_action( 'edd_process_login_form', array( $edd_form, 'validate_edd_login_captcha' ), 10, 1 );
+		add_action( 'edd_process_register_form', array( $edd_form, 'validate_edd_register_captcha' ), 10, 1 );
 	}
 
 }
