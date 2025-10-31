@@ -16,6 +16,7 @@
 		"authentication"
 	],
 	"textdomain": "buddypress-recaptcha",
+	"editorScript": "file:./index.js",
 	"attributes": {
 		"welcomeMessage": {
 			"type": "string",
