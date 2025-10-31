@@ -1,0 +1,48 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 2,
+	"name": "wbc/login-widget",
+	"version": "1.0.0",
+	"title": "CAPTCHA Login",
+	"category": "widgets",
+	"icon": "lock",
+	"description": "Secure AJAX login form with CAPTCHA protection",
+	"keywords": [
+		"login",
+		"captcha",
+		"secure",
+		"ajax",
+		"recaptcha",
+		"authentication"
+	],
+	"textdomain": "buddypress-recaptcha",
+	"attributes": {
+		"welcomeMessage": {
+			"type": "string",
+			"default": "Welcome back, {username}!"
+		},
+		"redirectUrl": {
+			"type": "string",
+			"default": ""
+		},
+		"showLostPassword": {
+			"type": "boolean",
+			"default": true
+		},
+		"showRegisterLink": {
+			"type": "boolean",
+			"default": true
+		},
+		"showProfileLink": {
+			"type": "boolean",
+			"default": true
+		}
+	},
+	"supports": {
+		"align": [
+			"wide",
+			"full"
+		],
+		"html": false
+	}
+}
