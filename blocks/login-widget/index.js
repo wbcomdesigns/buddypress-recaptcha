@@ -7,7 +7,7 @@
 	const { InspectorControls } = wp.blockEditor;
 	const { PanelBody, TextControl, ToggleControl, Placeholder, Spinner } = wp.components;
 	const { __ } = wp.i18n;
-	const { ServerSideRender } = wp.editor;
+	const ServerSideRender = wp.serverSideRender || ( wp.editor && wp.editor.ServerSideRender );
 
 	/**
 	 * Register: CAPTCHA Login Block
