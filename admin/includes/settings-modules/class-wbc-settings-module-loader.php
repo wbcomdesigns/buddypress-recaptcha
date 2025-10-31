@@ -89,6 +89,7 @@ class WBC_Settings_Module_Loader {
 		require_once $modules_dir . 'class-wbc-divi-settings.php';
 		require_once $modules_dir . 'class-wbc-edd-settings.php';
 		require_once $modules_dir . 'class-wbc-memberpress-settings.php';
+		require_once $modules_dir . 'class-wbc-ultimatemember-settings.php';
 	}
 
 	/**
@@ -135,6 +136,9 @@ class WBC_Settings_Module_Loader {
 
 		// MemberPress (conditional)
 		$this->register_module( new WBC_MemberPress_Settings() );
+
+		// Ultimate Member (conditional)
+		$this->register_module( new WBC_UltimateMember_Settings() );
 
 		/**
 		 * Allow third-party plugins to register custom settings modules

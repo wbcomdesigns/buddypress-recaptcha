@@ -205,6 +205,9 @@ class Recaptcha_For_BuddyPress {
 		// MemberPress.
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/memberpress-classes/MemberPress_Form.php';
 
+		// Ultimate Member.
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/ultimatemember-classes/UltimateMember_Form.php';
+
 		// bbPress.
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/bbPress/class-wbc-bbpress-reply-recaptcha.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/bbPress/class-wbc-bbpress-topic-recaptcha.php';
@@ -350,6 +353,9 @@ class Recaptcha_For_BuddyPress {
 
 		// MemberPress - register hooks after plugins are loaded
 		add_action( 'plugins_loaded', array( $this, 'register_memberpress_hooks' ), 20 );
+
+		// Ultimate Member - register hooks after plugins are loaded
+		add_action( 'plugins_loaded', array( $this, 'register_ultimatemember_hooks' ), 20 );
 
 		// bbPress - only load if bbPress is active.
 		if ( class_exists( 'bbPress' ) ) {
@@ -690,6 +696,32 @@ class Recaptcha_For_BuddyPress {
 		// Validate CAPTCHA on MemberPress form submissions
 		add_filter( 'mepr-validate-login', array( $memberpress_form, 'validate_memberpress_login_captcha' ), 10, 1 );
 		add_filter( 'mepr-validate-signup', array( $memberpress_form, 'validate_memberpress_register_captcha' ), 10, 1 );
+	}
+
+	/**
+	 * Register Ultimate Member hooks
+	 *
+	 * Only registers if Ultimate Member plugin is active.
+	 *
+	 * @since     2.0.0
+	 */
+	public function register_ultimatemember_hooks() {
+		// Only load if Ultimate Member is active
+		if ( ! defined( 'ultimatemember_version' ) ) {
+			return;
+		}
+
+		$um_form = new UltimateMember_Form();
+
+		// Render CAPTCHA in Ultimate Member forms (before submit button)
+		add_action( 'um_after_form_fields', array( $um_form, 'render_um_login_captcha' ), 10, 1 );
+		add_action( 'um_after_form_fields', array( $um_form, 'render_um_register_captcha' ), 10, 1 );
+		add_action( 'um_after_form_fields', array( $um_form, 'render_um_password_captcha' ), 10, 1 );
+
+		// Validate CAPTCHA on Ultimate Member form submissions
+		add_action( 'um_submit_form_errors_hook', array( $um_form, 'validate_um_login_captcha' ), 10, 1 );
+		add_action( 'um_submit_form_errors_hook', array( $um_form, 'validate_um_register_captcha' ), 10, 1 );
+		add_action( 'um_submit_form_errors_hook', array( $um_form, 'validate_um_password_captcha' ), 10, 1 );
 	}
 
 }
