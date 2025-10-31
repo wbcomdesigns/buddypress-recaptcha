@@ -2,6 +2,14 @@
 
 Technical documentation for developers extending or integrating with Wbcom CAPTCHA Manager.
 
+## 🚀 Quick Links
+
+- **[Quick Start Guide](quick-start.md)** - Get started in 5 minutes
+- **[Complete Hooks Reference](hooks-reference.md)** - All hooks, filters, and use cases
+- **[Integration Examples](#creating-custom-integrations)** - Step-by-step integration guide
+
+---
+
 ## 📚 Table of Contents
 
 - [Architecture Overview](#architecture-overview)
@@ -242,6 +250,12 @@ $this->register_module( new WBC_YourPlugin_Settings() );
 
 ## Hooks & Filters Reference
 
+> **📖 Complete Reference:** See [hooks-reference.md](hooks-reference.md) for comprehensive documentation of all hooks, filters, and practical use cases.
+
+### Essential Hooks Overview
+
+Below are the most commonly used hooks. For complete documentation with examples and use cases, see the [Complete Hooks Reference](hooks-reference.md).
+
 ### Rendering Hooks
 
 **Modify CAPTCHA HTML:**
@@ -250,6 +264,19 @@ add_filter( 'wbc_captcha_html', function( $html, $context ) {
     // $context = 'login', 'registration', 'contact_form', etc.
     // Add custom wrapper or modify HTML
     return '<div class="my-wrapper">' . $html . '</div>';
+}, 10, 2 );
+```
+
+**Before/After Rendering Actions:**
+```php
+// Before CAPTCHA renders
+add_action( 'wbc_before_captcha_render', function( $context, $args ) {
+    echo '<div class="captcha-notice">Please complete security check</div>';
+}, 10, 2 );
+
+// After CAPTCHA renders
+add_action( 'wbc_after_captcha_render', function( $context, $args ) {
+    echo '<p class="captcha-help">This helps prevent spam</p>';
 }, 10, 2 );
 ```
 
@@ -278,6 +305,32 @@ add_filter( 'wbc_captcha_error_message', function( $message, $context ) {
 ---
 
 ### Validation Hooks
+
+**Validation Actions (for logging, analytics):**
+```php
+// Before validation starts
+add_action( 'wbc_before_captcha_validation', function( $context, $post_data ) {
+    error_log( "CAPTCHA validation starting for: {$context}" );
+}, 10, 2 );
+
+// After validation completes
+add_action( 'wbc_after_captcha_validation', function( $result, $context, $post_data ) {
+    // Log or track validation results
+    if ( ! $result['success'] ) {
+        error_log( "CAPTCHA failed for {$context}" );
+    }
+}, 10, 3 );
+
+// When validation fails
+add_action( 'wbc_captcha_validation_failed', function( $context, $error_message, $service_id ) {
+    // Track failures, rate limit, etc.
+}, 10, 3 );
+
+// When validation succeeds
+add_action( 'wbc_captcha_validation_success', function( $context, $service_id ) {
+    // Track successful validations
+}, 10, 2 );
+```
 
 **Custom Validation Logic:**
 ```php
