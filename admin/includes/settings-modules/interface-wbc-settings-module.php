@@ -3,7 +3,7 @@
  * Settings Module Interface
  *
  * Interface for modular settings in Wbcom CAPTCHA Manager plugin.
- * Each integration (WooCommerce, FluentCart, BuddyPress, etc.) implements this interface.
+ * Each integration (WooCommerce, BuddyPress, bbPress, etc.) implements this interface.
  *
  * @link       https://wbcomdesigns.com/
  * @since      2.1.0
@@ -37,7 +37,7 @@ interface WBC_Settings_Module_Interface {
 	/**
 	 * Get module identifier
 	 *
-	 * @return string Unique module ID (e.g., 'woocommerce', 'fluentcart').
+	 * @return string Unique module ID (e.g., 'woocommerce', 'buddypress').
 	 */
 	public function get_module_id();
 
