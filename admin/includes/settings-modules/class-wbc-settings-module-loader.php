@@ -78,9 +78,10 @@ class WBC_Settings_Module_Loader {
 		// Load all module implementations
 		require_once $modules_dir . 'class-wbc-wordpress-settings.php';
 		require_once $modules_dir . 'class-wbc-woocommerce-settings.php';
-		require_once $modules_dir . 'class-wbc-fluentcart-settings.php';
 		require_once $modules_dir . 'class-wbc-buddypress-settings.php';
 		require_once $modules_dir . 'class-wbc-bbpress-settings.php';
+		require_once $modules_dir . 'class-wbc-cf7-settings.php';
+		require_once $modules_dir . 'class-wbc-wpforms-settings.php';
 	}
 
 	/**
@@ -95,14 +96,17 @@ class WBC_Settings_Module_Loader {
 		// WooCommerce (conditional)
 		$this->register_module( new WBC_WooCommerce_Settings() );
 
-		// FluentCart (conditional)
-		$this->register_module( new WBC_FluentCart_Settings() );
-
 		// BuddyPress (conditional)
 		$this->register_module( new WBC_BuddyPress_Settings() );
 
 		// bbPress (conditional)
 		$this->register_module( new WBC_bbPress_Settings() );
+
+		// Contact Form 7 (conditional)
+		$this->register_module( new WBC_CF7_Settings() );
+
+		// WPForms (conditional)
+		$this->register_module( new WBC_WPForms_Settings() );
 
 		/**
 		 * Allow third-party plugins to register custom settings modules
