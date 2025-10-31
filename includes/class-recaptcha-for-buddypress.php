@@ -202,6 +202,9 @@ class Recaptcha_For_BuddyPress {
 		// Easy Digital Downloads.
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/edd-classes/EDD_Form.php';
 
+		// MemberPress.
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/memberpress-classes/MemberPress_Form.php';
+
 		// bbPress.
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/bbPress/class-wbc-bbpress-reply-recaptcha.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/bbPress/class-wbc-bbpress-topic-recaptcha.php';
@@ -344,6 +347,9 @@ class Recaptcha_For_BuddyPress {
 
 		// Easy Digital Downloads - register hooks after plugins are loaded
 		add_action( 'plugins_loaded', array( $this, 'register_edd_hooks' ), 20 );
+
+		// MemberPress - register hooks after plugins are loaded
+		add_action( 'plugins_loaded', array( $this, 'register_memberpress_hooks' ), 20 );
 
 		// bbPress - only load if bbPress is active.
 		if ( class_exists( 'bbPress' ) ) {
@@ -660,6 +666,30 @@ class Recaptcha_For_BuddyPress {
 		add_action( 'edd_checkout_error_checks', array( $edd_form, 'validate_edd_checkout_captcha' ), 10, 2 );
 		add_action( 'edd_process_login_form', array( $edd_form, 'validate_edd_login_captcha' ), 10, 1 );
 		add_action( 'edd_process_register_form', array( $edd_form, 'validate_edd_register_captcha' ), 10, 1 );
+	}
+
+	/**
+	 * Register MemberPress hooks
+	 *
+	 * Only registers if MemberPress plugin is active.
+	 *
+	 * @since     2.0.0
+	 */
+	public function register_memberpress_hooks() {
+		// Only load if MemberPress is active
+		if ( ! defined( 'MEPR_VERSION' ) ) {
+			return;
+		}
+
+		$memberpress_form = new MemberPress_Form();
+
+		// Render CAPTCHA in MemberPress forms
+		add_action( 'mepr-login-form-before-submit', array( $memberpress_form, 'render_memberpress_login_captcha' ), 10 );
+		add_action( 'mepr-signup-form-before-submit', array( $memberpress_form, 'render_memberpress_register_captcha' ), 10 );
+
+		// Validate CAPTCHA on MemberPress form submissions
+		add_filter( 'mepr-validate-login', array( $memberpress_form, 'validate_memberpress_login_captcha' ), 10, 1 );
+		add_filter( 'mepr-validate-signup', array( $memberpress_form, 'validate_memberpress_register_captcha' ), 10, 1 );
 	}
 
 }

@@ -180,6 +180,8 @@ abstract class WBC_Captcha_Service_Base implements WBC_Captcha_Service_Interface
 			'edd_checkout' => 'wbc_recaptcha_enable_on_edd_checkout',
 			'edd_login' => 'wbc_recaptcha_enable_on_edd_login',
 			'edd_register' => 'wbc_recaptcha_enable_on_edd_register',
+			'memberpress_login' => 'wbc_recaptcha_enable_on_memberpress_login',
+			'memberpress_register' => 'wbc_recaptcha_enable_on_memberpress_register',
 		);
 	}
 
@@ -281,6 +283,8 @@ abstract class WBC_Captcha_Service_Base implements WBC_Captcha_Service_Interface
 			'edd_checkout' => 'edd-checkout-nonce',
 			'edd_login' => 'edd-login-nonce',
 			'edd_register' => 'edd-register-nonce',
+			'memberpress_login' => 'memberpress-login-nonce',
+			'memberpress_register' => 'memberpress-register-nonce',
 		);
 
 		return isset( $nonce_actions[ $context ] ) ? $nonce_actions[ $context ] : $context . '-nonce';
@@ -315,6 +319,8 @@ abstract class WBC_Captcha_Service_Base implements WBC_Captcha_Service_Interface
 			'edd_checkout' => '#edd_purchase_form',
 			'edd_login' => '#edd_login_form',
 			'edd_register' => '#edd_register_form',
+			'memberpress_login' => '#mepr-login-form',
+			'memberpress_register' => '#mepr-signup-form',
 		);
 
 		return isset( $selectors[ $context ] ) ? $selectors[ $context ] : '#' . $context . '-form';
@@ -349,6 +355,8 @@ abstract class WBC_Captcha_Service_Base implements WBC_Captcha_Service_Interface
 			'edd_checkout' => '#edd-purchase-button',
 			'edd_login' => '#edd_login_submit',
 			'edd_register' => '#edd_register_submit',
+			'memberpress_login' => '#mepr-submit',
+			'memberpress_register' => '#mepr-submit',
 		);
 
 		return isset( $selectors[ $context ] ) ? $selectors[ $context ] : '#submit';

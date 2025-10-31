@@ -88,6 +88,7 @@ class WBC_Settings_Module_Loader {
 		require_once $modules_dir . 'class-wbc-elementorpro-settings.php';
 		require_once $modules_dir . 'class-wbc-divi-settings.php';
 		require_once $modules_dir . 'class-wbc-edd-settings.php';
+		require_once $modules_dir . 'class-wbc-memberpress-settings.php';
 	}
 
 	/**
@@ -131,6 +132,9 @@ class WBC_Settings_Module_Loader {
 
 		// Easy Digital Downloads (conditional)
 		$this->register_module( new WBC_EDD_Settings() );
+
+		// MemberPress (conditional)
+		$this->register_module( new WBC_MemberPress_Settings() );
 
 		/**
 		 * Allow third-party plugins to register custom settings modules
