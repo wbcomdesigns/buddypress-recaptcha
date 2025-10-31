@@ -193,6 +193,9 @@ class Recaptcha_For_BuddyPress {
 		// Forminator.
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/forminator-classes/Forminator_Form.php';
 
+		// Elementor Pro.
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/elementorpro-classes/ElementorPro_Form.php';
+
 		// bbPress.
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/bbPress/class-wbc-bbpress-reply-recaptcha.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/bbPress/class-wbc-bbpress-topic-recaptcha.php';
@@ -326,6 +329,9 @@ class Recaptcha_For_BuddyPress {
 
 		// Forminator - register hooks after plugins are loaded
 		add_action( 'plugins_loaded', array( $this, 'register_forminator_hooks' ), 20 );
+
+		// Elementor Pro - register hooks after plugins are loaded
+		add_action( 'plugins_loaded', array( $this, 'register_elementorpro_hooks' ), 20 );
 
 		// bbPress - only load if bbPress is active.
 		if ( class_exists( 'bbPress' ) ) {
@@ -572,6 +578,28 @@ class Recaptcha_For_BuddyPress {
 
 		// Validate CAPTCHA on Forminator form submission
 		add_filter( 'forminator_custom_form_submit_errors', array( $forminator_form, 'validate_forminator_captcha' ), 10, 3 );
+	}
+
+	/**
+	 * Register Elementor Pro hooks
+	 *
+	 * Only registers if Elementor Pro plugin is active.
+	 *
+	 * @since     2.0.0
+	 */
+	public function register_elementorpro_hooks() {
+		// Only load if Elementor Pro is active
+		if ( ! defined( 'ELEMENTOR_PRO_VERSION' ) ) {
+			return;
+		}
+
+		$elementorpro_form = new ElementorPro_Form();
+
+		// Render CAPTCHA in Elementor Pro forms (priority 10)
+		add_action( 'elementor_pro/forms/render/item', array( $elementorpro_form, 'render_elementorpro_captcha' ), 10, 3 );
+
+		// Validate CAPTCHA on Elementor Pro form submission
+		add_action( 'elementor_pro/forms/validation', array( $elementorpro_form, 'validate_elementorpro_captcha' ), 10, 2 );
 	}
 
 }

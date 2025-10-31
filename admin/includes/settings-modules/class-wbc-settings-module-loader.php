@@ -85,6 +85,7 @@ class WBC_Settings_Module_Loader {
 		require_once $modules_dir . 'class-wbc-gravityforms-settings.php';
 		require_once $modules_dir . 'class-wbc-ninjaforms-settings.php';
 		require_once $modules_dir . 'class-wbc-forminator-settings.php';
+		require_once $modules_dir . 'class-wbc-elementorpro-settings.php';
 	}
 
 	/**
@@ -119,6 +120,9 @@ class WBC_Settings_Module_Loader {
 
 		// Forminator (conditional)
 		$this->register_module( new WBC_Forminator_Settings() );
+
+		// Elementor Pro (conditional)
+		$this->register_module( new WBC_ElementorPro_Settings() );
 
 		/**
 		 * Allow third-party plugins to register custom settings modules
