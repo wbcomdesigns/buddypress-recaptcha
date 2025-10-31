@@ -176,6 +176,7 @@ abstract class WBC_Captcha_Service_Base implements WBC_Captcha_Service_Interface
 			'ninjaforms' => 'wbc_recaptcha_enable_on_ninjaforms',
 			'forminator' => 'wbc_recaptcha_enable_on_forminator',
 			'elementorpro' => 'wbc_recaptcha_enable_on_elementorpro',
+			'divi' => 'wbc_recaptcha_enable_on_divi',
 		);
 	}
 
@@ -273,6 +274,7 @@ abstract class WBC_Captcha_Service_Base implements WBC_Captcha_Service_Interface
 			'ninjaforms' => 'ninjaforms-nonce',
 			'forminator' => 'forminator-nonce',
 			'elementorpro' => 'elementorpro-nonce',
+			'divi' => 'divi-nonce',
 		);
 
 		return isset( $nonce_actions[ $context ] ) ? $nonce_actions[ $context ] : $context . '-nonce';
@@ -303,6 +305,7 @@ abstract class WBC_Captcha_Service_Base implements WBC_Captcha_Service_Interface
 			'ninjaforms' => '.nf-form-content',
 			'forminator' => '.forminator-ui',
 			'elementorpro' => '.elementor-form',
+			'divi' => '.et_pb_contact_form',
 		);
 
 		return isset( $selectors[ $context ] ) ? $selectors[ $context ] : '#' . $context . '-form';
@@ -333,6 +336,7 @@ abstract class WBC_Captcha_Service_Base implements WBC_Captcha_Service_Interface
 			'ninjaforms' => '.nf-element .submit-container input[type="button"]',
 			'forminator' => '.forminator-button-submit',
 			'elementorpro' => '.elementor-button',
+			'divi' => '.et_pb_contact_submit',
 		);
 
 		return isset( $selectors[ $context ] ) ? $selectors[ $context ] : '#submit';
