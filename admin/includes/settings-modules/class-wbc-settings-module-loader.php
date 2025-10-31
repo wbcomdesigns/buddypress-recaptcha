@@ -82,6 +82,7 @@ class WBC_Settings_Module_Loader {
 		require_once $modules_dir . 'class-wbc-bbpress-settings.php';
 		require_once $modules_dir . 'class-wbc-cf7-settings.php';
 		require_once $modules_dir . 'class-wbc-wpforms-settings.php';
+		require_once $modules_dir . 'class-wbc-gravityforms-settings.php';
 	}
 
 	/**
@@ -107,6 +108,9 @@ class WBC_Settings_Module_Loader {
 
 		// WPForms (conditional)
 		$this->register_module( new WBC_WPForms_Settings() );
+
+		// Gravity Forms (conditional)
+		$this->register_module( new WBC_GravityForms_Settings() );
 
 		/**
 		 * Allow third-party plugins to register custom settings modules
