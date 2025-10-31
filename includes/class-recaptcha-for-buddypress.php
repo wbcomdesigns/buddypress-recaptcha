@@ -190,6 +190,9 @@ class Recaptcha_For_BuddyPress {
 		// Ninja Forms.
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/ninjaforms-classes/NinjaForms_Form.php';
 
+		// Forminator.
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/forminator-classes/Forminator_Form.php';
+
 		// bbPress.
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/bbPress/class-wbc-bbpress-reply-recaptcha.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/bbPress/class-wbc-bbpress-topic-recaptcha.php';
@@ -320,6 +323,9 @@ class Recaptcha_For_BuddyPress {
 
 		// Ninja Forms - register hooks after plugins are loaded
 		add_action( 'plugins_loaded', array( $this, 'register_ninjaforms_hooks' ), 20 );
+
+		// Forminator - register hooks after plugins are loaded
+		add_action( 'plugins_loaded', array( $this, 'register_forminator_hooks' ), 20 );
 
 		// bbPress - only load if bbPress is active.
 		if ( class_exists( 'bbPress' ) ) {
@@ -544,6 +550,28 @@ class Recaptcha_For_BuddyPress {
 
 		// Validate CAPTCHA on Ninja Forms form submission
 		add_filter( 'ninja_forms_submit_data', array( $ninjaforms_form, 'validate_ninjaforms_captcha' ), 10, 1 );
+	}
+
+	/**
+	 * Register Forminator hooks
+	 *
+	 * Only registers if Forminator plugin is active.
+	 *
+	 * @since     2.0.0
+	 */
+	public function register_forminator_hooks() {
+		// Only load if Forminator is active
+		if ( ! class_exists( 'Forminator' ) ) {
+			return;
+		}
+
+		$forminator_form = new Forminator_Form();
+
+		// Render CAPTCHA in Forminator forms (priority 10)
+		add_filter( 'forminator_render_button_markup', array( $forminator_form, 'render_forminator_captcha' ), 10, 2 );
+
+		// Validate CAPTCHA on Forminator form submission
+		add_filter( 'forminator_custom_form_submit_errors', array( $forminator_form, 'validate_forminator_captcha' ), 10, 3 );
 	}
 
 }

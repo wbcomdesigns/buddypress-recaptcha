@@ -84,6 +84,7 @@ class WBC_Settings_Module_Loader {
 		require_once $modules_dir . 'class-wbc-wpforms-settings.php';
 		require_once $modules_dir . 'class-wbc-gravityforms-settings.php';
 		require_once $modules_dir . 'class-wbc-ninjaforms-settings.php';
+		require_once $modules_dir . 'class-wbc-forminator-settings.php';
 	}
 
 	/**
@@ -115,6 +116,9 @@ class WBC_Settings_Module_Loader {
 
 		// Ninja Forms (conditional)
 		$this->register_module( new WBC_NinjaForms_Settings() );
+
+		// Forminator (conditional)
+		$this->register_module( new WBC_Forminator_Settings() );
 
 		/**
 		 * Allow third-party plugins to register custom settings modules
