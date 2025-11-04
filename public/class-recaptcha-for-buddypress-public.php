@@ -126,10 +126,10 @@ class Recaptcha_For_BuddyPress_Public {
 		
 		// Check WooCommerce pages
 		if ( function_exists( 'is_checkout' ) && is_checkout() ) {
-			$is_enabled_guest = get_option( 'wbc_recapcha_enable_on_guestcheckout' );
-			$is_enabled_login = get_option( 'wbc_recapcha_enable_on_logincheckout' );
-			
-			if ( ( ! is_user_logged_in() && 'yes' === $is_enabled_guest ) || 
+			$is_enabled_guest = get_option( 'wbc_recaptcha_enable_on_guestcheckout' );
+			$is_enabled_login = get_option( 'wbc_recaptcha_enable_on_logincheckout' );
+
+			if ( ( ! is_user_logged_in() && 'yes' === $is_enabled_guest ) ||
 				 ( is_user_logged_in() && 'yes' === $is_enabled_login ) ) {
 				$should_load = true;
 			}
@@ -144,10 +144,10 @@ class Recaptcha_For_BuddyPress_Public {
 
 		// Check bbPress pages
 		if ( function_exists( 'is_singular' ) ) {
-			if ( is_singular( 'topic' ) && 'yes' === get_option( 'wbc_recapcha_enable_on_bbpress_reply' ) ) {
+			if ( is_singular( 'topic' ) && 'yes' === get_option( 'wbc_recaptcha_enable_on_bbpress_reply' ) ) {
 				$should_load = true;
 			}
-			if ( is_singular( 'forum' ) && 'yes' === get_option( 'wbc_recapcha_enable_on_bbpress_topic' ) ) {
+			if ( is_singular( 'forum' ) && 'yes' === get_option( 'wbc_recaptcha_enable_on_bbpress_topic' ) ) {
 				$should_load = true;
 			}
 		}
@@ -168,7 +168,7 @@ class Recaptcha_For_BuddyPress_Public {
 	 * Handle no-conflict mode to prevent conflicts with other captcha plugins
 	 */
 	private function handle_no_conflict_mode() {
-		$no_conflict = get_option( 'wbc_recapcha_no_conflict' );
+		$no_conflict = get_option( 'wbc_recaptcha_no_conflict' );
 		if ( 'yes' !== $no_conflict ) {
 			return;
 		}
