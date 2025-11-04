@@ -582,6 +582,10 @@ h1.wbcom-plugin-heading {
   transition: all 0.2s ease;
 }
 
+.wbcom-admin-option-wrap:has(.wbc-protection-item) {
+  overflow: visible;
+}
+
 .wbc-protection-item:hover {
   border-color: #0073aa;
   box-shadow: 0 2px 12px rgba(0, 115, 170, 0.15);
@@ -652,7 +656,7 @@ h1.wbcom-plugin-heading {
   font-weight: 400;
   line-height: 1.4;
   white-space: nowrap;
-  max-width: 280px;
+  max-width: 300px;
   opacity: 0;
   visibility: hidden;
   transition: all 0.2s ease;
@@ -748,9 +752,9 @@ h1.wbcom-plugin-heading {
 
   .wbc-tooltip-text {
     white-space: normal;
-    max-width: 220px;
+    width: 100px;
     left: auto;
-    right: 0;
+    right: -10px;
     transform: none;
   }
 
