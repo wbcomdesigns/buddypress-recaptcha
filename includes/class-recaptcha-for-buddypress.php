@@ -383,53 +383,9 @@ class Recaptcha_For_BuddyPress {
 			add_action( 'bbp_new_reply_pre_extras', array( $bbpress_reply_class, 'wbr_bbpress_reply_recaptcha_verify' ) );
 			// Remove non-existent method call: wbr_bbpress_reply_v2_checkbox_script
 		}
-		// Woocommerce - only load if WooCommerce is active.
-		if ( class_exists( 'WooCommerce' ) ) {
-			// Woocommerce Login registration and lost form.
-			$woocommerce_register      = new Woocommerce_Register();
-			$woocommerce_login         = new Woocommerce_Login();
-			$woocommerce_lost_password = new Woocommerce_Lostpassword();
-			add_action( 'woocommerce_register_form', array( $woocommerce_register, 'woo_extra_register_fields' ) );
-			add_action( 'woocommerce_login_form', array( $woocommerce_login, 'woo_extra_login_fields' ) );
-			add_action( 'woocommerce_lostpassword_form', array( $woocommerce_lost_password, 'woo_extra_lostpassword_fields' ) );
 
-			// Woocommerce extra.
-			$woocommerce_review_order              = new Woocommerce_Review_Order();
-			$woocommerce_register_post             = new Woocommerce_Register_Post();
-			$lost_password_post                    = new LostpasswordPost();
-			$woocommerce_process_login_errors      = new Woocommerce_Process_Login_Errors();
-			$woocommerce_after_checkout_validation = new Woocommerce_After_Checkout_Validation();
-			add_action( 'woocommerce_review_order_before_submit', array( $woocommerce_review_order, 'woo_extra_checkout_fields' ) );
-			add_action( 'woocommerce_register_post', array( $woocommerce_register_post, 'woocomm_validate_signup_captcha' ), 10, 3 );
-			add_action( 'lostpassword_post', array( $lost_password_post, 'woocomm_validate_lostpassword_captcha' ), 10, 1 );
-			add_action( 'woocommerce_process_login_errors', array( $woocommerce_process_login_errors, 'woocomm_validate_login_captcha' ), 10, 3 );
-			add_action( 'woocommerce_after_checkout_validation', array( $woocommerce_after_checkout_validation, 'woocomm_validate_checkout_captcha' ), 10, 2 );
-		}
-
-		// Woocommerce Filter.
-		$woocommerce_filter = new Woocommerce_Filter();
-		add_filter( 'wp_authenticate_user', array( $woocommerce_filter, 'woo_wp_verify_login_captcha' ), 10, 2 );
-		add_filter( 'register_post', array( $woocommerce_filter, 'woo_verify_wp_register_captcha' ), 10, 3 );
-		// Priority 20 to run after WooCommerce's handler at priority 10
-		add_action( 'lostpassword_post', array( $woocommerce_filter, 'woo_verify_wp_lostpassword_captcha' ), 20, 1 );
-		add_filter( 'wpforms_frontend_recaptcha_noconflict', array( $woocommerce_filter, 'woo_remove_no_conflict' ) );
-
-		// Comment form display and validation
-		$woocommerce_order = new Woocommerce_Order();
-		add_filter( 'comment_form_fields', array( $woocommerce_order, 'woo_comment_form_captcha_field' ), 10 );
-		add_filter( 'preprocess_comment', array( $woocommerce_filter, 'woo_verify_comment_captcha' ), 10 );
-
-		// Woocommerce Order - only load if WooCommerce is active.
-		if ( class_exists( 'WooCommerce' ) ) {
-			add_action( 'woocommerce_pay_order_before_submit', array( $woocommerce_order, 'woo_extra_checkout_fields_pay_order' ) );
-			add_action( 'woocommerce_before_pay_action', array( $woocommerce_order, 'woo_verify_pay_order_captcha' ) );
-			add_action( 'woocommerce_payment_complete', array( $woocommerce_order, 'woo_payment_complete' ) );
-			add_action( 'woocommerce_before_add_to_cart_quantity', array( $woocommerce_order, 'woocommerce_payment_request_btn_captcha' ) );
-			// Priority 999 ensures reCAPTCHA is added to checkout blocks last
-			add_filter( 'render_block_woocommerce/checkout-payment-block', array( $woocommerce_order, 'woo_recaptcha_alter_checkout_payment_block' ), 999, 1 );
-			// Add CAPTCHA to WooCommerce product review forms
-			add_filter( 'woocommerce_product_review_comment_form_args', array( $woocommerce_order, 'woo_product_review_captcha_field' ), 10 );
-		}
+		// WooCommerce - register hooks after plugins are loaded
+		add_action( 'plugins_loaded', array( $this, 'register_woocommerce_hooks' ), 20 );
 
 
 		if ( $plugin_public->woo_recaptcha_check_is_ie_browser() ) {
@@ -554,6 +510,64 @@ class Recaptcha_For_BuddyPress {
 
 		// Validate CAPTCHA on WPForms form submission
 		add_action( 'wpforms_process', array( $wpforms_form, 'validate_wpforms_captcha' ), 10, 3 );
+	}
+
+	/**
+	 * Register WooCommerce hooks
+	 *
+	 * Only registers if WooCommerce plugin is active.
+	 * Called on plugins_loaded to ensure WooCommerce is loaded.
+	 *
+	 * @since     2.0.1
+	 */
+	public function register_woocommerce_hooks() {
+		// Only load if WooCommerce is active
+		if ( ! class_exists( 'WooCommerce' ) ) {
+			return;
+		}
+
+		// WooCommerce Login, registration and lost password forms
+		$woocommerce_register      = new Woocommerce_Register();
+		$woocommerce_login         = new Woocommerce_Login();
+		$woocommerce_lost_password = new Woocommerce_Lostpassword();
+		add_action( 'woocommerce_register_form', array( $woocommerce_register, 'woo_extra_register_fields' ) );
+		add_action( 'woocommerce_login_form', array( $woocommerce_login, 'woo_extra_login_fields' ) );
+		add_action( 'woocommerce_lostpassword_form', array( $woocommerce_lost_password, 'woo_extra_lostpassword_fields' ) );
+
+		// WooCommerce validation hooks
+		$woocommerce_review_order              = new Woocommerce_Review_Order();
+		$woocommerce_register_post             = new Woocommerce_Register_Post();
+		$lost_password_post                    = new LostpasswordPost();
+		$woocommerce_process_login_errors      = new Woocommerce_Process_Login_Errors();
+		$woocommerce_after_checkout_validation = new Woocommerce_After_Checkout_Validation();
+		add_action( 'woocommerce_review_order_before_submit', array( $woocommerce_review_order, 'woo_extra_checkout_fields' ) );
+		add_action( 'woocommerce_register_post', array( $woocommerce_register_post, 'woocomm_validate_signup_captcha' ), 10, 3 );
+		add_action( 'lostpassword_post', array( $lost_password_post, 'woocomm_validate_lostpassword_captcha' ), 10, 1 );
+		add_action( 'woocommerce_process_login_errors', array( $woocommerce_process_login_errors, 'woocomm_validate_login_captcha' ), 10, 3 );
+		add_action( 'woocommerce_after_checkout_validation', array( $woocommerce_after_checkout_validation, 'woocomm_validate_checkout_captcha' ), 10, 2 );
+
+		// WooCommerce Filter hooks
+		$woocommerce_filter = new Woocommerce_Filter();
+		add_filter( 'wp_authenticate_user', array( $woocommerce_filter, 'woo_wp_verify_login_captcha' ), 10, 2 );
+		add_filter( 'register_post', array( $woocommerce_filter, 'woo_verify_wp_register_captcha' ), 10, 3 );
+		// Priority 20 to run after WooCommerce's handler at priority 10
+		add_action( 'lostpassword_post', array( $woocommerce_filter, 'woo_verify_wp_lostpassword_captcha' ), 20, 1 );
+		add_filter( 'wpforms_frontend_recaptcha_noconflict', array( $woocommerce_filter, 'woo_remove_no_conflict' ) );
+
+		// Comment form display and validation
+		$woocommerce_order = new Woocommerce_Order();
+		add_filter( 'comment_form_fields', array( $woocommerce_order, 'woo_comment_form_captcha_field' ), 10 );
+		add_filter( 'preprocess_comment', array( $woocommerce_filter, 'woo_verify_comment_captcha' ), 10 );
+
+		// WooCommerce Order hooks
+		add_action( 'woocommerce_pay_order_before_submit', array( $woocommerce_order, 'woo_extra_checkout_fields_pay_order' ) );
+		add_action( 'woocommerce_before_pay_action', array( $woocommerce_order, 'woo_verify_pay_order_captcha' ) );
+		add_action( 'woocommerce_payment_complete', array( $woocommerce_order, 'woo_payment_complete' ) );
+		add_action( 'woocommerce_before_add_to_cart_quantity', array( $woocommerce_order, 'woocommerce_payment_request_btn_captcha' ) );
+		// Priority 999 ensures reCAPTCHA is added to checkout blocks last
+		add_filter( 'render_block_woocommerce/checkout-payment-block', array( $woocommerce_order, 'woo_recaptcha_alter_checkout_payment_block' ), 999, 1 );
+		// Add CAPTCHA to WooCommerce product review forms
+		add_filter( 'woocommerce_product_review_comment_form_args', array( $woocommerce_order, 'woo_product_review_captcha_field' ), 10 );
 	}
 
 	/**
