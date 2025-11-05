@@ -48,11 +48,11 @@ class WBC_Recaptcha_V2_Service extends WBC_Captcha_Service_Base {
 	 * @return string
 	 */
 	public function get_site_key() {
-		// Try new format first (with hyphen, saved by setup wizard)
-		$site_key = trim( get_option( 'wbc_recaptcha-v2_site_key' ) );
+		// Try standard format first (with underscore)
+		$site_key = trim( get_option( 'wbc_recaptcha_v2_site_key' ) );
 		if ( empty( $site_key ) ) {
-			// Fallback to old format (with underscore) for backward compatibility
-			$site_key = trim( get_option( 'wbc_recaptcha_v2_site_key' ) );
+			// Fallback to hyphen format for backward compatibility
+			$site_key = trim( get_option( 'wbc_recaptcha-v2_site_key' ) );
 		}
 		return $site_key;
 	}
@@ -63,11 +63,11 @@ class WBC_Recaptcha_V2_Service extends WBC_Captcha_Service_Base {
 	 * @return string
 	 */
 	public function get_secret_key() {
-		// Try new format first (with hyphen, saved by setup wizard)
-		$secret_key = trim( get_option( 'wbc_recaptcha-v2_secret_key' ) );
+		// Try standard format first (with underscore)
+		$secret_key = trim( get_option( 'wbc_recaptcha_v2_secret_key' ) );
 		if ( empty( $secret_key ) ) {
-			// Fallback to old format (with underscore) for backward compatibility
-			$secret_key = trim( get_option( 'wbc_recaptcha_v2_secret_key' ) );
+			// Fallback to hyphen format for backward compatibility
+			$secret_key = trim( get_option( 'wbc_recaptcha-v2_secret_key' ) );
 		}
 		return $secret_key;
 	}
