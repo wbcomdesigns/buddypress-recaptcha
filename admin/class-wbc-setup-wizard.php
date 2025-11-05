@@ -729,8 +729,8 @@ class WBC_Setup_Wizard {
 	 */
 	private function get_site_key( $service ) {
 		$key_map = array(
-			'recaptcha-v2' => 'wbc_recaptcha-v2_site_key',
-			'recaptcha-v3' => 'wbc_recaptcha-v3_site_key',
+			'recaptcha-v2' => 'wbc_recaptcha_v2_site_key',
+			'recaptcha-v3' => 'wbc_recaptcha_v3_site_key',
 			'turnstile' => 'wbc_turnstile_site_key',
 			'hcaptcha' => 'wbc_hcaptcha_site_key',
 		);
@@ -742,8 +742,8 @@ class WBC_Setup_Wizard {
 	 */
 	private function get_secret_key( $service ) {
 		$key_map = array(
-			'recaptcha-v2' => 'wbc_recaptcha-v2_secret_key',
-			'recaptcha-v3' => 'wbc_recaptcha-v3_secret_key',
+			'recaptcha-v2' => 'wbc_recaptcha_v2_secret_key',
+			'recaptcha-v3' => 'wbc_recaptcha_v3_secret_key',
 			'turnstile' => 'wbc_turnstile_secret_key',
 			'hcaptcha' => 'wbc_hcaptcha_secret_key',
 		);
@@ -782,8 +782,8 @@ class WBC_Setup_Wizard {
 			}
 
 			$key_map = array(
-				'recaptcha-v2' => array( 'wbc_recaptcha-v2_site_key', 'wbc_recaptcha-v2_secret_key' ),
-				'recaptcha-v3' => array( 'wbc_recaptcha-v3_site_key', 'wbc_recaptcha-v3_secret_key' ),
+				'recaptcha-v2' => array( 'wbc_recaptcha_v2_site_key', 'wbc_recaptcha_v2_secret_key' ),
+				'recaptcha-v3' => array( 'wbc_recaptcha_v3_site_key', 'wbc_recaptcha_v3_secret_key' ),
 				'turnstile' => array( 'wbc_turnstile_site_key', 'wbc_turnstile_secret_key' ),
 				'hcaptcha' => array( 'wbc_hcaptcha_site_key', 'wbc_hcaptcha_secret_key' ),
 			);

@@ -129,18 +129,18 @@ class WBC_Captcha_Service_Manager {
 		}
 
 		// Check reCAPTCHA v3 (try both formats for backward compatibility)
-		$v3_site = get_option( 'wbc_recaptcha-v3_site_key' );
+		$v3_site = get_option( 'wbc_recaptcha_v3_site_key' );
 		if ( empty( $v3_site ) ) {
-			$v3_site = get_option( 'wbc_recaptcha_v3_site_key' );
+			$v3_site = get_option( 'wbc_recaptcha-v3_site_key' );
 		}
 		if ( ! empty( $v3_site ) ) {
 			return 'recaptcha-v3';
 		}
 
 		// Check reCAPTCHA v2 (try both formats for backward compatibility)
-		$v2_site = get_option( 'wbc_recaptcha-v2_site_key' );
+		$v2_site = get_option( 'wbc_recaptcha_v2_site_key' );
 		if ( empty( $v2_site ) ) {
-			$v2_site = get_option( 'wbc_recaptcha_v2_site_key' );
+			$v2_site = get_option( 'wbc_recaptcha-v2_site_key' );
 		}
 		if ( ! empty( $v2_site ) ) {
 			return 'recaptcha-v2';
