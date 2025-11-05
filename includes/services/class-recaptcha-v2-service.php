@@ -16,7 +16,7 @@ class WBC_Recaptcha_V2_Service extends WBC_Captcha_Service_Base {
 	 */
 	protected function init_config() {
 		$this->config = array(
-			'service_id' => 'recaptcha_v2',
+			'service_id' => 'recaptcha-v2',
 			'service_name' => __( 'Google reCAPTCHA v2', 'buddypress-recaptcha' ),
 			'script_url' => 'https://www.google.com/recaptcha/api.js',
 			'verify_endpoint' => 'https://www.google.com/recaptcha/api/siteverify',
@@ -30,7 +30,7 @@ class WBC_Recaptcha_V2_Service extends WBC_Captcha_Service_Base {
 	 * @return string
 	 */
 	public function get_service_id() {
-		return 'recaptcha_v2';
+		return 'recaptcha-v2';
 	}
 
 	/**
@@ -48,7 +48,13 @@ class WBC_Recaptcha_V2_Service extends WBC_Captcha_Service_Base {
 	 * @return string
 	 */
 	public function get_site_key() {
-		return trim( get_option( 'wbc_recaptcha_v2_site_key' ) );
+		// Try new format first (with hyphen, saved by setup wizard)
+		$site_key = trim( get_option( 'wbc_recaptcha-v2_site_key' ) );
+		if ( empty( $site_key ) ) {
+			// Fallback to old format (with underscore) for backward compatibility
+			$site_key = trim( get_option( 'wbc_recaptcha_v2_site_key' ) );
+		}
+		return $site_key;
 	}
 
 	/**
@@ -57,7 +63,13 @@ class WBC_Recaptcha_V2_Service extends WBC_Captcha_Service_Base {
 	 * @return string
 	 */
 	public function get_secret_key() {
-		return trim( get_option( 'wbc_recaptcha_v2_secret_key' ) );
+		// Try new format first (with hyphen, saved by setup wizard)
+		$secret_key = trim( get_option( 'wbc_recaptcha-v2_secret_key' ) );
+		if ( empty( $secret_key ) ) {
+			// Fallback to old format (with underscore) for backward compatibility
+			$secret_key = trim( get_option( 'wbc_recaptcha_v2_secret_key' ) );
+		}
+		return $secret_key;
 	}
 
 	/**
@@ -119,9 +131,9 @@ class WBC_Recaptcha_V2_Service extends WBC_Captcha_Service_Base {
 		
 		// Render HTML
 		?>
-		<input type="hidden" autocomplete="off" name="<?php echo esc_attr( $nonce_action ); ?>" value="<?php echo esc_html( wp_create_nonce( $nonce_action ) ); ?>" />
+		<input type="hidden" autocomplete="off" name="<?php echo esc_attr( $nonce_action ); ?>" value="<?php echo esc_attr( wp_create_nonce( $nonce_action ) ); ?>" />
 		<p class="wbc_recaptcha_field">
-			<div name="<?php echo esc_attr( $div_name ); ?>" class="g-recaptcha" data-callback="<?php echo esc_attr( $callback ); ?>" data-sitekey="<?php echo esc_html( $site_key ); ?>" data-theme="<?php echo esc_html( $theme ); ?>" data-size="<?php echo esc_html( $size ); ?>"></div>
+			<div name="<?php echo esc_attr( $div_name ); ?>" class="g-recaptcha" data-callback="<?php echo esc_attr( $callback ); ?>" data-sitekey="<?php echo esc_attr( $site_key ); ?>" data-theme="<?php echo esc_attr( $theme ); ?>" data-size="<?php echo esc_attr( $size ); ?>"></div>
 			<br/>
 		</p>
 		

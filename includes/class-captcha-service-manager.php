@@ -120,18 +120,30 @@ class WBC_Captcha_Service_Manager {
 		if ( ! empty( $service_id ) ) {
 			return $service_id;
 		}
-		
+
 		// Fallback: Try to determine from configured keys
 		// Check Turnstile
 		$turnstile_site = get_option( 'wbc_turnstile_site_key' );
 		if ( ! empty( $turnstile_site ) ) {
 			return 'turnstile';
 		}
-		
-		// Check reCAPTCHA v3
-		$v3_site = get_option( 'wbc_recaptcha_v3_site_key' );
+
+		// Check reCAPTCHA v3 (try both formats for backward compatibility)
+		$v3_site = get_option( 'wbc_recaptcha-v3_site_key' );
+		if ( empty( $v3_site ) ) {
+			$v3_site = get_option( 'wbc_recaptcha_v3_site_key' );
+		}
 		if ( ! empty( $v3_site ) ) {
 			return 'recaptcha-v3';
+		}
+
+		// Check reCAPTCHA v2 (try both formats for backward compatibility)
+		$v2_site = get_option( 'wbc_recaptcha-v2_site_key' );
+		if ( empty( $v2_site ) ) {
+			$v2_site = get_option( 'wbc_recaptcha_v2_site_key' );
+		}
+		if ( ! empty( $v2_site ) ) {
+			return 'recaptcha-v2';
 		}
 
 		// Default to reCAPTCHA v2
