@@ -405,6 +405,31 @@ class WBC_Captcha_Service_Manager {
 		$service = $this->get_active_service();
 		return $service ? $service->is_configured() : false;
 	}
+
+	/**
+	 * Check if current user IP is whitelisted
+	 *
+	 * @return bool
+	 */
+	public function is_ip_whitelisted() {
+		// Try both option names for backward compatibility
+		$ip_list = get_option( 'wbc_recaptcha_ip_to_skip_captcha' );
+		if ( empty( $ip_list ) ) {
+			$ip_list = get_option( 'wbc_recapcha_ip_to_skip_captcha' ); // Typo version for backward compatibility
+		}
+
+		if ( empty( $ip_list ) ) {
+			return false;
+		}
+
+		$user_ip = isset( $_SERVER['REMOTE_ADDR'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) : '';
+		if ( empty( $user_ip ) ) {
+			return false;
+		}
+
+		$ip_array = array_map( 'trim', explode( ',', $ip_list ) );
+		return in_array( $user_ip, $ip_array, true );
+	}
 }
 
 /**

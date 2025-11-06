@@ -140,7 +140,7 @@ function wb_recaptcha_restriction_recaptcha_by_ip() {
 	}
 	
 	// Fallback
-	$ip_list = get_option( 'wbc_recapcha_ip_to_skip_captcha' );
+	$ip_list = get_option( 'wbc_recaptcha_ip_to_skip_captcha' );
 	if ( empty( $ip_list ) ) {
 		return false;
 	}

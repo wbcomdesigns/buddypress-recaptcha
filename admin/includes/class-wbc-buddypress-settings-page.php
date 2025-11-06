@@ -2027,7 +2027,7 @@ if ( ! class_exists( 'WBC_BuddyPress_Settings_Page' ) ) :
 				array(
 					'name'    => __( 'IP Whitelist', 'buddypress-recaptcha' ),
 					'type'    => 'textarea',
-					'id'      => 'wbc_recapcha_ip_to_skip_captcha',
+					'id'      => 'wbc_recaptcha_ip_to_skip_captcha',
 					'desc'    => __( 'Enter IP addresses to skip captcha verification (comma-separated)', 'buddypress-recaptcha' ),
 					'placeholder' => __( '192.168.1.1, 10.0.0.1', 'buddypress-recaptcha' ),
 				),
