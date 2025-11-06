@@ -2221,6 +2221,70 @@ if ( ! class_exists( 'WBC_BuddyPress_Settings_Page' ) ) :
 		 * they won't be saved by the standard save_fields() method.
 		 */
 		private function wbc_save_api_key_fields() {
+			// Define API key pairs that must be validated together
+			$api_key_pairs = array(
+				'recaptcha-v2' => array(
+					'site'   => 'wbc_recaptcha_v2_site_key',
+					'secret' => 'wbc_recaptcha_v2_secret_key',
+					'name'   => 'reCAPTCHA v2',
+				),
+				'recaptcha-v3' => array(
+					'site'   => 'wbc_recaptcha_v3_site_key',
+					'secret' => 'wbc_recaptcha_v3_secret_key',
+					'name'   => 'reCAPTCHA v3',
+				),
+				'turnstile' => array(
+					'site'   => 'wbc_turnstile_site_key',
+					'secret' => 'wbc_turnstile_secret_key',
+					'name'   => 'Cloudflare Turnstile',
+				),
+				'hcaptcha' => array(
+					'site'   => 'wbc_hcaptcha_site_key',
+					'secret' => 'wbc_hcaptcha_secret_key',
+					'name'   => 'hCaptcha',
+				),
+			);
+
+			// Validate API key pairs
+			$validation_errors = array();
+			foreach ( $api_key_pairs as $service => $keys ) {
+				$site_key   = isset( $_POST[ $keys['site'] ] ) ? sanitize_text_field( wp_unslash( $_POST[ $keys['site'] ] ) ) : '';
+				$secret_key = isset( $_POST[ $keys['secret'] ] ) ? sanitize_text_field( wp_unslash( $_POST[ $keys['secret'] ] ) ) : '';
+
+				// If either key is provided, both must be provided
+				if ( ( ! empty( $site_key ) && empty( $secret_key ) ) || ( empty( $site_key ) && ! empty( $secret_key ) ) ) {
+					$validation_errors[] = sprintf(
+						/* translators: %s: Service name */
+						__( 'Both Site Key and Secret Key are required for %s. Please enter valid API keys or leave both fields empty.', 'buddypress-recaptcha' ),
+						$keys['name']
+					);
+				}
+			}
+
+			// Validate ALTCHA HMAC key if it's being submitted as empty
+			if ( isset( $_POST['wbc_altcha_hmac_key'] ) ) {
+				$altcha_key = sanitize_text_field( wp_unslash( $_POST['wbc_altcha_hmac_key'] ) );
+				$current_altcha_key = get_option( 'wbc_altcha_hmac_key', '' );
+
+				// Only validate if user is trying to clear an existing key
+				if ( empty( $altcha_key ) && ! empty( $current_altcha_key ) ) {
+					$validation_errors[] = __( 'ALTCHA HMAC Key cannot be empty. Please enter a valid key or leave the field unchanged.', 'buddypress-recaptcha' );
+				}
+			}
+
+			// If validation failed, show errors and return
+			if ( ! empty( $validation_errors ) ) {
+				foreach ( $validation_errors as $error ) {
+					add_settings_error(
+						'wbc_recaptcha_messages',
+						'wbc_recaptcha_validation_error',
+						$error,
+						'error'
+					);
+				}
+				return;
+			}
+
 			// Define all field IDs that need to be saved
 			$field_ids = array(
 				// Service selection

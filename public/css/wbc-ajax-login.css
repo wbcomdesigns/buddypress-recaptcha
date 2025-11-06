@@ -83,6 +83,13 @@
 	margin-bottom: 15px;
 }
 
+.widget-area .wbc-login-captcha .g-recaptcha iframe {
+	transform: scale(0.75);
+	-webkit-transform: scale(0.75);
+	transform-origin: left top;
+	-webkit-transform-origin: left top;
+}
+
 /* Submit Button */
 .wbc-login-submit {
 	margin-bottom: 10px;
