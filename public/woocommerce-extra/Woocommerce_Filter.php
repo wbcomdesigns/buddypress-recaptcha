@@ -64,7 +64,7 @@ class Woocommerce_Filter {
 	 */
 	public function woo_verify_order_tracking_captcha() {
 		// Check if captcha is enabled for order tracking
-		$is_enabled = get_option( 'wbc_recapcha_enable_on_order_tracking' );
+		$is_enabled = get_option( 'wbc_recaptcha_enable_on_order_tracking' );
 		if ( 'yes' !== $is_enabled ) {
 			return;
 		}
@@ -98,14 +98,14 @@ class Woocommerce_Filter {
 	 */
 	public function woo_verify_comment_captcha( $commentdata ) {
 		// Check if captcha is enabled for comments
-		$is_enabled = get_option( 'wbc_recapcha_enable_on_comment' );
+		$is_enabled = get_option( 'wbc_recaptcha_enable_on_comment' );
 		if ( 'yes' !== $is_enabled ) {
 			return $commentdata;
 		}
 
 		// Skip for logged-in users if configured
 		if ( is_user_logged_in() ) {
-			$skip_for_logged_in = get_option( 'wbc_recapcha_skip_comment_for_logged_in' );
+			$skip_for_logged_in = get_option( 'wbc_recaptcha_skip_comment_for_logged_in' );
 			if ( 'yes' === $skip_for_logged_in ) {
 				return $commentdata;
 			}

@@ -40,7 +40,7 @@ class Woocommerce_Order {
 	 */
 	public function woo_validate_pay_order_captcha() {
 		// Check if captcha is enabled for pay order
-		$is_enabled = get_option( 'wbc_recapcha_enable_on_payfororder' );
+		$is_enabled = get_option( 'wbc_recaptcha_enable_on_payfororder' );
 		if ( 'yes' !== $is_enabled ) {
 			return;
 		}
@@ -73,7 +73,7 @@ class Woocommerce_Order {
 	 */
 	public function woo_verify_order_tracking_captcha() {
 		// Check if captcha is enabled for order tracking
-		$is_enabled = get_option( 'wbc_recapcha_enable_on_order_tracking' );
+		$is_enabled = get_option( 'wbc_recaptcha_enable_on_order_tracking' );
 		if ( 'yes' !== $is_enabled ) {
 			return;
 		}
@@ -95,14 +95,14 @@ class Woocommerce_Order {
 	 */
 	public function woo_comment_form_captcha_field( $fields ) {
 		// Check if captcha is enabled for comments
-		$is_enabled = get_option( 'wbc_recapcha_enable_on_comment' );
+		$is_enabled = get_option( 'wbc_recaptcha_enable_on_comment' );
 		if ( 'yes' !== $is_enabled ) {
 			return $fields;
 		}
 
 		// Skip for logged-in users if configured
 		if ( is_user_logged_in() ) {
-			$skip_for_logged_in = get_option( 'wbc_recapcha_skip_comment_for_logged_in' );
+			$skip_for_logged_in = get_option( 'wbc_recaptcha_skip_comment_for_logged_in' );
 			if ( 'yes' === $skip_for_logged_in ) {
 				return $fields;
 			}
@@ -128,14 +128,14 @@ class Woocommerce_Order {
 	 */
 	public function woo_verify_comment_captcha( $commentdata ) {
 		// Check if captcha is enabled for comments
-		$is_enabled = get_option( 'wbc_recapcha_enable_on_comment' );
+		$is_enabled = get_option( 'wbc_recaptcha_enable_on_comment' );
 		if ( 'yes' !== $is_enabled ) {
 			return $commentdata;
 		}
 
 		// Skip for logged-in users if configured
 		if ( is_user_logged_in() ) {
-			$skip_for_logged_in = get_option( 'wbc_recapcha_skip_comment_for_logged_in' );
+			$skip_for_logged_in = get_option( 'wbc_recaptcha_skip_comment_for_logged_in' );
 			if ( 'yes' === $skip_for_logged_in ) {
 				return $commentdata;
 			}
@@ -168,14 +168,14 @@ class Woocommerce_Order {
 	 */
 	public function woo_product_review_captcha_field( $comment_form ) {
 		// Check if captcha is enabled for comments
-		$is_enabled = get_option( 'wbc_recapcha_enable_on_comment' );
+		$is_enabled = get_option( 'wbc_recaptcha_enable_on_comment' );
 		if ( 'yes' !== $is_enabled ) {
 			return $comment_form;
 		}
 
 		// Skip for logged-in users if configured
 		if ( is_user_logged_in() ) {
-			$skip_for_logged_in = get_option( 'wbc_recapcha_skip_comment_for_logged_in' );
+			$skip_for_logged_in = get_option( 'wbc_recaptcha_skip_comment_for_logged_in' );
 			if ( 'yes' === $skip_for_logged_in ) {
 				return $comment_form;
 			}
@@ -213,9 +213,9 @@ class Woocommerce_Order {
 	public function woo_recaptcha_alter_checkout_payment_block( $block_content ) {
 		// Check if we should display CAPTCHA for checkout
 		// For guest checkout
-		$guest_checkout_enabled = get_option( 'wbc_recapcha_enable_on_guestcheckout' );
+		$guest_checkout_enabled = get_option( 'wbc_recaptcha_enable_on_guestcheckout' );
 		// For logged-in checkout
-		$login_checkout_enabled = get_option( 'wbc_recapcha_enable_on_logincheckout' );
+		$login_checkout_enabled = get_option( 'wbc_recaptcha_enable_on_logincheckout' );
 
 		// Determine which context to use based on user login status
 		$should_show = false;
