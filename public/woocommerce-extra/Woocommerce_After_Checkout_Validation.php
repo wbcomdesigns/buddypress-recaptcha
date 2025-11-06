@@ -33,9 +33,9 @@ class Woocommerce_After_Checkout_Validation {
 		$context = is_user_logged_in() ? 'woo_checkout_login' : 'woo_checkout_guest';
 		
 		// Check if captcha is enabled for this context
-		$is_enabled = is_user_logged_in() 
-			? get_option( 'wbc_recapcha_enable_on_logincheckout' ) 
-			: get_option( 'wbc_recapcha_enable_on_guestcheckout' );
+		$is_enabled = is_user_logged_in()
+			? get_option( 'wbc_recaptcha_enable_on_logincheckout' )
+			: get_option( 'wbc_recaptcha_enable_on_guestcheckout' );
 		
 		if ( 'yes' !== $is_enabled ) {
 			return $validation_errors;
@@ -76,7 +76,7 @@ class Woocommerce_After_Checkout_Validation {
 				$validation_errors->add( 'g-recaptcha_error', $error_message );
 			} else {
 				// Set transient on success
-				$timeout = get_option( 'wbc_recapcha_checkout_timeout', 3 );
+				$timeout = get_option( 'wbc_recaptcha_checkout_timeout', 3 );
 				if ( $timeout > 0 ) {
 					set_transient( $nonce_value, 'yes', ( $timeout * 60 ) );
 				}
