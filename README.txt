@@ -10,7 +10,7 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 == Description ==
 
-Complete CAPTCHA solution with support for multiple CAPTCHA services. Protect your WordPress, WooCommerce, BuddyPress, bbPress, and FluentCart forms from spam and bots with an easy-to-manage, modular interface.
+Complete CAPTCHA solution with support for multiple CAPTCHA services. Protect your WordPress, WooCommerce, BuddyPress, bbPress, and 10+ popular form builders from spam and bots with an easy-to-manage, modular interface.
 
 == Key Features ==
 
@@ -23,10 +23,12 @@ Complete CAPTCHA solution with support for multiple CAPTCHA services. Protect yo
 
 **Comprehensive Form Protection:**
 - WordPress core forms (login, registration, lost password, comments)
-- WooCommerce (customer login, registration, checkout)
-- BuddyPress (member registration)
+- WooCommerce (customer login, registration, checkout, product reviews)
+- BuddyPress (member registration, group creation)
 - bbPress (new topics, replies)
-- FluentCart (customer login, registration)
+- 10+ popular form builders (Contact Form 7, WPForms, Gravity Forms, Ninja Forms, Forminator, Elementor Pro, Divi Builder, Fluent Forms, Formidable Forms, WS Form)
+- E-commerce & Membership (Easy Digital Downloads, MemberPress, Ultimate Member)
+- AJAX Login Widget & Gutenberg Login Block
 
 == Free Add-ons to Enhance Your BuddyPress or BuddyBoss Platform ==
 
@@ -59,20 +61,59 @@ Complete CAPTCHA solution with support for multiple CAPTCHA services. Protect yo
 2. Activate the plugin through the 'Plugins' menu in WordPress.
 
 == Changelog ==
+
 = 2.0.0 =
-* Major UI/UX Overhaul: Complete redesign of admin interface with modern, intuitive layout
-* New Quick Setup Tab: Simplified 3-step wizard for faster configuration
-* Unified Protection Tab: All form protection settings now in one organized location with toggle switches
-* Advanced Settings: Consolidated appearance and security options
-* Enhanced Service Selection: Beautiful card-based interface for choosing CAPTCHA services
-* Added ALTCHA Support: Self-hosted CAPTCHA option with no external dependencies
-* Added FluentCart Integration: Protect FluentCart customer login and registration forms
-* Modular Settings Architecture: Settings now appear conditionally based on active plugins
-* Improved Code Organization: Reduced codebase by 50% with modular design
-* Improved Navigation: Tab icons for better visual navigation
-* Better Organization: Reduced from 7+ tabs to 4 streamlined tabs
-* Modern Design: Card layouts, tooltips, and responsive design throughout
-* Removed Clutter: Eliminated redundant settings and improved workflow
+**Major Release: Complete Plugin Revamp with Extensive New Integrations**
+
+* **Complete UI/UX Overhaul**
+  * Modern, intuitive admin interface with beautiful card-based design
+  * Quick Setup Wizard - Get started in 3 simple steps
+  * Unified Protection Tab - All form settings in one organized location
+  * Advanced Settings - Consolidated appearance and security options
+  * Tab icons for better visual navigation
+  * Reduced from 7+ tabs to 4 streamlined tabs for better user experience
+
+* **NEW: 10 Popular Form Builder Integrations**
+  * Contact Form 7 - Most popular WordPress contact form plugin
+  * WPForms - Drag & drop form builder
+  * Gravity Forms - Advanced form solution
+  * Ninja Forms - Flexible form creator
+  * Forminator - Versatile form builder
+  * Elementor Pro Forms - Native Elementor integration
+  * Divi Builder Contact Forms - Divi theme forms
+  * Fluent Forms - Modern form builder
+  * Formidable Forms - Professional forms
+  * WS Form - Advanced form builder
+
+* **NEW: E-Commerce & Membership Protection**
+  * Easy Digital Downloads - Secure checkout and registration forms
+  * MemberPress - Protect membership signups and login
+  * Ultimate Member - Member registration and login protection
+
+* **NEW: Enhanced BuddyPress & Community Features**
+  * BuddyPress Group Creation - Spam-proof group creation forms
+  * AJAX Login Widget - Add secure login widget anywhere on your site
+  * Gutenberg Login Block - Block editor integration with CAPTCHA protection
+
+* **NEW CAPTCHA Service**
+  * ALTCHA Support - Self-hosted CAPTCHA with no external dependencies
+
+* **NEW: Plugin Update System**
+  * Automatic update notifications for pro features
+  * Seamless update experience
+
+* **Enhanced Security & Performance**
+  * Strengthened nonce verification across all forms
+  * Improved input validation and sanitization
+  * Optimized CAPTCHA loading and validation
+  * Enhanced IP whitelisting functionality
+  * Better compatibility with latest WordPress, WooCommerce, and BuddyPress versions
+
+* **Improved Code Architecture**
+  * Modular settings system - Settings appear only when relevant plugins are active
+  * Reduced codebase by 50% with cleaner, more maintainable code
+  * Better performance and faster load times
+  * Comprehensive developer documentation
 
 = 1.7.0 =
 * Fixed: Manage bbPress topic's reply button not disabling before captcha validation.
