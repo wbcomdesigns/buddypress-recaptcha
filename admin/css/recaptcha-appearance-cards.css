@@ -1,0 +1,223 @@
+/**
+ * Card-based appearance settings styles
+ * For BuddyPress reCAPTCHA plugin
+ */
+
+/* Cards Container */
+.wbc-appearance-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 20px;
+    margin: 30px 0;
+}
+
+/* Individual Card */
+.wbc-settings-card {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.wbc-settings-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+}
+
+/* Card Header */
+.wbc-card-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+    position: relative;
+}
+
+/* Service-specific header colors */
+.wbc-service-card-recaptcha_v2 .wbc-card-header {
+    background: linear-gradient(135deg, #4285f4 0%, #1a73e8 100%);
+}
+
+.wbc-service-card-recaptcha_v3 .wbc-card-header {
+    background: linear-gradient(135deg, #34a853 0%, #0d652d 100%);
+}
+
+.wbc-service-card-turnstile .wbc-card-header {
+    background: linear-gradient(135deg, #f6821f 0%, #ff5f00 100%);
+}
+
+/* Card Icon */
+.wbc-card-icon {
+    font-size: 48px;
+    line-height: 1;
+    display: block;
+    margin-bottom: 15px;
+    opacity: 0.9;
+}
+
+/* Card Title */
+.wbc-card-header h3 {
+    margin: 0 0 10px 0;
+    color: #fff;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+/* Card Description */
+.wbc-card-description {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+/* Card Body */
+.wbc-card-body {
+    padding: 20px;
+    background: #fafafa;
+}
+
+.wbc-card-body .form-table {
+    margin: 0;
+}
+
+.wbc-card-body .form-table th {
+    padding: 15px 10px 15px 0;
+    width: 40%;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.wbc-card-body .form-table td {
+    padding: 15px 10px;
+}
+
+.wbc-card-body select {
+    width: 100%;
+    max-width: 250px;
+}
+
+.wbc-card-body .description {
+    font-size: 13px;
+    color: #666;
+    margin-top: 5px;
+}
+
+/* Inactive/Hidden Cards */
+.wbc-settings-card.inactive {
+    opacity: 0.5;
+    pointer-events: none;
+    display: none;
+}
+
+/* Active Service Indicator */
+.wbc-settings-card.active-service {
+    border-color: #2271b1;
+    box-shadow: 0 0 0 1px #2271b1;
+}
+
+.wbc-settings-card.active-service .wbc-card-header::after {
+    content: "Active";
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(255, 255, 255, 0.3);
+    color: #fff;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+/* Global Settings Section */
+.wbc-global-settings {
+    margin-top: 40px;
+    padding: 30px;
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+}
+
+.wbc-global-settings h2 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    color: #23282d;
+    font-size: 18px;
+}
+
+.wbc-global-settings .description {
+    color: #666;
+    margin-bottom: 20px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .wbc-appearance-cards {
+        grid-template-columns: 1fr;
+    }
+    
+    .wbc-card-body .form-table th {
+        width: 100%;
+        padding-bottom: 5px;
+    }
+    
+    .wbc-card-body .form-table td {
+        padding-top: 0;
+    }
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.wbc-settings-card {
+    animation: fadeIn 0.5s ease-out;
+}
+
+/* Loading State */
+.wbc-settings-card.loading {
+    position: relative;
+}
+
+.wbc-settings-card.loading::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+}
+
+/* Preview Area (optional for future use) */
+.wbc-preview-area {
+    margin-top: 20px;
+    padding: 15px;
+    background: #fff;
+    border: 1px dashed #ccc;
+    border-radius: 4px;
+    text-align: center;
+}
+
+.wbc-preview-area .preview-label {
+    font-size: 12px;
+    color: #999;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
