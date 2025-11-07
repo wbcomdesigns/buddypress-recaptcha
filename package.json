@@ -1,25 +1,35 @@
 {
   "name": "buddypress-recaptcha",
-  "version": "0.1.0",
+  "version": "2.0.0",
   "url": "https://github.com/wbcomdesigns/buddypress-recaptcha",
   "license": "GPL-2.0+",
-  "description": "This is a short description of what the plugin does. It's displayed in the WordPress admin area.",
+  "description": "Complete CAPTCHA solution with support for multiple CAPTCHA services. Protect your WordPress, WooCommerce, BuddyPress, bbPress, and 10+ popular form builders from spam and bots.",
+  "scripts": {
+    "build": "grunt build",
+    "rtl": "grunt rtlcss",
+    "minify": "grunt cssmin uglify",
+    "makepot": "grunt makepot",
+    "watch": "grunt watch",
+    "clean": "grunt clean:pre"
+  },
   "devDependencies": {
-    "grunt": "^1.1.0",
+    "grunt": "^1.6.1",
     "grunt-checktextdomain": "^1.0.1",
-    "grunt-wp-i18n": "^1.0.3"
+    "grunt-contrib-clean": "^2.0.1",
+    "grunt-contrib-compress": "^2.0.0",
+    "grunt-contrib-copy": "^1.0.0",
+    "grunt-contrib-cssmin": "^5.0.0",
+    "grunt-contrib-uglify": "^5.2.2",
+    "grunt-contrib-watch": "^1.1.0",
+    "grunt-rtlcss": "^2.0.2",
+    "grunt-wp-i18n": "^1.0.3",
+    "load-grunt-tasks": "^3.5.2"
   },
   "engines": {
-    "node": "16.4.0",
-    "npm": "7.24.2"
+    "node": ">=6.9.1"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/vapvarun/buddypress-status"
-  },
-  "dependencies": {
-    "grunt-checktextdomain": "^1.0.1",
-    "grunt-rtlcss": "^2.0.2",
-    "load-grunt-tasks": "^3.5.2"
+    "url": "https://github.com/wbcomdesigns/buddypress-recaptcha"
   }
 }
