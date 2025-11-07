@@ -63,57 +63,40 @@ Complete CAPTCHA solution with support for multiple CAPTCHA services. Protect yo
 == Changelog ==
 
 = 2.0.0 =
-**Major Release: Complete Plugin Revamp with Extensive New Integrations**
-
-* **Complete UI/UX Overhaul**
-  * Modern, intuitive admin interface with beautiful card-based design
-  * Quick Setup Wizard - Get started in 3 simple steps
-  * Unified Protection Tab - All form settings in one organized location
-  * Advanced Settings - Consolidated appearance and security options
-  * Tab icons for better visual navigation
-  * Reduced from 7+ tabs to 4 streamlined tabs for better user experience
-
-* **NEW: 10 Popular Form Builder Integrations**
-  * Contact Form 7 - Most popular WordPress contact form plugin
-  * WPForms - Drag & drop form builder
-  * Gravity Forms - Advanced form solution
-  * Ninja Forms - Flexible form creator
-  * Forminator - Versatile form builder
-  * Elementor Pro Forms - Native Elementor integration
-  * Divi Builder Contact Forms - Divi theme forms
-  * Fluent Forms - Modern form builder
-  * Formidable Forms - Professional forms
-  * WS Form - Advanced form builder
-
-* **NEW: E-Commerce & Membership Protection**
-  * Easy Digital Downloads - Secure checkout and registration forms
-  * MemberPress - Protect membership signups and login
-  * Ultimate Member - Member registration and login protection
-
-* **NEW: Enhanced BuddyPress & Community Features**
-  * BuddyPress Group Creation - Spam-proof group creation forms
-  * AJAX Login Widget - Add secure login widget anywhere on your site
-  * Gutenberg Login Block - Block editor integration with CAPTCHA protection
-
-* **NEW CAPTCHA Service**
-  * ALTCHA Support - Self-hosted CAPTCHA with no external dependencies
-
-* **NEW: Plugin Update System**
-  * Automatic update notifications for pro features
-  * Seamless update experience
-
-* **Enhanced Security & Performance**
-  * Strengthened nonce verification across all forms
-  * Improved input validation and sanitization
-  * Optimized CAPTCHA loading and validation
-  * Enhanced IP whitelisting functionality
-  * Better compatibility with latest WordPress, WooCommerce, and BuddyPress versions
-
-* **Improved Code Architecture**
-  * Modular settings system - Settings appear only when relevant plugins are active
-  * Reduced codebase by 50% with cleaner, more maintainable code
-  * Better performance and faster load times
-  * Comprehensive developer documentation
+* Major Release: Complete plugin revamp with extensive new integrations
+* Added: Contact Form 7 integration with CAPTCHA protection
+* Added: WPForms integration for drag & drop form builder
+* Added: Gravity Forms integration for advanced form solution
+* Added: Ninja Forms integration for flexible form creator
+* Added: Forminator integration for versatile form builder
+* Added: Elementor Pro Forms integration with native support
+* Added: Divi Builder Contact Forms integration
+* Added: Fluent Forms integration for modern form builder
+* Added: Formidable Forms integration for professional forms
+* Added: WS Form integration for advanced form builder
+* Added: Easy Digital Downloads integration for checkout and registration protection
+* Added: MemberPress integration for membership signups and login
+* Added: Ultimate Member integration for member registration and login
+* Added: BuddyPress group creation form protection
+* Added: AJAX Login Widget for secure login anywhere on your site
+* Added: Gutenberg Login Block with CAPTCHA protection
+* Added: ALTCHA service support - self-hosted CAPTCHA with no external dependencies
+* Added: Plugin update system for automatic update notifications
+* Improved: Complete UI/UX overhaul with modern, intuitive admin interface
+* Improved: Quick Setup Wizard for 3-step configuration
+* Improved: Unified Protection Tab with all form settings in one location
+* Improved: Advanced Settings with consolidated appearance and security options
+* Improved: Navigation with tab icons and reduced from 7+ tabs to 4 streamlined tabs
+* Improved: Modular settings architecture - settings appear only when relevant plugins are active
+* Improved: Code organization with 50% codebase reduction
+* Enhanced: Security with strengthened nonce verification across all forms
+* Enhanced: Input validation and sanitization throughout plugin
+* Enhanced: CAPTCHA loading and validation performance
+* Enhanced: IP whitelisting functionality for trusted IPs
+* Fixed: Compatibility issues with latest WordPress, WooCommerce, and BuddyPress versions
+* Updated: Modern card-based design layout throughout admin interface
+* Updated: Better performance with faster load times
+* Updated: Comprehensive developer documentation
 
 = 1.7.0 =
 * Fixed: Manage bbPress topic's reply button not disabling before captcha validation.
