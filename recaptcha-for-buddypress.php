@@ -80,13 +80,16 @@ register_deactivation_hook( __FILE__, 'deactivate_recaptcha_for_woocommerce' );
  */
 require plugin_dir_path( __FILE__ ) . 'includes/class-recaptcha-for-buddypress.php';
 
-require plugin_dir_path( __FILE__ ) . 'bp-recaptcha-update-checker/plugin-update-checker.php';
-	use YahnisElsts\PluginUpdateChecker\v5\PucFactory;
-	$myUpdateChecker = PucFactory::buildUpdateChecker(
+// Only load update checker if the file exists (prevents fatal errors during plugin updates)
+$update_checker_path = plugin_dir_path( __FILE__ ) . 'bp-recaptcha-update-checker/plugin-update-checker.php';
+if ( file_exists( $update_checker_path ) ) {
+	require $update_checker_path;
+	$myUpdateChecker = \YahnisElsts\PluginUpdateChecker\v5\PucFactory::buildUpdateChecker(
 		'https://demos.wbcomdesigns.com/exporter/free-plugins/buddypress-recaptcha.json',
 		__FILE__, // Full path to the main plugin file or functions.php.
 		'buddypress-recaptcha'
 	);
+}
 
 /**
  * Plugin activation check.
