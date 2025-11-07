@@ -204,6 +204,7 @@ module.exports = function (grunt) {
 					'!customer-docs/**',
 					'!developer-docs',
 					'!developer-docs/**',
+					'!bp-recaptcha-update-checker/**',
 					'!tests/**',
 					'!test/**',
 					'!spec/**',
