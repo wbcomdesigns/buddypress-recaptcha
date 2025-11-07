@@ -12,10 +12,10 @@
  * @package           Recaptcha_For_BuddyPress
  *
  * @wordpress-plugin
- * Plugin Name:       Wbcom Designs - BuddyPress reCaptcha
+ * Plugin Name:       Wbcom CAPTCHA Manager
  * Plugin URI:        https://wbcomdesigns.com/downloads/recaptcha-for-buddypress/
- * Description:       Buddypress reCaptcha is the best solution for spam and BOT protection that provides an all-in-one captcha for Buddypress, WordPress, bbPress and woo-commerce. Various control options are provided to manage the captcha on required places.
- * Version:           1.7.1
+ * Description:       Complete CAPTCHA solution with support for reCAPTCHA v2, v3, Cloudflare Turnstile, hCaptcha, and ALTCHA. Protect WordPress, WooCommerce, BuddyPress, and bbPress forms from spam and bots with a modular, easy-to-manage interface.
+ * Version:           2.0.0
  * Author:            Wbcom Designs
  * Author URI:        https://wbcomdesigns.com/
  * License:           GPL-2.0+
@@ -34,7 +34,7 @@ if ( ! defined( 'WPINC' ) ) {
  * Rename this for your plugin and update it as you release new versions.
  */
 if ( ! defined( 'RFB_PLUGIN_VERSION' ) ) {
-	define( 'RFB_PLUGIN_VERSION', '1.7.1' );
+	define( 'RFB_PLUGIN_VERSION', '2.0.0' );
 }
 
 if ( ! defined( 'RFB_PLUGIN_FILE' ) ) {
@@ -57,7 +57,7 @@ if ( ! defined( 'RFB_PLUGIN_PATH' ) ) {
  * The code that runs during plugin activation.
  * This action is documented in includes/class- recaptcha-for-buddypress-activator.php
  */
-function activate_recaptcha_for_buddypress() {
+function activate_recaptcha_for_woocommerce() {
 	require_once plugin_dir_path( __FILE__ ) . 'includes/class-recaptcha-for-buddypress-activator.php';
 	Recaptcha_For_BuddyPress_Activator::activate();
 }
@@ -66,13 +66,13 @@ function activate_recaptcha_for_buddypress() {
  * The code that runs during plugin deactivation.
  * This action is documented in includes/class- recaptcha-for-buddypress-deactivator.php
  */
-function deactivate_recaptcha_for_buddypress() {
+function deactivate_recaptcha_for_woocommerce() {
 	require_once plugin_dir_path( __FILE__ ) . 'includes/class-recaptcha-for-buddypress-deactivator.php';
 	Recaptcha_For_BuddyPress_Deactivator::deactivate();
 }
 
-register_activation_hook( __FILE__, 'activate_recaptcha_for_buddypress' );
-register_deactivation_hook( __FILE__, 'deactivate_recaptcha_for_buddypress' );
+register_activation_hook( __FILE__, 'activate_recaptcha_for_woocommerce' );
+register_deactivation_hook( __FILE__, 'deactivate_recaptcha_for_woocommerce' );
 
 /**
  * The core plugin class that is used to define internationalization,
@@ -80,53 +80,29 @@ register_deactivation_hook( __FILE__, 'deactivate_recaptcha_for_buddypress' );
  */
 require plugin_dir_path( __FILE__ ) . 'includes/class-recaptcha-for-buddypress.php';
 
+require plugin_dir_path( __FILE__ ) . 'bp-recaptcha-update-checker/plugin-update-checker.php';
+	use YahnisElsts\PluginUpdateChecker\v5\PucFactory;
+	$myUpdateChecker = PucFactory::buildUpdateChecker(
+		'https://demos.wbcomdesigns.com/exporter/free-plugins/buddypress-recaptcha.json',
+		__FILE__, // Full path to the main plugin file or functions.php.
+		'buddypress-recaptcha'
+	);
+
 /**
- * This Function checks the Woocommerce, BuddyPress and bbpress plugin is active or not.
+ * Plugin activation check.
  *
- * @return void
- */
-function wb_recaptcha_required_plugin_activation_check() {
-	if ( class_exists( 'WooCommerce' ) || class_exists( 'BuddyPress' ) || class_exists( 'bbPress' ) ) {
-		register_activation_hook( __FILE__, 'activate_recaptcha_for_buddypress' );
-	} else {
-		add_action( 'admin_notices', 'wb_recaptcha_required_plugin_admin_notice' );
-		add_action( 'admin_init', 'wb_recaptcha_existing_checkin_plugin' );
-
-	}
-}
-add_action( 'plugins_loaded', 'wb_recaptcha_required_plugin_activation_check' );
-
-/**
- * Required plugins admin notice for reCaptcha for WooCommerce.
- */
-function wb_recaptcha_required_plugin_admin_notice() {
-	$wb_recaptcha   = __( 'BuddyPress reCAPTCHA Security', 'buddypress-recaptcha' );
-	$woo_plugin     = __( 'WooCommerce', 'buddypress-recaptcha' );
-	$bp_plugin      = __( 'BuddyPress', 'buddypress-recaptcha' );
-	$bbpress_plugin = __( 'bbPress', 'buddypress-recaptcha' );
-
-	echo '<div class="error"><p>'
-	/* translators: %1s: reCaptcha for WooCommerce, %2$s: WooCommerce, %3$s: BuddyPress, %4$s: bbPress,    */
-	. sprintf( esc_html__( 'To protect your site from spam, %1$s needs at least one of these plugins: %2$s, %3$s, or %4$s. Please install and activate one to continue.', 'buddypress-recaptcha' ), '<strong>' . esc_html( $wb_recaptcha ) . '</strong>', '<strong>' . esc_html( $woo_plugin ) . '</strong>', '<strong>' . esc_html( $bp_plugin ) . '</strong>', '<strong>' . esc_html( $bbpress_plugin ) . '</strong>' )
-	. '</p></div>';
-	if ( null !== filter_input( INPUT_GET, 'activate' ) ) {
-		$activate = filter_input( INPUT_GET, 'activate' );
-		unset( $activate );
-	}
-}
-
-
-/**
- * Deactivate the plugin if WooCommerce, BuddyPress, or bbPress is not active.
+ * Note: Plugin works standalone with WordPress core forms.
+ * Additional integrations (WooCommerce, BuddyPress, bbPress)
+ * are automatically detected and enabled via modular settings system.
  *
  * @since 1.0.0
+ * @return void
  */
-function wb_recaptcha_existing_checkin_plugin() {
-	// Only deactivate if none of the required plugins are active
-	if ( ! class_exists( 'WooCommerce' ) && ! class_exists( 'BuddyPress' ) && ! class_exists( 'bbPress' ) ) {
-		deactivate_plugins( plugin_basename( __FILE__ ) );
-	}
+function wb_recaptcha_plugin_activation() {
+	register_activation_hook( __FILE__, 'activate_recaptcha_for_woocommerce' );
 }
+add_action( 'plugins_loaded', 'wb_recaptcha_plugin_activation' );
+
 
 /**
  * Redirect to plugin settings page after activated.
@@ -136,10 +112,7 @@ function wb_recaptcha_existing_checkin_plugin() {
 function wb_recaptcha_activation_redirect_settings( $plugin ) {
 
 	if ( plugin_basename( __FILE__ ) === $plugin && ( class_exists( 'WooCommerce' ) || class_exists( 'BuddyPress' ) || class_exists( 'bbPress' ) ) ) {
-		$action = isset( $_GET['action'] ) ? sanitize_text_field( wp_unslash( $_GET['action'] ) ) : '';
-		$plugin_param = isset( $_GET['plugin'] ) ? sanitize_text_field( wp_unslash( $_GET['plugin'] ) ) : '';
-		
-		if ( 'activate' === $action && $plugin === $plugin_param ) {
+		if ( isset( $_REQUEST['action'] ) && $_REQUEST['action']  == 'activate' && isset( $_REQUEST['plugin'] ) && $_REQUEST['plugin'] == $plugin) { //phpcs:ignore
 			wp_safe_redirect( admin_url( 'admin.php?page=buddypress-recaptcha' ) );
 			exit;
 		}
@@ -156,27 +129,13 @@ add_action( 'activated_plugin', 'wb_recaptcha_activation_redirect_settings' );
  *
  * @since    1.0.0
  */
-function run_recaptcha_for_buddypress() {
+function run_recaptcha_for_woocommerce() {
 	$plugin          = new Recaptcha_For_BuddyPress();
 	$plugin->run();
 
 }
-run_recaptcha_for_buddypress();
+run_recaptcha_for_woocommerce();
 
-require plugin_dir_path( __FILE__ ) . 'bp-recaptcha-update-checker/plugin-update-checker.php';
-	use YahnisElsts\PluginUpdateChecker\v5\PucFactory;
-	$myUpdateChecker = PucFactory::buildUpdateChecker(
-		'https://demos.wbcomdesigns.com/exporter/free-plugins/buddypress-recaptcha.json',
-		__FILE__, // Full path to the main plugin file or functions.php.
-		'buddypress-recaptcha'
-	);
-
-/**
- * Get the user's IP address safely.
- *
- * @since 1.0.0
- * @return string The validated IP address or empty string if invalid.
- */
 function wb_recaptcha_get_the_user_ip() {
 	// Only trust REMOTE_ADDR as other headers can be spoofed
 	$ipaddress = '';
@@ -189,23 +148,4 @@ function wb_recaptcha_get_the_user_ip() {
 	}
 
 	return $ipaddress;
-}
-
-
-/**
- * Check if the current user's IP is in the whitelist to skip captcha.
- *
- * @since 1.0.0
- * @return bool True if IP is whitelisted, false otherwise.
- */
-function wb_recaptcha_restriction_recaptcha_by_ip() {
-	$user_ip         = wb_recaptcha_get_the_user_ip();
-	$whitelisted_ips = get_option( 'wbc_recapcha_ip_to_skip_captcha', '' );
-	
-	if ( empty( $whitelisted_ips ) || empty( $user_ip ) ) {
-		return false;
-	}
-	
-	$ip_list = array_map( 'trim', explode( ',', $whitelisted_ips ) );
-	return in_array( $user_ip, $ip_list, true );
 }

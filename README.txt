@@ -1,24 +1,32 @@
-=== Wbcom Designs - BuddyPress reCaptcha ===
+=== Wbcom CAPTCHA Manager ===
 Contributors: vapvarun,wbcomdesigns
 Donate link: https://wbcomdesigns.com/
-Tags: BuddyPress, WooCommmerce, bbPress
+Tags: captcha, recaptcha, spam protection, security, woocommerce, buddypress, bbpress, fluentcart, turnstile, hcaptcha
 Requires at least: 3.0.1
-Tested up to: 6.8.2
-Stable tag: 1.7.1
+Tested up to: 6.7.2
+Stable tag: 2.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 == Description ==
 
-Protect your community from malicious and automated attacks by using reCaptcha for BuddyPress.
+Complete CAPTCHA solution with support for multiple CAPTCHA services. Protect your WordPress, WooCommerce, BuddyPress, bbPress, and FluentCart forms from spam and bots with an easy-to-manage, modular interface.
 
 == Key Features ==
 
-BuddyPress reCaptcha offers support for reCaptcha options for
-1- Default WordPress login and register
-2- BuddyPress Register
-3- WooCommmerce My Account 
-4- New Topic creation for bbPress
+**Multiple CAPTCHA Services:**
+- reCAPTCHA v2 (Checkbox)
+- reCAPTCHA v3 (Invisible)
+- Cloudflare Turnstile
+- hCaptcha
+- ALTCHA (Self-hosted, no external dependencies)
+
+**Comprehensive Form Protection:**
+- WordPress core forms (login, registration, lost password, comments)
+- WooCommerce (customer login, registration, checkout)
+- BuddyPress (member registration)
+- bbPress (new topics, replies)
+- FluentCart (customer login, registration)
 
 == Free Add-ons to Enhance Your BuddyPress or BuddyBoss Platform ==
 
@@ -51,12 +59,20 @@ BuddyPress reCaptcha offers support for reCaptcha options for
 2. Activate the plugin through the 'Plugins' menu in WordPress.
 
 == Changelog ==
-= 1.7.1 =
-* Fixed: Undefined method calls causing compatibility issues.
-* Updated: Language files for improved translations.
-* Fixed: Incorrect usage of `_load_textdomain_just_in_time` function to comply with WordPress coding standards.
-* Updated: Plugin update checker version for reliable update handling.
-* Cleanup: Removed unwanted files and redundant code from wbcom folder.
+= 2.0.0 =
+* Major UI/UX Overhaul: Complete redesign of admin interface with modern, intuitive layout
+* New Quick Setup Tab: Simplified 3-step wizard for faster configuration
+* Unified Protection Tab: All form protection settings now in one organized location with toggle switches
+* Advanced Settings: Consolidated appearance and security options
+* Enhanced Service Selection: Beautiful card-based interface for choosing CAPTCHA services
+* Added ALTCHA Support: Self-hosted CAPTCHA option with no external dependencies
+* Added FluentCart Integration: Protect FluentCart customer login and registration forms
+* Modular Settings Architecture: Settings now appear conditionally based on active plugins
+* Improved Code Organization: Reduced codebase by 50% with modular design
+* Improved Navigation: Tab icons for better visual navigation
+* Better Organization: Reduced from 7+ tabs to 4 streamlined tabs
+* Modern Design: Card layouts, tooltips, and responsive design throughout
+* Removed Clutter: Eliminated redundant settings and improved workflow
 
 = 1.7.0 =
 * Fixed: Manage bbPress topic's reply button not disabling before captcha validation.

@@ -34,7 +34,7 @@ class Recaptcha_For_BuddyPress_I18n {
 	public function load_plugin_textdomain() {
 
 		load_plugin_textdomain(
-			' recaptcha-for-buddypress',
+			'buddypress-recaptcha',
 			false,
 			dirname( dirname( plugin_basename( __FILE__ ) ) ) . '/languages/'
 		);
