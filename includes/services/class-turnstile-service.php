@@ -48,7 +48,7 @@ class WBC_Turnstile_Service extends WBC_Captcha_Service_Base {
 	 * @return string
 	 */
 	public function get_site_key() {
-		return trim( get_option( 'wbc_turnstile_site_key' ) );
+		return trim( get_option( 'wbc_turnstile_site_key', '' ) );
 	}
 
 	/**
@@ -57,7 +57,7 @@ class WBC_Turnstile_Service extends WBC_Captcha_Service_Base {
 	 * @return string
 	 */
 	public function get_secret_key() {
-		return trim( get_option( 'wbc_turnstile_secret_key' ) );
+		return trim( get_option( 'wbc_turnstile_secret_key', '' ) );
 	}
 
 	/**

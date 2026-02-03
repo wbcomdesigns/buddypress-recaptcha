@@ -53,7 +53,7 @@ class WBC_HCaptcha_Service extends WBC_Captcha_Service_Base {
 			return hcaptcha()->settings()->get_site_key();
 		}
 
-		return trim( get_option( 'wbc_hcaptcha_site_key' ) );
+		return trim( get_option( 'wbc_hcaptcha_site_key', '' ) );
 	}
 
 	/**
@@ -67,7 +67,7 @@ class WBC_HCaptcha_Service extends WBC_Captcha_Service_Base {
 			return hcaptcha()->settings()->get_secret_key();
 		}
 
-		return trim( get_option( 'wbc_hcaptcha_secret_key' ) );
+		return trim( get_option( 'wbc_hcaptcha_secret_key', '' ) );
 	}
 
 	/**

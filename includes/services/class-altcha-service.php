@@ -65,7 +65,7 @@ class WBC_Altcha_Service extends WBC_Captcha_Service_Base {
 	 * @return string
 	 */
 	public function get_site_key() {
-		return trim( get_option( 'wbc_altcha_hmac_key' ) );
+		return trim( get_option( 'wbc_altcha_hmac_key', '' ) );
 	}
 
 	/**
@@ -74,7 +74,7 @@ class WBC_Altcha_Service extends WBC_Captcha_Service_Base {
 	 * @return string
 	 */
 	public function get_secret_key() {
-		return trim( get_option( 'wbc_altcha_hmac_key' ) );
+		return trim( get_option( 'wbc_altcha_hmac_key', '' ) );
 	}
 
 	/**
