@@ -7,20 +7,20 @@
  */
 
 /**
- * reCAPTCHA v2 implementation
+ * ReCAPTCHA v2 implementation.
  */
 class WBC_Recaptcha_V2_Service extends WBC_Captcha_Service_Base {
-	
+
 	/**
 	 * Initialize service configuration
 	 */
 	protected function init_config() {
 		$this->config = array(
-			'service_id' => 'recaptcha-v2',
-			'service_name' => __( 'Google reCAPTCHA v2', 'buddypress-recaptcha' ),
-			'script_url' => 'https://www.google.com/recaptcha/api.js',
+			'service_id'      => 'recaptcha-v2',
+			'service_name'    => __( 'Google reCAPTCHA v2', 'buddypress-recaptcha' ),
+			'script_url'      => 'https://www.google.com/recaptcha/api.js',
 			'verify_endpoint' => 'https://www.google.com/recaptcha/api/siteverify',
-			'response_field' => 'g-recaptcha-response',
+			'response_field'  => 'g-recaptcha-response',
 		);
 	}
 
@@ -48,10 +48,10 @@ class WBC_Recaptcha_V2_Service extends WBC_Captcha_Service_Base {
 	 * @return string
 	 */
 	public function get_site_key() {
-		// Try standard format first (with underscore)
+		// Try standard format first (with underscore).
 		$site_key = trim( get_option( 'wbc_recaptcha_v2_site_key', '' ) );
 		if ( empty( $site_key ) ) {
-			// Fallback to hyphen format for backward compatibility
+			// Fallback to hyphen format for backward compatibility.
 			$site_key = trim( get_option( 'wbc_recaptcha-v2_site_key', '' ) );
 		}
 		return $site_key;
@@ -63,10 +63,10 @@ class WBC_Recaptcha_V2_Service extends WBC_Captcha_Service_Base {
 	 * @return string
 	 */
 	public function get_secret_key() {
-		// Try standard format first (with underscore)
+		// Try standard format first (with underscore).
 		$secret_key = trim( get_option( 'wbc_recaptcha_v2_secret_key', '' ) );
 		if ( empty( $secret_key ) ) {
-			// Fallback to hyphen format for backward compatibility
+			// Fallback to hyphen format for backward compatibility.
 			$secret_key = trim( get_option( 'wbc_recaptcha-v2_secret_key', '' ) );
 		}
 		return $secret_key;
@@ -75,16 +75,16 @@ class WBC_Recaptcha_V2_Service extends WBC_Captcha_Service_Base {
 	/**
 	 * Get the script handle for this service
 	 *
-	 * @param string $context The context where the script is used
+	 * @param string $context The context where the script is used.
 	 * @return string
 	 */
 	public function get_script_handle( $context = 'default' ) {
 		$handles = array(
-			'default' => 'wbc-woo-captcha',
+			'default'       => 'wbc-woo-captcha',
 			'bbpress_topic' => 'wbc-bbpress-topic-captcha',
 			'bbpress_reply' => 'wbc-bbpress-reply-captcha',
 		);
-		
+
 		return isset( $handles[ $context ] ) ? $handles[ $context ] : $handles['default'];
 	}
 
@@ -95,11 +95,11 @@ class WBC_Recaptcha_V2_Service extends WBC_Captcha_Service_Base {
 	 */
 	public function get_script_url() {
 		$language = trim( get_option( 'language', '' ) );
-		$lang = '';
+		$lang     = '';
 		if ( $language ) {
 			$lang = '?hl=' . $language;
 		}
-		
+
 		$domain = apply_filters( 'anr_recaptcha_domain', 'google.com' );
 		return sprintf( 'https://www.%s/recaptcha/api.js%s', $domain, $lang );
 	}
@@ -107,8 +107,8 @@ class WBC_Recaptcha_V2_Service extends WBC_Captcha_Service_Base {
 	/**
 	 * Render the captcha field
 	 *
-	 * @param string $context The context where captcha is rendered
-	 * @param array  $args    Additional arguments
+	 * @param string $context The context where captcha is rendered.
+	 * @param array  $args    Additional arguments.
 	 * @return void
 	 */
 	public function render( $context, $args = array() ) {
@@ -117,19 +117,19 @@ class WBC_Recaptcha_V2_Service extends WBC_Captcha_Service_Base {
 			return;
 		}
 
-		// Get context-specific settings
-		$theme = $this->get_theme_for_context( $context );
-		$size = $this->get_size_for_context( $context );
+		// Get context-specific settings.
+		$theme          = $this->get_theme_for_context( $context );
+		$size           = $this->get_size_for_context( $context );
 		$disable_submit = $this->should_disable_submit( $context );
-		
-		// Generate unique identifiers
+
+		// Generate unique identifiers.
 		$callback = 'verifyCallback_' . str_replace( '-', '_', $context );
 		$div_name = 'g-recaptcha-' . $context . '-wbc';
-		
-		// Get nonce
+
+		// Get nonce.
 		$nonce_action = $this->get_nonce_action( $context );
-		
-		// Render HTML
+
+		// Render HTML.
 		?>
 		<input type="hidden" autocomplete="off" name="<?php echo esc_attr( $nonce_action ); ?>" value="<?php echo esc_attr( wp_create_nonce( $nonce_action ) ); ?>" />
 		<p class="wbc_recaptcha_field">
@@ -169,23 +169,24 @@ class WBC_Recaptcha_V2_Service extends WBC_Captcha_Service_Base {
 			transform:scale(0.89);-webkit-transform:scale(0.89);transform-origin:0 0;-webkit-transform-origin:0 0;
 		}
 		</style>
-		<?php endif;
+			<?php
+		endif;
 	}
 
 	/**
 	 * Verify the captcha response
 	 *
-	 * @param string $response The captcha response
-	 * @param array  $args     Additional arguments
+	 * @param string $response The captcha response.
+	 * @param array  $args     Additional arguments.
 	 * @return bool
 	 */
 	public function verify( $response, $args = array() ) {
 		$secret_key = $this->get_secret_key();
 		if ( empty( $secret_key ) ) {
-			return true; // If not configured, don't block
+			return true; // If not configured, don't block.
 		}
 
-		// Verify nonce if present (CSRF protection)
+		// Verify nonce if present (CSRF protection).
 		$context = isset( $args['context'] ) ? $args['context'] : '';
 		if ( ! empty( $context ) ) {
 			$nonce_action = $this->get_nonce_action( $context );
@@ -207,13 +208,13 @@ class WBC_Recaptcha_V2_Service extends WBC_Captcha_Service_Base {
 		);
 
 		$result = $this->make_verify_request( $this->get_verify_endpoint(), $params );
-		
+
 		if ( ! $result || ! is_array( $result ) ) {
 			return false;
 		}
 
 		$verified = isset( $result['success'] ) && true === $result['success'];
-		
+
 		return apply_filters( 'wbc_captcha_verified', $verified, $result, $response, $this->get_service_id() );
 	}
 
@@ -248,15 +249,15 @@ class WBC_Recaptcha_V2_Service extends WBC_Captcha_Service_Base {
 	/**
 	 * Get service-specific attributes for the captcha container
 	 *
-	 * @param string $context The context
+	 * @param string $context The context.
 	 * @return array
 	 */
 	public function get_container_attributes( $context ) {
 		return array(
-			'class' => 'g-recaptcha',
-			'data-sitekey' => $this->get_site_key(),
-			'data-theme' => $this->get_theme_for_context( $context ),
-			'data-size' => $this->get_size_for_context( $context ),
+			'class'         => 'g-recaptcha',
+			'data-sitekey'  => $this->get_site_key(),
+			'data-theme'    => $this->get_theme_for_context( $context ),
+			'data-size'     => $this->get_size_for_context( $context ),
 			'data-callback' => 'verifyCallback_' . str_replace( '-', '_', $context ),
 		);
 	}
@@ -286,46 +287,46 @@ class WBC_Recaptcha_V2_Service extends WBC_Captcha_Service_Base {
 	/**
 	 * Get theme for context
 	 *
-	 * @param string $context
+	 * @param string $context The context identifier.
 	 * @return string
 	 */
 	private function get_theme_for_context( $context ) {
-		// Use the global theme setting configured in admin
+		// Use the global theme setting configured in admin.
 		return get_option( 'wbc_recaptcha_theme', 'light' );
 	}
 
 	/**
 	 * Get size for context
 	 *
-	 * @param string $context
+	 * @param string $context The context identifier.
 	 * @return string
 	 */
 	private function get_size_for_context( $context ) {
-		// Use the global size setting configured in admin
+		// Use the global size setting configured in admin.
 		return get_option( 'wbc_recaptcha_size', 'normal' );
 	}
 
 	/**
 	 * Check if submit button should be disabled
 	 *
-	 * @param string $context
+	 * @param string $context The context identifier.
 	 * @return bool
 	 */
 	private function should_disable_submit( $context ) {
 		$option_map = array(
-			'wp_login' => 'wbc_recapcha_disable_submitbtn_wp_login',
-			'wp_register' => 'wbc_recapcha_disable_submitbtn_wp_register',
-			'wp_lostpassword' => 'wbc_recapcha_disable_submitbtn_wp_lost_password',
-			'woo_login' => 'wbc_recapcha_disable_submitbtn_woo_login',
-			'woo_register' => 'wbc_recapcha_disable_submitbtn_woo_signup',
-			'woo_lostpassword' => 'wbc_recapcha_disable_submitbtn_woo_lostpassword',
-			'bp_register' => 'wbc_recapcha_disable_submitbtn_woo_signup_bp',
-			'bbpress_topic' => 'wbc_recapcha_disable_submitbtn_bbpress_topic',
-			'bbpress_reply' => 'wbc_recapcha_disable_submitbtn_bbpress_reply',
+			'wp_login'           => 'wbc_recapcha_disable_submitbtn_wp_login',
+			'wp_register'        => 'wbc_recapcha_disable_submitbtn_wp_register',
+			'wp_lostpassword'    => 'wbc_recapcha_disable_submitbtn_wp_lost_password',
+			'woo_login'          => 'wbc_recapcha_disable_submitbtn_woo_login',
+			'woo_register'       => 'wbc_recapcha_disable_submitbtn_woo_signup',
+			'woo_lostpassword'   => 'wbc_recapcha_disable_submitbtn_woo_lostpassword',
+			'bp_register'        => 'wbc_recapcha_disable_submitbtn_woo_signup_bp',
+			'bbpress_topic'      => 'wbc_recapcha_disable_submitbtn_bbpress_topic',
+			'bbpress_reply'      => 'wbc_recapcha_disable_submitbtn_bbpress_reply',
 			'woo_checkout_guest' => 'wbc_recapcha_disable_submitbtn_guestcheckout',
 			'woo_checkout_login' => 'wbc_recapcha_disable_submitbtn_logincheckout',
 		);
-		
+
 		$option_name = isset( $option_map[ $context ] ) ? $option_map[ $context ] : '';
 		return $option_name ? ( 'yes' === get_option( $option_name ) ) : false;
 	}
@@ -333,30 +334,30 @@ class WBC_Recaptcha_V2_Service extends WBC_Captcha_Service_Base {
 	/**
 	 * Get error message
 	 *
-	 * @param string $context
+	 * @param string $context The context identifier.
 	 * @return string
 	 */
 	public function get_error_message( $context ) {
 		$error_msg = get_option( 'wc_settings_tab_recapcha_error_msg_captcha_blank' );
 		$error_msg = str_replace( '[recaptcha]', 'reCAPTCHA', $error_msg );
-		
+
 		if ( empty( $error_msg ) ) {
 			$default_messages = array(
-				'wp_login' => __( 'Please complete the security check to log in.', 'buddypress-recaptcha' ),
-				'wp_register' => __( 'Please complete the security check to register.', 'buddypress-recaptcha' ),
-				'wp_lostpassword' => __( 'Please complete the security check to reset your password.', 'buddypress-recaptcha' ),
-				'woo_login' => __( 'Please complete the security check to log in.', 'buddypress-recaptcha' ),
-				'woo_register' => __( 'Please complete the security check to register.', 'buddypress-recaptcha' ),
+				'wp_login'         => __( 'Please complete the security check to log in.', 'buddypress-recaptcha' ),
+				'wp_register'      => __( 'Please complete the security check to register.', 'buddypress-recaptcha' ),
+				'wp_lostpassword'  => __( 'Please complete the security check to reset your password.', 'buddypress-recaptcha' ),
+				'woo_login'        => __( 'Please complete the security check to log in.', 'buddypress-recaptcha' ),
+				'woo_register'     => __( 'Please complete the security check to register.', 'buddypress-recaptcha' ),
 				'woo_lostpassword' => __( 'Please complete the security check to reset your password.', 'buddypress-recaptcha' ),
-				'bp_register' => __( 'Please complete the security check to register.', 'buddypress-recaptcha' ),
-				'bbpress_topic' => __( 'Please complete the security check to submit your topic.', 'buddypress-recaptcha' ),
-				'bbpress_reply' => __( 'Please complete the security check to submit your reply.', 'buddypress-recaptcha' ),
-				'woo_checkout' => __( 'Please complete the security check to place your order.', 'buddypress-recaptcha' ),
+				'bp_register'      => __( 'Please complete the security check to register.', 'buddypress-recaptcha' ),
+				'bbpress_topic'    => __( 'Please complete the security check to submit your topic.', 'buddypress-recaptcha' ),
+				'bbpress_reply'    => __( 'Please complete the security check to submit your reply.', 'buddypress-recaptcha' ),
+				'woo_checkout'     => __( 'Please complete the security check to place your order.', 'buddypress-recaptcha' ),
 			);
-			
+
 			$error_msg = isset( $default_messages[ $context ] ) ? $default_messages[ $context ] : __( 'Please complete the security check.', 'buddypress-recaptcha' );
 		}
-		
+
 		return $error_msg;
 	}
 }
