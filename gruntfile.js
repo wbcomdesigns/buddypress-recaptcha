@@ -38,7 +38,8 @@ module.exports = function (grunt) {
 						'!node_modules/**',
 						'!options/framework/**',
 						'!tests/**',
-						'!bp-recaptcha-update-checker/**'
+						'!bp-recaptcha-update-checker/**',
+						'!vendor/**'
 					], // all php
 					expand: true
 				}]
@@ -159,7 +160,7 @@ module.exports = function (grunt) {
 				options: {
 					cwd: '.', // Directory of files to internationalize.
 					domainPath: 'languages/', // Where to save the POT file.
-					exclude: ['node_modules/*', 'options/framework/*', 'bp-recaptcha-update-checker/*'], // List of files or directories to ignore.
+					exclude: ['node_modules/*', 'vendor/*', 'options/framework/*', 'bp-recaptcha-update-checker/*'], // List of files or directories to ignore.
 					mainFile: 'recaptcha-for-buddypress.php', // Main project file.
 					potFilename: 'buddypress-recaptcha.pot', // Name of the POT file.
 					potHeaders: { // Headers to add to the generated POT file.
