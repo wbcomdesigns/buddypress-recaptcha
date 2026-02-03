@@ -1,0 +1,21 @@
+{
+	"name": "wbcomdesigns/buddypress-recaptcha",
+	"description": "Complete CAPTCHA solution for WordPress, WooCommerce, BuddyPress, bbPress, and popular form builders.",
+	"type": "wordpress-plugin",
+	"license": "GPL-2.0-or-later",
+	"require": {
+		"php": ">=7.4",
+		"easy-digital-downloads/edd-sl-sdk": "^1.0.0"
+	},
+	"repositories": {
+		"edd-sl-sdk": {
+			"type": "vcs",
+			"url": "https://github.com/awesomemotive/edd-sl-sdk"
+		}
+	},
+	"config": {
+		"allow-plugins": {
+			"dealerdirect/phpcodesniffer-composer-installer": true
+		}
+	}
+}

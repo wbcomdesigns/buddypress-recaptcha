@@ -1,0 +1,56 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "e38b850c9d40bc326b4961f243792572",
+    "packages": [
+        {
+            "name": "easy-digital-downloads/edd-sl-sdk",
+            "version": "1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/awesomemotive/edd-sl-sdk.git",
+                "reference": "ec694fa21ab46e8ca1d4eb6b5273b0049cfdec33"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/awesomemotive/edd-sl-sdk/zipball/ec694fa21ab46e8ca1d4eb6b5273b0049cfdec33",
+                "reference": "ec694fa21ab46e8ca1d4eb6b5273b0049cfdec33",
+                "shasum": ""
+            },
+            "require-dev": {
+                "codedungeon/phpunit-result-printer": "dev-master",
+                "phpunit/phpunit": "^8",
+                "yoast/phpunit-polyfills": "^1.0.5",
+                "yoast/wp-test-utils": "^1.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "EasyDigitalDownloads\\Updater\\": "src/"
+                }
+            },
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "support": {
+                "source": "https://github.com/awesomemotive/edd-sl-sdk/tree/1.0.2",
+                "issues": "https://github.com/awesomemotive/edd-sl-sdk/issues"
+            },
+            "time": "2025-12-23T20:15:04+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": {},
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": {
+        "php": ">=7.4"
+    },
+    "platform-dev": {},
+    "plugin-api-version": "2.6.0"
+}
