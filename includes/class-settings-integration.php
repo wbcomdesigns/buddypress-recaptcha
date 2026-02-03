@@ -92,10 +92,10 @@ class WBC_Settings_Integration {
 		// Ensure service selection option exists
 		if ( false === get_option( 'wbc_captcha_service' ) ) {
 			// Try to determine from old version setting
-			$version = get_option( 'wbc_recapcha_version' );
-			if ( 'v3' === strtolower( $version ) ) {
+			$version = get_option( 'wbc_recapcha_version', '' );
+			if ( is_string( $version ) && 'v3' === strtolower( $version ) ) {
 				$service = 'recaptcha-v3';
-			} elseif ( 'v2' === strtolower( $version ) ) {
+			} elseif ( is_string( $version ) && 'v2' === strtolower( $version ) ) {
 				$service = 'recaptcha-v2';
 			} else {
 				// Check which keys are configured
