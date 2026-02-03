@@ -1,13 +1,13 @@
 <?php
 /**
- * hCaptcha Service
+ * HCaptcha Service
  *
  * @package    Recaptcha_For_BuddyPress
  * @since      2.1.0
  */
 
 /**
- * hCaptcha implementation - Privacy-focused alternative to reCAPTCHA
+ * HCaptcha implementation - Privacy-focused alternative to reCAPTCHA.
  */
 class WBC_HCaptcha_Service extends WBC_Captcha_Service_Base {
 
@@ -16,11 +16,11 @@ class WBC_HCaptcha_Service extends WBC_Captcha_Service_Base {
 	 */
 	protected function init_config() {
 		$this->config = array(
-			'service_id' => 'hcaptcha',
-			'service_name' => __( 'hCaptcha', 'buddypress-recaptcha' ),
-			'script_url' => 'https://js.hcaptcha.com/1/api.js',
+			'service_id'      => 'hcaptcha',
+			'service_name'    => __( 'hCaptcha', 'buddypress-recaptcha' ),
+			'script_url'      => 'https://js.hcaptcha.com/1/api.js',
 			'verify_endpoint' => 'https://hcaptcha.com/siteverify',
-			'response_field' => 'h-captcha-response',
+			'response_field'  => 'h-captcha-response',
 		);
 	}
 
@@ -48,7 +48,7 @@ class WBC_HCaptcha_Service extends WBC_Captcha_Service_Base {
 	 * @return string
 	 */
 	public function get_site_key() {
-		// Use hCaptcha plugin settings if available
+		// Use hCaptcha plugin settings if available.
 		if ( function_exists( 'hcaptcha' ) && method_exists( hcaptcha(), 'settings' ) ) {
 			return hcaptcha()->settings()->get_site_key();
 		}
@@ -62,7 +62,7 @@ class WBC_HCaptcha_Service extends WBC_Captcha_Service_Base {
 	 * @return string
 	 */
 	public function get_secret_key() {
-		// Use hCaptcha plugin settings if available
+		// Use hCaptcha plugin settings if available.
 		if ( function_exists( 'hcaptcha' ) && method_exists( hcaptcha(), 'settings' ) ) {
 			return hcaptcha()->settings()->get_secret_key();
 		}
@@ -73,7 +73,7 @@ class WBC_HCaptcha_Service extends WBC_Captcha_Service_Base {
 	/**
 	 * Get the script handle for this service
 	 *
-	 * @param string $context The context where the script is used
+	 * @param string $context The context where the script is used.
 	 * @return string
 	 */
 	public function get_script_handle( $context = 'default' ) {
@@ -92,8 +92,8 @@ class WBC_HCaptcha_Service extends WBC_Captcha_Service_Base {
 	/**
 	 * Render the captcha field
 	 *
-	 * @param string $context The context where captcha is rendered
-	 * @param array  $args    Additional arguments
+	 * @param string $context The context where captcha is rendered.
+	 * @param array  $args    Additional arguments.
 	 * @return void
 	 */
 	public function render( $context, $args = array() ) {
@@ -102,26 +102,26 @@ class WBC_HCaptcha_Service extends WBC_Captcha_Service_Base {
 			return;
 		}
 
-		// Get settings - use the global reCAPTCHA theme/size options
-		// (admin panel provides shared theme/size controls for reCAPTCHA v2 and hCaptcha)
+		// Get settings - use the global reCAPTCHA theme/size options.
+		// (admin panel provides shared theme/size controls for reCAPTCHA v2 and hCaptcha).
 		$theme = get_option( 'wbc_recaptcha_theme', 'light' );
-		$size = get_option( 'wbc_recaptcha_size', 'normal' );
+		$size  = get_option( 'wbc_recaptcha_size', 'normal' );
 
-		// Generate unique ID
+		// Generate unique ID.
 		$div_id = 'h-captcha-' . $context . '-wbc';
 
-		// Get nonce
+		// Get nonce.
 		$nonce_action = $this->get_nonce_action( $context );
 
-		// Render HTML
+		// Render HTML.
 		?>
 		<input type="hidden" autocomplete="off" name="<?php echo esc_attr( $nonce_action ); ?>" value="<?php echo esc_attr( wp_create_nonce( $nonce_action ) ); ?>" />
 		<div class="wbc_captcha_field wbc_hcaptcha_field input" style="transform: scale(0.9);margin-left: -20px;">
 			<div id="<?php echo esc_attr( $div_id ); ?>"
-				 class="h-captcha"
-				 data-sitekey="<?php echo esc_attr( $site_key ); ?>"
-				 data-theme="<?php echo esc_attr( $theme ); ?>"
-				 data-size="<?php echo esc_attr( $size ); ?>"></div>
+				class="h-captcha"
+				data-sitekey="<?php echo esc_attr( $site_key ); ?>"
+				data-theme="<?php echo esc_attr( $theme ); ?>"
+				data-size="<?php echo esc_attr( $size ); ?>"></div>
 		</div>
 		<?php
 	}
@@ -129,17 +129,17 @@ class WBC_HCaptcha_Service extends WBC_Captcha_Service_Base {
 	/**
 	 * Verify the captcha response
 	 *
-	 * @param string $response The captcha response
-	 * @param array  $args     Additional arguments
+	 * @param string $response The captcha response.
+	 * @param array  $args     Additional arguments.
 	 * @return bool
 	 */
 	public function verify( $response, $args = array() ) {
 		$secret_key = $this->get_secret_key();
 		if ( empty( $secret_key ) ) {
-			return true; // If not configured, don't block
+			return true; // If not configured, don't block.
 		}
 
-		// Verify nonce if present
+		// Verify nonce if present.
 		$context = isset( $args['context'] ) ? $args['context'] : '';
 		if ( ! empty( $context ) ) {
 			$nonce_action = $this->get_nonce_action( $context );
@@ -154,12 +154,12 @@ class WBC_HCaptcha_Service extends WBC_Captcha_Service_Base {
 			return false;
 		}
 
-		// Use hCaptcha plugin's API if available
+		// Use hCaptcha plugin's API if available.
 		if ( class_exists( 'HCaptcha\Helpers\API' ) ) {
-			$result = \HCaptcha\Helpers\API::verify_request( $response );
-			$verified = ( null === $result ); // null means success
+			$result   = \HCaptcha\Helpers\API::verify_request( $response );
+			$verified = ( null === $result ); // Null means success.
 		} else {
-			// Fallback to manual verification
+			// Fallback to manual verification.
 			$params = array(
 				'secret'   => $secret_key,
 				'response' => $response,

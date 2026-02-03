@@ -23,6 +23,7 @@
  * Text Domain:       buddypress-recaptcha
  * Domain Path:       /languages
  */
+
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
 	die;
@@ -91,14 +92,14 @@ add_action(
 	function ( $registry ) {
 		$registry->register(
 			array(
-				'id'          => 'buddypress-recaptcha',
-				'url'         => 'https://wbcomdesigns.com',
-				'item_id'     => 1246648,
-				'item_name'   => 'reCaptcha for BuddyPress',
-				'version'     => RFB_PLUGIN_VERSION,
-				'file'        => RFB_PLUGIN_FILE,
-				'keyless'     => true,
-				'type'        => 'plugin',
+				'id'        => 'buddypress-recaptcha',
+				'url'       => 'https://wbcomdesigns.com',
+				'item_id'   => 1246648,
+				'item_name' => 'reCaptcha for BuddyPress',
+				'version'   => RFB_PLUGIN_VERSION,
+				'file'      => RFB_PLUGIN_FILE,
+				'keyless'   => true,
+				'type'      => 'plugin',
 			)
 		);
 	}
@@ -146,18 +147,23 @@ add_action( 'activated_plugin', 'wb_recaptcha_activation_redirect_settings' );
  * @since    1.0.0
  */
 function run_recaptcha_for_woocommerce() {
-	$plugin          = new Recaptcha_For_BuddyPress();
+	$plugin = new Recaptcha_For_BuddyPress();
 	$plugin->run();
-
 }
 run_recaptcha_for_woocommerce();
 
+/**
+ * Get the user's IP address.
+ *
+ * @since 1.0.0
+ * @return string The user's IP address or empty string.
+ */
 function wb_recaptcha_get_the_user_ip() {
-	// Only trust REMOTE_ADDR as other headers can be spoofed
+	// Only trust REMOTE_ADDR as other headers can be spoofed.
 	$ipaddress = '';
 	if ( isset( $_SERVER['REMOTE_ADDR'] ) ) {
 		$ipaddress = sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) );
-		// Validate IP address
+		// Validate IP address.
 		if ( ! filter_var( $ipaddress, FILTER_VALIDATE_IP ) ) {
 			$ipaddress = '';
 		}

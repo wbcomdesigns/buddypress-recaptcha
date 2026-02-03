@@ -10,17 +10,17 @@
  * Cloudflare Turnstile implementation
  */
 class WBC_Turnstile_Service extends WBC_Captcha_Service_Base {
-	
+
 	/**
 	 * Initialize service configuration
 	 */
 	protected function init_config() {
 		$this->config = array(
-			'service_id' => 'turnstile',
-			'service_name' => __( 'Cloudflare Turnstile', 'buddypress-recaptcha' ),
-			'script_url' => 'https://challenges.cloudflare.com/turnstile/v0/api.js',
+			'service_id'      => 'turnstile',
+			'service_name'    => __( 'Cloudflare Turnstile', 'buddypress-recaptcha' ),
+			'script_url'      => 'https://challenges.cloudflare.com/turnstile/v0/api.js',
 			'verify_endpoint' => 'https://challenges.cloudflare.com/turnstile/v0/siteverify',
-			'response_field' => 'cf-turnstile-response',
+			'response_field'  => 'cf-turnstile-response',
 		);
 	}
 
@@ -63,7 +63,7 @@ class WBC_Turnstile_Service extends WBC_Captcha_Service_Base {
 	/**
 	 * Get the script handle for this service
 	 *
-	 * @param string $context The context where the script is used
+	 * @param string $context The context where the script is used.
 	 * @return string
 	 */
 	public function get_script_handle( $context = 'default' ) {
@@ -82,8 +82,8 @@ class WBC_Turnstile_Service extends WBC_Captcha_Service_Base {
 	/**
 	 * Render the captcha field
 	 *
-	 * @param string $context The context where captcha is rendered
-	 * @param array  $args    Additional arguments
+	 * @param string $context The context where captcha is rendered.
+	 * @param array  $args    Additional arguments.
 	 * @return void
 	 */
 	public function render( $context, $args = array() ) {
@@ -92,34 +92,34 @@ class WBC_Turnstile_Service extends WBC_Captcha_Service_Base {
 			return;
 		}
 
-		// Get context-specific settings
+		// Get context-specific settings.
 		$theme = $this->get_option( 'theme_' . $context, 'light' );
-		$size = $this->get_option( 'size_' . $context, 'normal' );
-		
-		// Generate unique identifiers
+		$size  = $this->get_option( 'size_' . $context, 'normal' );
+
+		// Generate unique identifiers.
 		$callback = 'turnstileCallback_' . str_replace( '-', '_', $context );
-		$div_id = 'cf-turnstile-' . $context . '-wbc';
-		
-		// Get nonce
+		$div_id   = 'cf-turnstile-' . $context . '-wbc';
+
+		// Get nonce.
 		$nonce_action = $this->get_nonce_action( $context );
-		
-		// Render HTML
+
+		// Render HTML.
 		?>
 		<input type="hidden" autocomplete="off" name="<?php echo esc_attr( $nonce_action ); ?>" value="<?php echo esc_attr( wp_create_nonce( $nonce_action ) ); ?>" />
 		<p class="wbc_captcha_field wbc_turnstile_field">
 			<div id="<?php echo esc_attr( $div_id ); ?>"
-				 class="cf-turnstile"
-				 data-sitekey="<?php echo esc_attr( $site_key ); ?>"
-				 data-theme="<?php echo esc_attr( $theme ); ?>"
-				 data-size="<?php echo esc_attr( $size ); ?>"
-				 data-callback="<?php echo esc_attr( $callback ); ?>"></div>
+				class="cf-turnstile"
+				data-sitekey="<?php echo esc_attr( $site_key ); ?>"
+				data-theme="<?php echo esc_attr( $theme ); ?>"
+				data-size="<?php echo esc_attr( $size ); ?>"
+				data-callback="<?php echo esc_attr( $callback ); ?>"></div>
 			<br/>
 		</p>
 		
 		<script type="text/javascript">
 		window.<?php echo esc_js( $callback ); ?> = function(token) {
 			if(token){
-				// Handle successful verification
+				// Handle successful verification.
 				var submitBtn = jQuery('<?php echo esc_js( $this->get_submit_button_selector( $context ) ); ?>');
 				if(submitBtn.length) {
 					submitBtn.removeAttr("disabled");
@@ -138,17 +138,17 @@ class WBC_Turnstile_Service extends WBC_Captcha_Service_Base {
 	/**
 	 * Verify the captcha response
 	 *
-	 * @param string $response The captcha response
-	 * @param array  $args     Additional arguments
+	 * @param string $response The captcha response.
+	 * @param array  $args     Additional arguments.
 	 * @return bool
 	 */
 	public function verify( $response, $args = array() ) {
 		$secret_key = $this->get_secret_key();
 		if ( empty( $secret_key ) ) {
-			return true; // If not configured, don't block
+			return true; // If not configured, don't block.
 		}
 
-		// Verify nonce if present
+		// Verify nonce if present.
 		$context = isset( $args['context'] ) ? $args['context'] : '';
 		if ( ! empty( $context ) ) {
 			$nonce_action = $this->get_nonce_action( $context );
@@ -204,21 +204,21 @@ class WBC_Turnstile_Service extends WBC_Captcha_Service_Base {
 	 * @return bool
 	 */
 	public function requires_no_conflict() {
-		return false; // Turnstile doesn't typically conflict with other scripts
+		return false; // Turnstile doesn't typically conflict with other scripts.
 	}
 
 	/**
 	 * Get service-specific attributes for the captcha container
 	 *
-	 * @param string $context The context
+	 * @param string $context The context.
 	 * @return array
 	 */
 	public function get_container_attributes( $context ) {
 		return array(
-			'class' => 'cf-turnstile',
-			'data-sitekey' => $this->get_site_key(),
-			'data-theme' => $this->get_option( 'theme_' . $context, 'light' ),
-			'data-size' => $this->get_option( 'size_' . $context, 'normal' ),
+			'class'         => 'cf-turnstile',
+			'data-sitekey'  => $this->get_site_key(),
+			'data-theme'    => $this->get_option( 'theme_' . $context, 'light' ),
+			'data-size'     => $this->get_option( 'size_' . $context, 'normal' ),
 			'data-callback' => 'turnstileCallback_' . str_replace( '-', '_', $context ),
 		);
 	}

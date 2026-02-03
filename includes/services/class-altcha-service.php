@@ -6,10 +6,17 @@
  * @since      2.0.0
  */
 
-// Load ALTCHA verification library if standalone altcha-spam-protection plugin not active
+// phpcs:disable Universal.Files.SeparateFunctionsFromOO.Mixed -- Helper function must be defined alongside service class.
+// Load ALTCHA verification library if standalone altcha-spam-protection plugin not active.
 if ( ! class_exists( 'AltchaPlugin' ) && ! is_plugin_active( 'altcha-spam-protection/altcha.php' ) ) {
-	// Define a minimal wrapper for ALTCHA verification
+	// Define a minimal wrapper for ALTCHA verification.
 	if ( ! function_exists( 'altcha_random_secret' ) ) {
+		/**
+		 * Generate a random secret for ALTCHA.
+		 *
+		 * @param int $length The length of the secret.
+		 * @return string The generated secret.
+		 */
 		function altcha_random_secret( $length = 64 ) {
 			return bin2hex( random_bytes( $length / 2 ) );
 		}
@@ -22,22 +29,15 @@ if ( ! class_exists( 'AltchaPlugin' ) && ! is_plugin_active( 'altcha-spam-protec
 class WBC_Altcha_Service extends WBC_Captcha_Service_Base {
 
 	/**
-	 * Constructor
-	 */
-	public function __construct() {
-		parent::__construct();
-	}
-
-	/**
 	 * Initialize service configuration
 	 */
 	protected function init_config() {
 		$this->config = array(
-			'service_id' => 'altcha',
-			'service_name' => __( 'ALTCHA (Self-Hosted)', 'buddypress-recaptcha' ),
-			'script_url' => plugins_url( 'public/js/altcha.min.js', dirname( dirname( __FILE__ ) ) ),
-			'verify_endpoint' => '', // Server-side verification handled differently
-			'response_field' => 'altcha',
+			'service_id'      => 'altcha',
+			'service_name'    => __( 'ALTCHA (Self-Hosted)', 'buddypress-recaptcha' ),
+			'script_url'      => plugins_url( 'public/js/altcha.min.js', dirname( __DIR__ ) ),
+			'verify_endpoint' => '', // Server-side verification handled differently.
+			'response_field'  => 'altcha',
 		);
 	}
 
@@ -80,7 +80,7 @@ class WBC_Altcha_Service extends WBC_Captcha_Service_Base {
 	/**
 	 * Get the script handle for this service
 	 *
-	 * @param string $context The context where the script is used
+	 * @param string $context The context where the script is used.
 	 * @return string
 	 */
 	public function get_script_handle( $context = 'default' ) {
@@ -99,7 +99,7 @@ class WBC_Altcha_Service extends WBC_Captcha_Service_Base {
 	/**
 	 * Enqueue scripts for this service
 	 *
-	 * @param string $context The context where the script is used
+	 * @param string $context The context where the script is used.
 	 * @return void
 	 */
 	public function enqueue_scripts( $context = 'default' ) {
@@ -114,20 +114,20 @@ class WBC_Altcha_Service extends WBC_Captcha_Service_Base {
 			array(),
 			'2.0.0',
 			array(
-				'strategy' => 'defer',
+				'strategy'  => 'defer',
 				'in_footer' => true,
 			)
 		);
 
-		// Add module type attribute
+		// Add module type attribute.
 		add_filter( 'script_loader_tag', array( $this, 'add_module_type_attribute' ), 10, 2 );
 	}
 
 	/**
 	 * Add type="module" to ALTCHA script tag
 	 *
-	 * @param string $tag    Script tag HTML
-	 * @param string $handle Script handle
+	 * @param string $tag    Script tag HTML.
+	 * @param string $handle Script handle.
 	 * @return string
 	 */
 	public function add_module_type_attribute( $tag, $handle ) {
@@ -148,25 +148,25 @@ class WBC_Altcha_Service extends WBC_Captcha_Service_Base {
 			return false;
 		}
 
-		// Use ALTCHA plugin if available
+		// Use ALTCHA plugin if available.
 		if ( class_exists( 'AltchaPlugin' ) && isset( AltchaPlugin::$instance ) ) {
 			$complexity = intval( get_option( 'wbc_altcha_max_number', 100000 ) );
-			$expires = intval( get_option( 'wbc_altcha_expires', 3600 ) );
+			$expires    = intval( get_option( 'wbc_altcha_expires', 3600 ) );
 			return AltchaPlugin::$instance->generate_challenge( $hmac_key, $complexity, $expires );
 		}
 
-		// Self-hosted generation
-		$salt = bin2hex( random_bytes( 16 ) );
+		// Self-hosted generation.
+		$salt       = bin2hex( random_bytes( 16 ) );
 		$max_number = intval( get_option( 'wbc_altcha_max_number', 100000 ) );
-		$expires = intval( get_option( 'wbc_altcha_expires', 3600 ) );
+		$expires    = intval( get_option( 'wbc_altcha_expires', 3600 ) );
 
-		// Add expiration to salt
+		// Add expiration to salt.
 		if ( $expires > 0 ) {
 			$salt = $salt . '?expires=' . ( time() + $expires );
 		}
 
-		// Generate random number
-		$number = rand( 1, $max_number );
+		// Generate random number.
+		$number    = wp_rand( 1, $max_number );
 		$challenge = hash( 'sha256', $salt . $number );
 		$signature = hash_hmac( 'sha256', $challenge, $hmac_key );
 
@@ -174,7 +174,7 @@ class WBC_Altcha_Service extends WBC_Captcha_Service_Base {
 			'algorithm' => 'SHA-256',
 			'challenge' => $challenge,
 			'maxnumber' => $max_number,
-			'salt' => $salt,
+			'salt'      => $salt,
 			'signature' => $signature,
 		);
 	}
@@ -185,17 +185,17 @@ class WBC_Altcha_Service extends WBC_Captcha_Service_Base {
 	 * @return bool
 	 */
 	private function is_secure_context() {
-		// Check if HTTPS is enabled
+		// Check if HTTPS is enabled.
 		if ( is_ssl() ) {
 			return true;
 		}
 
-		// Allow local development environments
+		// Allow local development environments.
 		if ( defined( 'WP_ENVIRONMENT_TYPE' ) && 'local' === WP_ENVIRONMENT_TYPE ) {
 			return true;
 		}
 
-		// Allow localhost and 127.0.0.1
+		// Allow localhost and 127.0.0.1.
 		$host = filter_input( INPUT_SERVER, 'HTTP_HOST', FILTER_SANITIZE_SPECIAL_CHARS );
 		if ( empty( $host ) ) {
 			return false;
@@ -205,22 +205,22 @@ class WBC_Altcha_Service extends WBC_Captcha_Service_Base {
 			return true;
 		}
 
-		// Allow .local domains (common in local dev)
+		// Allow .local domains (common in local dev).
 		if ( preg_match( '/\.local$/i', $host ) ) {
 			return true;
 		}
 
-		// Allow .test domains (Laravel Valet, etc.)
+		// Allow .test domains (Laravel Valet, etc.).
 		if ( preg_match( '/\.test$/i', $host ) ) {
 			return true;
 		}
 
-		// Allow .dev domains (though deprecated, some still use it)
+		// Allow .dev domains (though deprecated, some still use it).
 		if ( preg_match( '/\.dev$/i', $host ) ) {
 			return true;
 		}
 
-		// Check for WP_DEBUG mode as an override (optional, can be removed if too permissive)
+		// Check for WP_DEBUG mode as an override (optional, can be removed if too permissive).
 		if ( defined( 'WP_DEBUG' ) && WP_DEBUG && defined( 'WP_LOCAL_DEV' ) && WP_LOCAL_DEV ) {
 			return true;
 		}
@@ -231,8 +231,8 @@ class WBC_Altcha_Service extends WBC_Captcha_Service_Base {
 	/**
 	 * Render the captcha field
 	 *
-	 * @param string $context The context where captcha is rendered
-	 * @param array  $args    Additional arguments
+	 * @param string $context The context where captcha is rendered.
+	 * @param array  $args    Additional arguments.
 	 * @return void
 	 */
 	public function render( $context, $args = array() ) {
@@ -241,7 +241,7 @@ class WBC_Altcha_Service extends WBC_Captcha_Service_Base {
 			return;
 		}
 
-		// Check for secure context (HTTPS required for Web Crypto API)
+		// Check for secure context (HTTPS required for Web Crypto API).
 		if ( ! $this->is_secure_context() ) {
 			$current_host = filter_input( INPUT_SERVER, 'HTTP_HOST', FILTER_SANITIZE_SPECIAL_CHARS );
 			$current_host = ! empty( $current_host ) ? $current_host : 'unknown';
@@ -258,30 +258,30 @@ class WBC_Altcha_Service extends WBC_Captcha_Service_Base {
 			return;
 		}
 
-		// Generate challenge
+		// Generate challenge.
 		$challenge = $this->generate_challenge();
 		if ( ! $challenge ) {
 			return;
 		}
 
-		// Get settings
+		// Get settings.
 		$auto_verify = get_option( 'wbc_altcha_auto_verify', 'off' );
-		$hide_logo = get_option( 'wbc_altcha_hide_logo', 'no' ) === 'yes';
+		$hide_logo   = get_option( 'wbc_altcha_hide_logo', 'no' ) === 'yes';
 
-		// Generate unique ID
+		// Generate unique ID.
 		$widget_id = 'altcha-' . $context . '-wbc';
 
-		// Get nonce
+		// Get nonce.
 		$nonce_action = $this->get_nonce_action( $context );
 
-		// Render HTML
+		// Render HTML.
 		?>
 		<input type="hidden" autocomplete="off" name="<?php echo esc_attr( $nonce_action ); ?>" value="<?php echo esc_attr( wp_create_nonce( $nonce_action ) ); ?>" />
 		<div class="wbc_captcha_field wbc_altcha_field input">
 			<altcha-widget
 				id="<?php echo esc_attr( $widget_id ); ?>"
 				challengejson='<?php echo wp_json_encode( $challenge ); ?>'
-				<?php if ( $auto_verify !== 'off' ) : ?>
+				<?php if ( 'off' !== $auto_verify ) : ?>
 				auto="<?php echo esc_attr( $auto_verify ); ?>"
 				<?php endif; ?>
 				<?php if ( $hide_logo ) : ?>
@@ -296,17 +296,17 @@ class WBC_Altcha_Service extends WBC_Captcha_Service_Base {
 	/**
 	 * Verify the captcha response
 	 *
-	 * @param string $response The captcha response (base64 encoded payload)
-	 * @param array  $args     Additional arguments
+	 * @param string $response The captcha response (base64 encoded payload).
+	 * @param array  $args     Additional arguments.
 	 * @return bool
 	 */
 	public function verify( $response, $args = array() ) {
 		$hmac_key = $this->get_secret_key();
 		if ( empty( $hmac_key ) ) {
-			return false; // ALTCHA requires HMAC key
+			return false; // ALTCHA requires HMAC key.
 		}
 
-		// Verify nonce if present
+		// Verify nonce if present.
 		$context = isset( $args['context'] ) ? $args['context'] : '';
 		if ( ! empty( $context ) ) {
 			$nonce_action = $this->get_nonce_action( $context );
@@ -321,11 +321,11 @@ class WBC_Altcha_Service extends WBC_Captcha_Service_Base {
 			return false;
 		}
 
-		// Use ALTCHA plugin if available
+		// Use ALTCHA plugin if available.
 		if ( class_exists( 'AltchaPlugin' ) && isset( AltchaPlugin::$instance ) ) {
 			$verified = AltchaPlugin::$instance->verify( $response, $hmac_key );
 		} else {
-			// Self-hosted verification
+			// Self-hosted verification.
 			$verified = $this->verify_solution( $response, $hmac_key );
 		}
 
@@ -335,12 +335,12 @@ class WBC_Altcha_Service extends WBC_Captcha_Service_Base {
 	/**
 	 * Verify solution manually (fallback if ALTCHA plugin not available)
 	 *
-	 * @param string $payload  Base64 encoded payload
-	 * @param string $hmac_key HMAC key
+	 * @param string $payload  Base64 encoded payload.
+	 * @param string $hmac_key HMAC key.
 	 * @return bool
 	 */
 	private function verify_solution( $payload, $hmac_key ) {
-		// Validate base64 encoding
+		// Validate base64 encoding.
 		if ( ! preg_match( '/^[A-Za-z0-9+\/=]+$/', $payload ) ) {
 			return false;
 		}
@@ -355,12 +355,12 @@ class WBC_Altcha_Service extends WBC_Captcha_Service_Base {
 			return false;
 		}
 
-		// Validate required properties exist
+		// Validate required properties exist.
 		if ( ! isset( $data->algorithm, $data->challenge, $data->salt, $data->signature, $data->number ) ) {
 			return false;
 		}
 
-		// Check expiration if present
+		// Check expiration if present.
 		if ( is_string( $data->salt ) ) {
 			$salt_url = wp_parse_url( $data->salt );
 			if ( is_array( $salt_url ) && isset( $salt_url['query'] ) && ! empty( $salt_url['query'] ) ) {
@@ -374,16 +374,16 @@ class WBC_Altcha_Service extends WBC_Captcha_Service_Base {
 			}
 		}
 
-		// Verify algorithm
-		$alg_ok = ( $data->algorithm === 'SHA-256' );
+		// Verify algorithm.
+		$alg_ok = ( 'SHA-256' === $data->algorithm );
 
-		// Verify challenge
+		// Verify challenge.
 		$calculated_challenge = hash( 'sha256', $data->salt . $data->number );
-		$challenge_ok = ( $data->challenge === $calculated_challenge );
+		$challenge_ok         = ( $data->challenge === $calculated_challenge );
 
-		// Verify signature
+		// Verify signature.
 		$calculated_signature = hash_hmac( 'sha256', $data->challenge, $hmac_key );
-		$signature_ok = ( $data->signature === $calculated_signature );
+		$signature_ok         = ( $data->signature === $calculated_signature );
 
 		return $alg_ok && $challenge_ok && $signature_ok;
 	}
@@ -394,7 +394,7 @@ class WBC_Altcha_Service extends WBC_Captcha_Service_Base {
 	 * @return string
 	 */
 	public function get_verify_endpoint() {
-		return ''; // ALTCHA verifies locally, no external endpoint
+		return ''; // ALTCHA verifies locally, no external endpoint.
 	}
 
 	/**
