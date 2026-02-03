@@ -1,14 +1,14 @@
-# Copyright (C) 2025 Wbcom Designs
+# Copyright (C) 2026 Wbcom Designs
 # This file is distributed under the GPL-2.0+.
 msgid ""
 msgstr ""
 "Project-Id-Version: Wbcom CAPTCHA Manager 2.0.1\n"
 "Report-Msgid-Bugs-To: https://wbcomdesigns.com/contact/\n"
-"POT-Creation-Date: 2025-11-07 13:31:50+00:00\n"
+"POT-Creation-Date: 2026-02-03 17:44:28+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2025-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: 2026-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Wbcom Designs\n"
 "Language-Team: Wbcom Designs\n"
 "Language: en\n"
@@ -769,7 +769,7 @@ msgstr ""
 #: admin/includes/class-wbc-buddypress-settings-page.php:776
 #: admin/includes/class-wbc-buddypress-settings-page.php:2075
 #: admin/includes/class-wbc-buddypress-settings-page.php:2076
-#: includes/services/class-recaptcha-v2-service.php:357
+#: includes/services/class-recaptcha-v2-service.php:358
 msgid "Please complete the security check."
 msgstr ""
 
@@ -3227,11 +3227,11 @@ msgstr ""
 #: includes/class-captcha-service-manager.php:360
 #. translators: %s: Settings page URL
 msgid ""
-"Captcha service is not properly configured. Please %sconfigure your captcha "
-"settings%s."
+"Captcha service is not properly configured. Please %1$sconfigure your "
+"captcha settings%2$s."
 msgstr ""
 
-#: includes/class-recaptcha-for-buddypress.php:810
+#: includes/class-recaptcha-for-buddypress.php:792
 msgid "An error occurred. Please try again."
 msgstr ""
 
@@ -3662,31 +3662,31 @@ msgid ""
 "or .local domains."
 msgstr ""
 
-#: includes/services/class-recaptcha-v2-service.php:345
-#: includes/services/class-recaptcha-v2-service.php:348
-msgid "Please complete the security check to log in."
-msgstr ""
-
 #: includes/services/class-recaptcha-v2-service.php:346
 #: includes/services/class-recaptcha-v2-service.php:349
-#: includes/services/class-recaptcha-v2-service.php:351
-msgid "Please complete the security check to register."
+msgid "Please complete the security check to log in."
 msgstr ""
 
 #: includes/services/class-recaptcha-v2-service.php:347
 #: includes/services/class-recaptcha-v2-service.php:350
+#: includes/services/class-recaptcha-v2-service.php:352
+msgid "Please complete the security check to register."
+msgstr ""
+
+#: includes/services/class-recaptcha-v2-service.php:348
+#: includes/services/class-recaptcha-v2-service.php:351
 msgid "Please complete the security check to reset your password."
 msgstr ""
 
-#: includes/services/class-recaptcha-v2-service.php:352
+#: includes/services/class-recaptcha-v2-service.php:353
 msgid "Please complete the security check to submit your topic."
 msgstr ""
 
-#: includes/services/class-recaptcha-v2-service.php:353
+#: includes/services/class-recaptcha-v2-service.php:354
 msgid "Please complete the security check to submit your reply."
 msgstr ""
 
-#: includes/services/class-recaptcha-v2-service.php:354
+#: includes/services/class-recaptcha-v2-service.php:355
 msgid "Please complete the security check to place your order."
 msgstr ""
 
