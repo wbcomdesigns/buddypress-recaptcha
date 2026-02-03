@@ -80,16 +80,29 @@ register_deactivation_hook( __FILE__, 'deactivate_recaptcha_for_woocommerce' );
  */
 require plugin_dir_path( __FILE__ ) . 'includes/class-recaptcha-for-buddypress.php';
 
-// Only load update checker if the file exists (prevents fatal errors during plugin updates)
-$update_checker_path = plugin_dir_path( __FILE__ ) . 'bp-recaptcha-update-checker/plugin-update-checker.php';
-if ( file_exists( $update_checker_path ) ) {
-	require $update_checker_path;
-	$myUpdateChecker = \YahnisElsts\PluginUpdateChecker\v5\PucFactory::buildUpdateChecker(
-		'https://demos.wbcomdesigns.com/exporter/free-plugins/buddypress-recaptcha.json',
-		__FILE__, // Full path to the main plugin file or functions.php.
-		'buddypress-recaptcha'
-	);
+// Load EDD SL SDK for update handling (no license key required for free plugin).
+$rfb_sdk_path = plugin_dir_path( __FILE__ ) . 'vendor/easy-digital-downloads/edd-sl-sdk/edd-sl-sdk.php';
+if ( file_exists( $rfb_sdk_path ) ) {
+	require_once $rfb_sdk_path;
 }
+
+add_action(
+	'edd_sl_sdk_registry',
+	function ( $registry ) {
+		$registry->register(
+			array(
+				'id'          => 'buddypress-recaptcha',
+				'url'         => 'https://wbcomdesigns.com',
+				'item_id'     => 1246648,
+				'item_name'   => 'reCaptcha for BuddyPress',
+				'version'     => RFB_PLUGIN_VERSION,
+				'file'        => RFB_PLUGIN_FILE,
+				'option_name' => '',
+				'type'        => 'plugin',
+			)
+		);
+	}
+);
 
 /**
  * Plugin activation check.
