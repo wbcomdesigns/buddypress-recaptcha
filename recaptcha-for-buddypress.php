@@ -15,7 +15,7 @@
  * Plugin Name:       Wbcom CAPTCHA Manager
  * Plugin URI:        https://wbcomdesigns.com/downloads/recaptcha-for-buddypress/
  * Description:       Complete CAPTCHA solution with support for reCAPTCHA v2, v3, Cloudflare Turnstile, hCaptcha, and ALTCHA. Protect WordPress, WooCommerce, BuddyPress, bbPress, and 10+ popular form builders from spam and bots with a modular, easy-to-manage interface.
- * Version:           2.0.0
+ * Version:           2.0.1
  * Author:            Wbcom Designs
  * Author URI:        https://wbcomdesigns.com/
  * License:           GPL-2.0+
@@ -34,7 +34,7 @@ if ( ! defined( 'WPINC' ) ) {
  * Rename this for your plugin and update it as you release new versions.
  */
 if ( ! defined( 'RFB_PLUGIN_VERSION' ) ) {
-	define( 'RFB_PLUGIN_VERSION', '2.0.0' );
+	define( 'RFB_PLUGIN_VERSION', '2.0.1' );
 }
 
 if ( ! defined( 'RFB_PLUGIN_FILE' ) ) {

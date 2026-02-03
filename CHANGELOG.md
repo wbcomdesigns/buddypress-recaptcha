@@ -1,5 +1,13 @@
 # Changelog
 
+## Version 2.0.1 - Bug Fix Release
+
+### 🐛 Bug Fixes
+- **Fixed**: Fatal error from undefined WooCommerce hook callbacks (`woo_verify_wp_register_captcha`, `woo_verify_wp_lostpassword_captcha`, `woo_remove_no_conflict`) - leftover references from v2.0.0 refactor
+- **Fixed**: PHP 8+ `TypeError` in settings migration when `wbc_recapcha_version` option doesn't exist (`strtolower()` on `false`)
+
+---
+
 ## Version 2.1.0 - ALTCHA & hCaptcha Integration
 
 ### 🎯 New Features
