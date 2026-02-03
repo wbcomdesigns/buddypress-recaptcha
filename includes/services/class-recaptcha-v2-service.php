@@ -49,10 +49,10 @@ class WBC_Recaptcha_V2_Service extends WBC_Captcha_Service_Base {
 	 */
 	public function get_site_key() {
 		// Try standard format first (with underscore)
-		$site_key = trim( get_option( 'wbc_recaptcha_v2_site_key' ) );
+		$site_key = trim( get_option( 'wbc_recaptcha_v2_site_key', '' ) );
 		if ( empty( $site_key ) ) {
 			// Fallback to hyphen format for backward compatibility
-			$site_key = trim( get_option( 'wbc_recaptcha-v2_site_key' ) );
+			$site_key = trim( get_option( 'wbc_recaptcha-v2_site_key', '' ) );
 		}
 		return $site_key;
 	}
@@ -64,10 +64,10 @@ class WBC_Recaptcha_V2_Service extends WBC_Captcha_Service_Base {
 	 */
 	public function get_secret_key() {
 		// Try standard format first (with underscore)
-		$secret_key = trim( get_option( 'wbc_recaptcha_v2_secret_key' ) );
+		$secret_key = trim( get_option( 'wbc_recaptcha_v2_secret_key', '' ) );
 		if ( empty( $secret_key ) ) {
 			// Fallback to hyphen format for backward compatibility
-			$secret_key = trim( get_option( 'wbc_recaptcha-v2_secret_key' ) );
+			$secret_key = trim( get_option( 'wbc_recaptcha-v2_secret_key', '' ) );
 		}
 		return $secret_key;
 	}
@@ -94,7 +94,7 @@ class WBC_Recaptcha_V2_Service extends WBC_Captcha_Service_Base {
 	 * @return string
 	 */
 	public function get_script_url() {
-		$language = trim( get_option( 'language' ) );
+		$language = trim( get_option( 'language', '' ) );
 		$lang = '';
 		if ( $language ) {
 			$lang = '?hl=' . $language;
