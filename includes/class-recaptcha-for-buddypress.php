@@ -549,10 +549,6 @@ class Recaptcha_For_BuddyPress {
 		// WooCommerce Filter hooks
 		$woocommerce_filter = new Woocommerce_Filter();
 		add_filter( 'wp_authenticate_user', array( $woocommerce_filter, 'woo_wp_verify_login_captcha' ), 10, 2 );
-		add_filter( 'register_post', array( $woocommerce_filter, 'woo_verify_wp_register_captcha' ), 10, 3 );
-		// Priority 20 to run after WooCommerce's handler at priority 10
-		add_action( 'lostpassword_post', array( $woocommerce_filter, 'woo_verify_wp_lostpassword_captcha' ), 20, 1 );
-		add_filter( 'wpforms_frontend_recaptcha_noconflict', array( $woocommerce_filter, 'woo_remove_no_conflict' ) );
 
 		// Comment form display and validation
 		$woocommerce_order = new Woocommerce_Order();
