@@ -97,7 +97,7 @@ add_action(
 				'item_name'   => 'reCaptcha for BuddyPress',
 				'version'     => RFB_PLUGIN_VERSION,
 				'file'        => RFB_PLUGIN_FILE,
-				'option_name' => '',
+				'keyless'     => true,
 				'type'        => 'plugin',
 			)
 		);
