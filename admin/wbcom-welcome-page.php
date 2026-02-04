@@ -29,7 +29,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 						<div class="wbcom-support-inner">
 						<h3><span class="dashicons dashicons-book"></span><?php esc_html_e( 'Documentation', 'buddypress-recaptcha' ); ?></h3>
 						<p><?php esc_html_e( 'Our comprehensive documentation covers everything from initial setup to advanced configurations. Find answers to common questions and best practices for optimal security.', 'buddypress-recaptcha' ); ?></p>
-						<a href="<?php echo esc_url( 'https://wbcomdesigns.com/docs/general/buddypress-recaptcha/' ); ?>" class="button button-primary button-welcome-support" target="_blank"><?php esc_html_e( 'Read Documentation', 'buddypress-recaptcha' ); ?></a>
+						<a href="<?php echo esc_url( 'https://docs.wbcomdesigns.com/docs/buddypress-recaptcha/' ); ?>" class="button button-primary button-welcome-support" target="_blank"><?php esc_html_e( 'Read Documentation', 'buddypress-recaptcha' ); ?></a>
 						</div>
 					</div>
 
