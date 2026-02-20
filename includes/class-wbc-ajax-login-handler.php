@@ -21,40 +21,46 @@
 class WBC_AJAX_Login_Handler {
 
 	/**
-	 * Handle AJAX login request
+	 * Handle AJAX login request.
 	 */
 	public function handle_ajax_login() {
-		// Verify nonce
-		if ( ! isset( $_POST['wbc_login_nonce'] ) || ! wp_verify_nonce( $_POST['wbc_login_nonce'], 'wbc_ajax_login_nonce' ) ) {
-			wp_send_json_error( array(
-				'message' => __( 'Security check failed. Please refresh the page and try again.', 'buddypress-recaptcha' ),
-			) );
+		// Verify nonce.
+		if ( ! isset( $_POST['wbc_login_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['wbc_login_nonce'] ) ), 'wbc_ajax_login_nonce' ) ) {
+			wp_send_json_error(
+				array(
+					'message' => __( 'Security check failed. Please refresh the page and try again.', 'buddypress-recaptcha' ),
+				)
+			);
 		}
 
-		// Verify CAPTCHA
+		// Verify CAPTCHA.
 		if ( function_exists( 'wbc_verify_captcha' ) ) {
 			if ( ! wbc_verify_captcha( 'widget_login' ) ) {
 				$error_message = wbc_get_captcha_error_message( 'widget_login', 'invalid' );
-				wp_send_json_error( array(
-					'message' => $error_message,
-				) );
+				wp_send_json_error(
+					array(
+						'message' => $error_message,
+					)
+				);
 			}
 		}
 
-		// Sanitize inputs
-		$username = isset( $_POST['username'] ) ? sanitize_user( $_POST['username'] ) : '';
-		$password = isset( $_POST['password'] ) ? $_POST['password'] : '';
-		$remember = isset( $_POST['remember'] ) && 'yes' === $_POST['remember'];
-		$redirect_to = isset( $_POST['redirect_to'] ) ? esc_url_raw( $_POST['redirect_to'] ) : home_url();
+		// Sanitize inputs.
+		$username    = isset( $_POST['username'] ) ? sanitize_user( wp_unslash( $_POST['username'] ) ) : '';
+		$password    = isset( $_POST['password'] ) ? wp_unslash( $_POST['password'] ) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Password must not be sanitized.
+		$remember    = isset( $_POST['remember'] ) && 'yes' === sanitize_text_field( wp_unslash( $_POST['remember'] ) );
+		$redirect_to = isset( $_POST['redirect_to'] ) ? esc_url_raw( wp_unslash( $_POST['redirect_to'] ) ) : home_url();
 
-		// Validate required fields
+		// Validate required fields.
 		if ( empty( $username ) || empty( $password ) ) {
-			wp_send_json_error( array(
-				'message' => __( 'Please enter both username and password.', 'buddypress-recaptcha' ),
-			) );
+			wp_send_json_error(
+				array(
+					'message' => __( 'Please enter both username and password.', 'buddypress-recaptcha' ),
+				)
+			);
 		}
 
-		// Attempt login
+		// Attempt login.
 		$credentials = array(
 			'user_login'    => $username,
 			'user_password' => $password,
@@ -64,24 +70,28 @@ class WBC_AJAX_Login_Handler {
 		$user = wp_signon( $credentials, is_ssl() );
 
 		if ( is_wp_error( $user ) ) {
-			wp_send_json_error( array(
-				'message' => $user->get_error_message(),
-			) );
+			wp_send_json_error(
+				array(
+					'message' => $user->get_error_message(),
+				)
+			);
 		}
 
-		// Login successful
-		wp_send_json_success( array(
-			'message'     => sprintf(
+		// Login successful.
+		wp_send_json_success(
+			array(
+				'message'     => sprintf(
 				/* translators: %s: user display name */
-				__( 'Welcome back, %s!', 'buddypress-recaptcha' ),
-				$user->display_name
-			),
-			'redirect_to' => $redirect_to,
-			'user'        => array(
-				'id'           => $user->ID,
-				'display_name' => $user->display_name,
-				'email'        => $user->user_email,
-			),
-		) );
+					__( 'Welcome back, %s!', 'buddypress-recaptcha' ),
+					$user->display_name
+				),
+				'redirect_to' => $redirect_to,
+				'user'        => array(
+					'id'           => $user->ID,
+					'display_name' => $user->display_name,
+					'email'        => $user->user_email,
+				),
+			)
+		);
 	}
 }

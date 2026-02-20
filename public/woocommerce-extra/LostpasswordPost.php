@@ -1,4 +1,4 @@
-<?php
+<?php // phpcs:ignore WordPress.Files.FileName.InvalidClassFileName, WordPress.Files.FileName.NotHyphenatedLowercase
 /**
  * The public-facing functionality of the plugin.
  *
@@ -28,7 +28,7 @@ class LostpasswordPost {
 	 * @return WP_Error
 	 */
 	public function woocomm_validate_lostpassword_captcha( $validation_errors ) {
-		// Verify captcha using the service manager
+		// Verify captcha using the service manager.
 		if ( function_exists( 'wbc_verify_captcha' ) ) {
 			if ( ! wbc_verify_captcha( 'woo_lostpassword' ) ) {
 				$error_message = wbc_get_captcha_error_message( 'woo_lostpassword', 'invalid' );

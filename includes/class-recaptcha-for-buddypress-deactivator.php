@@ -29,7 +29,5 @@ class Recaptcha_For_BuddyPress_Deactivator {
 	 * @since    1.0.0
 	 */
 	public static function deactivate() {
-
 	}
-
 }

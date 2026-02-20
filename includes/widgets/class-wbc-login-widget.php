@@ -40,10 +40,10 @@ class WBC_Login_Widget extends WP_Widget {
 	 * @param array $instance Saved values from database.
 	 */
 	public function widget( $args, $instance ) {
-		echo $args['before_widget'];
+		echo wp_kses_post( $args['before_widget'] );
 
 		if ( ! empty( $instance['title'] ) ) {
-			echo $args['before_title'] . apply_filters( 'widget_title', $instance['title'] ) . $args['after_title'];
+			echo wp_kses_post( $args['before_title'] . apply_filters( 'widget_title', $instance['title'] ) . $args['after_title'] );
 		}
 
 		if ( is_user_logged_in() ) {
@@ -52,7 +52,7 @@ class WBC_Login_Widget extends WP_Widget {
 			$this->render_login_form( $instance );
 		}
 
-		echo $args['after_widget'];
+		echo wp_kses_post( $args['after_widget'] );
 	}
 
 	/**
@@ -61,7 +61,7 @@ class WBC_Login_Widget extends WP_Widget {
 	 * @param array $instance Widget instance.
 	 */
 	private function render_logged_in_view( $instance ) {
-		$current_user = wp_get_current_user();
+		$current_user    = wp_get_current_user();
 		$welcome_message = ! empty( $instance['welcome_message'] ) ? $instance['welcome_message'] : __( 'Welcome back, {username}!', 'buddypress-recaptcha' );
 		$welcome_message = str_replace( '{username}', '<strong>' . esc_html( $current_user->display_name ) . '</strong>', $welcome_message );
 
@@ -69,7 +69,7 @@ class WBC_Login_Widget extends WP_Widget {
 		<div class="wbc-login-widget-logged-in">
 			<p class="wbc-welcome-message"><?php echo wp_kses_post( $welcome_message ); ?></p>
 			<div class="wbc-user-links">
-				<?php if ( ! empty( $instance['show_profile_link'] ) && $instance['show_profile_link'] === 'yes' ) : ?>
+				<?php if ( ! empty( $instance['show_profile_link'] ) && 'yes' === $instance['show_profile_link'] ) : ?>
 					<a href="<?php echo esc_url( get_edit_profile_url( $current_user->ID ) ); ?>" class="wbc-profile-link">
 						<?php esc_html_e( 'My Profile', 'buddypress-recaptcha' ); ?>
 					</a>
@@ -126,7 +126,7 @@ class WBC_Login_Widget extends WP_Widget {
 					</button>
 				</p>
 
-				<?php if ( ! empty( $instance['show_lost_password'] ) && $instance['show_lost_password'] === 'yes' ) : ?>
+				<?php if ( ! empty( $instance['show_lost_password'] ) && 'yes' === $instance['show_lost_password'] ) : ?>
 					<p class="wbc-lost-password">
 						<a href="<?php echo esc_url( wp_lostpassword_url() ); ?>">
 							<?php esc_html_e( 'Lost your password?', 'buddypress-recaptcha' ); ?>
@@ -134,7 +134,7 @@ class WBC_Login_Widget extends WP_Widget {
 					</p>
 				<?php endif; ?>
 
-				<?php if ( get_option( 'users_can_register' ) && ! empty( $instance['show_register_link'] ) && $instance['show_register_link'] === 'yes' ) : ?>
+				<?php if ( get_option( 'users_can_register' ) && ! empty( $instance['show_register_link'] ) && 'yes' === $instance['show_register_link'] ) : ?>
 					<p class="wbc-register-link">
 						<a href="<?php echo esc_url( wp_registration_url() ); ?>">
 							<?php esc_html_e( 'Register', 'buddypress-recaptcha' ); ?>
@@ -156,12 +156,12 @@ class WBC_Login_Widget extends WP_Widget {
 	 * @param array $instance Previously saved values from database.
 	 */
 	public function form( $instance ) {
-		$title = ! empty( $instance['title'] ) ? $instance['title'] : __( 'Login', 'buddypress-recaptcha' );
-		$welcome_message = ! empty( $instance['welcome_message'] ) ? $instance['welcome_message'] : __( 'Welcome back, {username}!', 'buddypress-recaptcha' );
-		$redirect_url = ! empty( $instance['redirect_url'] ) ? $instance['redirect_url'] : home_url();
+		$title              = ! empty( $instance['title'] ) ? $instance['title'] : __( 'Login', 'buddypress-recaptcha' );
+		$welcome_message    = ! empty( $instance['welcome_message'] ) ? $instance['welcome_message'] : __( 'Welcome back, {username}!', 'buddypress-recaptcha' );
+		$redirect_url       = ! empty( $instance['redirect_url'] ) ? $instance['redirect_url'] : home_url();
 		$show_lost_password = ! empty( $instance['show_lost_password'] ) ? $instance['show_lost_password'] : 'yes';
 		$show_register_link = ! empty( $instance['show_register_link'] ) ? $instance['show_register_link'] : 'yes';
-		$show_profile_link = ! empty( $instance['show_profile_link'] ) ? $instance['show_profile_link'] : 'yes';
+		$show_profile_link  = ! empty( $instance['show_profile_link'] ) ? $instance['show_profile_link'] : 'yes';
 		?>
 		<p>
 			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>">
@@ -228,13 +228,13 @@ class WBC_Login_Widget extends WP_Widget {
 	 * @return array Updated safe values to be saved.
 	 */
 	public function update( $new_instance, $old_instance ) {
-		$instance = array();
-		$instance['title'] = ! empty( $new_instance['title'] ) ? sanitize_text_field( $new_instance['title'] ) : '';
-		$instance['welcome_message'] = ! empty( $new_instance['welcome_message'] ) ? sanitize_text_field( $new_instance['welcome_message'] ) : '';
-		$instance['redirect_url'] = ! empty( $new_instance['redirect_url'] ) ? esc_url_raw( $new_instance['redirect_url'] ) : home_url();
+		$instance                       = array();
+		$instance['title']              = ! empty( $new_instance['title'] ) ? sanitize_text_field( $new_instance['title'] ) : '';
+		$instance['welcome_message']    = ! empty( $new_instance['welcome_message'] ) ? sanitize_text_field( $new_instance['welcome_message'] ) : '';
+		$instance['redirect_url']       = ! empty( $new_instance['redirect_url'] ) ? esc_url_raw( $new_instance['redirect_url'] ) : home_url();
 		$instance['show_lost_password'] = ! empty( $new_instance['show_lost_password'] ) ? 'yes' : 'no';
 		$instance['show_register_link'] = ! empty( $new_instance['show_register_link'] ) ? 'yes' : 'no';
-		$instance['show_profile_link'] = ! empty( $new_instance['show_profile_link'] ) ? 'yes' : 'no';
+		$instance['show_profile_link']  = ! empty( $new_instance['show_profile_link'] ) ? 'yes' : 'no';
 
 		return $instance;
 	}

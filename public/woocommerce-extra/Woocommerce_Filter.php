@@ -1,4 +1,4 @@
-<?php
+<?php // phpcs:ignore WordPress.Files.FileName.InvalidClassFileName, WordPress.Files.FileName.NotHyphenatedLowercase
 /**
  * The public-facing functionality of the plugin.
  *
@@ -24,17 +24,17 @@ class Woocommerce_Filter {
 	/**
 	 * Verify login captcha
 	 *
-	 * @param mixed  $user     User object or WP_Error
-	 * @param string $password Password
-	 * @return mixed User object or WP_Error
+	 * @param mixed  $user     User object or WP_Error.
+	 * @param string $password Password.
+	 * @return mixed User object or WP_Error.
 	 */
-	public function woo_wp_verify_login_captcha( $user, $password ) {
-		// Check if we need to verify
-		if ( ! isset( $_POST['log'] ) ) {
+	public function woo_wp_verify_login_captcha( $user, $password ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.FoundAfterLastUsed
+		// Check if we need to verify.
+		if ( ! isset( $_POST['log'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
 			return $user;
 		}
 
-		// Use verification helper
+		// Use verification helper.
 		if ( function_exists( 'wbc_verify_captcha' ) ) {
 			if ( ! wbc_verify_captcha( 'wp_login' ) ) {
 				$error_msg = wbc_get_captcha_error_message( 'wp_login', 'invalid' );
@@ -51,7 +51,7 @@ class Woocommerce_Filter {
 	 * @return void
 	 */
 	public function woo_display_order_tracking_captcha() {
-		// Use the service manager to render captcha
+		// Use the service manager to render captcha.
 		if ( function_exists( 'wbc_captcha_service_manager' ) ) {
 			wbc_captcha_service_manager()->render( 'order_tracking' );
 		}
@@ -63,13 +63,13 @@ class Woocommerce_Filter {
 	 * @return void
 	 */
 	public function woo_verify_order_tracking_captcha() {
-		// Check if captcha is enabled for order tracking
+		// Check if captcha is enabled for order tracking.
 		$is_enabled = get_option( 'wbc_recaptcha_enable_on_order_tracking' );
 		if ( 'yes' !== $is_enabled ) {
 			return;
 		}
 
-		// Verify captcha
+		// Verify captcha.
 		if ( function_exists( 'wbc_verify_captcha' ) ) {
 			if ( ! wbc_verify_captcha( 'order_tracking' ) ) {
 				$error_msg = wbc_get_captcha_error_message( 'order_tracking', 'invalid' );
@@ -84,7 +84,7 @@ class Woocommerce_Filter {
 	 * @return void
 	 */
 	public function woo_display_comment_captcha() {
-		// Use the service manager to render captcha
+		// Use the service manager to render captcha.
 		if ( function_exists( 'wbc_captcha_service_manager' ) ) {
 			wbc_captcha_service_manager()->render( 'comment' );
 		}
@@ -93,17 +93,17 @@ class Woocommerce_Filter {
 	/**
 	 * Verify comment captcha
 	 *
-	 * @param array $commentdata Comment data
+	 * @param array $commentdata Comment data.
 	 * @return array
 	 */
 	public function woo_verify_comment_captcha( $commentdata ) {
-		// Check if captcha is enabled for comments
+		// Check if captcha is enabled for comments.
 		$is_enabled = get_option( 'wbc_recaptcha_enable_on_comment' );
 		if ( 'yes' !== $is_enabled ) {
 			return $commentdata;
 		}
 
-		// Skip for logged-in users if configured
+		// Skip for logged-in users if configured.
 		if ( is_user_logged_in() ) {
 			$skip_for_logged_in = get_option( 'wbc_recaptcha_skip_comment_for_logged_in' );
 			if ( 'yes' === $skip_for_logged_in ) {
@@ -111,14 +111,17 @@ class Woocommerce_Filter {
 			}
 		}
 
-		// Verify captcha
+		// Verify captcha.
 		if ( function_exists( 'wbc_verify_captcha' ) ) {
 			if ( ! wbc_verify_captcha( 'comment' ) ) {
 				$error_msg = wbc_get_captcha_error_message( 'comment', 'invalid' );
 				wp_die(
 					esc_html( $error_msg ),
 					esc_html__( 'Comment Submission Failed', 'buddypress-recaptcha' ),
-					array( 'response' => 403, 'back_link' => true )
+					array(
+						'response'  => 403,
+						'back_link' => true,
+					)
 				);
 			}
 		}

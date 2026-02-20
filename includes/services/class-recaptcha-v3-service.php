@@ -1,10 +1,12 @@
-<?php
+<?php // phpcs:ignore WordPress.Files.FileName.InvalidClassFileName -- Service class uses simplified naming convention.
 /**
  * ReCAPTCHA v3 Service Implementation
  *
  * @package    Recaptcha_For_BuddyPress
  * @since      1.0.0
  */
+
+defined( 'ABSPATH' ) || exit;
 
 /**
  * ReCAPTCHA v3 service class.

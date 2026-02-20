@@ -1,5 +1,4 @@
-<?php
-
+<?php // phpcs:ignore WordPress.Files.FileName.InvalidClassFileName, WordPress.Files.FileName.NotHyphenatedLowercase
 /**
  * The public-facing functionality of the plugin.
  *
@@ -28,18 +27,20 @@ class Woocommerce_Register {
 	 * @return void
 	 */
 	public function woo_extra_register_fields() {
-		// Use the service manager to render captcha
+		// Use the service manager to render captcha.
 		if ( function_exists( 'wbc_captcha_service_manager' ) ) {
 			wbc_captcha_service_manager()->render( 'woo_register' );
 		}
 	}
 
 	/**
-	 * Validate captcha on WooCommerce registration
-	 * Note: Actual validation is handled by WoocommerceRegisterPost class
+	 * Validate captcha on WooCommerce registration.
+	 * Note: Actual validation is handled by WoocommerceRegisterPost class.
+	 *
+	 * @return void
 	 */
 	public function validate_register_captcha() {
-		// This method is kept for backward compatibility
-		// Actual validation happens in WoocommerceRegisterPost
+		// This method is kept for backward compatibility.
+		// Actual validation happens in WoocommerceRegisterPost.
 	}
 }

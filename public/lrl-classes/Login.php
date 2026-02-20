@@ -1,4 +1,4 @@
-<?php
+<?php // phpcs:ignore WordPress.Files.FileName.InvalidClassFileName, WordPress.Files.FileName.NotHyphenatedLowercase
 /**
  * The public-facing functionality of the plugin.
  *
@@ -25,7 +25,7 @@ class Login {
 	 * Render captcha on login form
 	 */
 	public function woo_extra_wp_login_form() {
-		// Use the service manager to render captcha
+		// Use the service manager to render captcha.
 		if ( function_exists( 'wbc_captcha_service_manager' ) ) {
 			wbc_captcha_service_manager()->render( 'wp_login' );
 		}

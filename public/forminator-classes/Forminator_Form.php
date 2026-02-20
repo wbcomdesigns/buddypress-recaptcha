@@ -1,4 +1,4 @@
-<?php
+<?php // phpcs:ignore WordPress.Files.FileName.InvalidClassFileName, WordPress.Files.FileName.NotHyphenatedLowercase
 /**
  * Forminator Integration
  *
@@ -31,20 +31,20 @@ class Forminator_Form {
 	 * @param int    $form_id   The form ID.
 	 * @return string Modified HTML with CAPTCHA.
 	 */
-	public function render_forminator_captcha( $html, $form_id ) {
-		// Check if CAPTCHA is enabled for Forminator
+	public function render_forminator_captcha( $html, $form_id ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.FoundAfterLastUsed
+		// Check if CAPTCHA is enabled for Forminator.
 		$is_enabled = get_option( 'wbc_recaptcha_enable_on_forminator' );
 		if ( 'yes' !== $is_enabled ) {
 			return $html;
 		}
 
-		// Get CAPTCHA HTML from service manager
+		// Get CAPTCHA HTML from service manager.
 		if ( function_exists( 'wbc_captcha_service_manager' ) ) {
 			ob_start();
 			wbc_captcha_service_manager()->render( 'forminator' );
 			$captcha_html = ob_get_clean();
 
-			// Prepend CAPTCHA before button
+			// Prepend CAPTCHA before button.
 			$html = $captcha_html . $html;
 		}
 
@@ -61,22 +61,22 @@ class Forminator_Form {
 	 * @param array $field_data_array Field data array.
 	 * @return array Modified submit errors.
 	 */
-	public function validate_forminator_captcha( $submit_errors, $form_id, $field_data_array ) {
-		// Check if CAPTCHA is enabled for Forminator
+	public function validate_forminator_captcha( $submit_errors, $form_id, $field_data_array ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.FoundAfterLastUsed
+		// Check if CAPTCHA is enabled for Forminator.
 		$is_enabled = get_option( 'wbc_recaptcha_enable_on_forminator' );
 		if ( 'yes' !== $is_enabled ) {
 			return $submit_errors;
 		}
 
-		// Verify CAPTCHA using service manager
+		// Verify CAPTCHA using service manager.
 		if ( function_exists( 'wbc_verify_captcha' ) ) {
 			if ( ! wbc_verify_captcha( 'forminator' ) ) {
-				// Get error message
+				// Get error message.
 				$error_message = wbc_get_captcha_error_message( 'forminator', 'invalid' );
 
-				// Add error to submit errors array
+				// Add error to submit errors array.
 				$submit_errors[] = array(
-					'field_id' => 'captcha',
+					'field_id'      => 'captcha',
 					'error_message' => $error_message,
 				);
 			}

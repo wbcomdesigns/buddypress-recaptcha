@@ -12,6 +12,8 @@
  * @subpackage bp_recaptcha/admin/includes/settings-modules
  */
 
+defined( 'ABSPATH' ) || exit;
+
 /**
  * Settings Module Loader Class
  *
@@ -69,13 +71,13 @@ class WBC_Settings_Module_Loader {
 	private function load_dependencies() {
 		$modules_dir = plugin_dir_path( __FILE__ );
 
-		// Load interface
+		// Load interface.
 		require_once $modules_dir . 'interface-wbc-settings-module.php';
 
-		// Load abstract base class
+		// Load abstract base class.
 		require_once $modules_dir . 'abstract-wbc-settings-module.php';
 
-		// Load all module implementations
+		// Load all module implementations.
 		require_once $modules_dir . 'class-wbc-wordpress-settings.php';
 		require_once $modules_dir . 'class-wbc-woocommerce-settings.php';
 		require_once $modules_dir . 'class-wbc-buddypress-settings.php';
@@ -98,46 +100,46 @@ class WBC_Settings_Module_Loader {
 	 * @return void
 	 */
 	private function register_modules() {
-		// WordPress Core (always active)
+		// WordPress Core (always active).
 		$this->register_module( new WBC_WordPress_Settings() );
 
-		// WooCommerce (conditional)
+		// WooCommerce (conditional).
 		$this->register_module( new WBC_WooCommerce_Settings() );
 
-		// BuddyPress (conditional)
+		// BuddyPress (conditional).
 		$this->register_module( new WBC_BuddyPress_Settings() );
 
-		// bbPress (conditional)
+		// bbPress (conditional).
 		$this->register_module( new WBC_bbPress_Settings() );
 
-		// Contact Form 7 (conditional)
+		// Contact Form 7 (conditional).
 		$this->register_module( new WBC_CF7_Settings() );
 
-		// WPForms (conditional)
+		// WPForms (conditional).
 		$this->register_module( new WBC_WPForms_Settings() );
 
-		// Gravity Forms (conditional)
+		// Gravity Forms (conditional).
 		$this->register_module( new WBC_GravityForms_Settings() );
 
-		// Ninja Forms (conditional)
+		// Ninja Forms (conditional).
 		$this->register_module( new WBC_NinjaForms_Settings() );
 
-		// Forminator (conditional)
+		// Forminator (conditional).
 		$this->register_module( new WBC_Forminator_Settings() );
 
-		// Elementor Pro (conditional)
+		// Elementor Pro (conditional).
 		$this->register_module( new WBC_ElementorPro_Settings() );
 
-		// Divi Builder (conditional)
+		// Divi Builder (conditional).
 		$this->register_module( new WBC_Divi_Settings() );
 
-		// Easy Digital Downloads (conditional)
+		// Easy Digital Downloads (conditional).
 		$this->register_module( new WBC_EDD_Settings() );
 
-		// MemberPress (conditional)
+		// MemberPress (conditional).
 		$this->register_module( new WBC_MemberPress_Settings() );
 
-		// Ultimate Member (conditional)
+		// Ultimate Member (conditional).
 		$this->register_module( new WBC_UltimateMember_Settings() );
 
 		/**
@@ -177,7 +179,7 @@ class WBC_Settings_Module_Loader {
 	public function get_active_modules() {
 		return array_filter(
 			$this->modules,
-			function( $module ) {
+			function ( $module ) {
 				return $module->is_active();
 			}
 		);
@@ -267,8 +269,10 @@ class WBC_Settings_Module_Loader {
 	}
 }
 
+// phpcs:disable Universal.Files.SeparateFunctionsFromOO.Mixed
+
 /**
- * Helper function to get settings module loader instance
+ * Helper function to get settings module loader instance.
  *
  * @return WBC_Settings_Module_Loader
  */
