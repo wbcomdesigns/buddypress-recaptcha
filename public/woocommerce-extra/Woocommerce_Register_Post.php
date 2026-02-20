@@ -1,4 +1,4 @@
-<?php
+<?php // phpcs:ignore WordPress.Files.FileName.InvalidClassFileName, WordPress.Files.FileName.NotHyphenatedLowercase
 /**
  * The public-facing functionality of the plugin.
  *
@@ -24,13 +24,13 @@ class Woocommerce_Register_Post {
 	/**
 	 * Validate signup captcha
 	 *
-	 * @param string   $username           Username
-	 * @param string   $email              Email
-	 * @param WP_Error $validation_errors  Validation errors
+	 * @param string   $username           Username.
+	 * @param string   $email              Email.
+	 * @param WP_Error $validation_errors  Validation errors.
 	 * @return void
 	 */
 	public function woocomm_validate_signup_captcha( $username, $email, $validation_errors ) {
-		// Use verification helper
+		// Use verification helper.
 		if ( function_exists( 'wbc_verify_captcha' ) ) {
 			if ( ! wbc_verify_captcha( 'woo_register' ) ) {
 				$error_msg = wbc_get_captcha_error_message( 'woo_register', 'invalid' );

@@ -1,4 +1,4 @@
-<?php
+<?php // phpcs:ignore WordPress.Files.FileName.InvalidClassFileName, WordPress.Files.FileName.NotHyphenatedLowercase
 /**
  * The public-facing functionality of the plugin.
  *
@@ -27,18 +27,20 @@ class Woocommerce_Lostpassword {
 	 * @return void
 	 */
 	public function woo_extra_lostpassword_fields() {
-		// Use the service manager to render captcha
+		// Use the service manager to render captcha.
 		if ( function_exists( 'wbc_captcha_service_manager' ) ) {
 			wbc_captcha_service_manager()->render( 'woo_lostpassword' );
 		}
 	}
 
 	/**
-	 * Validate captcha on WooCommerce lost password
-	 * Note: Actual validation is handled by LostpasswordPost class
+	 * Validate captcha on WooCommerce lost password.
+	 * Note: Actual validation is handled by LostpasswordPost class.
+	 *
+	 * @return void
 	 */
 	public function validate_lostpassword_captcha() {
-		// This method is kept for backward compatibility
-		// Actual validation happens in LostpasswordPost
+		// This method is kept for backward compatibility.
+		// Actual validation happens in LostpasswordPost.
 	}
 }

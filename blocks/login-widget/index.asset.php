@@ -1,4 +1,4 @@
-<?php
+<?php // phpcs:ignore WordPress.Files.FileName.NotHyphenatedLowercase -- Auto-generated block asset file.
 /**
  * Asset dependencies for the CAPTCHA Login block editor script
  *

@@ -1,10 +1,12 @@
-<?php
+<?php // phpcs:ignore WordPress.Files.FileName.InvalidClassFileName -- Service class uses simplified naming convention.
 /**
  * ALTCHA Service
  *
  * @package    Recaptcha_For_BuddyPress
  * @since      2.0.0
  */
+
+defined( 'ABSPATH' ) || exit;
 
 // phpcs:disable Universal.Files.SeparateFunctionsFromOO.Mixed -- Helper function must be defined alongside service class.
 // Load ALTCHA verification library if standalone altcha-spam-protection plugin not active.

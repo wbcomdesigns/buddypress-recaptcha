@@ -1,4 +1,4 @@
-<?php
+<?php // phpcs:ignore WordPress.Files.FileName.InvalidClassFileName
 /**
  * The public-facing functionality of the plugin.
  *
@@ -19,13 +19,15 @@
  * @subpackage bp_recaptcha/public
  * @author     Wbcom Designs <admin@wbcomdesigns.com>
  */
+// phpcs:disable PEAR.NamingConventions.ValidClassName.Invalid, Squiz.Commenting.ClassComment.Missing
 class Recaptcha_bbPress_Reply {
+	// phpcs:enable PEAR.NamingConventions.ValidClassName.Invalid, Squiz.Commenting.ClassComment.Missing
 
 	/**
 	 * Render captcha on bbPress reply form
 	 */
 	public function wbr_bbpress_reply_form_field_reply() {
-		// Use the service manager to render captcha
+		// Use the service manager to render captcha.
 		if ( function_exists( 'wbc_captcha_service_manager' ) ) {
 			wbc_captcha_service_manager()->render( 'bbpress_reply' );
 		}
@@ -38,7 +40,7 @@ class Recaptcha_bbPress_Reply {
 	 * @return array|WP_Error
 	 */
 	public function wbr_bbpress_reply_recaptcha_verify( $reply_data ) {
-		// Verify captcha using the service manager
+		// Verify captcha using the service manager.
 		if ( function_exists( 'wbc_verify_captcha' ) ) {
 			if ( ! wbc_verify_captcha( 'bbpress_reply' ) ) {
 				$error_message = wbc_get_captcha_error_message( 'bbpress_reply', 'invalid' );

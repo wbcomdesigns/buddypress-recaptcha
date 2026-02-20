@@ -1,10 +1,12 @@
-<?php
+<?php // phpcs:ignore WordPress.Files.FileName.InvalidClassFileName -- Legacy filename convention.
 /**
  * Settings Integration for Service Architecture
  *
  * @package    Recaptcha_For_BuddyPress
  * @since      1.0.0
  */
+
+defined( 'ABSPATH' ) || exit;
 
 /**
  * Handles integration between admin settings and service architecture

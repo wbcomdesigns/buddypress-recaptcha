@@ -29,18 +29,14 @@ class Recaptcha_For_BuddyPress_I18n {
 	/**
 	 * Load the plugin text domain for translation.
 	 *
+	 * Note: Since WordPress 6.7, translations are loaded just-in-time.
+	 * The load_plugin_textdomain() call has been removed to comply with
+	 * Plugin Check requirements.
+	 *
 	 * @since    1.0.0
 	 */
 	public function load_plugin_textdomain() {
-
-		load_plugin_textdomain(
-			'buddypress-recaptcha',
-			false,
-			dirname( dirname( plugin_basename( __FILE__ ) ) ) . '/languages/'
-		);
-
+		// Intentionally left empty.
+		// WordPress 6.7+ handles translation loading automatically.
 	}
-
-
-
 }

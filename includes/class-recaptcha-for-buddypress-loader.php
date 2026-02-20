@@ -9,6 +9,8 @@
  * @subpackage bp_recaptcha/includes
  */
 
+defined( 'ABSPATH' ) || exit;
+
 /**
  * Register all actions and filters for the plugin.
  *
@@ -49,7 +51,6 @@ class Recaptcha_For_BuddyPress_Loader {
 
 		$this->actions = array();
 		$this->filters = array();
-
 	}
 
 	/**
@@ -105,7 +106,6 @@ class Recaptcha_For_BuddyPress_Loader {
 		);
 
 		return $hooks;
-
 	}
 
 	/**
@@ -122,7 +122,5 @@ class Recaptcha_For_BuddyPress_Loader {
 		foreach ( $this->actions as $hook ) {
 			add_action( $hook['hook'], array( $hook['component'], $hook['callback'] ), $hook['priority'], $hook['accepted_args'] );
 		}
-
 	}
-
 }

@@ -1,4 +1,4 @@
-<?php
+<?php // phpcs:ignore WordPress.Files.FileName.InvalidClassFileName, WordPress.Files.FileName.NotHyphenatedLowercase
 /**
  * Elementor Pro Integration
  *
@@ -33,19 +33,19 @@ class ElementorPro_Form {
 	 * @return void
 	 */
 	public function render_elementorpro_captcha( $item, $item_index, $form ) {
-		// Check if CAPTCHA is enabled for Elementor Pro
+		// Check if CAPTCHA is enabled for Elementor Pro.
 		$is_enabled = get_option( 'wbc_recaptcha_enable_on_elementorpro' );
 		if ( 'yes' !== $is_enabled ) {
 			return;
 		}
 
-		// Only render once per form (on the last field)
+		// Only render once per form (on the last field).
 		$fields = $form->get_settings( 'form_fields' );
-		if ( $item_index !== count( $fields ) - 1 ) {
+		if ( count( $fields ) - 1 !== $item_index ) {
 			return;
 		}
 
-		// Render CAPTCHA using service manager
+		// Render CAPTCHA using service manager.
 		if ( function_exists( 'wbc_captcha_service_manager' ) ) {
 			echo '<div class="elementor-field-group elementor-column elementor-field-type-captcha elementor-col-100">';
 			wbc_captcha_service_manager()->render( 'elementorpro' );
@@ -63,19 +63,19 @@ class ElementorPro_Form {
 	 * @return void
 	 */
 	public function validate_elementorpro_captcha( $record, $ajax_handler ) {
-		// Check if CAPTCHA is enabled for Elementor Pro
+		// Check if CAPTCHA is enabled for Elementor Pro.
 		$is_enabled = get_option( 'wbc_recaptcha_enable_on_elementorpro' );
 		if ( 'yes' !== $is_enabled ) {
 			return;
 		}
 
-		// Verify CAPTCHA using service manager
+		// Verify CAPTCHA using service manager.
 		if ( function_exists( 'wbc_verify_captcha' ) ) {
 			if ( ! wbc_verify_captcha( 'elementorpro' ) ) {
-				// Get error message
+				// Get error message.
 				$error_message = wbc_get_captcha_error_message( 'elementorpro', 'invalid' );
 
-				// Add error to AJAX handler
+				// Add error to AJAX handler.
 				$ajax_handler->add_error_message( $error_message );
 			}
 		}

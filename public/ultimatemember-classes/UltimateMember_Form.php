@@ -1,4 +1,4 @@
-<?php
+<?php // phpcs:ignore WordPress.Files.FileName.InvalidClassFileName, WordPress.Files.FileName.NotHyphenatedLowercase
 /**
  * Ultimate Member Integration
  *
@@ -31,18 +31,18 @@ class UltimateMember_Form {
 	 * @return void
 	 */
 	public function render_um_login_captcha( $args ) {
-		// Check if this is a login form
+		// Check if this is a login form.
 		if ( ! isset( $args['mode'] ) || 'login' !== $args['mode'] ) {
 			return;
 		}
 
-		// Check if CAPTCHA is enabled for UM login
+		// Check if CAPTCHA is enabled for UM login.
 		$is_enabled = get_option( 'wbc_recaptcha_enable_on_um_login' );
 		if ( 'yes' !== $is_enabled ) {
 			return;
 		}
 
-		// Render CAPTCHA using service manager
+		// Render CAPTCHA using service manager.
 		if ( function_exists( 'wbc_captcha_service_manager' ) ) {
 			echo '<div class="um-field um-field-captcha">';
 			wbc_captcha_service_manager()->render( 'um_login' );
@@ -59,18 +59,18 @@ class UltimateMember_Form {
 	 * @return void
 	 */
 	public function render_um_register_captcha( $args ) {
-		// Check if this is a registration form
+		// Check if this is a registration form.
 		if ( ! isset( $args['mode'] ) || 'register' !== $args['mode'] ) {
 			return;
 		}
 
-		// Check if CAPTCHA is enabled for UM registration
+		// Check if CAPTCHA is enabled for UM registration.
 		$is_enabled = get_option( 'wbc_recaptcha_enable_on_um_register' );
 		if ( 'yes' !== $is_enabled ) {
 			return;
 		}
 
-		// Render CAPTCHA using service manager
+		// Render CAPTCHA using service manager.
 		if ( function_exists( 'wbc_captcha_service_manager' ) ) {
 			echo '<div class="um-field um-field-captcha">';
 			wbc_captcha_service_manager()->render( 'um_register' );
@@ -87,18 +87,18 @@ class UltimateMember_Form {
 	 * @return void
 	 */
 	public function render_um_password_captcha( $args ) {
-		// Check if this is a password reset form
+		// Check if this is a password reset form.
 		if ( ! isset( $args['mode'] ) || 'password' !== $args['mode'] ) {
 			return;
 		}
 
-		// Check if CAPTCHA is enabled for UM password reset
+		// Check if CAPTCHA is enabled for UM password reset.
 		$is_enabled = get_option( 'wbc_recaptcha_enable_on_um_password' );
 		if ( 'yes' !== $is_enabled ) {
 			return;
 		}
 
-		// Render CAPTCHA using service manager
+		// Render CAPTCHA using service manager.
 		if ( function_exists( 'wbc_captcha_service_manager' ) ) {
 			echo '<div class="um-field um-field-captcha">';
 			wbc_captcha_service_manager()->render( 'um_password' );
@@ -115,24 +115,24 @@ class UltimateMember_Form {
 	 * @return void
 	 */
 	public function validate_um_login_captcha( $args ) {
-		// Check if this is a login form
+		// Check if this is a login form.
 		if ( ! isset( $args['mode'] ) || 'login' !== $args['mode'] ) {
 			return;
 		}
 
-		// Check if CAPTCHA is enabled for UM login
+		// Check if CAPTCHA is enabled for UM login.
 		$is_enabled = get_option( 'wbc_recaptcha_enable_on_um_login' );
 		if ( 'yes' !== $is_enabled ) {
 			return;
 		}
 
-		// Verify CAPTCHA using service manager
+		// Verify CAPTCHA using service manager.
 		if ( function_exists( 'wbc_verify_captcha' ) ) {
 			if ( ! wbc_verify_captcha( 'um_login' ) ) {
-				// Get error message
+				// Get error message.
 				$error_message = wbc_get_captcha_error_message( 'um_login', 'invalid' );
 
-				// Add error to Ultimate Member's error handling
+				// Add error to Ultimate Member's error handling.
 				UM()->form()->add_error( 'captcha', $error_message );
 			}
 		}
@@ -147,24 +147,24 @@ class UltimateMember_Form {
 	 * @return void
 	 */
 	public function validate_um_register_captcha( $args ) {
-		// Check if this is a registration form
+		// Check if this is a registration form.
 		if ( ! isset( $args['mode'] ) || 'register' !== $args['mode'] ) {
 			return;
 		}
 
-		// Check if CAPTCHA is enabled for UM registration
+		// Check if CAPTCHA is enabled for UM registration.
 		$is_enabled = get_option( 'wbc_recaptcha_enable_on_um_register' );
 		if ( 'yes' !== $is_enabled ) {
 			return;
 		}
 
-		// Verify CAPTCHA using service manager
+		// Verify CAPTCHA using service manager.
 		if ( function_exists( 'wbc_verify_captcha' ) ) {
 			if ( ! wbc_verify_captcha( 'um_register' ) ) {
-				// Get error message
+				// Get error message.
 				$error_message = wbc_get_captcha_error_message( 'um_register', 'invalid' );
 
-				// Add error to Ultimate Member's error handling
+				// Add error to Ultimate Member's error handling.
 				UM()->form()->add_error( 'captcha', $error_message );
 			}
 		}
@@ -179,24 +179,24 @@ class UltimateMember_Form {
 	 * @return void
 	 */
 	public function validate_um_password_captcha( $args ) {
-		// Check if this is a password reset form
+		// Check if this is a password reset form.
 		if ( ! isset( $args['mode'] ) || 'password' !== $args['mode'] ) {
 			return;
 		}
 
-		// Check if CAPTCHA is enabled for UM password reset
+		// Check if CAPTCHA is enabled for UM password reset.
 		$is_enabled = get_option( 'wbc_recaptcha_enable_on_um_password' );
 		if ( 'yes' !== $is_enabled ) {
 			return;
 		}
 
-		// Verify CAPTCHA using service manager
+		// Verify CAPTCHA using service manager.
 		if ( function_exists( 'wbc_verify_captcha' ) ) {
 			if ( ! wbc_verify_captcha( 'um_password' ) ) {
-				// Get error message
+				// Get error message.
 				$error_message = wbc_get_captcha_error_message( 'um_password', 'invalid' );
 
-				// Add error to Ultimate Member's error handling
+				// Add error to Ultimate Member's error handling.
 				UM()->form()->add_error( 'captcha', $error_message );
 			}
 		}

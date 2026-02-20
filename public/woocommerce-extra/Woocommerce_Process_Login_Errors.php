@@ -1,4 +1,4 @@
-<?php
+<?php // phpcs:ignore WordPress.Files.FileName.InvalidClassFileName, WordPress.Files.FileName.NotHyphenatedLowercase
 /**
  * The public-facing functionality of the plugin.
  *
@@ -30,12 +30,12 @@ class Woocommerce_Process_Login_Errors {
 	 * @return WP_Error
 	 */
 	public function woocomm_validate_login_captcha( $validation_errors, $username, $password ) {
-		// Skip if username or password is empty
+		// Skip if username or password is empty.
 		if ( empty( $username ) || empty( $password ) ) {
 			return $validation_errors;
 		}
 
-		// Verify captcha using the service manager
+		// Verify captcha using the service manager.
 		if ( function_exists( 'wbc_verify_captcha' ) ) {
 			if ( ! wbc_verify_captcha( 'woo_login' ) ) {
 				$error_message = wbc_get_captcha_error_message( 'woo_login', 'invalid' );

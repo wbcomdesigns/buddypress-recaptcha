@@ -57,22 +57,22 @@ class WBC_Setup_Wizard {
 		}
 
 		$this->steps = array(
-			'welcome' => array(
+			'welcome'  => array(
 				'name'    => __( 'Welcome', 'buddypress-recaptcha' ),
 				'view'    => array( $this, 'wbc_setup_welcome' ),
 				'handler' => '',
 			),
-			'service' => array(
+			'service'  => array(
 				'name'    => __( 'Choose Service', 'buddypress-recaptcha' ),
 				'view'    => array( $this, 'wbc_setup_service' ),
 				'handler' => array( $this, 'wbc_setup_service_save' ),
 			),
-			'keys' => array(
+			'keys'     => array(
 				'name'    => __( 'API Keys', 'buddypress-recaptcha' ),
 				'view'    => array( $this, 'wbc_setup_keys' ),
 				'handler' => array( $this, 'wbc_setup_keys_save' ),
 			),
-			'forms' => array(
+			'forms'    => array(
 				'name'    => __( 'Protect Forms', 'buddypress-recaptcha' ),
 				'view'    => array( $this, 'wbc_setup_forms' ),
 				'handler' => array( $this, 'wbc_setup_forms_save' ),
@@ -84,25 +84,29 @@ class WBC_Setup_Wizard {
 			),
 		);
 
-		$this->step = isset( $_GET['step'] ) ? sanitize_key( $_GET['step'] ) : current( array_keys( $this->steps ) );
+		$this->step = isset( $_GET['step'] ) ? sanitize_key( $_GET['step'] ) : current( array_keys( $this->steps ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 
-		// Save handler
-		if ( ! empty( $_POST['save_step'] ) && isset( $this->steps[ $this->step ]['handler'] ) ) {
+		// Save handler.
+		if ( ! empty( $_POST['save_step'] ) && isset( $this->steps[ $this->step ]['handler'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
 			call_user_func( $this->steps[ $this->step ]['handler'] );
 		}
 
-		// Enqueue scripts
+		// Enqueue scripts.
 		wp_enqueue_style( 'wbc-setup', plugin_dir_url( __FILE__ ) . 'css/setup-wizard.css', array(), RFB_PLUGIN_VERSION );
 		wp_enqueue_script( 'wbc-setup', plugin_dir_url( __FILE__ ) . 'js/setup-wizard.js', array( 'jquery' ), RFB_PLUGIN_VERSION, true );
 
-		// Localize script
-		wp_localize_script( 'wbc-setup', 'wbc_setup', array(
-			'ajax_url' => admin_url( 'admin-ajax.php' ),
-			'nonce'    => wp_create_nonce( 'wbc-setup' ),
-			'testing'  => __( 'Testing connection...', 'buddypress-recaptcha' ),
-			'success'  => __( 'Connection successful!', 'buddypress-recaptcha' ),
-			'error'    => __( 'Connection failed. Please check your keys.', 'buddypress-recaptcha' ),
-		) );
+		// Localize script.
+		wp_localize_script(
+			'wbc-setup',
+			'wbc_setup',
+			array(
+				'ajax_url' => admin_url( 'admin-ajax.php' ),
+				'nonce'    => wp_create_nonce( 'wbc-setup' ),
+				'testing'  => __( 'Testing connection...', 'buddypress-recaptcha' ),
+				'success'  => __( 'Connection successful!', 'buddypress-recaptcha' ),
+				'error'    => __( 'Connection failed. Please check your keys.', 'buddypress-recaptcha' ),
+			)
+		);
 
 		ob_start();
 		$this->setup_wizard_header();
@@ -113,7 +117,10 @@ class WBC_Setup_Wizard {
 	}
 
 	/**
-	 * Get next step link
+	 * Get next step link.
+	 *
+	 * @param string $step Step key.
+	 * @return string
 	 */
 	public function get_next_step_link( $step = '' ) {
 		if ( ! $step ) {
@@ -124,7 +131,7 @@ class WBC_Setup_Wizard {
 	}
 
 	/**
-	 * Setup Wizard Header
+	 * Setup Wizard Header.
 	 */
 	public function setup_wizard_header() {
 		?>
@@ -485,10 +492,10 @@ class WBC_Setup_Wizard {
 			<?php
 			foreach ( $output_steps as $step_key => $step ) :
 				$is_completed = array_search( $this->step, array_keys( $this->steps ), true ) > array_search( $step_key, array_keys( $this->steps ), true );
-				$is_active = $step_key === $this->step;
+				$is_active    = $step_key === $this->step;
 				?>
 				<div class="wbc-setup-step <?php echo $is_completed ? 'done' : ''; ?> <?php echo $is_active ? 'active' : ''; ?>">
-					<span class="wbc-setup-step-number"><?php echo array_search( $step_key, array_keys( $this->steps ), true ) + 1; ?></span>
+					<span class="wbc-setup-step-number"><?php echo (int) ( array_search( $step_key, array_keys( $this->steps ), true ) + 1 ); ?></span>
 					<span class="wbc-setup-step-name"><?php echo esc_html( $step['name'] ); ?></span>
 				</div>
 			<?php endforeach; ?>
@@ -621,7 +628,7 @@ class WBC_Setup_Wizard {
 	public function wbc_setup_service_save() {
 		check_admin_referer( 'wbc-setup' );
 
-		$service = isset( $_POST['wbc_captcha_service'] ) ? sanitize_text_field( $_POST['wbc_captcha_service'] ) : 'recaptcha-v2';
+		$service = isset( $_POST['wbc_captcha_service'] ) ? sanitize_text_field( wp_unslash( $_POST['wbc_captcha_service'] ) ) : 'recaptcha-v2';
 		update_option( 'wbc_captcha_service', $service );
 
 		wp_safe_redirect( esc_url_raw( $this->get_next_step_link() ) );
@@ -632,17 +639,17 @@ class WBC_Setup_Wizard {
 	 * API Keys step
 	 */
 	public function wbc_setup_keys() {
-		$service = get_option( 'wbc_captcha_service', 'recaptcha-v2' );
+		$service       = get_option( 'wbc_captcha_service', 'recaptcha-v2' );
 		$service_names = array(
 			'recaptcha-v2' => 'Google reCAPTCHA v2',
 			'recaptcha-v3' => 'Google reCAPTCHA v3',
-			'turnstile' => 'Cloudflare Turnstile',
-			'hcaptcha' => 'hCaptcha',
-			'altcha' => 'ALTCHA',
+			'turnstile'    => 'Cloudflare Turnstile',
+			'hcaptcha'     => 'hCaptcha',
+			'altcha'       => 'ALTCHA',
 		);
-		$service_name = isset( $service_names[$service] ) ? $service_names[$service] : $service;
+		$service_name  = isset( $service_names[ $service ] ) ? $service_names[ $service ] : $service;
 
-		// Check for error message from save function
+		// Check for error message from save function.
 		$error_message = get_transient( 'wbc_setup_keys_error' );
 		if ( $error_message ) {
 			delete_transient( 'wbc_setup_keys_error' );
@@ -651,12 +658,17 @@ class WBC_Setup_Wizard {
 		$signup_urls = array(
 			'recaptcha-v2' => 'https://www.google.com/recaptcha/admin',
 			'recaptcha-v3' => 'https://www.google.com/recaptcha/admin',
-			'turnstile' => 'https://dash.cloudflare.com/sign-up?to=/:account/turnstile',
-			'hcaptcha' => 'https://www.hcaptcha.com/signup-interstitial',
-			'altcha' => '#',
+			'turnstile'    => 'https://dash.cloudflare.com/sign-up?to=/:account/turnstile',
+			'hcaptcha'     => 'https://www.hcaptcha.com/signup-interstitial',
+			'altcha'       => '#',
 		);
 		?>
-		<h2><?php echo sprintf( esc_html__( 'Configure %s', 'buddypress-recaptcha' ), esc_html( $service_name ) ); ?></h2>
+		<h2>
+		<?php
+		/* translators: %s: Service name. */
+		printf( esc_html__( 'Configure %s', 'buddypress-recaptcha' ), esc_html( $service_name ) );
+		?>
+		</h2>
 
 		<?php if ( $error_message ) : ?>
 			<div class="notice notice-error" style="margin: 15px 0; padding: 10px;">
@@ -685,14 +697,17 @@ class WBC_Setup_Wizard {
 			}
 			</script>
 		<?php else : ?>
-			<p><?php
-			echo sprintf(
-				esc_html__( 'Enter your API keys for %s. Don\'t have keys yet? %sGet them here%s', 'buddypress-recaptcha' ),
+			<p>
+			<?php
+			printf(
+				/* translators: %1$s: Service name, %2$s: Opening link tag, %3$s: Closing link tag. */
+				esc_html__( 'Enter your API keys for %1$s. Don\'t have keys yet? %2$sGet them here%3$s', 'buddypress-recaptcha' ),
 				esc_html( $service_name ),
-				'<a href="' . esc_url( $signup_urls[$service] ) . '" target="_blank">',
+				'<a href="' . esc_url( $signup_urls[ $service ] ) . '" target="_blank">',
 				'</a>'
 			);
-			?></p>
+			?>
+			</p>
 
 			<div class="wbc-form-group">
 				<label for="site_key"><?php esc_html_e( 'Site Key', 'buddypress-recaptcha' ); ?></label>
@@ -725,29 +740,35 @@ class WBC_Setup_Wizard {
 	}
 
 	/**
-	 * Get site key for service
+	 * Get site key for service.
+	 *
+	 * @param string $service Service identifier.
+	 * @return string
 	 */
 	private function get_site_key( $service ) {
 		$key_map = array(
 			'recaptcha-v2' => 'wbc_recaptcha_v2_site_key',
 			'recaptcha-v3' => 'wbc_recaptcha_v3_site_key',
-			'turnstile' => 'wbc_turnstile_site_key',
-			'hcaptcha' => 'wbc_hcaptcha_site_key',
+			'turnstile'    => 'wbc_turnstile_site_key',
+			'hcaptcha'     => 'wbc_hcaptcha_site_key',
 		);
-		return isset( $key_map[$service] ) ? get_option( $key_map[$service] ) : '';
+		return isset( $key_map[ $service ] ) ? get_option( $key_map[ $service ] ) : '';
 	}
 
 	/**
-	 * Get secret key for service
+	 * Get secret key for service.
+	 *
+	 * @param string $service Service identifier.
+	 * @return string
 	 */
 	private function get_secret_key( $service ) {
 		$key_map = array(
 			'recaptcha-v2' => 'wbc_recaptcha_v2_secret_key',
 			'recaptcha-v3' => 'wbc_recaptcha_v3_secret_key',
-			'turnstile' => 'wbc_turnstile_secret_key',
-			'hcaptcha' => 'wbc_hcaptcha_secret_key',
+			'turnstile'    => 'wbc_turnstile_secret_key',
+			'hcaptcha'     => 'wbc_hcaptcha_secret_key',
 		);
-		return isset( $key_map[$service] ) ? get_option( $key_map[$service] ) : '';
+		return isset( $key_map[ $service ] ) ? get_option( $key_map[ $service ] ) : '';
 	}
 
 	/**
@@ -759,9 +780,9 @@ class WBC_Setup_Wizard {
 		$service = get_option( 'wbc_captcha_service', 'recaptcha-v2' );
 
 		if ( 'altcha' === $service ) {
-			$hmac_key = isset( $_POST['wbc_altcha_hmac_key'] ) ? sanitize_text_field( $_POST['wbc_altcha_hmac_key'] ) : '';
+			$hmac_key = isset( $_POST['wbc_altcha_hmac_key'] ) ? sanitize_text_field( wp_unslash( $_POST['wbc_altcha_hmac_key'] ) ) : '';
 
-			// Validate HMAC key is not empty
+			// Validate HMAC key is not empty.
 			if ( empty( $hmac_key ) ) {
 				set_transient( 'wbc_setup_keys_error', __( 'Please enter or generate an HMAC secret key.', 'buddypress-recaptcha' ), 45 );
 				wp_safe_redirect( esc_url_raw( add_query_arg( 'step', 'keys', remove_query_arg( 'activate_error' ) ) ) );
@@ -770,10 +791,10 @@ class WBC_Setup_Wizard {
 
 			update_option( 'wbc_altcha_hmac_key', $hmac_key );
 		} else {
-			$site_key = isset( $_POST['site_key'] ) ? sanitize_text_field( $_POST['site_key'] ) : '';
-			$secret_key = isset( $_POST['secret_key'] ) ? sanitize_text_field( $_POST['secret_key'] ) : '';
+			$site_key   = isset( $_POST['site_key'] ) ? sanitize_text_field( wp_unslash( $_POST['site_key'] ) ) : '';
+			$secret_key = isset( $_POST['secret_key'] ) ? sanitize_text_field( wp_unslash( $_POST['secret_key'] ) ) : '';
 
-			// Validate that both keys are not empty
+			// Validate that both keys are not empty.
 			if ( empty( $site_key ) || empty( $secret_key ) ) {
 				$error_msg = __( 'Both Site Key and Secret Key are required. Please enter valid API keys.', 'buddypress-recaptcha' );
 				set_transient( 'wbc_setup_keys_error', $error_msg, 45 );
@@ -784,13 +805,13 @@ class WBC_Setup_Wizard {
 			$key_map = array(
 				'recaptcha-v2' => array( 'wbc_recaptcha_v2_site_key', 'wbc_recaptcha_v2_secret_key' ),
 				'recaptcha-v3' => array( 'wbc_recaptcha_v3_site_key', 'wbc_recaptcha_v3_secret_key' ),
-				'turnstile' => array( 'wbc_turnstile_site_key', 'wbc_turnstile_secret_key' ),
-				'hcaptcha' => array( 'wbc_hcaptcha_site_key', 'wbc_hcaptcha_secret_key' ),
+				'turnstile'    => array( 'wbc_turnstile_site_key', 'wbc_turnstile_secret_key' ),
+				'hcaptcha'     => array( 'wbc_hcaptcha_site_key', 'wbc_hcaptcha_secret_key' ),
 			);
 
-			if ( isset( $key_map[$service] ) ) {
-				update_option( $key_map[$service][0], $site_key );
-				update_option( $key_map[$service][1], $secret_key );
+			if ( isset( $key_map[ $service ] ) ) {
+				update_option( $key_map[ $service ][0], $site_key );
+				update_option( $key_map[ $service ][1], $secret_key );
 			}
 		}
 
@@ -873,20 +894,20 @@ class WBC_Setup_Wizard {
 	public function wbc_setup_forms_save() {
 		check_admin_referer( 'wbc-setup' );
 
-		$forms = isset( $_POST['forms'] ) ? array_map( 'sanitize_text_field', $_POST['forms'] ) : array();
+		$forms = isset( $_POST['forms'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['forms'] ) ) : array();
 
-		// WordPress forms
+		// WordPress forms.
 		update_option( 'wbc_recaptcha_enable_on_wplogin', isset( $forms['wplogin'] ) ? 'yes' : 'no' );
 		update_option( 'wbc_recaptcha_enable_on_wpregister', isset( $forms['wpregister'] ) ? 'yes' : 'no' );
 		update_option( 'wbc_recaptcha_enable_on_comment', isset( $forms['comment'] ) ? 'yes' : 'no' );
 
-		// WooCommerce
+		// WooCommerce.
 		update_option( 'wbc_recaptcha_enable_on_guestcheckout', isset( $forms['woo_checkout'] ) ? 'yes' : 'no' );
 
-		// BuddyPress
+		// BuddyPress.
 		update_option( 'wbc_recaptcha_enable_on_buddypress', isset( $forms['bp_register'] ) ? 'yes' : 'no' );
 
-		// Mark setup as complete
+		// Mark setup as complete.
 		update_option( 'wbc_setup_complete', 'yes' );
 		update_option( 'wbc_setup_version', RFB_PLUGIN_VERSION );
 
@@ -922,5 +943,5 @@ class WBC_Setup_Wizard {
 	}
 }
 
-// Initialize the setup wizard
+// Initialize the setup wizard.
 new WBC_Setup_Wizard();

@@ -1,4 +1,4 @@
-<?php
+<?php // phpcs:ignore WordPress.Files.FileName.InvalidClassFileName, WordPress.Files.FileName.NotHyphenatedLowercase
 /**
  * The public-facing functionality of the plugin.
  *
@@ -27,10 +27,10 @@ class Woocommerce_Review_Order {
 	 * @return void
 	 */
 	public function woo_extra_checkout_fields() {
-		// Determine checkout context (guest or logged-in)
+		// Determine checkout context (guest or logged-in).
 		$context = is_user_logged_in() ? 'woo_checkout_login' : 'woo_checkout_guest';
-		
-		// Use the service manager to render captcha
+
+		// Use the service manager to render captcha.
 		if ( function_exists( 'wbc_captcha_service_manager' ) ) {
 			wbc_captcha_service_manager()->render( $context );
 		}

@@ -2,9 +2,9 @@
 Contributors: vapvarun,wbcomdesigns
 Donate link: https://wbcomdesigns.com/
 Tags: captcha, recaptcha, spam protection, security, woocommerce, buddypress, bbpress, fluentcart, turnstile, hcaptcha
-Requires at least: 3.0.1
-Tested up to: 6.7.2
-Stable tag: 2.0.1
+Requires at least: 6.0
+Tested up to: 6.9
+Stable tag: 2.0.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -61,6 +61,14 @@ Complete CAPTCHA solution with support for multiple CAPTCHA services. Protect yo
 2. Activate the plugin through the 'Plugins' menu in WordPress.
 
 == Changelog ==
+
+= 2.0.2 =
+* Fixed: WordPress Coding Standards compliance across all PHP files
+* Fixed: Plugin Check compatibility improvements
+* Fixed: Removed deprecated load_plugin_textdomain calls
+* Fixed: Added direct file access protection to all files
+* Fixed: Replaced external Font Awesome CDN with WordPress built-in dashicons
+* Tested up to: WordPress 6.9
 
 = 2.0.1 =
 * Fixed: Fatal error caused by undefined WooCommerce hook callbacks (woo_verify_wp_register_captcha, woo_verify_wp_lostpassword_captcha, woo_remove_no_conflict)

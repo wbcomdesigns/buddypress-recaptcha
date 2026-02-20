@@ -1,4 +1,4 @@
-<?php
+<?php // phpcs:ignore WordPress.Files.FileName.InvalidClassFileName, WordPress.Files.FileName.NotHyphenatedLowercase
 /**
  * The public-facing functionality of the plugin.
  *
@@ -25,7 +25,7 @@ class Registration {
 	 * Render captcha on registration form
 	 */
 	public function woo_extra_wp_register_form() {
-		// Use the service manager to render captcha
+		// Use the service manager to render captcha.
 		if ( function_exists( 'wbc_captcha_service_manager' ) ) {
 			wbc_captcha_service_manager()->render( 'wp_register' );
 		}
@@ -39,8 +39,8 @@ class Registration {
 	 * @param string   $user_email           User email.
 	 * @return WP_Error
 	 */
-	public function woo_extra_validate_extra_register_fields( $errors, $sanitized_user_login, $user_email ) {
-		// Verify captcha using the service manager
+	public function woo_extra_validate_extra_register_fields( $errors, $sanitized_user_login, $user_email ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.FoundAfterLastUsed
+		// Verify captcha using the service manager.
 		if ( function_exists( 'wbc_verify_captcha' ) ) {
 			if ( ! wbc_verify_captcha( 'wp_register' ) ) {
 				$error_message = wbc_get_captcha_error_message( 'wp_register', 'invalid' );

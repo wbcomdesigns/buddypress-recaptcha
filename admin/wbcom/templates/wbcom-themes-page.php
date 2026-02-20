@@ -1,3 +1,13 @@
+<?php
+/**
+ * Wbcom themes page template.
+ *
+ * @package Recaptcha_For_BuddyPress
+ */
+
+defined( 'ABSPATH' ) || exit;
+
+?>
 <div class="wrap">
 	<hr class="wp-header-end">
 	<div class="wbcom-wrap">

@@ -1,8 +1,8 @@
-<?php
+<?php // phpcs:ignore WordPress.Files.FileName.InvalidClassFileName -- Legacy file name.
 /**
  * Exit if accessed directly.
  *
- * @package Exit if accessed directly.
+ * @package Recaptcha_For_BuddyPress
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -23,7 +23,6 @@ if ( ! class_exists( 'WBC_Settings_Renderer' ) ) :
 		 * Template Class.
 		 */
 		public function __construct() {
-
 		}
 
 		/**
@@ -137,7 +136,7 @@ if ( ! class_exists( 'WBC_Settings_Renderer' ) ) :
 							<div scope="row" class="wbcom-settings-section-options-heading titledesc">
 								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?><?php echo wp_kses_post( $tooltip_html ); ?></label>
 								<?php echo wp_kses_post( $description ); ?>
-						   </div>
+							</div>
 							<div class="wbcom-settings-section-options">
 							<div class="forminp forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?>">
 								<input
@@ -205,7 +204,7 @@ if ( ! class_exists( 'WBC_Settings_Renderer' ) ) :
 								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo wp_kses_post( $tooltip_html ); ?></label>
 								<?php echo wp_kses_post( $description ); ?>
 							</div>
-						   </div>
+							</div>
 							<div class="forminp forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?>">
 
 								<textarea
@@ -233,9 +232,9 @@ if ( ! class_exists( 'WBC_Settings_Renderer' ) ) :
 						<div class="wbcom-settings-section-options">
 							<div scope="row" class="wbcom-settings-section-options-heading titledesc">
 								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo wp_kses_post( $tooltip_html ); ?></label>
-								 <?php echo wp_kses_post( $description ); ?>
+								<?php echo wp_kses_post( $description ); ?>
 					</div>
-						   </div>
+							</div>
 							<div class="forminp forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?>">
 								<select
 									name="<?php echo esc_attr( $value['id'] ); ?><?php echo ( 'multiselect' === $value['type'] ) ? '[]' : ''; ?>"
@@ -337,7 +336,7 @@ if ( ! class_exists( 'WBC_Settings_Renderer' ) ) :
 						if ( ! isset( $value['checkboxgroup'] ) || 'start' === $value['checkboxgroup'] ) {
 
 							?>
-							 <div class="wbcom-settings-section-wrap">
+							<div class="wbcom-settings-section-wrap">
 								<div valign="top" class="<?php echo esc_attr( implode( ' ', $visibility_class ) ); ?>">
 									<div scope="row" class="wbcom-settings-section-options-heading titledesc">
 										<label><?php echo esc_html( $value['title'] ); ?></label>
@@ -449,7 +448,7 @@ if ( ! class_exists( 'WBC_Settings_Renderer' ) ) :
 								<label><?php echo esc_html( $value['title'] ); ?> <?php echo wp_kses_post( $tooltip_html ); ?></label>
 								<?php echo wp_kses_post( $description ); ?>
 						</div>
-						   </div>
+							</div>
 							<div class="forminp">
 								<?php echo wp_kses_post( str_replace( ' id=', " data-placeholder='" . esc_attr__( 'Select a page&hellip;', 'buddypress-recaptcha' ) . "' style='" . $value['css'] . "' class='" . $value['class'] . "' id=", wp_dropdown_pages( $args ) ) ); ?> 
 							</div>
@@ -477,8 +476,8 @@ if ( ! class_exists( 'WBC_Settings_Renderer' ) ) :
 							<div scope="row" class="wbcom-settings-section-options-heading titledesc">
 							<div class="wbcom-settings-section-options-heading">
 								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo wp_kses_post( $tooltip_html ); ?></label>
-								 <?php echo wp_kses_post( $description ); ?>
-						 </div>
+								<?php echo wp_kses_post( $description ); ?>
+						</div>
 					</div>
 							<div class="forminp forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?>">
 								<select
@@ -552,8 +551,8 @@ if ( ! class_exists( 'WBC_Settings_Renderer' ) ) :
 							<div scope="row" class="wbcom-settings-section-options-heading titledesc">
 							<div class="wbcom-settings-section-options">
 								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo wp_kses_post( $tooltip_html ); ?></label>
-							  </div>
-							 </div>
+								</div>
+							</div>
 							<div class="forminp">
 								<select multiple="multiple" name="<?php echo esc_attr( $value['id'] ); ?>[]" style="width:350px" data-placeholder="<?php esc_attr_e( 'Choose countries / regions&hellip;', 'buddypress-recaptcha' ); ?>" aria-label="<?php esc_attr_e( 'Country / Region', 'buddypress-recaptcha' ); ?>" class="wc-enhanced-select">
 									<?php
@@ -587,7 +586,7 @@ if ( ! class_exists( 'WBC_Settings_Renderer' ) ) :
 								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo wp_kses_post( $tooltip_html ); ?></label>
 								<?php echo ( $description ) ? wp_kses_post( $description ) : ''; ?>
 							</div>
-							 </div>
+							</div>
 							<div class="forminp">
 							<input
 									name="<?php echo esc_attr( $value['id'] ); ?>[number]"
@@ -614,43 +613,43 @@ if ( ! class_exists( 'WBC_Settings_Renderer' ) ) :
 						<?php
 						break;
 
-					// Custom HTML content
+					// Custom HTML content.
 					case 'custom':
 						if ( ! empty( $value['default'] ) ) {
-							// Allow form elements in custom HTML
+							// Allow form elements in custom HTML.
 							$allowed_html = array_merge(
 								wp_kses_allowed_html( 'post' ),
 								array(
-									'input' => array(
-										'type' => array(),
-										'name' => array(),
-										'value' => array(),
-										'id' => array(),
-										'class' => array(),
-										'checked' => array(),
-										'disabled' => array(),
-										'readonly' => array(),
+									'input'  => array(
+										'type'        => array(),
+										'name'        => array(),
+										'value'       => array(),
+										'id'          => array(),
+										'class'       => array(),
+										'checked'     => array(),
+										'disabled'    => array(),
+										'readonly'    => array(),
 										'placeholder' => array(),
-										'min' => array(),
-										'max' => array(),
-										'step' => array(),
+										'min'         => array(),
+										'max'         => array(),
+										'step'        => array(),
 									),
 									'select' => array(
-										'name' => array(),
-										'id' => array(),
-										'class' => array(),
+										'name'     => array(),
+										'id'       => array(),
+										'class'    => array(),
 										'multiple' => array(),
-										'style' => array(),
+										'style'    => array(),
 									),
 									'option' => array(
-										'value' => array(),
+										'value'    => array(),
 										'selected' => array(),
 									),
 									'button' => array(
-										'type' => array(),
+										'type'  => array(),
 										'class' => array(),
-										'id' => array(),
-										'name' => array(),
+										'id'    => array(),
+										'name'  => array(),
 										'value' => array(),
 										'style' => array(),
 									),
@@ -903,6 +902,5 @@ if ( ! class_exists( 'WBC_Settings_Renderer' ) ) :
 				return is_scalar( $var ) ? sanitize_text_field( $var ) : $var;
 			}
 		}
-
 	}
 endif;

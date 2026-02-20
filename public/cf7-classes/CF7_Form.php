@@ -1,4 +1,4 @@
-<?php
+<?php // phpcs:ignore WordPress.Files.FileName.InvalidClassFileName, WordPress.Files.FileName.NotHyphenatedLowercase
 /**
  * Contact Form 7 Integration
  *
@@ -31,20 +31,20 @@ class CF7_Form {
 	 * @return string Modified form HTML with CAPTCHA.
 	 */
 	public function render_cf7_captcha( $form ) {
-		// Check if CAPTCHA is enabled for CF7
+		// Check if CAPTCHA is enabled for CF7.
 		$is_enabled = get_option( 'wbc_recaptcha_enable_on_cf7' );
 		if ( 'yes' !== $is_enabled ) {
 			return $form;
 		}
 
-		// Get CAPTCHA HTML from service manager
+		// Get CAPTCHA HTML from service manager.
 		if ( function_exists( 'wbc_captcha_service_manager' ) ) {
 			ob_start();
 			wbc_captcha_service_manager()->render( 'cf7' );
 			$captcha_html = ob_get_clean();
 
-			// Inject CAPTCHA before the submit button
-			// CF7 uses <input type="submit" for submit buttons
+			// Inject CAPTCHA before the submit button.
+			// CF7 uses <input type="submit" for submit buttons.
 			$form = preg_replace(
 				'/(<input[^>]*type=["\']submit["\'][^>]*>)/i',
 				$captcha_html . '$1',
@@ -65,19 +65,19 @@ class CF7_Form {
 	 * @return WPCF7_Validation Modified validation result.
 	 */
 	public function validate_cf7_captcha( $result, $tag ) {
-		// Check if CAPTCHA is enabled for CF7
+		// Check if CAPTCHA is enabled for CF7.
 		$is_enabled = get_option( 'wbc_recaptcha_enable_on_cf7' );
 		if ( 'yes' !== $is_enabled ) {
 			return $result;
 		}
 
-		// Verify CAPTCHA using service manager
+		// Verify CAPTCHA using service manager.
 		if ( function_exists( 'wbc_verify_captcha' ) ) {
 			if ( ! wbc_verify_captcha( 'cf7' ) ) {
-				// Get error message
+				// Get error message.
 				$error_message = wbc_get_captcha_error_message( 'cf7', 'invalid' );
 
-				// Add error to validation result
+				// Add error to validation result.
 				$result->invalidate( $tag, $error_message );
 			}
 		}

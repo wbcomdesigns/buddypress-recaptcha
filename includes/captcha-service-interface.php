@@ -10,7 +10,7 @@
  * Interface for captcha services
  */
 interface WBC_Captcha_Service_Interface {
-	
+
 	/**
 	 * Get the service identifier
 	 *
@@ -49,7 +49,7 @@ interface WBC_Captcha_Service_Interface {
 	/**
 	 * Get the script handle for this service
 	 *
-	 * @param string $context The context where the script is used
+	 * @param string $context The context where the script is used.
 	 * @return string
 	 */
 	public function get_script_handle( $context = 'default' );
@@ -64,8 +64,8 @@ interface WBC_Captcha_Service_Interface {
 	/**
 	 * Render the captcha field
 	 *
-	 * @param string $context The context where captcha is rendered
-	 * @param array  $args    Additional arguments
+	 * @param string $context The context where captcha is rendered.
+	 * @param array  $args    Additional arguments.
 	 * @return void
 	 */
 	public function render( $context, $args = array() );
@@ -73,8 +73,8 @@ interface WBC_Captcha_Service_Interface {
 	/**
 	 * Verify the captcha response
 	 *
-	 * @param string $response The captcha response
-	 * @param array  $args     Additional arguments
+	 * @param string $response The captcha response.
+	 * @param array  $args     Additional arguments.
 	 * @return bool
 	 */
 	public function verify( $response, $args = array() );
@@ -82,8 +82,8 @@ interface WBC_Captcha_Service_Interface {
 	/**
 	 * Get service-specific options
 	 *
-	 * @param string $option_name Option name
-	 * @param mixed  $default     Default value
+	 * @param string $option_name Option name.
+	 * @param mixed  $default     Default value.
 	 * @return mixed
 	 */
 	public function get_option( $option_name, $default = null );
@@ -91,7 +91,7 @@ interface WBC_Captcha_Service_Interface {
 	/**
 	 * Enqueue necessary scripts and styles
 	 *
-	 * @param string $context The context where scripts are enqueued
+	 * @param string $context The context where scripts are enqueued.
 	 * @return void
 	 */
 	public function enqueue_scripts( $context );
@@ -120,7 +120,7 @@ interface WBC_Captcha_Service_Interface {
 	/**
 	 * Get service-specific attributes for the captcha container
 	 *
-	 * @param string $context The context
+	 * @param string $context The context.
 	 * @return array
 	 */
 	public function get_container_attributes( $context );

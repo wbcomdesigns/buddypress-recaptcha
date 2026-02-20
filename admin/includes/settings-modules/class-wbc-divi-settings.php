@@ -36,7 +36,7 @@ class WBC_Divi_Settings extends WBC_Settings_Module_Abstract {
 	 * @return bool
 	 */
 	public function is_active() {
-		// Check for Divi theme or Divi Builder plugin
+		// Check for Divi theme or Divi Builder plugin.
 		return defined( 'ET_BUILDER_VERSION' );
 	}
 

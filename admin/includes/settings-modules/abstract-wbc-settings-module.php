@@ -1,4 +1,4 @@
-<?php
+<?php // phpcs:ignore WordPress.Files.FileName.InvalidClassFileName -- Abstract class uses 'abstract-' prefix.
 /**
  * Abstract Settings Module Base Class
  *
