@@ -38,7 +38,7 @@ function altcha_options_page_html() {
 	<div>
 		<div style="margin-bottom: 0.3rem;"><b><?php echo esc_html__( 'Do you like ALTCHA?', 'buddypress-recaptcha' ); ?></b></div>
 		<div style="display:flex;gap: 0.5rem;">
-		<a href="https://wordpress.org/support/plugin/altcha-spam-protection/reviews/?filter=5#new-post" target="_blank" style="display: inline-flex; gap: 0.5rem;">
+		<a href="https://wordpress.org/support/plugin/altcha-spam-protection/reviews/#new-post" target="_blank" style="display: inline-flex; gap: 0.5rem;">
 			<span style="display: inline-flex; gap: 0.1rem;">
 			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#FFCC00" width="18" height="18"><path d="M12.0006 18.26L4.94715 22.2082L6.52248 14.2799L0.587891 8.7918L8.61493 7.84006L12.0006 0.5L15.3862 7.84006L23.4132 8.7918L17.4787 14.2799L19.054 22.2082L12.0006 18.26Z"></path></svg>
 			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#FFCC00" width="18" height="18"><path d="M12.0006 18.26L4.94715 22.2082L6.52248 14.2799L0.587891 8.7918L8.61493 7.84006L12.0006 0.5L15.3862 7.84006L23.4132 8.7918L17.4787 14.2799L19.054 22.2082L12.0006 18.26Z"></path></svg>
@@ -87,7 +87,7 @@ function altcha_options_page_html() {
 				'Please give ALTCHA a %1$s★★★★★ rating%2$s on WordPress.org to help us get the word out.',
 				'buddypress-recaptcha',
 			),
-			'<a href="https://wordpress.org/support/plugin/altcha-spam-protection/reviews/?filter=5#new-post" target="_blank">',
+			'<a href="https://wordpress.org/support/plugin/altcha-spam-protection/reviews/#new-post" target="_blank">',
 			'</a>',
 		);
 		?>
