@@ -16,6 +16,7 @@ if ( ! function_exists( 'wbc_verify_captcha' ) ) {
 	 * @param array  $args    Optional arguments.
 	 * @return bool True if verified, false on failure.
 	 */
+	//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound
 	function wbc_verify_captcha( $context, $args = array() ) {
 		// Check if service manager is available.
 		if ( ! function_exists( 'wbc_captcha_service_manager' ) || ! wbc_captcha_service_manager() ) {
@@ -36,6 +37,7 @@ if ( ! function_exists( 'wbc_get_captcha_error_message' ) ) {
 	 * @param string $error_type Type of error: 'blank', 'invalid', 'no_response'.
 	 * @return string
 	 */
+	//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound
 	function wbc_get_captcha_error_message( $context, $error_type = 'invalid' ) {
 		// Get the active service.
 		$service = null;

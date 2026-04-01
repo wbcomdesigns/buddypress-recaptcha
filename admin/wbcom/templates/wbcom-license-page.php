@@ -41,7 +41,7 @@ defined( 'ABSPATH' ) || exit;
 					</tr>
 				</thead>
 			</table>
-			<?php do_action( 'wbcom_add_plugin_license_code' ); ?>
+			<?php do_action( 'wbcom_add_plugin_license_code' ); //phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound?>
 			<table class="form-table wb-license-form-table">
 				<tfoot>
 					<tr>

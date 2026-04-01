@@ -20,6 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @param mixed  $default Default value if option doesn't exist.
  * @return mixed Option value.
  */
+//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound
 function wbc_get_option_compat( $option_name, $default = false ) {
 	// First try to get the option with correct spelling.
 	$value = get_option( $option_name, null );
@@ -54,6 +55,7 @@ function wbc_get_option_compat( $option_name, $default = false ) {
  * @param mixed  $value The new value.
  * @return bool Success status.
  */
+//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound
 function wbc_update_option_compat( $option_name, $value ) {
 	// Update both versions for backward compatibility.
 	$result = update_option( $option_name, $value );
@@ -79,6 +81,7 @@ function wbc_update_option_compat( $option_name, $value ) {
  *
  * @return array Option name mapping.
  */
+//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound
 function wbc_get_option_name_mapping() {
 	return array(
 		// Enable options.
@@ -123,6 +126,7 @@ function wbc_get_option_name_mapping() {
  *
  * @return array List of migrated option names.
  */
+//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound
 function wbc_migrate_option_names() {
 	$mapping  = wbc_get_option_name_mapping();
 	$migrated = array();
@@ -157,6 +161,7 @@ function wbc_migrate_option_names() {
  *
  * @return bool True if migration is needed.
  */
+//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound
 function wbc_needs_option_migration() {
 	return ! get_option( 'wbc_option_names_migrated', false );
 }

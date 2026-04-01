@@ -25,6 +25,7 @@
  * @subpackage bp_recaptcha/admin/includes/settings-modules
  * @author     Wbcom Designs <admin@wbcomdesigns.com>
  */
+//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedInterfaceFound
 interface WBC_Settings_Module_Interface {
 
 	/**

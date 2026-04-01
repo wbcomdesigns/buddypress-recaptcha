@@ -28,7 +28,7 @@ class Registrationbp {
 		// Use the service manager to render captcha.
 		if ( function_exists( 'wbc_captcha_service_manager' ) ) {
 			wbc_captcha_service_manager()->render( 'bp_register' );
-			do_action( 'bp_accept_tos_errors' );
+			do_action( 'bp_accept_tos_errors' ); //phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 		}
 	}
 

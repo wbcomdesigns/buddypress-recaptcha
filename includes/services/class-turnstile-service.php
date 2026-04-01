@@ -9,6 +9,7 @@
 /**
  * Cloudflare Turnstile implementation
  */
+//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedClassFound
 class WBC_Turnstile_Service extends WBC_Captcha_Service_Base {
 
 	/**
@@ -176,7 +177,7 @@ class WBC_Turnstile_Service extends WBC_Captcha_Service_Base {
 		}
 
 		$verified = isset( $result['success'] ) && true === $result['success'];
-
+		//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 		return apply_filters( 'wbc_captcha_verified', $verified, $result, $response, $this->get_service_id() );
 	}
 

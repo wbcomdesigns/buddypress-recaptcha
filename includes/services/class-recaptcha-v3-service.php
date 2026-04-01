@@ -11,6 +11,7 @@ defined( 'ABSPATH' ) || exit;
 /**
  * ReCAPTCHA v3 service class.
  */
+//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedClassFound
 class WBC_Recaptcha_V3_Service extends WBC_Captcha_Service_Base {
 
 	/**
@@ -307,6 +308,7 @@ class WBC_Recaptcha_V3_Service extends WBC_Captcha_Service_Base {
 		}
 
 		// Allow filtering of result.
+		//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 		return apply_filters( 'wbc_recaptcha_v3_verify', true, $result, $context );
 	}
 

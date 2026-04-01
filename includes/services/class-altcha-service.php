@@ -28,6 +28,7 @@ if ( ! class_exists( 'AltchaPlugin' ) && ! is_plugin_active( 'altcha-spam-protec
 /**
  * ALTCHA implementation - Privacy-first, self-hosted proof-of-work captcha
  */
+//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedClassFound
 class WBC_Altcha_Service extends WBC_Captcha_Service_Base {
 
 	/**
@@ -330,7 +331,7 @@ class WBC_Altcha_Service extends WBC_Captcha_Service_Base {
 			// Self-hosted verification.
 			$verified = $this->verify_solution( $response, $hmac_key );
 		}
-
+		//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 		return apply_filters( 'wbc_captcha_verified', $verified, array(), $response, $this->get_service_id() );
 	}
 
@@ -341,6 +342,7 @@ class WBC_Altcha_Service extends WBC_Captcha_Service_Base {
 	 * @param string $hmac_key HMAC key.
 	 * @return bool
 	 */
+	//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 	private function verify_solution( $payload, $hmac_key ) {
 		// Validate base64 encoding.
 		if ( ! preg_match( '/^[A-Za-z0-9+\/=]+$/', $payload ) ) {

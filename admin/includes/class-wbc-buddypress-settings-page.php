@@ -152,7 +152,7 @@ if ( ! class_exists( 'WBC_BuddyPress_Settings_Page' ) ) :
 					'id'   => 'wbc_no_service_selected',
 				);
 			}
-
+			// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 			return apply_filters( 'wbc_recaptcha_quick_setup_settings', $settings );
 		}
 
@@ -722,7 +722,7 @@ if ( ! class_exists( 'WBC_BuddyPress_Settings_Page' ) ) :
 			if ( ! empty( $module_settings ) ) {
 				$settings = array_merge( $settings, $module_settings );
 			}
-
+			//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 			return apply_filters( 'wbc_recaptcha_protection_settings', $settings );
 		}
 
@@ -808,7 +808,7 @@ if ( ! class_exists( 'WBC_BuddyPress_Settings_Page' ) ) :
 				'type' => 'sectionend',
 				'id'   => 'wbc_advanced_options',
 			);
-
+			//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 			return apply_filters( 'wbc_recaptcha_combined_advanced_settings', $settings );
 		}
 
@@ -1424,8 +1424,8 @@ if ( ! class_exists( 'WBC_BuddyPress_Settings_Page' ) ) :
 
 			$sections['appearance'] = __( 'Appearance', 'buddypress-recaptcha' );
 			$sections['advanced']   = __( 'Advanced', 'buddypress-recaptcha' );
-
-			return apply_filters( 'wbc_recaptcha_settings_sections', $sections );
+			//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
+			return apply_filters( 'wbc_recaptcha_settings_sections', $sections ); 
 		}
 
 		/**
@@ -1730,7 +1730,7 @@ if ( ! class_exists( 'WBC_BuddyPress_Settings_Page' ) ) :
 					'class' => 'wbc-service-settings wbc-service-hcaptcha',
 				),
 			);
-
+			//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 			return apply_filters( 'wbc_recaptcha_service_settings', $settings );
 		}
 
@@ -1785,7 +1785,7 @@ if ( ! class_exists( 'WBC_BuddyPress_Settings_Page' ) ) :
 					'id'   => 'wbc_wp_forms_integration',
 				),
 			);
-
+			//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 			return apply_filters( 'wbc_recaptcha_wordpress_settings', $settings );
 		}
 
@@ -1864,7 +1864,7 @@ if ( ! class_exists( 'WBC_BuddyPress_Settings_Page' ) ) :
 					'id'   => 'wbc_woo_forms_integration',
 				),
 			);
-
+			//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 			return apply_filters( 'wbc_recaptcha_woocommerce_settings', $settings );
 		}
 
@@ -1895,7 +1895,7 @@ if ( ! class_exists( 'WBC_BuddyPress_Settings_Page' ) ) :
 					'id'   => 'wbc_bp_forms_integration',
 				),
 			);
-
+			//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 			return apply_filters( 'wbc_recaptcha_buddypress_settings', $settings );
 		}
 
@@ -1934,7 +1934,7 @@ if ( ! class_exists( 'WBC_BuddyPress_Settings_Page' ) ) :
 					'id'   => 'wbc_bbpress_forms_integration',
 				),
 			);
-
+			//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 			return apply_filters( 'wbc_recaptcha_bbpress_settings', $settings );
 		}
 
@@ -2035,7 +2035,7 @@ if ( ! class_exists( 'WBC_BuddyPress_Settings_Page' ) ) :
 					'id'   => 'wbc_appearance_settings',
 				),
 			);
-
+			//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 			return apply_filters( 'wbc_recaptcha_appearance_settings', $settings );
 		}
 
@@ -2132,7 +2132,7 @@ if ( ! class_exists( 'WBC_BuddyPress_Settings_Page' ) ) :
 					'id'   => 'wbc_advanced_settings',
 				),
 			);
-
+			//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 			return apply_filters( 'wbc_recaptcha_advanced_settings', $settings );
 		}
 
@@ -2433,6 +2433,7 @@ if ( ! class_exists( 'WBC_BuddyPress_Settings_Page' ) ) :
 			WBC_Settings_Renderer::save_fields( $settings );
 
 			// Trigger settings saved action.
+			//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 			do_action( 'wbc_recaptcha_settings_saved', $section );
 		}
 	}

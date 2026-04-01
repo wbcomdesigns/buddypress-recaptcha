@@ -16,6 +16,7 @@ if ( ! class_exists( 'WBC_Settings_Renderer' ) ) :
 	 *
 	 * @package Recaptcha_For_BuddyPress
 	 */
+	//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedClassFound
 	class WBC_Settings_Renderer {
 		/**
 		 * Template Class Doc Comment
