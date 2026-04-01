@@ -19,7 +19,7 @@
  * @subpackage bp_recaptcha/includes
  * @author     Wbcom Designs <admin@wbcomdesigns.com>
  */
-class Recaptcha_For_BuddyPress_Activator {
+class Recaptcha_For_BuddyPress_Activator { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedClassFound
 
 	/**
 	 * Initialize default protection settings

@@ -27,7 +27,7 @@ defined( 'ABSPATH' ) || exit;
  * @subpackage bp_recaptcha/admin/includes/settings-modules
  * @author     Wbcom Designs <admin@wbcomdesigns.com>
  */
-class WBC_Settings_Module_Loader {
+class WBC_Settings_Module_Loader {  // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedClassFound
 
 	/**
 	 * Singleton instance
@@ -149,7 +149,8 @@ class WBC_Settings_Module_Loader {
 		 *
 		 * @param WBC_Settings_Module_Loader $loader The settings module loader instance.
 		 */
-		do_action( 'wbc_recaptcha_register_settings_modules', $this );
+		// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
+		do_action( 'wbc_recaptcha_register_settings_modules', $this ); 
 	}
 
 	/**
@@ -210,6 +211,7 @@ class WBC_Settings_Module_Loader {
 		 *
 		 * @param array $all_settings Combined settings from all active modules.
 		 */
+		// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 		return apply_filters( 'wbc_recaptcha_all_protection_settings', $all_settings );
 	}
 
@@ -235,6 +237,7 @@ class WBC_Settings_Module_Loader {
 		 *
 		 * @param array $all_checkbox_ids Combined checkbox IDs from all active modules.
 		 */
+		// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 		return apply_filters( 'wbc_recaptcha_all_checkbox_ids', $all_checkbox_ids );
 	}
 
@@ -276,6 +279,7 @@ class WBC_Settings_Module_Loader {
  *
  * @return WBC_Settings_Module_Loader
  */
+// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound
 function wbc_settings_module_loader() {
 	return WBC_Settings_Module_Loader::get_instance();
 }

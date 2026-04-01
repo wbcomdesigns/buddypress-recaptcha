@@ -136,6 +136,7 @@ if ( ! function_exists( 'wb_recaptcha_restriction_recaptcha_by_ip' ) ) {
 	 *
 	 * @return bool
 	 */
+	//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound	
 	function wb_recaptcha_restriction_recaptcha_by_ip() {
 		if ( function_exists( 'wbc_captcha_service_manager' ) ) {
 			return wbc_captcha_service_manager()->is_ip_whitelisted();

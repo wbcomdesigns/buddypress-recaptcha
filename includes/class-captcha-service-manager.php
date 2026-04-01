@@ -94,7 +94,7 @@ class WBC_Captcha_Service_Manager {
 		}
 
 		// Allow plugins to register additional services.
-		do_action( 'wbc_register_captcha_services', $this );
+		do_action( 'wbc_register_captcha_services', $this ); //phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 	}
 
 	/**
@@ -441,6 +441,7 @@ if ( ! function_exists( 'wbc_captcha_service_manager' ) ) {
 	 *
 	 * @return WBC_Captcha_Service_Manager
 	 */
+	//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound
 	function wbc_captcha_service_manager() {
 		return WBC_Captcha_Service_Manager::get_instance();
 	}

@@ -23,6 +23,7 @@
  * @subpackage bp_recaptcha/admin/includes/settings-modules
  * @author     Wbcom Designs <admin@wbcomdesigns.com>
  */
+//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedClassFound
 abstract class WBC_Settings_Module_Abstract implements WBC_Settings_Module_Interface {
 
 	/**

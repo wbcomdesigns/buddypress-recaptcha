@@ -14,6 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Setup Wizard Class
  */
+//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedClassFound
 class WBC_Setup_Wizard {
 
 	/**
@@ -34,7 +35,7 @@ class WBC_Setup_Wizard {
 	 * Constructor
 	 */
 	public function __construct() {
-		if ( apply_filters( 'wbc_enable_setup_wizard', true ) ) {
+		if ( apply_filters( 'wbc_enable_setup_wizard', true ) ) { //phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 			add_action( 'admin_menu', array( $this, 'admin_menus' ) );
 			add_action( 'admin_init', array( $this, 'setup_wizard' ) );
 		}
@@ -142,7 +143,7 @@ class WBC_Setup_Wizard {
 			<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 			<title><?php esc_html_e( 'BuddyPress reCAPTCHA &rsaquo; Setup Wizard', 'buddypress-recaptcha' ); ?></title>
 			<?php wp_print_scripts( 'wbc-setup' ); ?>
-			<?php do_action( 'admin_print_styles' ); ?>
+			<?php do_action( 'admin_print_styles' ); //phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound ?>
 			<style>
 				body {
 					margin: 0;
