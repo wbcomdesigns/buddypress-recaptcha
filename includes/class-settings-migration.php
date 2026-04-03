@@ -66,7 +66,7 @@ class WBC_Settings_Migration {
 	/**
 	 * Detect which service is currently active.
 	 *
-	 * @return string|false Service ID or false if none detected.
+	 * @return string Service ID.
 	 */
 	private static function detect_active_service() {
 		// Check for existing version setting.

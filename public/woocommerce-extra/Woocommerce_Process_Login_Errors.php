@@ -24,9 +24,9 @@ class Woocommerce_Process_Login_Errors {
 	/**
 	 * Validate login captcha
 	 *
-	 * @param array  $validation_errors Validation errors.
-	 * @param string $username          Username.
-	 * @param string $password          Password.
+	 * @param WP_Error $validation_errors Validation errors.
+	 * @param string   $username          Username.
+	 * @param string   $password          Password.
 	 * @return WP_Error
 	 */
 	public function woocomm_validate_login_captcha( $validation_errors, $username, $password ) {

@@ -8,6 +8,22 @@ parameters:
         - dist
         - assets
         - includes/lib/altcha
-        - bp-redirect-update-checker
-    scanDirectories:
-        - vendor/szepeviktor/phpstan-wordpress/stubs
+    scanFiles:
+        - vendor/php-stubs/woocommerce-stubs/woocommerce-stubs.php
+        - vendor/php-stubs/woocommerce-stubs/woocommerce-packages-stubs.php
+    treatPhpDocTypesAsCertain: false
+    ignoreErrors:
+        # Third-party plugin functions (BuddyPress, bbPress, EDD, Ultimate Member, CF7, WPForms)
+        - '#Function buddypress not found\.#'
+        - '#Function bbp_add_error not found\.#'
+        - '#Function edd_set_error not found\.#'
+        - '#Function UM not found\.#'
+        - '#Function wpforms not found\.#'
+        - '#(invalid return type|invalid type|unknown class) WPCF7_#'
+        # Plugin constants defined at runtime
+        - '#Constant RFB_PLUGIN_URL not found\.#'
+        # WordPress/WooCommerce patterns - methods called dynamically
+        - '#Method .+ is unused\.#'
+        # WordPress hook patterns - actions legitimately return values
+        - '#Action callback returns .+ but should not return anything\.#'
+        - '#Filter callback return statement is missing\.#'

@@ -44,9 +44,9 @@ class Recaptcha_For_BuddyPress_Admin {
 	 *
 	 * @since    1.0.0
 	 * @access   private
-	 * @var      string    $plugin_settings_tabs  Plugin's admin settings tabs.
+	 * @var      array    $plugin_settings_tabs  Plugin's admin settings tabs.
 	 */
-	private $plugin_settings_tabs;
+	private $plugin_settings_tabs = array();
 
 	/**
 	 * Initialize the class and set its properties.

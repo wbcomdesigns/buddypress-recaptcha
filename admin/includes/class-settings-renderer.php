@@ -459,11 +459,11 @@ if ( ! class_exists( 'WBC_Settings_Renderer' ) ) :
 						break;
 
 					case 'single_select_page_with_search':
-						$option_value = $value['value'];
-						$page         = get_post( $option_value );
+						$option_value        = $value['value'];
+						$page                = get_post( $option_value );
+						$option_display_name = '';
 
 						if ( ! is_null( $page ) ) {
-							$page                = get_post( $option_value );
 							$option_display_name = sprintf(
 								/* translators: 1: page name 2: page ID */
 								__( '%1$s (ID: %2$s)', 'buddypress-recaptcha' ),
@@ -542,7 +542,7 @@ if ( ! class_exists( 'WBC_Settings_Renderer' ) ) :
 						if ( ! empty( $value['options'] ) ) {
 							$countries = $value['options'];
 						} else {
-							$countries = WC()->countries->countries;
+							$countries = WC()->countries->get_countries();
 						}
 
 						asort( $countries );
@@ -884,7 +884,7 @@ if ( ! class_exists( 'WBC_Settings_Renderer' ) ) :
 
 			// Save all options in our array.
 			foreach ( $update_options as $name => $value ) {
-				update_option( $name, $value, $autoload_options[ $name ] ? 'yes' : 'no' );
+				update_option( $name, $value, (bool) $autoload_options[ $name ] );
 			}
 
 			return true;

@@ -124,4 +124,12 @@ interface WBC_Captcha_Service_Interface {
 	 * @return array
 	 */
 	public function get_container_attributes( $context );
+
+	/**
+	 * Check if the service is enabled for a specific context
+	 *
+	 * @param string $context The context to check.
+	 * @return bool
+	 */
+	public function is_enabled_for_context( $context );
 }

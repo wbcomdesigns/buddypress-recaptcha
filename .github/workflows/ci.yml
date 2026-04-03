@@ -43,8 +43,5 @@ jobs:
       - name: Install dependencies
         run: composer install --no-interaction --prefer-dist
 
-      - name: Install PHPStan
-        run: composer require --dev phpstan/phpstan szepeviktor/phpstan-wordpress phpstan/extension-installer --no-interaction
-
       - name: Run PHPStan
-        run: vendor/bin/phpstan analyse --level=5 --memory-limit=512M -c phpstan.neon
+        run: composer phpstan

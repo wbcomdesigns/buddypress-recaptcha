@@ -166,7 +166,7 @@ if ( ! class_exists( 'Wbcom_Admin_Settings' ) ) {
 					'wbcom_admin_setting_js',
 					RFB_PLUGIN_URL . 'admin/wbcom/assets/js/wbcom-admin-setting.js',
 					array( 'jquery' ),
-					time(),
+					(string) time(),
 					false
 				);
 				wp_localize_script(
