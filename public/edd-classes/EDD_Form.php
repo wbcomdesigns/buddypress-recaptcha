@@ -1,4 +1,4 @@
-<?php
+<?php // phpcs:ignore WordPress.Files.FileName.InvalidClassFileName, WordPress.Files.FileName.NotHyphenatedLowercase
 /**
  * Easy Digital Downloads Integration
  *
@@ -30,13 +30,13 @@ class EDD_Form {
 	 * @return void
 	 */
 	public function render_edd_checkout_captcha() {
-		// Check if CAPTCHA is enabled for EDD checkout
+		// Check if CAPTCHA is enabled for EDD checkout.
 		$is_enabled = get_option( 'wbc_recaptcha_enable_on_edd_checkout' );
 		if ( 'yes' !== $is_enabled ) {
 			return;
 		}
 
-		// Render CAPTCHA using service manager
+		// Render CAPTCHA using service manager.
 		if ( function_exists( 'wbc_captcha_service_manager' ) ) {
 			echo '<div id="edd-captcha-wrap">';
 			wbc_captcha_service_manager()->render( 'edd_checkout' );
@@ -52,13 +52,13 @@ class EDD_Form {
 	 * @return void
 	 */
 	public function render_edd_login_captcha() {
-		// Check if CAPTCHA is enabled for EDD login
+		// Check if CAPTCHA is enabled for EDD login.
 		$is_enabled = get_option( 'wbc_recaptcha_enable_on_edd_login' );
 		if ( 'yes' !== $is_enabled ) {
 			return;
 		}
 
-		// Render CAPTCHA using service manager
+		// Render CAPTCHA using service manager.
 		if ( function_exists( 'wbc_captcha_service_manager' ) ) {
 			echo '<div id="edd-login-captcha-wrap">';
 			wbc_captcha_service_manager()->render( 'edd_login' );
@@ -74,13 +74,13 @@ class EDD_Form {
 	 * @return void
 	 */
 	public function render_edd_register_captcha() {
-		// Check if CAPTCHA is enabled for EDD registration
+		// Check if CAPTCHA is enabled for EDD registration.
 		$is_enabled = get_option( 'wbc_recaptcha_enable_on_edd_register' );
 		if ( 'yes' !== $is_enabled ) {
 			return;
 		}
 
-		// Render CAPTCHA using service manager
+		// Render CAPTCHA using service manager.
 		if ( function_exists( 'wbc_captcha_service_manager' ) ) {
 			echo '<div id="edd-register-captcha-wrap">';
 			wbc_captcha_service_manager()->render( 'edd_register' );
@@ -97,20 +97,20 @@ class EDD_Form {
 	 * @param array $post_data  Posted data.
 	 * @return void
 	 */
-	public function validate_edd_checkout_captcha( $valid_data, $post_data ) {
-		// Check if CAPTCHA is enabled for EDD checkout
+	public function validate_edd_checkout_captcha( $valid_data, $post_data ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.FoundAfterLastUsed
+		// Check if CAPTCHA is enabled for EDD checkout.
 		$is_enabled = get_option( 'wbc_recaptcha_enable_on_edd_checkout' );
 		if ( 'yes' !== $is_enabled ) {
 			return;
 		}
 
-		// Verify CAPTCHA using service manager
+		// Verify CAPTCHA using service manager.
 		if ( function_exists( 'wbc_verify_captcha' ) ) {
 			if ( ! wbc_verify_captcha( 'edd_checkout' ) ) {
-				// Get error message
+				// Get error message.
 				$error_message = wbc_get_captcha_error_message( 'edd_checkout', 'invalid' );
 
-				// Add error to EDD's error handling
+				// Add error to EDD's error handling.
 				edd_set_error( 'invalid_captcha', $error_message );
 			}
 		}
@@ -124,20 +124,20 @@ class EDD_Form {
 	 * @param array $data Login data.
 	 * @return void
 	 */
-	public function validate_edd_login_captcha( $data ) {
-		// Check if CAPTCHA is enabled for EDD login
+	public function validate_edd_login_captcha( $data ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found
+		// Check if CAPTCHA is enabled for EDD login.
 		$is_enabled = get_option( 'wbc_recaptcha_enable_on_edd_login' );
 		if ( 'yes' !== $is_enabled ) {
 			return;
 		}
 
-		// Verify CAPTCHA using service manager
+		// Verify CAPTCHA using service manager.
 		if ( function_exists( 'wbc_verify_captcha' ) ) {
 			if ( ! wbc_verify_captcha( 'edd_login' ) ) {
-				// Get error message
+				// Get error message.
 				$error_message = wbc_get_captcha_error_message( 'edd_login', 'invalid' );
 
-				// Add error to EDD's error handling
+				// Add error to EDD's error handling.
 				edd_set_error( 'invalid_captcha', $error_message );
 			}
 		}
@@ -151,20 +151,20 @@ class EDD_Form {
 	 * @param array $data Registration data.
 	 * @return void
 	 */
-	public function validate_edd_register_captcha( $data ) {
-		// Check if CAPTCHA is enabled for EDD registration
+	public function validate_edd_register_captcha( $data ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found
+		// Check if CAPTCHA is enabled for EDD registration.
 		$is_enabled = get_option( 'wbc_recaptcha_enable_on_edd_register' );
 		if ( 'yes' !== $is_enabled ) {
 			return;
 		}
 
-		// Verify CAPTCHA using service manager
+		// Verify CAPTCHA using service manager.
 		if ( function_exists( 'wbc_verify_captcha' ) ) {
 			if ( ! wbc_verify_captcha( 'edd_register' ) ) {
-				// Get error message
+				// Get error message.
 				$error_message = wbc_get_captcha_error_message( 'edd_register', 'invalid' );
 
-				// Add error to EDD's error handling
+				// Add error to EDD's error handling.
 				edd_set_error( 'invalid_captcha', $error_message );
 			}
 		}

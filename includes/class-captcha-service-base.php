@@ -1,4 +1,4 @@
-<?php
+<?php // phpcs:ignore WordPress.Files.FileName.InvalidClassFileName -- Legacy filename convention.
 /**
  * Base Captcha Service Class
  *
@@ -438,6 +438,7 @@ abstract class WBC_Captcha_Service_Base implements WBC_Captcha_Service_Interface
 		}
 
 		// Allow filtering.
+		//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 		return apply_filters( 'wbc_should_render_captcha', true, $context, $this->get_service_id() );
 	}
 
@@ -460,6 +461,7 @@ abstract class WBC_Captcha_Service_Base implements WBC_Captcha_Service_Interface
 		}
 
 		// Allow filtering.
+		//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 		return apply_filters( 'wbc_should_verify_captcha', true, $context, $this->get_service_id() );
 	}
 }

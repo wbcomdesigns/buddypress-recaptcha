@@ -19,6 +19,7 @@
  * @subpackage bp_recaptcha/includes
  * @author     Wbcom Designs <admin@wbcomdesigns.com>
  */
+//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedClassFound	
 class Recaptcha_For_BuddyPress_Deactivator {
 
 	/**
@@ -29,7 +30,5 @@ class Recaptcha_For_BuddyPress_Deactivator {
 	 * @since    1.0.0
 	 */
 	public static function deactivate() {
-
 	}
-
 }

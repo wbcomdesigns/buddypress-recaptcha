@@ -1,4 +1,4 @@
-<?php
+<?php // phpcs:ignore WordPress.Files.FileName.InvalidClassFileName -- Service class uses simplified naming convention.
 /**
  * HCaptcha Service
  *
@@ -9,6 +9,7 @@
 /**
  * HCaptcha implementation - Privacy-focused alternative to reCAPTCHA.
  */
+//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedClassFound
 class WBC_HCaptcha_Service extends WBC_Captcha_Service_Base {
 
 	/**
@@ -174,7 +175,7 @@ class WBC_HCaptcha_Service extends WBC_Captcha_Service_Base {
 
 			$verified = isset( $result['success'] ) && true === $result['success'];
 		}
-
+		//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 		return apply_filters( 'wbc_captcha_verified', $verified, $result ?? array(), $response, $this->get_service_id() );
 	}
 

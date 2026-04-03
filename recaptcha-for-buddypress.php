@@ -15,7 +15,7 @@
  * Plugin Name:       Wbcom CAPTCHA Manager
  * Plugin URI:        https://wbcomdesigns.com/downloads/recaptcha-for-buddypress/
  * Description:       Complete CAPTCHA solution with support for reCAPTCHA v2, v3, Cloudflare Turnstile, hCaptcha, and ALTCHA. Protect WordPress, WooCommerce, BuddyPress, bbPress, and 10+ popular form builders from spam and bots with a modular, easy-to-manage interface.
- * Version:           2.0.1
+ * Version:           2.0.2
  * Requires at least: 6.0
  * Tested up to:      6.9
  * Requires PHP:      7.4
@@ -38,7 +38,7 @@ if ( ! defined( 'WPINC' ) ) {
  * Rename this for your plugin and update it as you release new versions.
  */
 if ( ! defined( 'RFB_PLUGIN_VERSION' ) ) {
-	define( 'RFB_PLUGIN_VERSION', '2.0.1' );
+	define( 'RFB_PLUGIN_VERSION', '2.0.2' );
 }
 
 if ( ! defined( 'RFB_PLUGIN_FILE' ) ) {
@@ -61,6 +61,7 @@ if ( ! defined( 'RFB_PLUGIN_PATH' ) ) {
  * The code that runs during plugin activation.
  * This action is documented in includes/class- recaptcha-for-buddypress-activator.php
  */
+//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound	
 function activate_recaptcha_for_woocommerce() {
 	require_once plugin_dir_path( __FILE__ ) . 'includes/class-recaptcha-for-buddypress-activator.php';
 	Recaptcha_For_BuddyPress_Activator::activate();
@@ -70,6 +71,7 @@ function activate_recaptcha_for_woocommerce() {
  * The code that runs during plugin deactivation.
  * This action is documented in includes/class- recaptcha-for-buddypress-deactivator.php
  */
+//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound	
 function deactivate_recaptcha_for_woocommerce() {
 	require_once plugin_dir_path( __FILE__ ) . 'includes/class-recaptcha-for-buddypress-deactivator.php';
 	Recaptcha_For_BuddyPress_Deactivator::deactivate();
@@ -82,9 +84,11 @@ register_deactivation_hook( __FILE__, 'deactivate_recaptcha_for_woocommerce' );
  * The core plugin class that is used to define internationalization,
  * admin-specific hooks, and public-facing site hooks.
  */
+//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 require plugin_dir_path( __FILE__ ) . 'includes/class-recaptcha-for-buddypress.php';
 
 // Load EDD SL SDK for update handling (no license key required for free plugin).
+//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 $rfb_sdk_path = plugin_dir_path( __FILE__ ) . 'vendor/easy-digital-downloads/edd-sl-sdk/edd-sl-sdk.php';
 if ( file_exists( $rfb_sdk_path ) ) {
 	require_once $rfb_sdk_path;
@@ -118,6 +122,7 @@ add_action(
  * @since 1.0.0
  * @return void
  */
+//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound
 function wb_recaptcha_plugin_activation() {
 	register_activation_hook( __FILE__, 'activate_recaptcha_for_woocommerce' );
 }
@@ -129,6 +134,7 @@ add_action( 'plugins_loaded', 'wb_recaptcha_plugin_activation' );
  *
  * @param string $plugin Get a plugin base url.
  */
+//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound	
 function wb_recaptcha_activation_redirect_settings( $plugin ) {
 
 	if ( plugin_basename( __FILE__ ) === $plugin && ( class_exists( 'WooCommerce' ) || class_exists( 'BuddyPress' ) || class_exists( 'bbPress' ) ) ) {
@@ -149,6 +155,7 @@ add_action( 'activated_plugin', 'wb_recaptcha_activation_redirect_settings' );
  *
  * @since    1.0.0
  */
+//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound	
 function run_recaptcha_for_woocommerce() {
 	$plugin = new Recaptcha_For_BuddyPress();
 	$plugin->run();
@@ -161,6 +168,7 @@ run_recaptcha_for_woocommerce();
  * @since 1.0.0
  * @return string The user's IP address or empty string.
  */
+//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound	
 function wb_recaptcha_get_the_user_ip() {
 	// Only trust REMOTE_ADDR as other headers can be spoofed.
 	$ipaddress = '';

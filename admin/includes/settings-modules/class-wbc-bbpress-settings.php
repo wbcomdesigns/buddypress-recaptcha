@@ -1,6 +1,6 @@
 <?php
 /**
- * bbPress Settings Module
+ * BbPress Settings Module
  *
  * Handles settings for bbPress forum forms (topics, replies).
  *
@@ -11,8 +11,10 @@
  * @subpackage bp_recaptcha/admin/includes/settings-modules
  */
 
+// phpcs:disable PEAR.NamingConventions.ValidClassName.Invalid -- Matches bbPress naming convention.
+
 /**
- * bbPress Forum Forms Settings
+ * BbPress Forum Forms Settings
  *
  * Only active when bbPress plugin is installed and active.
  *
@@ -20,7 +22,10 @@
  * @subpackage bp_recaptcha/admin/includes/settings-modules
  * @author     Wbcom Designs <admin@wbcomdesigns.com>
  */
+//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedClassFound
 class WBC_bbPress_Settings extends WBC_Settings_Module_Abstract {
+
+	// phpcs:enable PEAR.NamingConventions.ValidClassName.Invalid
 
 	/**
 	 * Constructor

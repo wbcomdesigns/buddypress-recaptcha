@@ -20,13 +20,14 @@
  * @subpackage bp_recaptcha/admin/includes/settings-modules
  * @author     Wbcom Designs <admin@wbcomdesigns.com>
  */
+//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedClassFound
 class WBC_WordPress_Settings extends WBC_Settings_Module_Abstract {
 
 	/**
 	 * Constructor
 	 */
 	public function __construct() {
-		$this->module_id   = 'wordpress';
+		$this->module_id   = 'WordPress';
 		$this->module_name = __( 'WordPress Core Forms', 'buddypress-recaptcha' );
 	}
 

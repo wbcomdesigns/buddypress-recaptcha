@@ -12,6 +12,8 @@
  * @subpackage bp_recaptcha/includes
  */
 
+defined( 'ABSPATH' ) || exit;
+
 /**
  * The core plugin class.
  *

@@ -1,4 +1,4 @@
-<?php
+<?php // phpcs:ignore WordPress.Files.FileName.InvalidClassFileName, WordPress.Files.FileName.NotHyphenatedLowercase
 /**
  * MemberPress Integration
  *
@@ -30,13 +30,13 @@ class MemberPress_Form {
 	 * @return void
 	 */
 	public function render_memberpress_login_captcha() {
-		// Check if CAPTCHA is enabled for MemberPress login
+		// Check if CAPTCHA is enabled for MemberPress login.
 		$is_enabled = get_option( 'wbc_recaptcha_enable_on_memberpress_login' );
 		if ( 'yes' !== $is_enabled ) {
 			return;
 		}
 
-		// Render CAPTCHA using service manager
+		// Render CAPTCHA using service manager.
 		if ( function_exists( 'wbc_captcha_service_manager' ) ) {
 			echo '<div class="mepr-login-captcha-wrap">';
 			wbc_captcha_service_manager()->render( 'memberpress_login' );
@@ -52,13 +52,13 @@ class MemberPress_Form {
 	 * @return void
 	 */
 	public function render_memberpress_register_captcha() {
-		// Check if CAPTCHA is enabled for MemberPress registration
+		// Check if CAPTCHA is enabled for MemberPress registration.
 		$is_enabled = get_option( 'wbc_recaptcha_enable_on_memberpress_register' );
 		if ( 'yes' !== $is_enabled ) {
 			return;
 		}
 
-		// Render CAPTCHA using service manager
+		// Render CAPTCHA using service manager.
 		if ( function_exists( 'wbc_captcha_service_manager' ) ) {
 			echo '<div class="mepr-signup-captcha-wrap">';
 			wbc_captcha_service_manager()->render( 'memberpress_register' );
@@ -75,19 +75,19 @@ class MemberPress_Form {
 	 * @return WP_Error Modified errors object.
 	 */
 	public function validate_memberpress_login_captcha( $errors ) {
-		// Check if CAPTCHA is enabled for MemberPress login
+		// Check if CAPTCHA is enabled for MemberPress login.
 		$is_enabled = get_option( 'wbc_recaptcha_enable_on_memberpress_login' );
 		if ( 'yes' !== $is_enabled ) {
 			return $errors;
 		}
 
-		// Verify CAPTCHA using service manager
+		// Verify CAPTCHA using service manager.
 		if ( function_exists( 'wbc_verify_captcha' ) ) {
 			if ( ! wbc_verify_captcha( 'memberpress_login' ) ) {
-				// Get error message
+				// Get error message.
 				$error_message = wbc_get_captcha_error_message( 'memberpress_login', 'invalid' );
 
-				// Add error to WP_Error object
+				// Add error to WP_Error object.
 				$errors->add( 'invalid_captcha', $error_message );
 			}
 		}
@@ -104,19 +104,19 @@ class MemberPress_Form {
 	 * @return array Modified errors array.
 	 */
 	public function validate_memberpress_register_captcha( $errors ) {
-		// Check if CAPTCHA is enabled for MemberPress registration
+		// Check if CAPTCHA is enabled for MemberPress registration.
 		$is_enabled = get_option( 'wbc_recaptcha_enable_on_memberpress_register' );
 		if ( 'yes' !== $is_enabled ) {
 			return $errors;
 		}
 
-		// Verify CAPTCHA using service manager
+		// Verify CAPTCHA using service manager.
 		if ( function_exists( 'wbc_verify_captcha' ) ) {
 			if ( ! wbc_verify_captcha( 'memberpress_register' ) ) {
-				// Get error message
+				// Get error message.
 				$error_message = wbc_get_captcha_error_message( 'memberpress_register', 'invalid' );
 
-				// Add error to errors array
+				// Add error to errors array.
 				$errors[] = $error_message;
 			}
 		}

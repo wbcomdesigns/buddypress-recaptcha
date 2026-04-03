@@ -1,3 +1,13 @@
+<?php
+/**
+ * Wbcom license page template.
+ *
+ * @package Recaptcha_For_BuddyPress
+ */
+
+defined( 'ABSPATH' ) || exit;
+
+?>
 <div class="wrap">
 	<div class="wbcom-bb-plugins-offer-wrapper">
 		<div id="wb_admin_logo">
@@ -31,7 +41,7 @@
 					</tr>
 				</thead>
 			</table>
-			<?php do_action( 'wbcom_add_plugin_license_code' ); ?>
+			<?php do_action( 'wbcom_add_plugin_license_code' ); //phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound?>
 			<table class="form-table wb-license-form-table">
 				<tfoot>
 					<tr>

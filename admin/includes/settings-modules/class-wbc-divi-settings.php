@@ -20,6 +20,7 @@
  * @subpackage bp_recaptcha/admin/includes/settings-modules
  * @author     Wbcom Designs <admin@wbcomdesigns.com>
  */
+//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedClassFound
 class WBC_Divi_Settings extends WBC_Settings_Module_Abstract {
 
 	/**
@@ -36,7 +37,7 @@ class WBC_Divi_Settings extends WBC_Settings_Module_Abstract {
 	 * @return bool
 	 */
 	public function is_active() {
-		// Check for Divi theme or Divi Builder plugin
+		// Check for Divi theme or Divi Builder plugin.
 		return defined( 'ET_BUILDER_VERSION' );
 	}
 

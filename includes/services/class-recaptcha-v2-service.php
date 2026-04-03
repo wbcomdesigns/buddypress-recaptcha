@@ -1,4 +1,4 @@
-<?php
+<?php // phpcs:ignore WordPress.Files.FileName.InvalidClassFileName -- Service class uses simplified naming convention.
 /**
  * Google reCAPTCHA v2 Service
  *
@@ -9,6 +9,7 @@
 /**
  * ReCAPTCHA v2 implementation.
  */
+//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedClassFound
 class WBC_Recaptcha_V2_Service extends WBC_Captcha_Service_Base {
 
 	/**
@@ -100,7 +101,7 @@ class WBC_Recaptcha_V2_Service extends WBC_Captcha_Service_Base {
 			$lang = '?hl=' . $language;
 		}
 
-		$domain = apply_filters( 'anr_recaptcha_domain', 'google.com' );
+		$domain = apply_filters( 'anr_recaptcha_domain', 'google.com' ); //phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound	
 		return sprintf( 'https://www.%s/recaptcha/api.js%s', $domain, $lang );
 	}
 
@@ -214,7 +215,7 @@ class WBC_Recaptcha_V2_Service extends WBC_Captcha_Service_Base {
 		}
 
 		$verified = isset( $result['success'] ) && true === $result['success'];
-
+		//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound	
 		return apply_filters( 'wbc_captcha_verified', $verified, $result, $response, $this->get_service_id() );
 	}
 
@@ -224,7 +225,7 @@ class WBC_Recaptcha_V2_Service extends WBC_Captcha_Service_Base {
 	 * @return string
 	 */
 	public function get_verify_endpoint() {
-		$domain = apply_filters( 'anr_recaptcha_domain', 'google.com' );
+		$domain = apply_filters( 'anr_recaptcha_domain', 'google.com' ); //phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 		return sprintf( 'https://www.%s/recaptcha/api/siteverify', $domain );
 	}
 

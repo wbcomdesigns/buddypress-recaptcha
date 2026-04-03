@@ -1,4 +1,4 @@
-<?php
+<?php // phpcs:ignore WordPress.Files.FileName.InvalidClassFileName, WordPress.Files.FileName.NotHyphenatedLowercase
 /**
  * The public-facing functionality of the plugin.
  *
@@ -27,18 +27,20 @@ class Woocommerce_Login {
 	 * @return void
 	 */
 	public function woo_extra_login_fields() {
-		// Use the service manager to render captcha
+		// Use the service manager to render captcha.
 		if ( function_exists( 'wbc_captcha_service_manager' ) ) {
 			wbc_captcha_service_manager()->render( 'woo_login' );
 		}
 	}
 
 	/**
-	 * Validate captcha on WooCommerce login
-	 * Note: Actual validation is handled by WoocommerceProcessLoginErrors class
+	 * Validate captcha on WooCommerce login.
+	 * Note: Actual validation is handled by WoocommerceProcessLoginErrors class.
+	 *
+	 * @return void
 	 */
 	public function validate_login_captcha() {
-		// This method is kept for backward compatibility
-		// Actual validation happens in WoocommerceProcessLoginErrors
+		// This method is kept for backward compatibility.
+		// Actual validation happens in WoocommerceProcessLoginErrors.
 	}
 }
