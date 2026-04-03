@@ -93,7 +93,6 @@ class Recaptcha_For_BuddyPress_Public {
 			'bpRecaptcha',
 			array(
 				'ajax_url'   => admin_url( 'admin-ajax.php' ),
-				'nonce'      => wp_create_nonce( 'bpRecaptcha' ),
 				'site_key'   => $site_key,
 				'service_id' => $active_service->get_service_id(),
 			)

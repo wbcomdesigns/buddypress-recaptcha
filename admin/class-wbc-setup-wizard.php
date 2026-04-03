@@ -92,13 +92,12 @@ class WBC_Setup_Wizard {
 			call_user_func( $this->steps[ $this->step ]['handler'] );
 		}
 
-		// Enqueue scripts.
-		wp_enqueue_style( 'wbc-setup', plugin_dir_url( __FILE__ ) . 'css/setup-wizard.css', array(), RFB_PLUGIN_VERSION );
-		wp_enqueue_script( 'wbc-setup', plugin_dir_url( __FILE__ ) . 'js/setup-wizard.js', array( 'jquery' ), RFB_PLUGIN_VERSION, true );
+		// Enqueue admin dynamic script for test connection functionality.
+		wp_enqueue_script( 'wbc-admin-dynamic', plugin_dir_url( __FILE__ ) . 'js/wbc-admin-dynamic.js', array( 'jquery' ), RFB_PLUGIN_VERSION, true );
 
 		// Localize script.
 		wp_localize_script(
-			'wbc-setup',
+			'wbc-admin-dynamic',
 			'wbc_setup',
 			array(
 				'ajax_url' => admin_url( 'admin-ajax.php' ),
@@ -722,7 +721,7 @@ class WBC_Setup_Wizard {
 				<p class="description"><?php esc_html_e( 'Your private secret key', 'buddypress-recaptcha' ); ?></p>
 			</div>
 
-			<a href="#" class="wbc-test-connection" onclick="testConnection(); return false;">
+			<a href="#" class="wbc-test-connection" onclick="if(typeof wbc_test_captcha_connection==='function'){wbc_test_captcha_connection();}return false;">
 				<?php esc_html_e( 'Test Connection', 'buddypress-recaptcha' ); ?>
 			</a>
 

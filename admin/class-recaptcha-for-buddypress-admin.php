@@ -129,7 +129,6 @@ class Recaptcha_For_BuddyPress_Admin {
 				'wbc_admin',
 				array(
 					'ajax_url' => admin_url( 'admin-ajax.php' ),
-					'nonce'    => wp_create_nonce( 'wbc_admin_nonce' ),
 					'strings'  => array(
 						'testing'    => __( 'Testing connection...', 'buddypress-recaptcha' ),
 						'success'    => __( 'Connection successful!', 'buddypress-recaptcha' ),
