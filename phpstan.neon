@@ -1,0 +1,13 @@
+parameters:
+    level: 5
+    paths:
+        - .
+    excludePaths:
+        - vendor
+        - node_modules
+        - dist
+        - assets
+        - includes/lib/altcha
+        - bp-redirect-update-checker
+    scanDirectories:
+        - vendor/szepeviktor/phpstan-wordpress/stubs
