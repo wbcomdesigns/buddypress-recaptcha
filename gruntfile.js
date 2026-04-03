@@ -246,7 +246,14 @@ module.exports = function (grunt) {
 					'!**/*.orig',
 					'!**/*~',
 					'!**/#*',
-					'!**/*.zip'
+					'!**/*.zip',
+					'!vendor/phpstan/**',
+					'!vendor/php-stubs/**',
+					'!vendor/php-parallel-lint/**',
+					'!vendor/szepeviktor/**',
+					'!vendor/symfony/**',
+					'!vendor/bin/**',
+					'!AUDIT-REPORT.md'
 				],
 				dest: 'dist/buddypress-recaptcha/'
 			}
