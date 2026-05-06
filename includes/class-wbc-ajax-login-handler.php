@@ -77,7 +77,9 @@ class WBC_AJAX_Login_Handler {
 			);
 		}
 
-		// Login successful.
+		// Login successful. The response intentionally omits the user's email —
+		// the frontend only consumes `redirect_to` / `display_name`, and exposing
+		// the email here would leak PII through the AJAX payload.
 		wp_send_json_success(
 			array(
 				'message'     => sprintf(
@@ -89,7 +91,6 @@ class WBC_AJAX_Login_Handler {
 				'user'        => array(
 					'id'           => $user->ID,
 					'display_name' => $user->display_name,
-					'email'        => $user->user_email,
 				),
 			)
 		);

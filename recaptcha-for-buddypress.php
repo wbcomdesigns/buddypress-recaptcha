@@ -15,7 +15,7 @@
  * Plugin Name:       Wbcom CAPTCHA Manager
  * Plugin URI:        https://wbcomdesigns.com/downloads/recaptcha-for-buddypress/
  * Description:       Complete CAPTCHA solution with support for reCAPTCHA v2, v3, Cloudflare Turnstile, hCaptcha, and ALTCHA. Protect WordPress, WooCommerce, BuddyPress, bbPress, and 10+ popular form builders from spam and bots with a modular, easy-to-manage interface.
- * Version:           2.0.2
+ * Version:           2.1.0
  * Requires at least: 6.0
  * Tested up to:      6.9
  * Requires PHP:      7.4
@@ -38,7 +38,7 @@ if ( ! defined( 'WPINC' ) ) {
  * Rename this for your plugin and update it as you release new versions.
  */
 if ( ! defined( 'RFB_PLUGIN_VERSION' ) ) {
-	define( 'RFB_PLUGIN_VERSION', '2.0.2' );
+	define( 'RFB_PLUGIN_VERSION', '2.1.0' );
 }
 
 if ( ! defined( 'RFB_PLUGIN_FILE' ) ) {
@@ -138,7 +138,7 @@ add_action( 'plugins_loaded', 'wb_recaptcha_plugin_activation' );
 function wb_recaptcha_activation_redirect_settings( $plugin ) {
 
 	if ( plugin_basename( __FILE__ ) === $plugin && ( class_exists( 'WooCommerce' ) || class_exists( 'BuddyPress' ) || class_exists( 'bbPress' ) ) ) {
-		if ( isset( $_REQUEST['action'] ) && $_REQUEST['action']  == 'activate' && isset( $_REQUEST['plugin'] ) && $_REQUEST['plugin'] == $plugin) { //phpcs:ignore
+		if ( isset( $_REQUEST['action'] ) && 'activate' === $_REQUEST['action'] && isset( $_REQUEST['plugin'] ) && $plugin === $_REQUEST['plugin'] ) { //phpcs:ignore
 			wp_safe_redirect( admin_url( 'admin.php?page=buddypress-recaptcha' ) );
 			exit;
 		}

@@ -130,13 +130,72 @@ if ( ! function_exists( 'wbc_get_no_conflict_option' ) ) {
 	}
 }
 
+if ( ! function_exists( 'wb_recaptcha_ip_matches_entry' ) ) {
+	/**
+	 * Match a user IP against a single whitelist entry.
+	 *
+	 * Supports three entry forms (admin docs / UI promise all three):
+	 *  - Exact IPv4/IPv6 address (e.g. `192.168.1.10`).
+	 *  - Inclusive range, dash-separated (e.g. `192.168.1.1-192.168.1.50`).
+	 *  - CIDR block (e.g. `10.0.0.0/24`).
+	 *
+	 * Falls back to a strict equality check for entries we can't parse.
+	 *
+	 * @param string $user_ip The user's IP address.
+	 * @param string $entry   The whitelist entry to compare against.
+	 * @return bool
+	 */
+	//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound
+	function wb_recaptcha_ip_matches_entry( $user_ip, $entry ) {
+		$user_ip = trim( (string) $user_ip );
+		$entry   = trim( (string) $entry );
+
+		if ( '' === $user_ip || '' === $entry ) {
+			return false;
+		}
+
+		// CIDR notation (IPv4 only — admins targeting v6 should list ranges).
+		if ( false !== strpos( $entry, '/' ) ) {
+			list( $subnet, $bits ) = array_pad( explode( '/', $entry, 2 ), 2, null );
+			$bits                  = (int) $bits;
+			$subnet_long           = ip2long( $subnet );
+			$ip_long               = ip2long( $user_ip );
+			if ( false === $subnet_long || false === $ip_long || $bits < 0 || $bits > 32 ) {
+				return false;
+			}
+			$mask = ( 0 === $bits ) ? 0 : ( ~0 << ( 32 - $bits ) ) & 0xFFFFFFFF;
+			return ( $ip_long & $mask ) === ( $subnet_long & $mask );
+		}
+
+		// Range notation: "start-end" (IPv4 only).
+		if ( false !== strpos( $entry, '-' ) ) {
+			list( $start, $end ) = array_pad( explode( '-', $entry, 2 ), 2, null );
+			$start_long          = ip2long( trim( (string) $start ) );
+			$end_long            = ip2long( trim( (string) $end ) );
+			$ip_long             = ip2long( $user_ip );
+			if ( false === $start_long || false === $end_long || false === $ip_long ) {
+				return false;
+			}
+			if ( $start_long > $end_long ) {
+				$tmp        = $start_long;
+				$start_long = $end_long;
+				$end_long   = $tmp;
+			}
+			return $ip_long >= $start_long && $ip_long <= $end_long;
+		}
+
+		// Plain address.
+		return $user_ip === $entry;
+	}
+}
+
 if ( ! function_exists( 'wb_recaptcha_restriction_recaptcha_by_ip' ) ) {
 	/**
 	 * Check if IP is whitelisted (backward compatibility).
 	 *
 	 * @return bool
 	 */
-	//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound	
+	//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound
 	function wb_recaptcha_restriction_recaptcha_by_ip() {
 		if ( function_exists( 'wbc_captcha_service_manager' ) ) {
 			return wbc_captcha_service_manager()->is_ip_whitelisted();
@@ -153,7 +212,15 @@ if ( ! function_exists( 'wb_recaptcha_restriction_recaptcha_by_ip' ) ) {
 			return false;
 		}
 
-		$ip_array = array_map( 'trim', explode( ',', $ip_list ) );
-		return in_array( $user_ip, $ip_array, true );
+		$entries = array_map( 'trim', explode( ',', $ip_list ) );
+		foreach ( $entries as $entry ) {
+			if ( '' === $entry ) {
+				continue;
+			}
+			if ( wb_recaptcha_ip_matches_entry( $user_ip, $entry ) ) {
+				return true;
+			}
+		}
+		return false;
 	}
 }

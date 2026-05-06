@@ -9,6 +9,39 @@
 	'use strict';
 
 	/**
+	 * Reset the active CAPTCHA provider's widget so a fresh challenge is shown
+	 * after a failed AJAX login attempt. Each provider exposes a different
+	 * global, so we dispatch on wbcAjaxLogin.recaptchaType.
+	 */
+	function resetActiveCaptcha() {
+		var type = ( window.wbcAjaxLogin && wbcAjaxLogin.recaptchaType ) || '';
+
+		if ( type === 'recaptcha_v2_checkbox' && typeof grecaptcha !== 'undefined' ) {
+			try {
+				grecaptcha.reset();
+			} catch ( e ) {
+				// Provider not yet ready; safe to ignore.
+			}
+			return;
+		}
+		if ( type === 'hcaptcha' && typeof hcaptcha !== 'undefined' ) {
+			try {
+				hcaptcha.reset();
+			} catch ( e ) {
+				// Provider not yet ready; safe to ignore.
+			}
+			return;
+		}
+		if ( type === 'turnstile' && typeof turnstile !== 'undefined' ) {
+			try {
+				turnstile.reset();
+			} catch ( e ) {
+				// Provider not yet ready; safe to ignore.
+			}
+		}
+	}
+
+	/**
 	 * Handle AJAX login form submission
 	 */
 	$( document ).ready( function() {
@@ -57,10 +90,8 @@
 						$buttonText.show();
 						$buttonLoader.hide();
 
-						// Reset CAPTCHA if available
-						if ( typeof grecaptcha !== 'undefined' && wbcAjaxLogin.recaptchaType === 'recaptcha_v2_checkbox' ) {
-							grecaptcha.reset();
-						}
+						// Reset CAPTCHA widget for whichever provider is active.
+						resetActiveCaptcha();
 					}
 				},
 				error: function( xhr, status, error ) {
@@ -74,10 +105,8 @@
 					$buttonText.show();
 					$buttonLoader.hide();
 
-					// Reset CAPTCHA if available
-					if ( typeof grecaptcha !== 'undefined' && wbcAjaxLogin.recaptchaType === 'recaptcha_v2_checkbox' ) {
-						grecaptcha.reset();
-					}
+					// Reset CAPTCHA widget for whichever provider is active.
+					resetActiveCaptcha();
 				}
 			});
 		});

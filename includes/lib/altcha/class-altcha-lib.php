@@ -255,18 +255,17 @@ class AltchaPlugin {
 	}
 
 	function get_ip_address() {
-		foreach ( array( 'HTTP_CLIENT_IP', 'HTTP_X_FORWARDED_FOR', 'HTTP_X_FORWARDED', 'HTTP_X_CLUSTER_CLIENT_IP', 'HTTP_FORWARDED_FOR', 'HTTP_FORWARDED', 'REMOTE_ADDR' ) as $key ) {
-			if ( array_key_exists( $key, $_SERVER ) === true ) {
-				$value = trim( sanitize_text_field( $_SERVER[ $key ] ) );
-				foreach ( explode( ',', $value ) as $ip ) {
-					$ip = trim( $ip );
-
-					if ( filter_var( $ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE ) !== false ) {
-						return $ip;
-					}
-				}
+		// Trust only REMOTE_ADDR. The proxy headers (HTTP_X_FORWARDED_FOR etc.)
+		// are trivially spoofable by any client and were previously used by
+		// ALTCHA's IP detection — that is now fixed to match the rest of the
+		// plugin (see wb_recaptcha_get_the_user_ip()).
+		if ( isset( $_SERVER['REMOTE_ADDR'] ) ) {
+			$value = trim( sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) );
+			if ( '' !== $value && false !== filter_var( $value, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE ) ) {
+				return $value;
 			}
 		}
+		return '0.0.0.0';
 	}
 
 	public function get_challengeurl() {

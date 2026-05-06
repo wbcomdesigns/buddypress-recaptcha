@@ -264,7 +264,18 @@ class WBC_Captcha_Service_Manager {
 	public function verify( $context, $response = null, $args = array() ) {
 		$service = $this->get_active_service();
 		if ( ! $service || ! $service->is_configured() ) {
-			return true; // Don't block if not configured.
+			// Surface a persistent admin notice so a missing key never silently
+			// disables protection without anyone noticing.
+			$this->log_error( 'Captcha service not configured during verify', $context );
+			set_transient( 'wbc_captcha_not_configured', 1, HOUR_IN_SECONDS );
+
+			// Optional fail-closed mode: block the request when configuration is
+			// missing. Off by default for backwards compatibility.
+			//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
+			if ( apply_filters( 'wbc_captcha_fail_closed', (bool) get_option( 'wbc_captcha_fail_closed', false ), $context ) ) {
+				return false;
+			}
+			return true; // Don't block if not configured (legacy behavior).
 		}
 
 		if ( ! $service->is_enabled_for_context( $context ) ) {
@@ -294,9 +305,51 @@ class WBC_Captcha_Service_Manager {
 
 		} catch ( Exception $e ) {
 			$this->log_error( 'Exception during captcha verification: ' . $e->getMessage(), $context );
-			// Don't block on exceptions.
+
+			// Optional fail-closed mode: block on unexpected exceptions when the
+			// admin opts into stricter verification.
+			//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
+			if ( apply_filters( 'wbc_captcha_fail_closed', (bool) get_option( 'wbc_captcha_fail_closed', false ), $context ) ) {
+				return false;
+			}
+
+			// Default: don't block on exceptions (legacy behavior).
 			return true;
 		}
+	}
+
+	/**
+	 * Output a persistent admin notice when the active CAPTCHA service is
+	 * missing required keys. Hooked to `admin_notices` from the main plugin
+	 * loader so admins notice silent fail-open conditions even when no
+	 * verification has fired this request.
+	 */
+	public function maybe_render_misconfiguration_notice() {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return;
+		}
+
+		if ( ! get_transient( 'wbc_captcha_not_configured' ) ) {
+			return;
+		}
+
+		$settings_url = admin_url( 'admin.php?page=buddypress-recaptcha&tab=rfw-general' );
+		// Use `notice-warning` (not `notice-error`) so the message survives
+		// over-broad third-party admin CSS rules like
+		//   `#wpwrap .notice.notice-error { display:none }`
+		// that ship in some sibling Wbcom plugins. The `wbc-captcha-config-notice`
+		// class also gives admins a stable hook to style or scope the notice.
+		echo '<div class="notice notice-warning wbc-captcha-config-notice"><p>';
+		echo wp_kses(
+			sprintf(
+				/* translators: %1$s: opening anchor tag, %2$s: closing anchor tag */
+				__( 'Wbcom CAPTCHA Manager is enabled but the active service is not configured. Forms are currently unprotected — %1$sopen settings%2$s and add your API keys.', 'buddypress-recaptcha' ),
+				'<a href="' . esc_url( $settings_url ) . '">',
+				'</a>'
+			),
+			array( 'a' => array( 'href' => array() ) )
+		);
+		echo '</p></div>';
 	}
 
 	/**
@@ -429,8 +482,16 @@ class WBC_Captcha_Service_Manager {
 			return false;
 		}
 
-		$ip_array = array_map( 'trim', explode( ',', $ip_list ) );
-		return in_array( $user_ip, $ip_array, true );
+		$entries = array_map( 'trim', explode( ',', $ip_list ) );
+		foreach ( $entries as $entry ) {
+			if ( '' === $entry ) {
+				continue;
+			}
+			if ( wb_recaptcha_ip_matches_entry( $user_ip, $entry ) ) {
+				return true;
+			}
+		}
+		return false;
 	}
 }
 
