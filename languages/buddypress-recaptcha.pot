@@ -2,9 +2,9 @@
 # This file is distributed under the GPL-2.0+.
 msgid ""
 msgstr ""
-"Project-Id-Version: Wbcom CAPTCHA Manager 2.0.2\n"
+"Project-Id-Version: Wbcom CAPTCHA Manager 2.1.0\n"
 "Report-Msgid-Bugs-To: https://wbcomdesigns.com/contact/\n"
-"POT-Creation-Date: 2026-04-03 08:22:22+00:00\n"
+"POT-Creation-Date: 2026-05-06 10:08:31+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -772,7 +772,8 @@ msgstr ""
 #: admin/includes/class-wbc-buddypress-settings-page.php:804
 #: admin/includes/class-wbc-buddypress-settings-page.php:2103
 #: admin/includes/class-wbc-buddypress-settings-page.php:2104
-#: includes/services/class-recaptcha-v2-service.php:359
+#: includes/services/class-hcaptcha-service.php:224
+#: includes/services/class-recaptcha-v2-service.php:367
 msgid "Please complete the security check."
 msgstr ""
 
@@ -3228,14 +3229,22 @@ msgstr ""
 msgid "Security check"
 msgstr ""
 
-#: includes/class-captcha-service-manager.php:362
+#: includes/class-captcha-service-manager.php:346
+#. translators: %1$s: opening anchor tag, %2$s: closing anchor tag
+msgid ""
+"Wbcom CAPTCHA Manager is enabled but the active service is not configured. "
+"Forms are currently unprotected — %1$sopen settings%2$s and add your API "
+"keys."
+msgstr ""
+
+#: includes/class-captcha-service-manager.php:415
 #. translators: %s: Settings page URL
 msgid ""
 "Captcha service is not properly configured. Please %1$sconfigure your "
 "captcha settings%2$s."
 msgstr ""
 
-#: includes/class-recaptcha-for-buddypress.php:794
+#: includes/class-recaptcha-for-buddypress.php:800
 msgid "An error occurred. Please try again."
 msgstr ""
 
@@ -3247,7 +3256,7 @@ msgstr ""
 msgid "Please enter both username and password."
 msgstr ""
 
-#: includes/class-wbc-ajax-login-handler.php:85
+#: includes/class-wbc-ajax-login-handler.php:87
 #. translators: %s: user display name
 msgid "Welcome back, %s!"
 msgstr ""
@@ -3351,29 +3360,29 @@ msgstr ""
 msgid "ALTCHA Anti-spam"
 msgstr ""
 
-#: includes/lib/altcha/class-altcha-lib.php:296
+#: includes/lib/altcha/class-altcha-lib.php:295
 msgid "Verification failed. Try again later."
 msgstr ""
 
-#: includes/lib/altcha/class-altcha-lib.php:299
+#: includes/lib/altcha/class-altcha-lib.php:298
 #. translators: the placeholders contain opening and closing tags for a link
 #. (<a> tag)
 msgid "Protected by %1$sALTCHA%2$s"
 msgstr ""
 
-#: includes/lib/altcha/class-altcha-lib.php:303
+#: includes/lib/altcha/class-altcha-lib.php:302
 msgid "I'm not a robot"
 msgstr ""
 
-#: includes/lib/altcha/class-altcha-lib.php:304
+#: includes/lib/altcha/class-altcha-lib.php:303
 msgid "Verified"
 msgstr ""
 
-#: includes/lib/altcha/class-altcha-lib.php:305
+#: includes/lib/altcha/class-altcha-lib.php:304
 msgid "Verifying..."
 msgstr ""
 
-#: includes/lib/altcha/class-altcha-lib.php:306
+#: includes/lib/altcha/class-altcha-lib.php:305
 msgid "Verifying... please wait."
 msgstr ""
 
@@ -3662,31 +3671,31 @@ msgid ""
 "or .local domains."
 msgstr ""
 
-#: includes/services/class-recaptcha-v2-service.php:347
-#: includes/services/class-recaptcha-v2-service.php:350
+#: includes/services/class-recaptcha-v2-service.php:355
+#: includes/services/class-recaptcha-v2-service.php:358
 msgid "Please complete the security check to log in."
 msgstr ""
 
-#: includes/services/class-recaptcha-v2-service.php:348
-#: includes/services/class-recaptcha-v2-service.php:351
-#: includes/services/class-recaptcha-v2-service.php:353
+#: includes/services/class-recaptcha-v2-service.php:356
+#: includes/services/class-recaptcha-v2-service.php:359
+#: includes/services/class-recaptcha-v2-service.php:361
 msgid "Please complete the security check to register."
 msgstr ""
 
-#: includes/services/class-recaptcha-v2-service.php:349
-#: includes/services/class-recaptcha-v2-service.php:352
+#: includes/services/class-recaptcha-v2-service.php:357
+#: includes/services/class-recaptcha-v2-service.php:360
 msgid "Please complete the security check to reset your password."
 msgstr ""
 
-#: includes/services/class-recaptcha-v2-service.php:354
+#: includes/services/class-recaptcha-v2-service.php:362
 msgid "Please complete the security check to submit your topic."
 msgstr ""
 
-#: includes/services/class-recaptcha-v2-service.php:355
+#: includes/services/class-recaptcha-v2-service.php:363
 msgid "Please complete the security check to submit your reply."
 msgstr ""
 
-#: includes/services/class-recaptcha-v2-service.php:356
+#: includes/services/class-recaptcha-v2-service.php:364
 msgid "Please complete the security check to place your order."
 msgstr ""
 
