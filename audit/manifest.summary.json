@@ -1,0 +1,63 @@
+{
+  "plugin": {
+    "slug": "buddypress-recaptcha",
+    "name": "Wbcom CAPTCHA Manager",
+    "version": "2.1.0",
+    "extends": null
+  },
+  "counts": {
+    "rest_endpoints": 1,
+    "ajax_actions": 2,
+    "admin_pages": 7,
+    "blocks": 1,
+    "shortcodes": 1,
+    "services": 13,
+    "hooks_fired_unique": 42,
+    "hooks_actions": 13,
+    "hooks_filters": 29,
+    "tables": 0,
+    "post_types": 0,
+    "taxonomies": 0,
+    "cron": 0,
+    "wp_cli": 0,
+    "settings_register_setting_calls": 34,
+    "providers_supported": 5
+  },
+  "providers": ["recaptcha-v2", "recaptcha-v3", "hcaptcha", "turnstile", "altcha"],
+  "key_classes": {
+    "manager": "WBC_Captcha_Service_Manager",
+    "base": "WBC_Captcha_Service_Base",
+    "interface": "WBC_Captcha_Service_Interface",
+    "ajax_login": "WBC_AJAX_Login_Handler",
+    "block": "WBC_Login_Block"
+  },
+  "extension_points": {
+    "register_custom_service": "wbc_register_captcha_services (action)",
+    "skip_render": "wbc_should_render_captcha (filter)",
+    "skip_verify": "wbc_should_verify_captcha (filter)",
+    "override_verification": "wbc_captcha_verified (filter)",
+    "fail_closed": "wbc_captcha_fail_closed (option + filter, since 2.1.0)",
+    "strict_nonce": "wbc_captcha_strict_nonce (option + filter, since 2.1.0)"
+  },
+  "detail_files": {
+    "full_manifest": "audit/manifest.json",
+    "feature_audit": "audit/FEATURE_AUDIT.md",
+    "code_flows": "audit/CODE_FLOWS.md",
+    "role_matrix": "audit/ROLE_MATRIX.md",
+    "graph": "audit/graph.html",
+    "wppqa_baseline": "audit/wppqa-baseline-2026-05-06/SUMMARY.md"
+  },
+  "wppqa_summary": {
+    "high_findings": 16,
+    "real_high_findings": 6,
+    "false_positive_high": 10,
+    "medium_warnings": 7,
+    "release_blocking": 0
+  },
+  "generated": {
+    "at": "2026-05-06T15:42:00Z",
+    "branch": "release/2.1.0",
+    "head_commit": "c29e791",
+    "schema_version": "v2.1"
+  }
+}
