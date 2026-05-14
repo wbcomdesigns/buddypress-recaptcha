@@ -95,13 +95,15 @@ class WBC_Recaptcha_V2_Service extends WBC_Captcha_Service_Base {
 	 * @return string
 	 */
 	public function get_script_url() {
-		$language = trim( get_option( 'language', '' ) );
+		// Read the plugin-prefixed admin setting rather than the unrelated WP-core
+		// `language` option — same fix as class-hcaptcha-service.php::get_script_url().
+		$language = trim( (string) get_option( 'wbc_recaptcha_language', '' ) );
 		$lang     = '';
-		if ( $language ) {
-			$lang = '?hl=' . $language;
+		if ( '' !== $language ) {
+			$lang = '?hl=' . rawurlencode( $language );
 		}
 
-		$domain = apply_filters( 'anr_recaptcha_domain', 'google.com' ); //phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound	
+		$domain = apply_filters( 'anr_recaptcha_domain', 'google.com' ); //phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 		return sprintf( 'https://www.%s/recaptcha/api.js%s', $domain, $lang );
 	}
 

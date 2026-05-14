@@ -90,8 +90,13 @@ class WBC_HCaptcha_Service extends WBC_Captcha_Service_Base {
 	 * @return string
 	 */
 	public function get_script_url() {
-		$url      = $this->config['script_url'];
-		$language = trim( get_option( 'language', '' ) );
+		$url = $this->config['script_url'];
+		// The admin Language dropdown stores its value under the plugin-prefixed key
+		// `wbc_recaptcha_language` (see admin/includes/class-wbc-buddypress-settings-page.php).
+		// Earlier code read the unprefixed `language` option here, which is unrelated to the
+		// admin setting (it's a WP-core option that's usually empty), so the admin's choice
+		// was silently dropped from the script URL.
+		$language = trim( (string) get_option( 'wbc_recaptcha_language', '' ) );
 		if ( '' !== $language ) {
 			$url = add_query_arg( 'hl', rawurlencode( $language ), $url );
 		}
