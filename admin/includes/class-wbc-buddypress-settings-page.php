@@ -805,6 +805,15 @@ if ( ! class_exists( 'WBC_BuddyPress_Settings_Page' ) ) :
 			);
 
 			$settings[] = array(
+				'name'    => __( 'Language', 'buddypress-recaptcha' ),
+				'type'    => 'select',
+				'id'      => 'wbc_recaptcha_language',
+				'options' => $this->wbc_language_options(),
+				'default' => '',
+				'desc'    => __( 'Language for captcha widget (leave empty for auto-detect)', 'buddypress-recaptcha' ),
+			);
+
+			$settings[] = array(
 				'type' => 'sectionend',
 				'id'   => 'wbc_advanced_options',
 			);
