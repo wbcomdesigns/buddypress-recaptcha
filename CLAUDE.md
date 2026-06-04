@@ -1,6 +1,6 @@
 # Plugin: Wbcom CAPTCHA Manager (`buddypress-recaptcha`)
 
-> **READ FIRST:** [`audit/manifest.json`](audit/manifest.json) is the canonical inventory — 1 REST endpoint, 2 AJAX actions, 7 admin pages, 1 block, 13 services, 42 unique hooks fired, 5 CAPTCHA providers (reCAPTCHA v2 / v3 / hCaptcha / Turnstile / ALTCHA), 0 tables, 0 CPTs. Use this before grepping. See also [`audit/FEATURE_AUDIT.md`](audit/FEATURE_AUDIT.md), [`audit/CODE_FLOWS.md`](audit/CODE_FLOWS.md), [`audit/ROLE_MATRIX.md`](audit/ROLE_MATRIX.md), [`audit/wppqa-baseline-2026-05-06/SUMMARY.md`](audit/wppqa-baseline-2026-05-06/SUMMARY.md). Refresh via `/wp-plugin-onboard --refresh` after non-trivial changes.
+> **READ FIRST:** [`audit/manifest.json`](audit/manifest.json) is the canonical inventory — 1 REST endpoint, 2 AJAX actions, 7 admin pages, 1 block, 13 services, 42 unique hooks fired, 5 CAPTCHA providers (reCAPTCHA v2 / v3 / hCaptcha / Turnstile / ALTCHA), 0 tables, 0 CPTs. Use this before grepping. See also [`audit/FEATURE_AUDIT.md`](audit/FEATURE_AUDIT.md), [`audit/CODE_FLOWS.md`](audit/CODE_FLOWS.md), [`audit/ROLE_MATRIX.md`](audit/ROLE_MATRIX.md), [`audit/wppqa-baseline-2026-06-04/SUMMARY.md`](audit/wppqa-baseline-2026-06-04/SUMMARY.md) (latest, post card-panel migration; earlier: [`audit/wppqa-baseline-2026-05-06/SUMMARY.md`](audit/wppqa-baseline-2026-05-06/SUMMARY.md)). Refresh via `/wp-plugin-onboard --refresh` after non-trivial changes.
 
 ## Quick reference
 
@@ -9,7 +9,7 @@
 - **Class prefixes**: `WBC_*`, `Recaptcha_For_BuddyPress*` (no PSR-4 namespace)
 - **Text domain**: `buddypress-recaptcha`
 - **Repo**: https://github.com/wbcomdesigns/buddypress-recaptcha
-- **Distribution**: wbcomdesigns.com via EDD SL SDK (keyless, free download with EDD update channel)
+- **Distribution**: wbcomdesigns.com via the official EDD SL SDK (keyless — no license check; free download with EDD update channel). `item_id 1246648` is already set in the SDK registration. **Do not touch the EDD SDK or its `item_id`.**
 - **Extends**: nothing (standalone — no Pro counterpart)
 
 ## Key entry points
@@ -19,7 +19,8 @@
 - **Service base class**: `includes/class-captcha-service-base.php` (`WBC_Captcha_Service_Base`). Owns the context→nonce / context→form-selector / context→submit-selector / context→enable-option maps. **Read this before adding a new context.**
 - **Per-provider services**: `includes/services/class-{recaptcha-v2,recaptcha-v3,hcaptcha,turnstile,altcha}-service.php`.
 - **AJAX login widget**: `includes/class-wbc-ajax-login-handler.php` (server) + `public/js/wbc-ajax-login.js` (client) + `includes/class-wbc-login-block.php` / `includes/widgets/class-wbc-login-widget.php` (UI).
-- **Admin settings page**: `admin/includes/class-wbc-buddypress-settings-page.php` (large file — uses WooCommerce-style settings even when WC is absent).
+- **Admin menu + page shell (card-panel, since 2.1.0)**: `includes/admin/class-bprc-admin.php` (`BPRC_Admin`, prefix `bprc`). Registers the top-level menu with `manage_options` (the cap gate WP enforces before `render_page()` runs), renders tabs via `includes/admin/views/{shell,hub,overview,updates}.php`, and on save **delegates to `WBC_BuddyPress_Settings_Page::wbc_save()`** using the *same* nonce field/action (`bp_recaptcha_submit_fields_nonce` / `bp_recaptcha_submit_nonce`) and option keys as the legacy admin. **This migration is UX-only** — no option key, nonce, field name, or save mechanism changed.
+- **Admin settings fields (legacy renderer, still the field source)**: `admin/includes/class-wbc-buddypress-settings-page.php` (large file — uses WooCommerce-style settings even when WC is absent). The card-panel above calls into this for field output + save.
 
 ## Provider model — every captcha shares this shape
 
@@ -103,6 +104,7 @@ Detected during onboarding (Phase 1.1) — out of scope for this skill, route to
 
 | Date | Type | Description | Files |
 |---|---|---|---|
+| 2026-06-04 | Code-quality + onboarding | **2.1.0 post-migration pass.** Corrected the inflated `Requires at least` floor `6.0` → truthful `5.9` (highest WP-version-flagged function is `str_starts_with()` @ WP 5.9; Plugin Check `wp_functions_compatibility` passes at 5.9), header + readme; added `Requires PHP: 7.4` to readme. Refreshed `audit/manifest.json` (card-panel `BPRC_Admin` admin page/service, updated wppqa findings + generated meta) and added `audit/wppqa-baseline-2026-06-04/SUMMARY.md`. Confirmed 0 real high-sev in the migrated card-panel admin code (the one `nonce-no-cap` flag at `class-bprc-admin.php:318` is a layered-defense false positive — menu `manage_options` gate runs before render). EDD SL SDK untouched. | `recaptcha-for-buddypress.php`, `README.txt`, `audit/manifest.json`, `audit/wppqa-baseline-2026-06-04/SUMMARY.md`, `CLAUDE.md` |
 | 2026-05-06 | Release | **2.1.0** — Reciprocate Technologies bug report (10 fixes across 2 cards). hCaptcha parity (data-callback, AJAX reset, language, conditional CSS, centered alignment), security hardening (no email leak, admin notice + opt-in fail-closed, opt-in strict-nonce, IP range/CIDR parsing, ALTCHA REMOTE_ADDR-only, strict comparison). | `class-hcaptcha-service.php`, `class-{recaptcha-v2,turnstile,altcha}-service.php`, `class-captcha-service-manager.php`, `class-wbc-ajax-login-handler.php`, `class-recaptcha-for-buddypress.php`, `recaptcha-helper-functions.php`, `lib/altcha/class-altcha-lib.php`, `recaptcha-for-buddypress.php`, `wbc-ajax-login.js`, `package.json`, `README.txt` |
 | 2026-04-03 | Build | 2.0.2 build — minified assets, RTL CSS, POT, dist zip. | `dist/`, `languages/`, `public/css/min/`, `public/js/min/` |
 | 2026-05-06 | Onboarding | First-time wp-plugin-onboard run — added `audit/` (manifest + reports + graph) + this CLAUDE.md. | `audit/`, `CLAUDE.md` |

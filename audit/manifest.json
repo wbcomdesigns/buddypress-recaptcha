@@ -50,12 +50,7 @@
     }
   ],
   "admin_pages": [
-    { "title": "WB Plugins", "slug": "wbcomplugins", "parent": null, "capability": "manage_options", "source": "admin/class-recaptcha-for-buddypress-admin.php:178", "shared": "wbcom-admin (shared across Wbcom plugins)" },
-    { "title": "General", "slug": "wbcomplugins", "parent": "wbcomplugins", "capability": "manage_options", "source": "admin/class-recaptcha-for-buddypress-admin.php:179" },
-    { "title": "Wbcom CAPTCHA Manager", "slug": "buddypress-recaptcha", "parent": "wbcomplugins", "capability": "manage_options", "source": "admin/class-recaptcha-for-buddypress-admin.php:182" },
-    { "title": "Wbcom Plugins (addon catalog)", "slug": "wbcom-plugins-page", "parent": "wbcomplugins", "capability": "manage_options", "source": "admin/wbcom/wbcom-admin-settings.php:208" },
-    { "title": "Wbcom Support", "slug": "wbcom-support-page", "parent": "wbcomplugins", "capability": "manage_options", "source": "admin/wbcom/wbcom-admin-settings.php:216" },
-    { "title": "Wbcom License", "slug": "wbcom-license-page", "parent": "wbcomplugins", "capability": "manage_options", "source": "admin/wbcom/wbcom-admin-settings.php:224" },
+    { "title": "Wbcom CAPTCHA Manager", "slug": "buddypress-recaptcha", "parent": "(top-level card-panel menu)", "capability": "manage_options", "source": "includes/admin/class-bprc-admin.php:123-140", "render": "BPRC_Admin::render_page", "since": "2.1.0", "note": "Card-panel admin (migration target). Menu registered with manage_options at line 118; the cap gate runs BEFORE render_page(), so the in-page nonce save (line 318) is layered defense, not the sole gate." },
     { "title": "ALTCHA Options", "slug": "altcha-options", "parent": "options-general.php", "capability": "manage_options", "source": "includes/lib/altcha/admin.php:15", "library": "vendored ALTCHA library — separate page from main plugin settings" }
   ],
   "settings": [
@@ -101,6 +96,7 @@
     { "key": "altcha", "class": "WBC_Altcha_Service", "where": "includes/services/class-altcha-service.php" },
     { "key": "ajax-login-handler", "class": "WBC_AJAX_Login_Handler", "where": "includes/class-wbc-ajax-login-handler.php", "added": "2.0.0" },
     { "key": "login-block", "class": "WBC_Login_Block", "where": "includes/class-wbc-login-block.php", "added": "2.0.0" },
+    { "key": "admin-card-panel", "class": "BPRC_Admin", "where": "includes/admin/class-bprc-admin.php", "added": "2.1.0", "prefix": "bprc", "purpose": "Card-panel admin (migration target). Registers the top-level menu (manage_options), renders tabs via includes/admin/views/{shell,hub,overview,updates}.php, and processes the settings save by delegating to WBC_BuddyPress_Settings_Page::wbc_save() — same nonce field/action/option keys as legacy admin (UX-only migration)." },
     { "key": "settings-integration", "class": "WBC_Settings_Integration", "where": "includes/class-settings-integration.php" },
     { "key": "settings-migration", "class": "WBC_Settings_Migration", "where": "includes/class-settings-migration.php", "purpose": "Migrates old hyphen-format options to underscore format (e.g. wbc_recaptcha-v2_site_key → wbc_recaptcha_v2_site_key)." },
     { "key": "option-migration", "class": "WBC_Option_Migration", "where": "includes/class-option-migration.php" }
@@ -136,7 +132,7 @@
     "grid_track_overflow_risks": [],
     "hook_signature_drift": [],
     "wppqa_findings": {
-      "plugin_dev_rules": { "high": 16, "medium": 7, "false_positive_high": 10, "real_high": 6, "summary_at": "audit/wppqa-baseline-2026-05-06/SUMMARY.md" },
+      "plugin_dev_rules": { "high": 15, "medium": 7, "false_positive_high": 11, "real_high": 4, "new_admin_code_high": 0, "summary_at": "audit/wppqa-baseline-2026-06-04/SUMMARY.md", "note": "Post-migration baseline. The 1 finding in the migrated card-panel (includes/admin/class-bprc-admin.php:318) is a false positive — the menu is registered with manage_options (line 118) which WP enforces before render_page(), so the in-page nonce save is layered defense, not the sole authorization. 0 real high-sev in new admin code." },
       "rest_js_contract": { "skipped": true, "reason": "no register_rest_route calls (the 1 ALTCHA route has no JS contract)" },
       "wiring_completeness": { "skipped": true, "reason": "no templates/ directory" }
     }
@@ -190,7 +186,7 @@
   "category_sources": {
     "rest":         ["includes/lib/altcha/**/*.php"],
     "ajax":         ["includes/class-recaptcha-for-buddypress.php", "includes/class-wbc-ajax-login-handler.php", "admin/wbcom/**/*.php"],
-    "admin_pages":  ["admin/**/*.php", "includes/lib/altcha/admin.php"],
+    "admin_pages":  ["includes/admin/**/*.php", "admin/**/*.php", "includes/lib/altcha/admin.php"],
     "settings":     ["admin/includes/**/*.php", "includes/class-settings-integration.php"],
     "shortcodes":   ["admin/wbcom/wbcom-admin-settings.php"],
     "blocks":       ["blocks/**/*.{php,json}", "includes/class-wbc-login-block.php"],
@@ -200,15 +196,15 @@
     "security":      ["includes/**/*.php", "admin/**/*.php"]
   },
   "generated": {
-    "at": "2026-05-06T15:42:00Z",
-    "from": "wp-plugin-onboard skill",
+    "at": "2026-06-04T00:00:00Z",
+    "from": "wp-plugin-onboard skill (refresh — post card-panel migration)",
     "branch": "release/2.1.0",
-    "head_commit": "c29e791",
+    "head_commit": "b8693af",
     "scan_scope": "gruntfile",
     "scan_path": ".",
     "php_file_count": 91,
     "schema_version": "v2.1",
-    "bundled_excluded": [],
-    "notes": "Plugin uses no PSR-4 namespace; class names start with WBC_* or Recaptcha_For_BuddyPress*. ALTCHA library at includes/lib/altcha is vendored and treated as plugin-owned (we fork-edit it for security fixes). REST has only the ALTCHA challenge endpoint; the rest of the plugin uses wp-admin/admin-ajax.php + WP/WC/BP form-validation hooks."
+    "bundled_excluded": ["vendor/** (EDD SL SDK + composer dev tooling — out of scope)"],
+    "notes": "Refreshed after the 2.1.0 card-panel admin migration (prefix bprc / class BPRC_Admin at includes/admin/class-bprc-admin.php; views under includes/admin/views/). Admin migration is UX-only — same nonce, option keys, and save mechanism as legacy. EDD SL SDK is keyless, item_id 1246648, vendored under vendor/ and untouched. Plugin uses no PSR-4 namespace; class names start with WBC_* / Recaptcha_For_BuddyPress* / BPRC_*. ALTCHA library at includes/lib/altcha is vendored and treated as plugin-owned. REST has only the ALTCHA challenge endpoint; the rest of the plugin uses wp-admin/admin-ajax.php + WP/WC/BP form-validation hooks. Requires-at-least lowered from 6.0 to the truthful floor 5.9 (highest WP-version-flagged function is str_starts_with() @ WP 5.9 — Plugin Check wp_functions_compatibility passes at 5.9)."
   }
 }
