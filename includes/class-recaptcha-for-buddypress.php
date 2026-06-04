@@ -159,8 +159,8 @@ class Recaptcha_For_BuddyPress {
 		 */
 		require_once plugin_dir_path( __DIR__ ) . 'public/class-recaptcha-for-buddypress-public.php';
 
-		/* Enqueue wbcom plugin settings file. */
-		require_once plugin_dir_path( __DIR__ ) . 'admin/wbcom/wbcom-admin-settings.php';
+		/* Card-panel admin (replaces the legacy admin/wbcom/ wrapper as of 2.1.0). */
+		require_once plugin_dir_path( __DIR__ ) . 'includes/admin/class-bprc-admin.php';
 		// LRL Class Files login, registration and lost password.
 		require_once plugin_dir_path( __DIR__ ) . 'public/lrl-classes/Login.php';
 		require_once plugin_dir_path( __DIR__ ) . 'public/lrl-classes/Registration.php';
@@ -263,16 +263,18 @@ class Recaptcha_For_BuddyPress {
 	 */
 	private function define_admin_hooks() {
 
+		// Legacy admin object — RETAINED, but its UI surface is no longer
+		// hooked as of 2.1.0. It still loads WBC_BuddyPress_Settings_Page
+		// (the wbc_save()/wbc_output() engine the new panel delegates to)
+		// and initialises WBC_Settings_Integration in its constructor.
+		// BPRC_Admin now owns the menu, enqueue, page render, and notice
+		// suppression. See references/wbcom-wrapper-migration.md Part 3.
 		$plugin_admin = new Recaptcha_For_BuddyPress_Admin( $this->get_plugin_name(), $this->get_version() );
+		unset( $plugin_admin ); // Instantiated for its constructor side effects only.
 
-		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
-		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
-
-		// Load setting in woocommerce setting tab.
-		$this->loader->add_action( 'admin_menu', $plugin_admin, 'rfw_admin_menu', 100 );
-		$this->loader->add_filter( 'woocommerce_get_settings_pages', $plugin_admin, 'woocomm_load_custom_settings_tab' );
-		$this->loader->add_action( 'admin_init', $plugin_admin, 'rfw_add_admin_register_setting' );
-		$this->loader->add_action( 'admin_init', $plugin_admin, 'wbcom_hide_all_admin_notices_from_setting_page' );
+		// New card-panel admin (menu + enqueue + render + hub takeover).
+		$bprc_admin = new BPRC_Admin();
+		$bprc_admin->register();
 
 		// Surface a persistent admin notice when the active CAPTCHA service is
 		// missing required keys (set during verify()).
