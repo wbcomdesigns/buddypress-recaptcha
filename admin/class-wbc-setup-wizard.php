@@ -57,6 +57,13 @@ class WBC_Setup_Wizard {
 			return;
 		}
 
+		// The wizard renders and saves CAPTCHA service/keys/form options. It runs
+		// on admin_init (before the menu cap gate), so authorize here: only users
+		// who can manage options may view or submit any wizard step.
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_die( esc_html__( 'You do not have permission to access the setup wizard.', 'buddypress-recaptcha' ) );
+		}
+
 		$this->steps = array(
 			'welcome'  => array(
 				'name'    => __( 'Welcome', 'buddypress-recaptcha' ),

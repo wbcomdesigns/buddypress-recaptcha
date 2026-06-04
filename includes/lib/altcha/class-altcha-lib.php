@@ -558,13 +558,19 @@ class AltchaPlugin {
 				'timeout' => 15,
 			)
 		);
-		$status  = $resp['response']['code'];
+		if ( is_wp_error( $resp ) ) {
+			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+				error_log( sprintf( 'Spam Filter request failed - %s', $resp->get_error_message() ) ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+			}
+			return false;
+		}
+		$status = wp_remote_retrieve_response_code( $resp );
 		if ( $status === 200 ) {
-			$json                    = json_decode( $resp['body'], true );
+			$json                    = json_decode( wp_remote_retrieve_body( $resp ), true );
 			$this->spamfilter_result = $json;
 			return $json['classification'] !== 'BAD';
-		} else {
-			error_log( sprintf( 'Spam Filter responsed with %s - %s', $status, $resp['body'] ) );
+		} elseif ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+			error_log( sprintf( 'Spam Filter responsed with %s - %s', $status, wp_remote_retrieve_body( $resp ) ) ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
 		}
 		return false;
 	}

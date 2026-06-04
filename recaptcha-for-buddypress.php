@@ -113,23 +113,6 @@ add_action(
 );
 
 /**
- * Plugin activation check.
- *
- * Note: Plugin works standalone with WordPress core forms.
- * Additional integrations (WooCommerce, BuddyPress, bbPress)
- * are automatically detected and enabled via modular settings system.
- *
- * @since 1.0.0
- * @return void
- */
-//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound
-function wb_recaptcha_plugin_activation() {
-	register_activation_hook( __FILE__, 'activate_recaptcha_for_woocommerce' );
-}
-add_action( 'plugins_loaded', 'wb_recaptcha_plugin_activation' );
-
-
-/**
  * Redirect to plugin settings page after activated.
  *
  * @param string $plugin Get a plugin base url.

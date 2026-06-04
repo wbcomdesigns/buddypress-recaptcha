@@ -310,8 +310,11 @@ class BPRC_Admin {
 		$plugin_ver = defined( 'RFB_PLUGIN_VERSION' ) ? RFB_PLUGIN_VERSION : '';
 
 		// Process the save exactly as the legacy admin did — same nonce
-		// field, same nonce action, same wbc_save() call.
-		if ( $is_form && $settings ) {
+		// field, same nonce action, same wbc_save() call. The menu page that
+		// renders this is registered with manage_options, but verify the cap
+		// explicitly here too so the save can never run for an under-privileged
+		// user even if render_page() is ever reached another way.
+		if ( $is_form && $settings && current_user_can( 'manage_options' ) ) {
 			$nonce = isset( $_POST[ self::NONCE_FIELD ] )
 				? sanitize_text_field( wp_unslash( $_POST[ self::NONCE_FIELD ] ) )
 				: '';
