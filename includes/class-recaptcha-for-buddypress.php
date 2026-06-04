@@ -321,6 +321,16 @@ class Recaptcha_For_BuddyPress {
 
 		$is_wp_login_recaptcha_enabled = get_option( 'wbc_recaptcha_enable_on_wplogin' );
 		if ( 'yes' === $is_wp_login_recaptcha_enabled ) {
+			// Server-side CAPTCHA validation for WordPress core login (/wp-login.php).
+			// This MUST be registered independently of WooCommerce: the CAPTCHA field is
+			// rendered on the core login form above (login_form), so its validator has to
+			// run whether or not WooCommerce is active. wp_authenticate_user fires for every
+			// authentication path (wp-login.php submit via button/Enter/direct POST, and the
+			// WooCommerce login form, which authenticates through wp_signon()), so attaching
+			// it here also keeps the WooCommerce login path validated.
+			$wp_login_filter = new Woocommerce_Filter();
+			add_filter( 'wp_authenticate_user', array( $wp_login_filter, 'woo_wp_verify_login_captcha' ), 10, 2 );
+
 			add_action( 'bppcp_after_login_form', array( $registration, 'woo_extra_wp_register_form' ) );
 			add_action( 'bppcp_after_register_form', array( $registration, 'woo_extra_wp_register_form' ) );
 			add_action( 'bp_lock_after_login_form', array( $registration, 'woo_extra_wp_register_form' ) );
@@ -543,8 +553,11 @@ class Recaptcha_For_BuddyPress {
 		add_action( 'woocommerce_after_checkout_validation', array( $woocommerce_after_checkout_validation, 'woocomm_validate_checkout_captcha' ), 10, 2 );
 
 		// WooCommerce Filter hooks.
+		// Note: wp_authenticate_user (the WordPress core login CAPTCHA validator) is now
+		// registered in define_public_hooks(), gated only by the WP Login Form protection
+		// setting, so it enforces server-side even when WooCommerce is inactive. It is NOT
+		// re-registered here to avoid double-attaching the same filter on WooCommerce sites.
 		$woocommerce_filter = new Woocommerce_Filter();
-		add_filter( 'wp_authenticate_user', array( $woocommerce_filter, 'woo_wp_verify_login_captcha' ), 10, 2 );
 
 		// Comment form display and validation.
 		$woocommerce_order = new Woocommerce_Order();

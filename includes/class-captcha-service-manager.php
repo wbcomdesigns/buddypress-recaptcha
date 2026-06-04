@@ -221,13 +221,21 @@ class WBC_Captcha_Service_Manager {
 
 			$service = $this->get_active_service();
 			if ( ! $service ) {
-				$this->log_error( 'No active captcha service available', $context );
+				// "Not set up yet" is a normal state, not a genuine error. Do not write to
+				// the error log (which spams debug.log on every wp_login in production);
+				// emit only a debug-level note when WP_DEBUG logging is on, and surface the
+				// admin-side configuration notice. log_error() is reserved for real failures.
+				$this->log_debug( 'No active captcha service available', $context );
 				$this->show_configuration_notice();
 				return;
 			}
 
 			if ( ! $service->is_configured() ) {
-				$this->log_error( 'Active captcha service is not configured', $context );
+				// "Not configured yet" is a normal state, not a genuine error. Same handling
+				// as above: debug-level note only, plus the admin notice. This avoids the
+				// repeated "[BuddyPress reCAPTCHA Error] [wp_login] Active captcha service is
+				// not configured" log spam reported in production.
+				$this->log_debug( 'Active captcha service is not configured', $context );
 				$this->show_configuration_notice();
 				return;
 			}
