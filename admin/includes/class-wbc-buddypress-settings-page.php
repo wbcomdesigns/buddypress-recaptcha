@@ -2245,13 +2245,26 @@ if ( ! class_exists( 'WBC_BuddyPress_Settings_Page' ) ) :
 				),
 			);
 
-			// Validate API key pairs
-			$validation_errors = array();
-			foreach ( $api_key_pairs as $service => $keys ) {
-				$site_key   = isset( $_POST[ $keys['site'] ] ) ? sanitize_text_field( wp_unslash( $_POST[ $keys['site'] ] ) ) : '';
-				$secret_key = isset( $_POST[ $keys['secret'] ] ) ? sanitize_text_field( wp_unslash( $_POST[ $keys['secret'] ] ) ) : '';
+		// Get the selected service
+		$selected_service = isset( $_POST['wbc_captcha_service'] ) ? sanitize_text_field( wp_unslash( $_POST['wbc_captcha_service'] ) ) : '';
 
-				// If either key is provided, both must be provided
+		// Validate API key pairs
+		$validation_errors = array();
+		foreach ( $api_key_pairs as $service => $keys ) {
+			$site_key   = isset( $_POST[ $keys['site'] ] ) ? sanitize_text_field( wp_unslash( $_POST[ $keys['site'] ] ) ) : '';
+			$secret_key = isset( $_POST[ $keys['secret'] ] ) ? sanitize_text_field( wp_unslash( $_POST[ $keys['secret'] ] ) ) : '';
+
+			// If this is the selected service, both keys are required
+			if ( $service === $selected_service ) {
+				if ( empty( $site_key ) || empty( $secret_key ) ) {
+					$validation_errors[] = sprintf(
+						/* translators: %s: Service name */
+						__( 'Both Site Key and Secret Key are required for %s. Please enter valid API keys.', 'buddypress-recaptcha' ),
+						$keys['name']
+					);
+				}
+			} else {
+				// For non-selected services, if either key is provided, both must be provided
 				if ( ( ! empty( $site_key ) && empty( $secret_key ) ) || ( empty( $site_key ) && ! empty( $secret_key ) ) ) {
 					$validation_errors[] = sprintf(
 						/* translators: %s: Service name */
@@ -2260,6 +2273,8 @@ if ( ! class_exists( 'WBC_BuddyPress_Settings_Page' ) ) :
 					);
 				}
 			}
+		}
+
 
 			// Validate ALTCHA HMAC key if it's being submitted as empty
 			if ( isset( $_POST['wbc_altcha_hmac_key'] ) ) {
