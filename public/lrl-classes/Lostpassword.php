@@ -19,7 +19,7 @@
  * @subpackage bp_recaptcha/public
  * @author     Wbcom Designs <admin@wbcomdesigns.com>
  */
-class Lostpassword {
+class WBC_Lostpassword {
 
 	/**
 	 * Render captcha on lost password form

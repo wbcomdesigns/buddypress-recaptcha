@@ -303,13 +303,15 @@ class Recaptcha_For_BuddyPress {
 		add_action( 'login_enqueue_scripts', array( $plugin_public, 'woo_recaptcha_load_styles_and_js' ), 9999 );
 
 		// Login, registration and lost password.
-		if ( ! class_exists( 'Login' ) || ! class_exists( 'Registration' ) || ! class_exists( 'Lostpassword' ) ) {
+		// Classes are uniquely prefixed (WBC_*) to avoid fatal "cannot redeclare"
+		// collisions with other plugins/themes that define generic Login/etc.
+		if ( ! class_exists( 'WBC_Login' ) || ! class_exists( 'WBC_Registration' ) || ! class_exists( 'WBC_Lostpassword' ) ) {
 			return;
 		}
 
-		$login        = new Login();
-		$registration = new Registration();
-		$lostpassword = new Lostpassword();
+		$login        = new WBC_Login();
+		$registration = new WBC_Registration();
+		$lostpassword = new WBC_Lostpassword();
 		add_action( 'login_form', array( $login, 'woo_extra_wp_login_form' ) );
 		add_action( 'reign_recaptcha_after_login_form', array( $login, 'woo_extra_wp_login_form' ) );
 		add_action( 'buddyxpro_recaptcha_after_login_form', array( $login, 'woo_extra_wp_login_form' ) );
@@ -318,6 +320,20 @@ class Recaptcha_For_BuddyPress {
 		add_action( 'buddyxpro_recaptcha_after_register_form', array( $registration, 'woo_extra_wp_register_form' ) );
 		add_filter( 'registration_errors', array( $registration, 'woo_extra_validate_extra_register_fields' ), 10, 3 );
 		add_action( 'lostpassword_form', array( $lostpassword, 'woo_extra_wp_lostpassword_form' ) );
+
+		// WordPress core comment + lost-password CAPTCHA. These are core WP forms
+		// (their toggles live under "WordPress" in the Protection tab), so render
+		// AND verify must run independently of WooCommerce. Previously these were
+		// registered only inside register_woocommerce_hooks(), so on non-Woo sites
+		// the comment widget never rendered and neither comment nor lost-password
+		// submissions were ever verified. Each callback self-checks its own
+		// enable-flag, so registering them unconditionally here is safe.
+		$wp_comment_field    = new Woocommerce_Order();
+		$wp_comment_verifier = new Woocommerce_Filter();
+		$wp_lostpassword     = new LostpasswordPost();
+		add_filter( 'comment_form_fields', array( $wp_comment_field, 'woo_comment_form_captcha_field' ), 20 );
+		add_filter( 'preprocess_comment', array( $wp_comment_verifier, 'woo_verify_comment_captcha' ), 10 );
+		add_action( 'lostpassword_post', array( $wp_lostpassword, 'woocomm_validate_lostpassword_captcha' ), 10, 1 );
 
 		$is_wp_login_recaptcha_enabled = get_option( 'wbc_recaptcha_enable_on_wplogin' );
 		if ( 'yes' === $is_wp_login_recaptcha_enabled ) {
@@ -395,11 +411,15 @@ class Recaptcha_For_BuddyPress {
 		// WooCommerce - register hooks after plugins are loaded.
 		add_action( 'plugins_loaded', array( $this, 'register_woocommerce_hooks' ), 20 );
 
-		if ( $plugin_public->woo_recaptcha_check_is_ie_browser() ) {
-			add_action( 'wp_head', array( $plugin_public, 'woo_recaptcha_add_header_metadata_for_ie' ) );
-			add_action( 'login_head', array( $plugin_public, 'woo_recaptcha_add_header_metadata_for_ie' ) );
-			add_filter( 'script_loader_tag', array( $plugin_public, 'google_recaptcha_defer_parsing_of_js' ), 10 );
-		}
+		// IE X-UA-Compatible meta tag. Registered unconditionally; the callback
+		// self-gates to IE internally, so no bootstrap user-agent sniff is needed
+		// (sniffing here would poison full-page caches with UA-specific hooks).
+		add_action( 'wp_head', array( $plugin_public, 'woo_recaptcha_add_header_metadata_for_ie' ) );
+		add_action( 'login_head', array( $plugin_public, 'woo_recaptcha_add_header_metadata_for_ie' ) );
+
+		// Defer reCAPTCHA / Turnstile API scripts for ALL browsers. The script is
+		// render-blocking otherwise, hurting LCP/FCP and Core Web Vitals.
+		add_filter( 'script_loader_tag', array( $plugin_public, 'google_recaptcha_defer_parsing_of_js' ), 10 );
 
 		// Custom login form integration - only if WooCommerce is active.
 		if ( class_exists( 'WooCommerce' ) ) {
@@ -543,26 +563,20 @@ class Recaptcha_For_BuddyPress {
 		// WooCommerce validation hooks.
 		$woocommerce_review_order              = new Woocommerce_Review_Order();
 		$woocommerce_register_post             = new Woocommerce_Register_Post();
-		$lost_password_post                    = new LostpasswordPost();
 		$woocommerce_process_login_errors      = new Woocommerce_Process_Login_Errors();
 		$woocommerce_after_checkout_validation = new Woocommerce_After_Checkout_Validation();
 		add_action( 'woocommerce_review_order_before_submit', array( $woocommerce_review_order, 'woo_extra_checkout_fields' ) );
 		add_action( 'woocommerce_register_post', array( $woocommerce_register_post, 'woocomm_validate_signup_captcha' ), 10, 3 );
-		add_action( 'lostpassword_post', array( $lost_password_post, 'woocomm_validate_lostpassword_captcha' ), 10, 1 );
 		add_action( 'woocommerce_process_login_errors', array( $woocommerce_process_login_errors, 'woocomm_validate_login_captcha' ), 10, 3 );
 		add_action( 'woocommerce_after_checkout_validation', array( $woocommerce_after_checkout_validation, 'woocomm_validate_checkout_captcha' ), 10, 2 );
 
-		// WooCommerce Filter hooks.
-		// Note: wp_authenticate_user (the WordPress core login CAPTCHA validator) is now
-		// registered in define_public_hooks(), gated only by the WP Login Form protection
-		// setting, so it enforces server-side even when WooCommerce is inactive. It is NOT
-		// re-registered here to avoid double-attaching the same filter on WooCommerce sites.
-		$woocommerce_filter = new Woocommerce_Filter();
-
-		// Comment form display and validation.
+		// Note: the WP core login validator (wp_authenticate_user), the comment form
+		// CAPTCHA (display + verify), and the lost-password validator (lostpassword_post)
+		// are all registered in define_public_hooks() so they run with or without
+		// WooCommerce. They are deliberately NOT re-registered here - a second
+		// registration would verify the single-use CAPTCHA token twice and reject it
+		// on the second check.
 		$woocommerce_order = new Woocommerce_Order();
-		add_filter( 'comment_form_fields', array( $woocommerce_order, 'woo_comment_form_captcha_field' ), 10 );
-		add_filter( 'preprocess_comment', array( $woocommerce_filter, 'woo_verify_comment_captcha' ), 10 );
 
 		// WooCommerce Order hooks.
 		add_action( 'woocommerce_pay_order_before_submit', array( $woocommerce_order, 'woo_extra_checkout_fields_pay_order' ) );
@@ -802,8 +816,11 @@ class Recaptcha_For_BuddyPress {
 			true
 		);
 
-		// Get current CAPTCHA service.
-		$service_id = get_option( 'wbc_recaptcha_service', 'recaptcha_v2_checkbox' );
+		// Get current CAPTCHA service. Must read the same option key the service
+		// manager writes ('wbc_captcha_service'), and the same service-id format it
+		// stores (e.g. 'recaptcha-v2'), so the JS can reset the correct widget after
+		// a failed AJAX login.
+		$service_id = get_option( 'wbc_captcha_service', 'recaptcha-v2' );
 
 		// Localize script.
 		wp_localize_script(

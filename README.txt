@@ -63,6 +63,25 @@ Complete CAPTCHA solution with support for multiple CAPTCHA services. Protect yo
 
 == Changelog ==
 
+= 2.1.0 - June 2026 =
+
+* Improve  - Refreshed the settings screen with a modern card-based layout.
+* Improve  - reCAPTCHA and Turnstile scripts now load deferred on all browsers, improving page load speed and Core Web Vitals.
+* Improve  - More reliable ALTCHA spam detection.
+* Fix      - The CAPTCHA language setting now applies correctly for hCaptcha and reCAPTCHA v2.
+* Fix      - Corrected the language selector display on the Advanced settings tab.
+* Fix      - The reCAPTCHA v3 score threshold set in the admin now takes effect.
+* Fix      - Removed unnecessary debug entries from the server error log.
+* Fix      - Prevented a rare fatal error when another plugin or theme uses the same generic class names.
+* Fix      - Prevented a fatal error on the front end when ALTCHA is the active provider.
+* Security - Comment forms are now protected on every site, not only sites running WooCommerce.
+* Security - Lost-password submissions are now verified on every site, not only sites running WooCommerce.
+* Security - BuddyPress group creation is now blocked when the CAPTCHA is not completed.
+* Security - The login widget now resets its CAPTCHA after a failed attempt, closing a token-reuse window.
+* Security - The login form can no longer be submitted without completing the CAPTCHA on sites that do not use WooCommerce.
+* Security - The setup wizard is now restricted to administrators.
+* Dev      - Corrected the minimum supported WordPress version metadata.
+
 = 2.0.2 =
 * Fixed: WordPress Coding Standards compliance across all PHP files
 * Fixed: Plugin Check compatibility improvements

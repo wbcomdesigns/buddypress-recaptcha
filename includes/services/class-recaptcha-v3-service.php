@@ -345,24 +345,46 @@ class WBC_Recaptcha_V3_Service extends WBC_Captcha_Service_Base {
 	 * @return float
 	 */
 	private function get_score_threshold( $context ) {
-		$threshold_map = array(
-			'wp_login'           => get_option( 'wbc_recapcha_login_score_threshold_v3', '0.5' ),
-			'wp_register'        => get_option( 'wbc_recapcha_wp_register_score_threshold_v3', '0.5' ),
-			'wp_lostpassword'    => get_option( 'wbc_recapcha_wp_lostpassword_score_threshold_v3', '0.5' ),
-			'woo_login'          => get_option( 'wbc_recapcha_login_score_threshold_v3', '0.5' ),
-			'woo_register'       => get_option( 'wbc_recapcha_signup_score_threshold_v3', '0.5' ),
-			'woo_lostpassword'   => get_option( 'wbc_recapcha_lostpassword_score_threshold_v3', '0.5' ),
-			'woo_checkout_guest' => get_option( 'wbc_recapcha_checkout_score_threshold_v3', '0.5' ),
-			'woo_checkout_login' => get_option( 'wbc_recapcha_checkout_score_threshold_v3', '0.5' ),
-			'bp_register'        => get_option( 'wbc_recapcha_signup_score_threshold_v3_bp', '0.5' ),
-			'bbpress_topic'      => get_option( 'wbc_recapcha_bbpress_topic_score_threshold_v3', '0.5' ),
-			'bbpress_reply'      => get_option( 'wbc_recapcha_bbpress_reply_score_threshold_v3', '0.5' ),
-			'comment_form'       => '0.5',
-			'order_tracking'     => '0.5',
+		// Primary source: the global threshold the admin UI actually saves
+		// (Advanced tab -> reCAPTCHA v3 score threshold). A single global value
+		// applies to every context unless a legacy per-context override exists.
+		$global = get_option( 'wbc_recaptcha_v3_score_threshold', '' );
+
+		// Legacy per-context overrides (pre-2.1 typo-spelled keys). Kept only as a
+		// fallback so older installs that set these keep their tuned values.
+		$legacy_map = array(
+			'wp_login'           => 'wbc_recapcha_login_score_threshold_v3',
+			'wp_register'        => 'wbc_recapcha_wp_register_score_threshold_v3',
+			'wp_lostpassword'    => 'wbc_recapcha_wp_lostpassword_score_threshold_v3',
+			'woo_login'          => 'wbc_recapcha_login_score_threshold_v3',
+			'woo_register'       => 'wbc_recapcha_signup_score_threshold_v3',
+			'woo_lostpassword'   => 'wbc_recapcha_lostpassword_score_threshold_v3',
+			'woo_checkout_guest' => 'wbc_recapcha_checkout_score_threshold_v3',
+			'woo_checkout_login' => 'wbc_recapcha_checkout_score_threshold_v3',
+			'bp_register'        => 'wbc_recapcha_signup_score_threshold_v3_bp',
+			'bbpress_topic'      => 'wbc_recapcha_bbpress_topic_score_threshold_v3',
+			'bbpress_reply'      => 'wbc_recapcha_bbpress_reply_score_threshold_v3',
 		);
 
-		$threshold = isset( $threshold_map[ $context ] ) ? $threshold_map[ $context ] : '0.5';
-		return floatval( $threshold );
+		$legacy = isset( $legacy_map[ $context ] ) ? get_option( $legacy_map[ $context ], '' ) : '';
+
+		// Prefer the global admin value; fall back to a legacy override; then 0.5.
+		if ( '' !== $global ) {
+			$threshold = $global;
+		} elseif ( '' !== $legacy ) {
+			$threshold = $legacy;
+		} else {
+			$threshold = '0.5';
+		}
+
+		/**
+		 * Filter the reCAPTCHA v3 score threshold for a given context.
+		 *
+		 * @param float  $threshold The score threshold (0.0 - 1.0).
+		 * @param string $context   The verification context.
+		 */
+		//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
+		return (float) apply_filters( 'wbc_recaptcha_v3_score_threshold_value', floatval( $threshold ), $context );
 	}
 
 	/**

@@ -10,7 +10,7 @@ defined( 'ABSPATH' ) || exit;
 
 // phpcs:disable Universal.Files.SeparateFunctionsFromOO.Mixed -- Helper function must be defined alongside service class.
 // Load ALTCHA verification library if standalone altcha-spam-protection plugin not active.
-if ( ! class_exists( 'AltchaPlugin' ) && ! is_plugin_active( 'altcha-spam-protection/altcha.php' ) ) {
+if ( ! class_exists( 'AltchaPlugin' ) && ( ! function_exists( 'is_plugin_active' ) || ! is_plugin_active( 'altcha-spam-protection/altcha.php' ) ) ) {
 	// Define a minimal wrapper for ALTCHA verification.
 	if ( ! function_exists( 'altcha_random_secret' ) ) {
 		/**

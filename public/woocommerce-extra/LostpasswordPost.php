@@ -28,12 +28,19 @@ class LostpasswordPost {
 	 * @return WP_Error
 	 */
 	public function woocomm_validate_lostpassword_captcha( $validation_errors ) {
-		// Verify captcha using the service manager.
-		if ( function_exists( 'wbc_verify_captcha' ) ) {
-			if ( ! wbc_verify_captcha( 'woo_lostpassword' ) ) {
-				$error_message = wbc_get_captcha_error_message( 'woo_lostpassword', 'invalid' );
-				$validation_errors->add( 'captcha_error', $error_message );
-			}
+		// lostpassword_post fires for BOTH the WordPress core lost-password form
+		// and the WooCommerce one. Pick the context by the nonce field the form
+		// rendered, so the correct enable-flag is honoured and the single-use
+		// CAPTCHA token is verified exactly once. WooCommerce renders
+		// 'woo-lostpassword-nonce'; WP core renders 'wp-lostpassword-nonce'.
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing -- nonce is verified inside the service verify() for the chosen context.
+		$context = isset( $_POST['woo-lostpassword-nonce'] ) ? 'woo_lostpassword' : 'wp_lostpassword';
+
+		// verify() returns true when the chosen context is not enabled, so this is
+		// a no-op unless the matching "Lost Password Form" toggle is on.
+		if ( function_exists( 'wbc_verify_captcha' ) && ! wbc_verify_captcha( $context ) ) {
+			$error_message = wbc_get_captcha_error_message( $context, 'invalid' );
+			$validation_errors->add( 'captcha_error', $error_message );
 		}
 
 		return $validation_errors;

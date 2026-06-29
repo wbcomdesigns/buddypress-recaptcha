@@ -16,7 +16,7 @@
 	function resetActiveCaptcha() {
 		var type = ( window.wbcAjaxLogin && wbcAjaxLogin.recaptchaType ) || '';
 
-		if ( type === 'recaptcha_v2_checkbox' && typeof grecaptcha !== 'undefined' ) {
+		if ( type === 'recaptcha-v2' && typeof grecaptcha !== 'undefined' ) {
 			try {
 				grecaptcha.reset();
 			} catch ( e ) {
