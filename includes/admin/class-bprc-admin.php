@@ -92,6 +92,12 @@ class BPRC_Admin {
 				'group' => 'account',
 				'form'  => false,
 			),
+			'discover'    => array(
+				'label' => __( 'Discover', 'buddypress-recaptcha' ),
+				'icon'  => 'dashicons-lightbulb',
+				'group' => 'account',
+				'form'  => false,
+			),
 		);
 
 		//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- shared Wbcom admin filter prefix.
@@ -327,6 +333,7 @@ class BPRC_Admin {
 		$view_map = array(
 			'rfw-welcome' => 'overview',
 			'updates'     => 'updates',
+			'discover'    => 'discover',
 			// rfw-general / protection / advanced share the settings form view.
 		);
 		$view      = isset( $view_map[ $active ] ) ? $view_map[ $active ] : 'settings-form';

@@ -934,3 +934,83 @@
 		grid-template-columns: 1fr;
 	}
 }
+
+/* Discover tab: ecosystem cross-promotion cards. */
+.bprc-discover-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+	gap: var(--bprc-admin-gap-md);
+}
+
+.bprc-discover-card {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 10px;
+	padding: var(--bprc-admin-gap-lg);
+	background: var(--bprc-admin-white);
+	border: 1px solid var(--bprc-admin-border);
+	border-radius: var(--bprc-admin-radius);
+	box-shadow: var(--bprc-admin-shadow);
+	transition: box-shadow 0.12s, border-color 0.12s, transform 0.12s;
+}
+
+.bprc-discover-card:hover {
+	border-color: var(--bprc-admin-border-strong);
+	box-shadow: var(--bprc-admin-shadow-hover);
+	transform: translateY(-1px);
+}
+
+.bprc-discover-card__logo {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 52px;
+	height: 52px;
+}
+
+.bprc-discover-card__logo img {
+	width: 52px;
+	height: 52px;
+	display: block;
+	border-radius: var(--bprc-admin-radius-sm);
+}
+
+.bprc-discover-card__logo .dashicons {
+	width: 32px;
+	height: 32px;
+	font-size: 32px;
+	color: var(--bprc-admin-accent);
+}
+
+.bprc-discover-card__title {
+	font-size: 15px;
+	font-weight: 700;
+	color: var(--bprc-admin-text);
+	line-height: 1.2;
+	margin: 0;
+}
+
+.bprc-discover-card__desc {
+	font-size: 13px;
+	color: var(--bprc-admin-text-muted);
+	line-height: 1.5;
+	margin: 0;
+	flex: 1 1 auto;
+}
+
+.bprc-discover-card__cta {
+	margin-top: 4px;
+}
+
+.bprc-discover-card__cta .dashicons {
+	width: 14px;
+	height: 14px;
+	font-size: 14px;
+}
+
+@media (max-width: 640px) {
+	.bprc-discover-grid {
+		grid-template-columns: 1fr;
+	}
+}

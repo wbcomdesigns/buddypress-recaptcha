@@ -3,7 +3,7 @@ Contributors: vapvarun,wbcomdesigns
 Donate link: https://wbcomdesigns.com/
 Tags: captcha, recaptcha, spam protection, security, woocommerce, buddypress, bbpress, fluentcart, turnstile, hcaptcha
 Requires at least: 5.9
-Tested up to: 6.9
+Tested up to: 7.0
 Requires PHP: 7.4
 Stable tag: 2.1.0
 License: GPLv2 or later
@@ -65,6 +65,7 @@ Complete CAPTCHA solution with support for multiple CAPTCHA services. Protect yo
 
 = 2.1.0 - June 2026 =
 
+* New      - Added a Discover tab to the admin with curated free Wbcom Designs tools.
 * Improve  - Refreshed the settings screen with a modern card-based layout.
 * Improve  - reCAPTCHA and Turnstile scripts now load deferred on all browsers, improving page load speed and Core Web Vitals.
 * Improve  - More reliable ALTCHA spam detection.
@@ -81,6 +82,7 @@ Complete CAPTCHA solution with support for multiple CAPTCHA services. Protect yo
 * Security - The login form can no longer be submitted without completing the CAPTCHA on sites that do not use WooCommerce.
 * Security - The setup wizard is now restricted to administrators.
 * Dev      - Corrected the minimum supported WordPress version metadata.
+* Compat   - Tested with WordPress 7.0.
 
 = 2.0.2 =
 * Fixed: WordPress Coding Standards compliance across all PHP files
