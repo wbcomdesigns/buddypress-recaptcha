@@ -61,6 +61,12 @@ Complete CAPTCHA solution with support for multiple CAPTCHA services. Protect yo
 1. Upload the entire `buddypress-recaptcha` folder to the /wp-content/plugins/ directory.
 2. Activate the plugin through the 'Plugins' menu in WordPress.
 
+== Screenshots ==
+
+1. Quick Setup - pick a CAPTCHA service (reCAPTCHA v2/v3, Turnstile, hCaptcha, or ALTCHA) and add your API keys.
+2. Protection - toggle CAPTCHA on individual WordPress and BuddyPress forms.
+3. Discover more free Wbcom Designs community plugins from the admin screen.
+
 == Changelog ==
 
 = 2.1.0 - June 2026 =
