@@ -10,8 +10,9 @@ defined( 'ABSPATH' ) || exit;
 
 /**
  * ReCAPTCHA v3 service class.
+ *
+ * phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedClassFound
  */
-//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedClassFound
 class WBC_Recaptcha_V3_Service extends WBC_Captcha_Service_Base {
 
 	/**
@@ -413,10 +414,43 @@ class WBC_Recaptcha_V3_Service extends WBC_Captcha_Service_Base {
 			return;
 		}
 
+		/*
+		 * Only the active provider may load its script.
+		 *
+		 * This service enqueues itself on wp_enqueue_scripts / login_enqueue_scripts,
+		 * and it used to ask only "am I configured?". So a site that had once used
+		 * reCAPTCHA v3 and then switched to another provider still had v3 keys in the
+		 * options table, and the v3 api.js kept loading alongside the active provider -
+		 * two CAPTCHA scripts on the same form.
+		 */
+		if ( ! $this->is_active_service() ) {
+			return;
+		}
+
 		// Check if we're on a page that might need captcha.
 		if ( $this->is_captcha_page() ) {
 			$this->enqueue_script();
 		}
+	}
+
+	/**
+	 * Whether this provider is the one the site owner selected.
+	 *
+	 * @return bool
+	 */
+	private function is_active_service() {
+		if ( ! class_exists( 'WBC_Captcha_Service_Manager' ) ) {
+			return true;
+		}
+
+		$manager = WBC_Captcha_Service_Manager::get_instance();
+		$active  = $manager ? $manager->get_active_service() : null;
+
+		if ( ! $active ) {
+			return true;
+		}
+
+		return $this->get_service_id() === $active->get_service_id();
 	}
 
 	/**

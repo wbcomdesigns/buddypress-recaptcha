@@ -20,7 +20,7 @@ class WBC_Recaptcha_V2_Service extends WBC_Captcha_Service_Base {
 	protected function init_config() {
 		$this->config = array(
 			'service_id'      => 'recaptcha-v2',
-			'service_name'    => __( 'Google reCAPTCHA v2', 'buddypress-recaptcha' ),
+			'service_name'    => 'Google reCAPTCHA v2',
 			'script_url'      => 'https://www.google.com/recaptcha/api.js',
 			'verify_endpoint' => 'https://www.google.com/recaptcha/api/siteverify',
 			'response_field'  => 'g-recaptcha-response',
@@ -42,7 +42,10 @@ class WBC_Recaptcha_V2_Service extends WBC_Captcha_Service_Base {
 	 * @return string
 	 */
 	public function get_service_name() {
-		return $this->config['service_name'];
+		// Translated here, not in init_config(): services are constructed while the
+		// plugin file loads, long before init, and calling __() there triggered WP 6.7's
+		// _load_textdomain_just_in_time notice on every page load.
+		return __( 'Google reCAPTCHA v2', 'buddypress-recaptcha' );
 	}
 
 	/**

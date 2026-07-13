@@ -20,7 +20,7 @@ class WBC_Turnstile_Service extends WBC_Captcha_Service_Base {
 	protected function init_config() {
 		$this->config = array(
 			'service_id'      => 'turnstile',
-			'service_name'    => __( 'Cloudflare Turnstile', 'buddypress-recaptcha' ),
+			'service_name'    => 'Cloudflare Turnstile',
 			'script_url'      => 'https://challenges.cloudflare.com/turnstile/v0/api.js',
 			'verify_endpoint' => 'https://challenges.cloudflare.com/turnstile/v0/siteverify',
 			'response_field'  => 'cf-turnstile-response',
@@ -42,7 +42,10 @@ class WBC_Turnstile_Service extends WBC_Captcha_Service_Base {
 	 * @return string
 	 */
 	public function get_service_name() {
-		return $this->config['service_name'];
+		// Translated here, not in init_config(): services are constructed while the
+		// plugin file loads, long before init, and calling __() there triggered WP 6.7's
+		// _load_textdomain_just_in_time notice on every page load.
+		return __( 'Cloudflare Turnstile', 'buddypress-recaptcha' );
 	}
 
 	/**

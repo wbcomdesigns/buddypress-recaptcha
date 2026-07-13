@@ -20,7 +20,7 @@ class WBC_HCaptcha_Service extends WBC_Captcha_Service_Base {
 	protected function init_config() {
 		$this->config = array(
 			'service_id'      => 'hcaptcha',
-			'service_name'    => __( 'hCaptcha', 'buddypress-recaptcha' ),
+			'service_name'    => 'hCaptcha',
 			'script_url'      => 'https://js.hcaptcha.com/1/api.js',
 			'verify_endpoint' => 'https://hcaptcha.com/siteverify',
 			'response_field'  => 'h-captcha-response',
@@ -42,7 +42,10 @@ class WBC_HCaptcha_Service extends WBC_Captcha_Service_Base {
 	 * @return string
 	 */
 	public function get_service_name() {
-		return $this->config['service_name'];
+		// Translated here, not in init_config(): services are constructed while the
+		// plugin file loads, long before init, and calling __() there triggered WP 6.7's
+		// _load_textdomain_just_in_time notice on every page load.
+		return __( 'hCaptcha', 'buddypress-recaptcha' );
 	}
 
 	/**

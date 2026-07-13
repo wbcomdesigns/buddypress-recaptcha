@@ -366,6 +366,22 @@
 	padding: 16px 0 0;
 }
 
+/*
+ * In the settings shell the save bar is a sibling of .bprc-card__body, not a child, so
+ * it never picked up the body's 20px padding: the Save button sat flush against the
+ * card's left and bottom edges while every other control was indented, which read as a
+ * broken, misaligned button. Match the body's padding, and separate it with the card's
+ * own border so it reads as a footer.
+ *
+ * Scoped to a direct child of .bprc-card on purpose - the Overview view puts its save
+ * bar INSIDE .bprc-card__body, and that one must not get a second helping of padding.
+ */
+.bprc-card > .bprc-save-bar {
+	padding: 16px 20px 20px;
+	border-top: 1px solid var(--bprc-admin-border);
+	margin-top: 4px;
+}
+
 .bprc-btn {
 	display: inline-flex;
 	align-items: center;
@@ -384,27 +400,40 @@
 	box-shadow: none;
 }
 
-.bprc-btn-primary {
+/*
+ * The `.bprc-admin a` rule above sets every link in the panel to the accent colour, and
+ * at (0,1,1) it outranks a bare `.bprc-btn-primary` (0,1,0). Buttons rendered as <a> were
+ * therefore getting accent-on-accent - blue text on a blue button, i.e. an invisible
+ * label. These selectors are qualified so they outrank the wrapper rule instead of tying
+ * with it. Do not simplify them back to a single class.
+ */
+.bprc-btn-primary,
+.bprc-admin a.bprc-btn-primary {
 	background: var(--bprc-admin-accent);
 	color: #fff;
 	border-color: var(--bprc-admin-accent);
 }
 
 .bprc-btn-primary:hover,
-.bprc-btn-primary:focus {
+.bprc-btn-primary:focus,
+.bprc-admin a.bprc-btn-primary:hover,
+.bprc-admin a.bprc-btn-primary:focus {
 	background: var(--bprc-admin-accent-hover);
 	border-color: var(--bprc-admin-accent-hover);
 	color: #fff;
 }
 
-.bprc-btn-secondary {
+.bprc-btn-secondary,
+.bprc-admin a.bprc-btn-secondary {
 	background: var(--bprc-admin-white);
 	color: var(--bprc-admin-text);
 	border-color: var(--bprc-admin-border-strong);
 }
 
 .bprc-btn-secondary:hover,
-.bprc-btn-secondary:focus {
+.bprc-btn-secondary:focus,
+.bprc-admin a.bprc-btn-secondary:hover,
+.bprc-admin a.bprc-btn-secondary:focus {
 	background: var(--bprc-admin-surface-1);
 	color: var(--bprc-admin-text);
 	border-color: var(--bprc-admin-border-strong);

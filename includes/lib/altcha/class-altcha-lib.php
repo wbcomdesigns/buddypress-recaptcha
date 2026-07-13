@@ -617,8 +617,20 @@ if ( ! isset( AltchaPlugin::$instance ) ) {
 	$altcha_plugin_instance->init();
 }
 
-require plugin_dir_path( __FILE__ ) . 'admin.php';
-require plugin_dir_path( __FILE__ ) . 'settings.php';
+/*
+ * Fork note: upstream loads its own admin screens here. This vendored copy does not,
+ * for two reasons:
+ *
+ * 1. Wbcom CAPTCHA Manager owns the CAPTCHA settings UI. Loading these would give the
+ *    site owner a second, competing "Settings > ALTCHA Anti-spam" page.
+ * 2. settings.php calls altcha_plugin_active(), which is defined in the standalone
+ *    ALTCHA plugin's main file - a file this bundle does not ship. Loading it fatals
+ *    the admin with "Call to undefined function altcha_plugin_active()".
+ *
+ * Everything this plugin actually needs from the library - the AltchaPlugin class, the
+ * challenge generator, and the /altcha/v1/challenge REST route registered below - lives
+ * in this file and does not depend on those two.
+ */
 
 add_action(
 	'rest_api_init',
