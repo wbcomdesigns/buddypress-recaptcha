@@ -199,3 +199,52 @@
 	max-width: 400px;
 	margin: 0 auto;
 }
+
+/* ===========================================================
+   Dark mode.
+   Explicit selectors only - the site owner's dark toggle - never
+   prefers-color-scheme, which would flip the widget on an OS
+   preference the site never asked for. Reign sets data-bx-mode but
+   does not define --bx-color-* tokens, so every var() below carries a
+   dark literal fallback.
+   =========================================================== */
+[data-bx-mode="dark"] .wbc-login-widget-form,
+[data-bx-mode="dark"] .wbc-login-widget-logged-in,
+.buddyx-dark-theme .wbc-login-widget-form,
+.buddyx-dark-theme .wbc-login-widget-logged-in {
+	background: var(--bx-color-bg-elevated, #1e1e1e);
+	color: var(--bx-color-fg, #f5f5f5);
+}
+
+[data-bx-mode="dark"] .wbc-login-username label,
+[data-bx-mode="dark"] .wbc-login-password label,
+.buddyx-dark-theme .wbc-login-username label,
+.buddyx-dark-theme .wbc-login-password label {
+	color: var(--bx-color-fg, #f5f5f5);
+}
+
+[data-bx-mode="dark"] .wbc-input,
+.buddyx-dark-theme .wbc-input {
+	background: var(--bx-color-bg-muted, #262626);
+	border-color: var(--bx-color-border, #3d3d3d);
+	color: var(--bx-color-fg, #f5f5f5);
+}
+
+[data-bx-mode="dark"] .wbc-input::placeholder,
+.buddyx-dark-theme .wbc-input::placeholder {
+	color: var(--bx-color-fg-muted, #a0a0a0);
+}
+
+/* Status messages: keep the semantic hue, darken the surface so it does
+   not glare, and lift the text back to an accessible contrast. */
+[data-bx-mode="dark"] .wbc-form-messages.wbc-error p,
+.buddyx-dark-theme .wbc-form-messages.wbc-error p {
+	background: #3b1d21;
+	color: #f5c2c7;
+}
+
+[data-bx-mode="dark"] .wbc-form-messages.wbc-success p,
+.buddyx-dark-theme .wbc-form-messages.wbc-success p {
+	background: #1d3b26;
+	color: #b7e4c7;
+}
