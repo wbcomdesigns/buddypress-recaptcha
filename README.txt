@@ -2,7 +2,7 @@
 Contributors: vapvarun,wbcomdesigns
 Donate link: https://wbcomdesigns.com/
 Tags: captcha, recaptcha, spam protection, security, woocommerce, buddypress, bbpress, fluentcart, turnstile, hcaptcha
-Requires at least: 5.9
+Requires at least: 6.9
 Tested up to: 7.0
 Requires PHP: 7.4
 Stable tag: 2.1.0
