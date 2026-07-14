@@ -1,29 +1,49 @@
+# Static analysis for Wbcom CAPTCHA Manager.
+#
+# Run with: composer phpstan
+#
+# The stubs are what make this trustworthy. Without them PHPStan does not know what
+# WordPress or BuddyPress are, so every core function reads as "undefined" and the few
+# real findings drown in hundreds of false ones. That is exactly what happened on the
+# 2026-07-14 scan: 18 "undefined method WBC_Login_Widget::get_field_id()" errors, when
+# the class extends WP_Widget and WordPress core defines that method.
+#
+# Optional paths are marked (?) on purpose. PHPStan refuses to run AT ALL if an
+# excludePaths entry does not exist on disk - this config previously excluded
+# node_modules and dist, neither of which exist here, so the analysis never ran.
+#
+# Note: phpstan-wordpress is NOT included here, unlike the other plugins. This one has
+# phpstan/extension-installer, which loads the extension automatically - including it a
+# second time makes PHPStan abort with "this file is included multiple times".
+includes:
+    - phpstan-baseline.neon
+
 parameters:
     level: 5
     paths:
         - .
     excludePaths:
-        - vendor
-        - node_modules
-        - dist
-        - assets
-        - includes/lib/altcha
+        analyseAndScan:
+            - vendor
+            - node_modules (?)
+            - dist (?)
+            - assets (?)
+            - languages (?)
+            # Vendored third-party library. We take the class + REST route only, and do
+            # not maintain its internals, so its findings are not ours to act on.
+            - includes/lib/altcha
     scanFiles:
+        - vendor/gin0115/buddypress-stubs/buddypress-stubs.php
         - vendor/php-stubs/woocommerce-stubs/woocommerce-stubs.php
         - vendor/php-stubs/woocommerce-stubs/woocommerce-packages-stubs.php
-    treatPhpDocTypesAsCertain: false
     ignoreErrors:
-        # Third-party plugin functions (BuddyPress, bbPress, EDD, Ultimate Member, CF7, WPForms)
-        - '#Function buddypress not found\.#'
+        # Optional integrations. Each call site is guarded by function_exists()/class_exists(),
+        # and we do not ship stubs for these plugins, so "not found" here means "not installed",
+        # not "broken".
         - '#Function bbp_add_error not found\.#'
         - '#Function edd_set_error not found\.#'
         - '#Function UM not found\.#'
         - '#Function wpforms not found\.#'
         - '#(invalid return type|invalid type|unknown class) WPCF7_#'
-        # Plugin constants defined at runtime
-        - '#Constant RFB_PLUGIN_URL not found\.#'
-        # WordPress/WooCommerce patterns - methods called dynamically
-        - '#Method .+ is unused\.#'
-        # WordPress hook patterns - actions legitimately return values
-        - '#Action callback returns .+ but should not return anything\.#'
-        - '#Filter callback return statement is missing\.#'
+        # Constants defined in the main plugin file at runtime.
+        - '#Constant RFB_PLUGIN_(URL|PATH) not found\.#'

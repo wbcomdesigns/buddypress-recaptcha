@@ -194,6 +194,22 @@ module.exports = function (grunt) {
 			dist: {
 				src: [
 					'**',
+                    // Dev-only tooling (PHPStan + stubs). Never ship these.
+                    // NOTE: vendor/ is NOT excluded wholesale here - vendor/easy-digital-downloads
+                    // is a RUNTIME dependency (the EDD licensing SDK) and must ship. Release builds
+                    // should run `composer install --no-dev` first; these excludes are belt-and-braces.
+                    '!vendor/phpstan/**',
+                    '!vendor/szepeviktor/**',
+                    '!vendor/gin0115/**',
+                    '!vendor/php-stubs/**',
+                    '!vendor/php-parallel-lint/**',
+                    '!vendor/nikic/**',
+                    '!vendor/symfony/**',
+                    '!vendor/bin/**',
+                    '!composer.json',
+                    '!composer.lock',
+                    '!phpstan.neon',
+                    '!phpstan-baseline.neon',
 					'!.git/**',
 					'!**/.git/**',
 					'!**/*.md',
