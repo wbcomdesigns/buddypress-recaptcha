@@ -38,7 +38,6 @@ class ComposerStaticInite38b850c9d40bc326b4961f243792572
             'Psr\\Container\\' => 14,
             'PhpParser\\' => 10,
             'PHPStan\\PhpDocParser\\' => 21,
-            'PHPStan\\ExtensionInstaller\\' => 27,
         ),
         'E' => 
         array (
@@ -106,10 +105,6 @@ class ComposerStaticInite38b850c9d40bc326b4961f243792572
         'PHPStan\\PhpDocParser\\' => 
         array (
             0 => __DIR__ . '/..' . '/phpstan/phpdoc-parser/src',
-        ),
-        'PHPStan\\ExtensionInstaller\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/phpstan/extension-installer/src',
         ),
         'EasyDigitalDownloads\\Updater\\' => 
         array (

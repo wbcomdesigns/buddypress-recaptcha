@@ -12,11 +12,14 @@
 # excludePaths entry does not exist on disk - this config previously excluded
 # node_modules and dist, neither of which exist here, so the analysis never ran.
 #
-# Note: phpstan-wordpress is NOT included here, unlike the other plugins. This one has
-# phpstan/extension-installer, which loads the extension automatically - including it a
-# second time makes PHPStan abort with "this file is included multiple times".
+# phpstan-wordpress is included explicitly, exactly as in the other plugins. We removed
+# phpstan/extension-installer on purpose: this plugin TRACKS vendor/composer/* in git,
+# because it ships the EDD licensing SDK from vendor/, and extension-installer rewrites
+# those autoload maps to reference dev-only packages that never ship. Including the
+# extension by hand keeps the shipped autoload maps clean.
 includes:
     - phpstan-baseline.neon
+    - vendor/szepeviktor/phpstan-wordpress/extension.neon
 
 parameters:
     level: 5
