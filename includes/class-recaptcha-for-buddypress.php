@@ -239,7 +239,9 @@ class Recaptcha_For_BuddyPress {
 
 		$plugin_i18n = new Recaptcha_For_BuddyPress_I18n();
 
-		$this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain' );
+		// init, not plugins_loaded: loading a text domain before init triggers
+		// _load_textdomain_just_in_time on WordPress 6.7+.
+		$this->loader->add_action( 'init', $plugin_i18n, 'load_plugin_textdomain' );
 
 		// Run option migration.
 		$this->loader->add_action( 'plugins_loaded', $this, 'run_option_migration' );
