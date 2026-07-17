@@ -741,45 +741,70 @@ if ( ! class_exists( 'WBC_BuddyPress_Settings_Page' ) ) :
 				),
 			);
 
-			// Appearance settings.
-			// $settings[] = array(.
-			// 'name' => esc_html__( 'Appearanceee', 'buddypress-recaptcha' ),.
-			// 'type' => 'title',.
-			// 'id'   => 'wbc_appearance_section',.
-			// );.
-
 			$service = get_option( 'wbc_captcha_service', 'recaptcha-v2' );
 
-			if ( in_array( $service, array( 'recaptcha-v2', 'hcaptcha' ) ) ) {
+			/*
+			 * Appearance settings.
+			 *
+			 * Each widget-based provider gets its own theme/size keys so the choice
+			 * survives switching providers. reCAPTCHA v2 keeps the historic shared
+			 * `wbc_recaptcha_theme` / `wbc_recaptcha_size` keys; hCaptcha and Turnstile
+			 * own `wbc_<provider>_theme` / `wbc_<provider>_size`.
+			 *
+			 * The per-provider fields default to the shared value so a site that
+			 * configured its appearance while hCaptcha was reading the shared keys sees
+			 * (and, on next save, keeps) exactly the appearance it already had. The
+			 * matching read path is WBC_Captcha_Service_Base::get_appearance_option().
+			 *
+			 * reCAPTCHA v3 and ALTCHA are intentionally absent: v3 renders no themeable
+			 * widget (only an invisible badge) and ALTCHA's widget options live in its
+			 * own section.
+			 */
+			$appearance_keys = array(
+				'recaptcha-v2' => array( 'wbc_recaptcha_theme', 'wbc_recaptcha_size' ),
+				'hcaptcha'     => array( 'wbc_hcaptcha_theme', 'wbc_hcaptcha_size' ),
+				'turnstile'    => array( 'wbc_turnstile_theme', 'wbc_turnstile_size' ),
+			);
+
+			if ( isset( $appearance_keys[ $service ] ) ) {
+				list( $theme_key, $size_key ) = $appearance_keys[ $service ];
+
+				// Fall back to the shared reCAPTCHA keys so the field shows the value
+				// that is actually in effect right now.
+				$theme_default = get_option( 'wbc_recaptcha_theme', 'light' );
+				$size_default  = get_option( 'wbc_recaptcha_size', 'normal' );
+
+				$theme_options = array(
+					'light' => __( 'Light', 'buddypress-recaptcha' ),
+					'dark'  => __( 'Dark', 'buddypress-recaptcha' ),
+				);
+
+				// Turnstile additionally supports matching the visitor's OS preference.
+				if ( 'turnstile' === $service ) {
+					$theme_options['auto'] = __( 'Auto', 'buddypress-recaptcha' );
+				}
+
 				$settings[] = array(
 					'name'    => __( 'Theme', 'buddypress-recaptcha' ),
 					'type'    => 'select',
-					'id'      => 'wbc_recaptcha_theme',
-					'options' => array(
-						'light' => __( 'Light', 'buddypress-recaptcha' ),
-						'dark'  => __( 'Dark', 'buddypress-recaptcha' ),
-					),
-					'default' => 'light',
+					'id'      => $theme_key,
+					'options' => $theme_options,
+					'default' => $theme_default,
 					'desc'    => __( 'Widget color theme', 'buddypress-recaptcha' ),
 				);
 
 				$settings[] = array(
 					'name'    => __( 'Size', 'buddypress-recaptcha' ),
 					'type'    => 'select',
-					'id'      => 'wbc_recaptcha_size',
+					'id'      => $size_key,
 					'options' => array(
 						'normal'  => __( 'Normal', 'buddypress-recaptcha' ),
 						'compact' => __( 'Compact', 'buddypress-recaptcha' ),
 					),
-					'default' => 'normal',
+					'default' => $size_default,
 					'desc'    => __( 'Widget size', 'buddypress-recaptcha' ),
 				);
 			}
-
-			// $settings[] = array(.
-			// 'type' => 'sectionend',.
-			// 'id'   => 'wbc_appearance_section',.
-			// );.
 
 			// Advanced options.
 			$settings[] = array(
@@ -796,12 +821,56 @@ if ( ! class_exists( 'WBC_BuddyPress_Settings_Page' ) ) :
 				'placeholder' => '192.168.1.1, 10.0.0.1',
 			);
 
+			/*
+			 * Error messages.
+			 *
+			 * These ids are the keys the verification layer actually reads — see
+			 * wbc_get_custom_captcha_error_option(), which bridges them back to the
+			 * historic `wc_settings_tab_recapcha_*` / `*_v3` keys.
+			 *
+			 * Each field defaults to the message that is in effect RIGHT NOW (resolved
+			 * through that same bridge) rather than to the built-in wording. That matters
+			 * on upgrade: a site whose custom message lives in a legacy key would
+			 * otherwise be shown the built-in default and silently overwrite its own
+			 * message the first time this tab is saved.
+			 */
+			$wbc_error_defaults = array(
+				'blank'       => __( 'Please complete the security check.', 'buddypress-recaptcha' ),
+				'invalid'     => __( 'Security verification failed. Please try again.', 'buddypress-recaptcha' ),
+				'no_response' => __( 'Could not verify security check. Please refresh and try again.', 'buddypress-recaptcha' ),
+			);
+
+			foreach ( $wbc_error_defaults as $wbc_error_type => $wbc_error_default ) {
+				if ( function_exists( 'wbc_get_custom_captcha_error_option' ) ) {
+					$wbc_effective = wbc_get_custom_captcha_error_option( $wbc_error_type );
+					if ( '' !== $wbc_effective ) {
+						$wbc_error_defaults[ $wbc_error_type ] = $wbc_effective;
+					}
+				}
+			}
+
 			$settings[] = array(
 				'name'    => __( 'Error Message', 'buddypress-recaptcha' ),
 				'type'    => 'text',
 				'id'      => 'wbc_recaptcha_error_msg_captcha_blank',
 				'desc'    => __( 'Message shown when captcha is not completed', 'buddypress-recaptcha' ),
-				'default' => __( 'Please complete the security check.', 'buddypress-recaptcha' ),
+				'default' => $wbc_error_defaults['blank'],
+			);
+
+			$settings[] = array(
+				'name'    => __( 'Invalid Captcha Error', 'buddypress-recaptcha' ),
+				'type'    => 'text',
+				'id'      => 'wbc_recaptcha_error_msg_captcha_invalid',
+				'desc'    => __( 'Message shown when captcha verification fails', 'buddypress-recaptcha' ),
+				'default' => $wbc_error_defaults['invalid'],
+			);
+
+			$settings[] = array(
+				'name'    => __( 'No Response Error', 'buddypress-recaptcha' ),
+				'type'    => 'text',
+				'id'      => 'wbc_recaptcha_error_msg_captcha_no_response',
+				'desc'    => __( 'Message shown when the captcha service cannot be reached', 'buddypress-recaptcha' ),
+				'default' => $wbc_error_defaults['no_response'],
 			);
 
 			$settings[] = array(
@@ -1061,323 +1130,6 @@ if ( ! class_exists( 'WBC_BuddyPress_Settings_Page' ) ) :
 		}
 
 		/**
-		 * Get service-specific documentation HTML.
-		 *
-		 * @param string $service Active service identifier.
-		 * @return string HTML content for service documentation.
-		 */
-		private function wbc_service_documentation( $service ) {
-			// Common container for all services.
-			$html = '<div class="wbc-service-docs-container" style="margin: 20px 0;">';
-
-			// Service-specific documentation.
-			$docs = array(
-				'recaptcha-v2' => $this->wbc_recaptcha_v2_docs(),
-				'recaptcha-v3' => $this->wbc_recaptcha_v3_docs(),
-				'turnstile'    => $this->wbc_turnstile_docs(),
-				'hcaptcha'     => $this->wbc_hcaptcha_docs(),
-				'altcha'       => $this->wbc_altcha_docs(),
-			);
-
-			// Show documentation for each service with dynamic visibility.
-			foreach ( $docs as $service_id => $doc_content ) {
-				$style = ( $service_id === $service ) ? '' : 'display: none;';
-				$html .= '<div class="wbc-service-docs wbc-service-docs-' . esc_attr( $service_id ) . '" style="' . esc_attr( $style ) . '">';
-				$html .= $doc_content;
-				$html .= '</div>';
-			}
-
-			$html .= '</div>';
-
-			return $html;
-		}
-
-		/**
-		 * Get Google reCAPTCHA v2 documentation
-		 */
-		private function wbc_recaptcha_v2_docs() {
-			$html = '<div class="wbc-docs-content">';
-
-			// Setup instructions.
-			$html .= '<h3>' . esc_html__( 'Google reCAPTCHA v2 Setup Instructions', 'buddypress-recaptcha' ) . '</h3>';
-			$html .= '<ol style="margin: 15px 0; padding-left: 20px;">';
-			$html .= '<li>' . sprintf(
-				/* translators: %s: link to Google reCAPTCHA */
-				esc_html__( 'Visit %s and sign in with your Google account', 'buddypress-recaptcha' ),
-				'<a href="https://www.google.com/recaptcha/admin" target="_blank">Google reCAPTCHA Admin Console</a>'
-			) . '</li>';
-			$html .= '<li>' . esc_html__( 'Click the "+" button to create a new site', 'buddypress-recaptcha' ) . '</li>';
-			$html .= '<li>' . esc_html__( 'Enter a label for your site (e.g., "My WordPress Site")', 'buddypress-recaptcha' ) . '</li>';
-			$html .= '<li>' . esc_html__( 'Select "reCAPTCHA v2" and choose "I\'m not a robot Checkbox"', 'buddypress-recaptcha' ) . '</li>';
-			$html .= '<li>' . sprintf(
-				/* translators: %s: current domain */
-				esc_html__( 'Add your domain: %s', 'buddypress-recaptcha' ),
-				'<code>' . esc_html( wp_parse_url( home_url(), PHP_URL_HOST ) ) . '</code>'
-			) . '</li>';
-			$html .= '<li>' . esc_html__( 'Accept the Terms of Service and click "Submit"', 'buddypress-recaptcha' ) . '</li>';
-			$html .= '<li>' . esc_html__( 'Copy your Site Key and Secret Key to the fields above', 'buddypress-recaptcha' ) . '</li>';
-			$html .= '<li>' . esc_html__( 'Save your settings and test the integration', 'buddypress-recaptcha' ) . '</li>';
-			$html .= '</ol>';
-
-			// Features info.
-			$html .= '<div style="background: #f0f8ff; padding: 15px; border-radius: 5px; margin: 20px 0;">';
-			$html .= '<h4 style="margin-top: 0;">' . esc_html__( 'Key Features:', 'buddypress-recaptcha' ) . '</h4>';
-			$html .= '<ul style="margin: 10px 0; padding-left: 20px;">';
-			$html .= '<li>' . esc_html__( 'User-friendly checkbox interface', 'buddypress-recaptcha' ) . '</li>';
-			$html .= '<li>' . esc_html__( 'Image challenges only when needed', 'buddypress-recaptcha' ) . '</li>';
-			$html .= '<li>' . esc_html__( 'High accessibility with audio challenges', 'buddypress-recaptcha' ) . '</li>';
-			$html .= '<li>' . esc_html__( 'Mobile-responsive design', 'buddypress-recaptcha' ) . '</li>';
-			$html .= '</ul>';
-			$html .= '</div>';
-
-			// Action buttons.
-			$html .= '<div class="wbc-doc-actions" style="margin-top: 20px;">';
-			$html .= '<button type="button" class="button button-primary" onclick="wbc_test_captcha_connection()">' .
-				esc_html__( 'Test Connection', 'buddypress-recaptcha' ) . '</button> ';
-			$html .= sprintf(
-				'<a href="%s" class="button button-secondary">%s</a> ',
-				esc_url( admin_url( 'admin.php?page=buddypress-recaptcha&tab=protection' ) ),
-				esc_html__( 'Configure Protected Forms', 'buddypress-recaptcha' )
-			);
-			$html .= sprintf(
-				'<a href="%s" target="_blank" class="button button-secondary">%s</a>',
-				esc_url( 'https://developers.google.com/recaptcha/docs/display' ),
-				esc_html__( 'View Official Documentation', 'buddypress-recaptcha' )
-			);
-			$html .= '</div>';
-
-			$html .= '</div>';
-			return $html;
-		}
-
-		/**
-		 * Get Google reCAPTCHA v3 documentation
-		 */
-		private function wbc_recaptcha_v3_docs() {
-			$html = '<div class="wbc-docs-content">';
-
-			$html .= '<h3>' . esc_html__( 'Google reCAPTCHA v3 Setup Instructions', 'buddypress-recaptcha' ) . '</h3>';
-			$html .= '<ol style="margin: 15px 0; padding-left: 20px;">';
-			$html .= '<li>' . sprintf(
-				/* translators: %s: link to Google reCAPTCHA */
-				esc_html__( 'Visit %s and sign in with your Google account', 'buddypress-recaptcha' ),
-				'<a href="https://www.google.com/recaptcha/admin" target="_blank">Google reCAPTCHA Admin Console</a>'
-			) . '</li>';
-			$html .= '<li>' . esc_html__( 'Click the "+" button to create a new site', 'buddypress-recaptcha' ) . '</li>';
-			$html .= '<li>' . esc_html__( 'Select "reCAPTCHA v3" for invisible protection', 'buddypress-recaptcha' ) . '</li>';
-			$html .= '<li>' . sprintf(
-				/* translators: %s: current domain */
-				esc_html__( 'Add your domain: %s', 'buddypress-recaptcha' ),
-				'<code>' . esc_html( wp_parse_url( home_url(), PHP_URL_HOST ) ) . '</code>'
-			) . '</li>';
-			$html .= '<li>' . esc_html__( 'Copy your Site Key and Secret Key to the fields above', 'buddypress-recaptcha' ) . '</li>';
-			$html .= '<li>' . esc_html__( 'Set your Score Threshold (0.5 is recommended to start)', 'buddypress-recaptcha' ) . '</li>';
-			$html .= '</ol>';
-
-			// Score explanation.
-			$html .= '<div style="background: #fff3cd; padding: 15px; border-radius: 5px; margin: 20px 0;">';
-			$html .= '<h4 style="margin-top: 0;">' . esc_html__( 'Understanding Score Thresholds:', 'buddypress-recaptcha' ) . '</h4>';
-			$html .= '<ul style="margin: 10px 0; padding-left: 20px;">';
-			$html .= '<li><strong>1.0</strong> - ' . esc_html__( 'Very likely a good interaction', 'buddypress-recaptcha' ) . '</li>';
-			$html .= '<li><strong>0.5</strong> - ' . esc_html__( 'Balanced threshold (recommended)', 'buddypress-recaptcha' ) . '</li>';
-			$html .= '<li><strong>0.0</strong> - ' . esc_html__( 'Very likely a bot', 'buddypress-recaptcha' ) . '</li>';
-			$html .= '</ul>';
-			$html .= '<p style="margin-bottom: 0;">' . esc_html__( 'Lower thresholds = stricter validation. Start with 0.5 and adjust based on your needs.', 'buddypress-recaptcha' ) . '</p>';
-			$html .= '</div>';
-
-			// Action buttons.
-			$html .= '<div class="wbc-doc-actions" style="margin-top: 20px;">';
-			$html .= '<button type="button" class="button button-primary" onclick="wbc_test_captcha_connection()">' .
-				esc_html__( 'Test Connection', 'buddypress-recaptcha' ) . '</button> ';
-			$html .= sprintf(
-				'<a href="%s" class="button button-secondary">%s</a> ',
-				esc_url( admin_url( 'admin.php?page=buddypress-recaptcha&tab=protection' ) ),
-				esc_html__( 'Configure Protected Forms', 'buddypress-recaptcha' )
-			);
-			$html .= sprintf(
-				'<a href="%s" target="_blank" class="button button-secondary">%s</a>',
-				esc_url( 'https://developers.google.com/recaptcha/docs/v3' ),
-				esc_html__( 'View Official Documentation', 'buddypress-recaptcha' )
-			);
-			$html .= '</div>';
-
-			$html .= '</div>';
-			return $html;
-		}
-
-		/**
-		 * Get Cloudflare Turnstile documentation
-		 */
-		private function wbc_turnstile_docs() {
-			$html = '<div class="wbc-docs-content">';
-
-			$html .= '<h3>' . esc_html__( 'Cloudflare Turnstile Setup Instructions', 'buddypress-recaptcha' ) . '</h3>';
-			$html .= '<ol style="margin: 15px 0; padding-left: 20px;">';
-			$html .= '<li>' . sprintf(
-				/* translators: %s: link to Cloudflare Dashboard */
-				esc_html__( 'Visit %s and sign in or create account', 'buddypress-recaptcha' ),
-				'<a href="https://dash.cloudflare.com/?to=/:account/turnstile" target="_blank">Cloudflare Dashboard</a>'
-			) . '</li>';
-			$html .= '<li>' . esc_html__( 'Navigate to Turnstile in the sidebar', 'buddypress-recaptcha' ) . '</li>';
-			$html .= '<li>' . esc_html__( 'Click "Add Site" to create a new widget', 'buddypress-recaptcha' ) . '</li>';
-			$html .= '<li>' . esc_html__( 'Enter a site name and select "Managed" widget mode', 'buddypress-recaptcha' ) . '</li>';
-			$html .= '<li>' . sprintf(
-				/* translators: %s: current domain */
-				esc_html__( 'Add your domain: %s', 'buddypress-recaptcha' ),
-				'<code>' . esc_html( wp_parse_url( home_url(), PHP_URL_HOST ) ) . '</code>'
-			) . '</li>';
-			$html .= '<li>' . esc_html__( 'Copy the Site Key and Secret Key to the fields above', 'buddypress-recaptcha' ) . '</li>';
-			$html .= '</ol>';
-
-			// Features.
-			$html .= '<div style="background: #e8f5e9; padding: 15px; border-radius: 5px; margin: 20px 0;">';
-			$html .= '<h4 style="margin-top: 0;">' . esc_html__( 'Why Choose Turnstile?', 'buddypress-recaptcha' ) . '</h4>';
-			$html .= '<ul style="margin: 10px 0; padding-left: 20px;">';
-			$html .= '<li>' . esc_html__( 'Privacy-focused: No user tracking', 'buddypress-recaptcha' ) . '</li>';
-			$html .= '<li>' . esc_html__( 'GDPR compliant by design', 'buddypress-recaptcha' ) . '</li>';
-			$html .= '<li>' . esc_html__( 'Free tier with generous limits', 'buddypress-recaptcha' ) . '</li>';
-			$html .= '<li>' . esc_html__( 'Fast, non-intrusive challenges', 'buddypress-recaptcha' ) . '</li>';
-			$html .= '<li>' . esc_html__( 'Works globally without CAPTCHAs', 'buddypress-recaptcha' ) . '</li>';
-			$html .= '</ul>';
-			$html .= '</div>';
-
-			// Action buttons.
-			$html .= '<div class="wbc-doc-actions" style="margin-top: 20px;">';
-			$html .= '<button type="button" class="button button-primary" onclick="wbc_test_captcha_connection()">' .
-				esc_html__( 'Test Connection', 'buddypress-recaptcha' ) . '</button> ';
-			$html .= sprintf(
-				'<a href="%s" class="button button-secondary">%s</a> ',
-				esc_url( admin_url( 'admin.php?page=buddypress-recaptcha&tab=protection' ) ),
-				esc_html__( 'Configure Protected Forms', 'buddypress-recaptcha' )
-			);
-			$html .= sprintf(
-				'<a href="%s" target="_blank" class="button button-secondary">%s</a>',
-				esc_url( 'https://developers.cloudflare.com/turnstile/' ),
-				esc_html__( 'View Official Documentation', 'buddypress-recaptcha' )
-			);
-			$html .= '</div>';
-
-			$html .= '</div>';
-			return $html;
-		}
-
-		/**
-		 * Get hCaptcha documentation
-		 */
-		private function wbc_hcaptcha_docs() {
-			$html = '<div class="wbc-docs-content">';
-
-			$html .= '<h3>' . esc_html__( 'hCaptcha Setup Instructions', 'buddypress-recaptcha' ) . '</h3>';
-			$html .= '<ol style="margin: 15px 0; padding-left: 20px;">';
-			$html .= '<li>' . sprintf(
-				/* translators: %s: link to hCaptcha */
-				esc_html__( 'Visit %s and create an account', 'buddypress-recaptcha' ),
-				'<a href="https://dashboard.hcaptcha.com/signup" target="_blank">hCaptcha Dashboard</a>'
-			) . '</li>';
-			$html .= '<li>' . esc_html__( 'Click "New Site" in your dashboard', 'buddypress-recaptcha' ) . '</li>';
-			$html .= '<li>' . sprintf(
-				/* translators: %s: current domain */
-				esc_html__( 'Add your domain: %s', 'buddypress-recaptcha' ),
-				'<code>' . esc_html( wp_parse_url( home_url(), PHP_URL_HOST ) ) . '</code>'
-			) . '</li>';
-			$html .= '<li>' . esc_html__( 'Choose your difficulty level (Moderate recommended)', 'buddypress-recaptcha' ) . '</li>';
-			$html .= '<li>' . esc_html__( 'Copy the Site Key and Secret Key to the fields above', 'buddypress-recaptcha' ) . '</li>';
-			$html .= '</ol>';
-
-			// Features.
-			$html .= '<div style="background: #fce4ec; padding: 15px; border-radius: 5px; margin: 20px 0;">';
-			$html .= '<h4 style="margin-top: 0;">' . esc_html__( 'hCaptcha Benefits:', 'buddypress-recaptcha' ) . '</h4>';
-			$html .= '<ul style="margin: 10px 0; padding-left: 20px;">';
-			$html .= '<li>' . esc_html__( 'Privacy-focused alternative to Google', 'buddypress-recaptcha' ) . '</li>';
-			$html .= '<li>' . esc_html__( 'Earn rewards for your website traffic', 'buddypress-recaptcha' ) . '</li>';
-			$html .= '<li>' . esc_html__( 'GDPR and CCPA compliant', 'buddypress-recaptcha' ) . '</li>';
-			$html .= '<li>' . esc_html__( 'Accessibility features included', 'buddypress-recaptcha' ) . '</li>';
-			$html .= '</ul>';
-			$html .= '</div>';
-
-			// Action buttons.
-			$html .= '<div class="wbc-doc-actions" style="margin-top: 20px;">';
-			$html .= '<button type="button" class="button button-primary" onclick="wbc_test_captcha_connection()">' .
-				esc_html__( 'Test Connection', 'buddypress-recaptcha' ) . '</button> ';
-			$html .= sprintf(
-				'<a href="%s" class="button button-secondary">%s</a> ',
-				esc_url( admin_url( 'admin.php?page=buddypress-recaptcha&tab=protection' ) ),
-				esc_html__( 'Configure Protected Forms', 'buddypress-recaptcha' )
-			);
-			$html .= sprintf(
-				'<a href="%s" target="_blank" class="button button-secondary">%s</a>',
-				esc_url( 'https://docs.hcaptcha.com/' ),
-				esc_html__( 'View Official Documentation', 'buddypress-recaptcha' )
-			);
-			$html .= '</div>';
-
-			$html .= '</div>';
-			return $html;
-		}
-
-		/**
-		 * Get ALTCHA documentation
-		 */
-		private function wbc_altcha_docs() {
-			$html = '<div class="wbc-docs-content">';
-
-			$html .= '<h3>' . esc_html__( 'ALTCHA Setup Instructions', 'buddypress-recaptcha' ) . '</h3>';
-
-			// HTTPS warning.
-			$html .= '<div style="background: #ffebee; padding: 15px; border-radius: 5px; margin: 15px 0; border-left: 4px solid #f44336;">';
-			$html .= '<strong>' . esc_html__( 'HTTPS Required:', 'buddypress-recaptcha' ) . '</strong> ';
-			$html .= esc_html__( 'ALTCHA requires a secure HTTPS connection to work properly due to Web Crypto API requirements.', 'buddypress-recaptcha' );
-			$html .= '</div>';
-
-			$html .= '<ol style="margin: 15px 0; padding-left: 20px;">';
-			$html .= '<li>' . esc_html__( 'Click "Generate Random Key" button above to create a secure HMAC key', 'buddypress-recaptcha' ) . '</li>';
-			$html .= '<li>' . esc_html__( 'Choose your complexity level (Medium recommended for most sites)', 'buddypress-recaptcha' ) . '</li>';
-			$html .= '<li>' . esc_html__( 'Save your settings', 'buddypress-recaptcha' ) . '</li>';
-			$html .= '<li>' . esc_html__( 'No external registration required!', 'buddypress-recaptcha' ) . '</li>';
-			$html .= '</ol>';
-
-			// Features.
-			$html .= '<div style="background: #f3e5f5; padding: 15px; border-radius: 5px; margin: 20px 0;">';
-			$html .= '<h4 style="margin-top: 0;">' . esc_html__( 'Why ALTCHA?', 'buddypress-recaptcha' ) . '</h4>';
-			$html .= '<ul style="margin: 10px 0; padding-left: 20px;">';
-			$html .= '<li>' . esc_html__( 'Complete privacy: No external API calls', 'buddypress-recaptcha' ) . '</li>';
-			$html .= '<li>' . esc_html__( 'Self-hosted: All processing on your server', 'buddypress-recaptcha' ) . '</li>';
-			$html .= '<li>' . esc_html__( 'No user tracking or data collection', 'buddypress-recaptcha' ) . '</li>';
-			$html .= '<li>' . esc_html__( 'Proof-of-work based protection', 'buddypress-recaptcha' ) . '</li>';
-			$html .= '<li>' . esc_html__( 'Free forever - no API limits', 'buddypress-recaptcha' ) . '</li>';
-			$html .= '</ul>';
-
-			// Complexity explanation.
-			$html .= '<h4>' . esc_html__( 'Complexity Levels:', 'buddypress-recaptcha' ) . '</h4>';
-			$html .= '<ul style="margin: 10px 0; padding-left: 20px;">';
-			$html .= '<li><strong>' . esc_html__( 'Easy (50,000):', 'buddypress-recaptcha' ) . '</strong> ' .
-				esc_html__( 'Quick solve, suitable for low-risk forms', 'buddypress-recaptcha' ) . '</li>';
-			$html .= '<li><strong>' . esc_html__( 'Medium (100,000):', 'buddypress-recaptcha' ) . '</strong> ' .
-				esc_html__( 'Balanced protection (recommended)', 'buddypress-recaptcha' ) . '</li>';
-			$html .= '<li><strong>' . esc_html__( 'Hard (200,000):', 'buddypress-recaptcha' ) . '</strong> ' .
-				esc_html__( 'Strong protection, longer solve time', 'buddypress-recaptcha' ) . '</li>';
-			$html .= '</ul>';
-			$html .= '</div>';
-
-			// Action buttons.
-			$html .= '<div class="wbc-doc-actions" style="margin-top: 20px;">';
-			$html .= sprintf(
-				'<a href="%s" class="button button-primary">%s</a> ',
-				esc_url( admin_url( 'admin.php?page=buddypress-recaptcha&tab=protection' ) ),
-				esc_html__( 'Configure Protected Forms', 'buddypress-recaptcha' )
-			);
-			$html .= sprintf(
-				'<a href="%s" target="_blank" class="button button-secondary">%s</a>',
-				esc_url( 'https://altcha.org/docs/' ),
-				esc_html__( 'View ALTCHA Documentation', 'buddypress-recaptcha' )
-			);
-			$html .= '</div>';
-
-			$html .= '</div>';
-			return $html;
-		}
-
-		/**
 		 * Get available captcha services dynamically
 		 *
 		 * @return array Service ID => Service Name
@@ -1431,8 +1183,11 @@ if ( ! class_exists( 'WBC_BuddyPress_Settings_Page' ) ) :
 				$sections['bbpress'] = __( 'bbPress', 'buddypress-recaptcha' );
 			}
 
-			$sections['appearance'] = __( 'Appearance', 'buddypress-recaptcha' );
-			$sections['advanced']   = __( 'Advanced', 'buddypress-recaptcha' );
+			// No 'appearance' section: appearance now lives on the Advanced tab, which
+			// renders theme/size for whichever provider is active. The standalone
+			// wbc_appearance_settings() screen it used to point at was unreachable and
+			// has been removed.
+			$sections['advanced'] = __( 'Advanced', 'buddypress-recaptcha' );
 			//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 			return apply_filters( 'wbc_recaptcha_settings_sections', $sections ); 
 		}
@@ -1948,204 +1703,6 @@ if ( ! class_exists( 'WBC_BuddyPress_Settings_Page' ) ) :
 		}
 
 		/**
-		 * Get appearance settings
-		 *
-		 * @return array
-		 */
-		public function wbc_appearance_settings() {
-			$settings = array(
-				array(
-					'name' => __( 'Global Appearance Settings', 'buddypress-recaptcha' ),
-					'type' => 'title',
-					'id'   => 'wbc_appearance_settings',
-					'desc' => __( 'These settings apply to all enabled forms', 'buddypress-recaptcha' ),
-				),
-
-				// For reCAPTCHA v2.
-				array(
-					'name'    => __( 'Theme (reCAPTCHA v2)', 'buddypress-recaptcha' ),
-					'type'    => 'select',
-					'id'      => 'wbc_recaptcha_theme',
-					'options' => array(
-						'light' => __( 'Light', 'buddypress-recaptcha' ),
-						'dark'  => __( 'Dark', 'buddypress-recaptcha' ),
-					),
-					'default' => 'light',
-					'desc'    => __( 'Color theme for reCAPTCHA v2 widget', 'buddypress-recaptcha' ),
-					'class'   => 'wbc-service-specific wbc-service-recaptcha-v2',
-				),
-
-				array(
-					'name'    => __( 'Size (reCAPTCHA v2)', 'buddypress-recaptcha' ),
-					'type'    => 'select',
-					'id'      => 'wbc_recaptcha_size',
-					'options' => array(
-						'normal'  => __( 'Normal', 'buddypress-recaptcha' ),
-						'compact' => __( 'Compact', 'buddypress-recaptcha' ),
-					),
-					'default' => 'normal',
-					'desc'    => __( 'Size of the reCAPTCHA v2 widget', 'buddypress-recaptcha' ),
-					'class'   => 'wbc-service-specific wbc-service-recaptcha-v2',
-				),
-
-				array(
-					'name'    => __( 'Badge Position (reCAPTCHA v3)', 'buddypress-recaptcha' ),
-					'type'    => 'select',
-					'id'      => 'wbc_recaptcha_v3_badge',
-					'options' => array(
-						'bottomright' => __( 'Bottom Right', 'buddypress-recaptcha' ),
-						'bottomleft'  => __( 'Bottom Left', 'buddypress-recaptcha' ),
-						'inline'      => __( 'Inline', 'buddypress-recaptcha' ),
-					),
-					'default' => 'bottomright',
-					'desc'    => __( 'Position of the reCAPTCHA v3 badge', 'buddypress-recaptcha' ),
-					'class'   => 'wbc-service-specific wbc-service-recaptcha-v3',
-				),
-
-				// For Turnstile.
-				array(
-					'name'    => __( 'Theme (Turnstile)', 'buddypress-recaptcha' ),
-					'type'    => 'select',
-					'id'      => 'wbc_turnstile_theme',
-					'options' => array(
-						'light' => __( 'Light', 'buddypress-recaptcha' ),
-						'dark'  => __( 'Dark', 'buddypress-recaptcha' ),
-						'auto'  => __( 'Auto', 'buddypress-recaptcha' ),
-					),
-					'default' => 'auto',
-					'desc'    => __( 'Color theme for Turnstile widget', 'buddypress-recaptcha' ),
-					'class'   => 'wbc-service-specific wbc-service-turnstile',
-				),
-
-				array(
-					'name'    => __( 'Size (Turnstile)', 'buddypress-recaptcha' ),
-					'type'    => 'select',
-					'id'      => 'wbc_turnstile_size',
-					'options' => array(
-						'normal'  => __( 'Normal', 'buddypress-recaptcha' ),
-						'compact' => __( 'Compact', 'buddypress-recaptcha' ),
-					),
-					'default' => 'normal',
-					'desc'    => __( 'Size of the Turnstile widget', 'buddypress-recaptcha' ),
-					'class'   => 'wbc-service-specific wbc-service-turnstile',
-				),
-
-				array(
-					'name'    => __( 'Language', 'buddypress-recaptcha' ),
-					'type'    => 'select',
-					'id'      => 'wbc_recaptcha_language',
-					'options' => $this->wbc_language_options(),
-					'default' => '',
-					'desc'    => __( 'Language for captcha widget (leave empty for auto-detect)', 'buddypress-recaptcha' ),
-				),
-
-				array(
-					'type' => 'sectionend',
-					'id'   => 'wbc_appearance_settings',
-				),
-			);
-			//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
-			return apply_filters( 'wbc_recaptcha_appearance_settings', $settings );
-		}
-
-		/**
-		 * Get advanced settings
-		 *
-		 * @return array
-		 */
-		public function wbc_advanced_settings() {
-			$settings = array(
-				array(
-					'name' => __( 'Advanced Settings', 'buddypress-recaptcha' ),
-					'type' => 'title',
-					'id'   => 'wbc_advanced_settings',
-				),
-
-				array(
-					'name'        => __( 'IP Whitelist', 'buddypress-recaptcha' ),
-					'type'        => 'textarea',
-					'id'          => 'wbc_recaptcha_ip_to_skip_captcha',
-					'desc'        => __( 'Enter IP addresses to skip captcha verification (comma-separated)', 'buddypress-recaptcha' ),
-					'placeholder' => __( '192.168.1.1, 10.0.0.1', 'buddypress-recaptcha' ),
-				),
-
-				array(
-					'name'    => __( 'No Conflict Mode', 'buddypress-recaptcha' ),
-					'type'    => 'checkbox',
-					'id'      => 'wbc_recapcha_no_conflict',
-					'desc'    => __( 'Prevent conflicts with other captcha plugins', 'buddypress-recaptcha' ),
-					'default' => 'no',
-				),
-
-				array(
-					'name'    => __( 'Disable Submit Button', 'buddypress-recaptcha' ),
-					'type'    => 'checkbox',
-					'id'      => 'wbc_recapcha_disable_submitbtn',
-					'desc'    => __( 'Disable submit button until captcha is completed (reCAPTCHA v2 only)', 'buddypress-recaptcha' ),
-					'default' => 'no',
-					'class'   => 'wbc-service-specific wbc-service-recaptcha-v2',
-				),
-
-				array(
-					'name'              => __( 'Checkout Timeout (minutes)', 'buddypress-recaptcha' ),
-					'type'              => 'number',
-					'id'                => 'wbc_recapcha_checkout_timeout',
-					'desc'              => __( 'Time before checkout captcha revalidation is required (0 to disable)', 'buddypress-recaptcha' ),
-					'default'           => '3',
-					'custom_attributes' => array(
-						'min' => '0',
-						'max' => '60',
-					),
-				),
-
-				array(
-					'name' => __( 'Error Messages', 'buddypress-recaptcha' ),
-					'type' => 'title',
-					'id'   => 'wbc_error_messages',
-				),
-
-				array(
-					'name'        => __( 'Blank Captcha Error', 'buddypress-recaptcha' ),
-					'type'        => 'text',
-					'id'          => 'wbc_recapcha_error_msg_captcha_blank',
-					'desc'        => __( 'Error message when captcha is not completed', 'buddypress-recaptcha' ),
-					'default'     => __( 'Please complete the security check.', 'buddypress-recaptcha' ),
-					'placeholder' => __( 'Please complete the security check.', 'buddypress-recaptcha' ),
-				),
-
-				array(
-					'name'        => __( 'Invalid Captcha Error', 'buddypress-recaptcha' ),
-					'type'        => 'text',
-					'id'          => 'wbc_recapcha_error_msg_captcha_invalid',
-					'desc'        => __( 'Error message when captcha verification fails', 'buddypress-recaptcha' ),
-					'default'     => __( 'Security verification failed. Please try again.', 'buddypress-recaptcha' ),
-					'placeholder' => __( 'Security verification failed. Please try again.', 'buddypress-recaptcha' ),
-				),
-
-				array(
-					'name'        => __( 'No Response Error', 'buddypress-recaptcha' ),
-					'type'        => 'text',
-					'id'          => 'wbc_recapcha_error_msg_captcha_no_response',
-					'desc'        => __( 'Error message when captcha server doesn\'t respond', 'buddypress-recaptcha' ),
-					'default'     => __( 'Could not verify security check. Please refresh and try again.', 'buddypress-recaptcha' ),
-					'placeholder' => __( 'Could not verify security check. Please refresh and try again.', 'buddypress-recaptcha' ),
-				),
-
-				array(
-					'type' => 'sectionend',
-					'id'   => 'wbc_error_messages',
-				),
-
-				array(
-					'type' => 'sectionend',
-					'id'   => 'wbc_advanced_settings',
-				),
-			);
-			//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
-			return apply_filters( 'wbc_recaptcha_advanced_settings', $settings );
-		}
-
-		/**
 		 * Get language options
 		 *
 		 * @return array
@@ -2233,9 +1790,6 @@ if ( ! class_exists( 'WBC_BuddyPress_Settings_Page' ) ) :
 					break;
 				case 'bbpress':
 					$settings = $this->wbc_bbpress_settings();
-					break;
-				case 'appearance':
-					$settings = $this->wbc_appearance_settings();
 					break;
 				default:
 					$settings = $this->wbc_service_settings();
@@ -2420,9 +1974,6 @@ if ( ! class_exists( 'WBC_BuddyPress_Settings_Page' ) ) :
 					break;
 				case 'bbpress':
 					$settings = $this->wbc_bbpress_settings();
-					break;
-				case 'appearance':
-					$settings = $this->wbc_appearance_settings();
 					break;
 				default:
 					$settings = $this->wbc_service_settings();

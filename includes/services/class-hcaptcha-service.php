@@ -121,10 +121,11 @@ class WBC_HCaptcha_Service extends WBC_Captcha_Service_Base {
 			return;
 		}
 
-		// Get settings - use the global reCAPTCHA theme/size options.
-		// (admin panel provides shared theme/size controls for reCAPTCHA v2 and hCaptcha).
-		$theme          = get_option( 'wbc_recaptcha_theme', 'light' );
-		$size           = get_option( 'wbc_recaptcha_size', 'normal' );
+		// Appearance: prefer hCaptcha's own keys, fall back to the shared reCAPTCHA
+		// keys so sites configured before the per-provider controls existed keep
+		// their current appearance. See WBC_Captcha_Service_Base::get_appearance_option().
+		$theme          = $this->get_appearance_option( 'theme', 'light' );
+		$size           = $this->get_appearance_option( 'size', 'normal' );
 		$disable_submit = $this->should_disable_submit( $context );
 
 		// Generate unique identifiers.
@@ -223,18 +224,31 @@ class WBC_HCaptcha_Service extends WBC_Captcha_Service_Base {
 	/**
 	 * Resolve the user-facing error message for a context.
 	 *
-	 * @param string $context Captcha render context.
-	 * @return string
+	 * MUST stay public: wbc_get_captcha_error_message() calls this from global scope.
+	 * It was protected, which made every failed hCaptcha verification fatal with
+	 * "Call to protected method ... from global scope".
+	 *
+	 * @param string $context    Captcha render context.
+	 * @param string $error_type Type of error: 'blank', 'invalid', 'no_response'.
+	 * @return string Message, or '' to defer to the shared per-type default.
 	 */
-	protected function get_error_message( $context ) {
-		$error_msg = get_option( 'wc_settings_tab_recapcha_error_msg_captcha_blank' );
-		$error_msg = is_string( $error_msg ) ? str_replace( '[recaptcha]', 'hCaptcha', $error_msg ) : '';
+	public function get_error_message( $context, $error_type = 'blank' ) {
+		$error_msg = function_exists( 'wbc_get_custom_captcha_error_option' )
+			? wbc_get_custom_captcha_error_option( $error_type )
+			: '';
 
-		if ( empty( $error_msg ) ) {
-			$error_msg = __( 'Please complete the security check.', 'buddypress-recaptcha' );
+		if ( '' !== $error_msg ) {
+			return str_replace( '[recaptcha]', 'hCaptcha', $error_msg );
 		}
 
-		return $error_msg;
+		// Only 'blank' has a sensible provider-level default ("complete the check").
+		// Defer the other types to wbc_get_captcha_error_message()'s own defaults,
+		// which are worded for the specific failure.
+		if ( 'blank' !== $error_type ) {
+			return '';
+		}
+
+		return __( 'Please complete the security check.', 'buddypress-recaptcha' );
 	}
 
 	/**

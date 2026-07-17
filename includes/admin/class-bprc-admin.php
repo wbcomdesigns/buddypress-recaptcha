@@ -266,11 +266,6 @@ class BPRC_Admin {
 			array(
 				'ajax_url' => admin_url( 'admin-ajax.php' ),
 				'strings'  => array(
-					'testing'          => __( 'Testing connection...', 'buddypress-recaptcha' ),
-					'success'          => __( 'Connection successful!', 'buddypress-recaptcha' ),
-					'error'            => __( 'Connection failed. Please check your keys.', 'buddypress-recaptcha' ),
-					'select'           => __( 'Please select a service first.', 'buddypress-recaptcha' ),
-					'enter_keys'       => __( 'Please enter both keys.', 'buddypress-recaptcha' ),
 					'key_generated'    => __( 'Random key generated successfully!', 'buddypress-recaptcha' ),
 					'dismiss_notice'   => __( 'Dismiss this notice.', 'buddypress-recaptcha' ),
 					// Per-service help card: title + one-line explanation.

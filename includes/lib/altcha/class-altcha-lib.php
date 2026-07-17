@@ -623,13 +623,24 @@ if ( ! isset( AltchaPlugin::$instance ) ) {
  *
  * 1. Wbcom CAPTCHA Manager owns the CAPTCHA settings UI. Loading these would give the
  *    site owner a second, competing "Settings > ALTCHA Anti-spam" page.
- * 2. settings.php calls altcha_plugin_active(), which is defined in the standalone
- *    ALTCHA plugin's main file - a file this bundle does not ship. Loading it fatals
- *    the admin with "Call to undefined function altcha_plugin_active()".
+ * 2. Upstream's settings.php calls altcha_plugin_active(), which is defined in the
+ *    standalone ALTCHA plugin's main file - a file this bundle does not ship. Loading
+ *    it fatals the admin with "Call to undefined function altcha_plugin_active()".
+ *
+ * Because they were unreachable either way, upstream's settings.php, helpers.php,
+ * admin.php and admin/options.php were dropped from this bundle entirely (2026-07-17).
+ * Do not restore them without also restoring what they depend on.
+ *
+ * Consequence to know about: render_widget() below calls altcha_enqueue_scripts() /
+ * altcha_enqueue_styles(), which lived in the dropped helpers.php. Nothing in this
+ * plugin calls render_widget() - WBC_Altcha_Service emits its own <altcha-widget>
+ * markup and enqueues its own script - and it could never have worked here anyway,
+ * since helpers.php was never loaded even when it was bundled. Treat render_widget()
+ * as unsupported in this fork rather than as a regression.
  *
  * Everything this plugin actually needs from the library - the AltchaPlugin class, the
  * challenge generator, and the /altcha/v1/challenge REST route registered below - lives
- * in this file and does not depend on those two.
+ * in this file and depends on none of the dropped files.
  */
 
 add_action(

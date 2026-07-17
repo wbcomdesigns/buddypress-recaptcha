@@ -51,11 +51,6 @@ parameters:
 			path: admin/includes/class-wbc-buddypress-settings-page.php
 
 		-
-			message: "#^Method WBC_BuddyPress_Settings_Page\\:\\:wbc_service_documentation\\(\\) is unused\\.$#"
-			count: 1
-			path: admin/includes/class-wbc-buddypress-settings-page.php
-
-		-
 			message: "#^Method WBC_BuddyPress_Settings_Page\\:\\:wbc_service_key_fields\\(\\) is unused\\.$#"
 			count: 1
 			path: admin/includes/class-wbc-buddypress-settings-page.php

@@ -29,6 +29,78 @@ if ( ! function_exists( 'wbc_verify_captcha' ) ) {
 	}
 }
 
+if ( ! function_exists( 'wbc_get_custom_captcha_error_option' ) ) {
+	/**
+	 * Resolve the admin-configured custom error message for an error type.
+	 *
+	 * The settings screen has written `wbc_recaptcha_error_msg_captcha_*` for some
+	 * time, but every reader looked at the much older `wc_settings_tab_recapcha_*`
+	 * (or the `*_v3`) keys, and nothing bridged the two — so customising an error
+	 * message had no effect at all. This resolver is that bridge: it prefers the key
+	 * the settings screen actually writes and falls back through the historic keys,
+	 * so sites that set a message under any previous naming keep working.
+	 *
+	 * Lookup order per error type:
+	 *   1. `wbc_recaptcha_error_msg_captcha_<type>`  — current settings-screen key.
+	 *   2. `wbc_recapcha_error_msg_captcha_<type>`   — the "recapcha" typo spelling
+	 *      that WBC_Settings_Migration writes when migrating older installs.
+	 *   3. the version-specific legacy key (`*_v3` keys when the v3 flow is active).
+	 *   4. `wc_settings_tab_recapcha_error_msg_captcha_<type>` — the original key,
+	 *      and the only one any reader honoured before this bridge existed.
+	 *
+	 * @param string $error_type Type of error: 'blank', 'invalid', 'no_response'.
+	 * @return string Custom message, or '' when the admin has not set one.
+	 */
+	//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound
+	function wbc_get_custom_captcha_error_option( $error_type = 'invalid' ) {
+		$current = array(
+			'blank'       => 'wbc_recaptcha_error_msg_captcha_blank',
+			'invalid'     => 'wbc_recaptcha_error_msg_captcha_invalid',
+			'no_response' => 'wbc_recaptcha_error_msg_captcha_no_response',
+		);
+
+		$typo = array(
+			'blank'       => 'wbc_recapcha_error_msg_captcha_blank',
+			'invalid'     => 'wbc_recapcha_error_msg_captcha_invalid',
+			'no_response' => 'wbc_recapcha_error_msg_captcha_no_response',
+		);
+
+		$legacy_v3 = array(
+			'blank'       => 'wbc_recapcha_error_msg_captcha_blank_v3',
+			'invalid'     => 'wbc_recapcha_error_msg_v3_invalid_captcha',
+			'no_response' => 'wbc_recapcha_error_msg_captcha_no_response_v3',
+		);
+
+		$legacy = array(
+			'blank'       => 'wc_settings_tab_recapcha_error_msg_captcha_blank',
+			'invalid'     => 'wc_settings_tab_recapcha_error_msg_captcha_invalid',
+			'no_response' => 'wc_settings_tab_recapcha_error_msg_captcha_no_response',
+		);
+
+		if ( ! isset( $current[ $error_type ] ) ) {
+			$error_type = 'invalid';
+		}
+
+		$keys = array( $current[ $error_type ], $typo[ $error_type ] );
+
+		// Only consult the v3-specific keys when the v3 flow is the active one.
+		if ( 'v3' === get_option( 'wbc_recapcha_version', 'v2' ) ) {
+			$keys[] = $legacy_v3[ $error_type ];
+		}
+
+		$keys[] = $legacy[ $error_type ];
+
+		foreach ( $keys as $key ) {
+			$value = get_option( $key );
+			if ( is_string( $value ) && '' !== trim( $value ) ) {
+				return $value;
+			}
+		}
+
+		return '';
+	}
+}
+
 if ( ! function_exists( 'wbc_get_captcha_error_message' ) ) {
 	/**
 	 * Get captcha error message for context and error type.
@@ -52,35 +124,25 @@ if ( ! function_exists( 'wbc_get_captcha_error_message' ) ) {
 			'no_response' => __( 'Unable to verify security check. Please refresh the page and try again.', 'buddypress-recaptcha' ),
 		);
 
-		// Try to get custom message from service.
-		if ( $service && method_exists( $service, 'get_error_message' ) ) {
+		/*
+		 * Try to get a custom message from the active service.
+		 *
+		 * Guarded with is_callable(), NOT method_exists(): method_exists() is true for
+		 * protected/private methods too, so when hCaptcha was the active service this
+		 * call raised "Call to protected method ... from global scope" — a fatal on
+		 * every failed verification, on every integration that reports an error.
+		 * is_callable() reflects the visibility actually available from here.
+		 */
+		if ( $service && is_callable( array( $service, 'get_error_message' ) ) ) {
 			$custom_message = $service->get_error_message( $context, $error_type );
 			if ( ! empty( $custom_message ) ) {
 				return $custom_message;
 			}
 		}
 
-		// Fallback to checking options for backward compatibility.
-		$version = get_option( 'wbc_recapcha_version', 'v2' );
-
-		if ( 'v3' === $version ) {
-			$option_map = array(
-				'blank'       => 'wbc_recapcha_error_msg_captcha_blank_v3',
-				'invalid'     => 'wbc_recapcha_error_msg_v3_invalid_captcha',
-				'no_response' => 'wbc_recapcha_error_msg_captcha_no_response_v3',
-			);
-		} else {
-			$option_map = array(
-				'blank'       => 'wc_settings_tab_recapcha_error_msg_captcha_blank',
-				'invalid'     => 'wc_settings_tab_recapcha_error_msg_captcha_invalid',
-				'no_response' => 'wc_settings_tab_recapcha_error_msg_captcha_no_response',
-			);
-		}
-
-		$custom_message = '';
-		if ( isset( $option_map[ $error_type ] ) ) {
-			$custom_message = get_option( $option_map[ $error_type ] );
-		}
+		// Fall back to the admin-configured message, resolved across the current and
+		// all historic option keys.
+		$custom_message = wbc_get_custom_captcha_error_option( $error_type );
 
 		if ( ! empty( $custom_message ) ) {
 			// Replace [recaptcha] placeholder.

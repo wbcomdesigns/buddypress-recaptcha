@@ -78,13 +78,20 @@ $bprc_ecosystem = array(
 		'desc' => __( 'Create, sell, and auto-grade online courses, then hand out certificates automatically.', 'buddypress-recaptcha' ),
 		'url'  => 'https://wbcomdesigns.com/downloads/learnomy/',
 	),
+	array(
+		'name' => __( 'WP Sell Services', 'buddypress-recaptcha' ),
+		'logo' => 'wp-sell-services.svg',
+		'icon' => 'cart',
+		'desc' => __( 'A free service marketplace with vendor dashboards, an 11-status order flow, and Stripe or PayPal built in.', 'buddypress-recaptcha' ),
+		'url'  => 'https://wbcomdesigns.com/downloads/wp-sell-services/',
+	),
 );
 ?>
 
 <div class="bprc-card">
 	<div class="bprc-card__head">
 		<p class="bprc-card__title"><?php esc_html_e( 'More Free Tools from Wbcom Designs', 'buddypress-recaptcha' ); ?></p>
-		<p class="bprc-card__desc"><?php esc_html_e( 'CAPTCHA Manager keeps your forms free of spam and bots. These free tools from Wbcom Designs build out the community behind those forms: the theme and network itself, forums, media, events, gamification, directories, jobs, and courses.', 'buddypress-recaptcha' ); ?></p>
+		<p class="bprc-card__desc"><?php esc_html_e( 'CAPTCHA Manager keeps your forms free of spam and bots. These free tools from Wbcom Designs build out the community behind those forms: the theme and network itself, forums, media, events, gamification, directories, jobs, courses, and services.', 'buddypress-recaptcha' ); ?></p>
 	</div>
 	<div class="bprc-card__body">
 		<div class="bprc-discover-grid">

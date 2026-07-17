@@ -60,7 +60,7 @@
    ═══════════════════════════════════════════════════════════ */
 
 .bprc-admin {
-	margin: 0 20px 0 0;
+	margin: 0 0 0 20px;
 	color: var(--bprc-admin-text);
 	font-size: 13px;
 	line-height: 1.5;
@@ -265,7 +265,7 @@
 }
 
 .bprc-snav-link__ext {
-	margin-left: auto;
+	margin-right: auto;
 	width: 13px !important;
 	height: 13px !important;
 	font-size: 13px !important;
@@ -278,7 +278,7 @@
 }
 
 .bprc-snav-section-label {
-	margin: 8px 0 4px 10px;
+	margin: 8px 10px 4px 0;
 	font-size: 10px;
 	font-weight: 700;
 	text-transform: uppercase;
@@ -289,7 +289,7 @@
 .bprc-settings-main {
 	flex: 1;
 	min-width: 0;
-	margin-left: var(--bprc-admin-gap-lg);
+	margin-right: var(--bprc-admin-gap-lg);
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -623,7 +623,7 @@
 
 .bprc-toast-host {
 	position: fixed;
-	right: 24px;
+	left: 24px;
 	bottom: 24px;
 	z-index: 100000;
 	display: flex;
@@ -795,7 +795,7 @@
 }
 
 .bprc-hub-card:hover .bprc-hub-card__cta .dashicons {
-	transform: translateX(2px);
+	transform: translateX(-2px);
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -813,7 +813,7 @@
 	margin: 0 0 18px;
 	font-size: 14px;
 	line-height: 1.5;
-	border-width: 0 0 0 4px;
+	border-width: 0 4px 0 0;
 	border-style: solid;
 }
 
@@ -825,12 +825,12 @@
 }
 
 .bprc-admin .notice.is-dismissible {
-	padding-right: 38px;
+	padding-left: 38px;
 }
 
 .bprc-admin .notice .notice-dismiss {
 	top: 8px;
-	right: 8px;
+	left: 8px;
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -930,18 +930,18 @@
 	}
 
 	.bprc-snav-link__ext {
-		margin-left: 4px;
+		margin-right: 4px;
 	}
 
 	.bprc-settings-main {
-		margin-left: 0;
+		margin-right: 0;
 		margin-top: var(--bprc-admin-gap-md);
 	}
 }
 
 @media (max-width: 640px) {
 	.bprc-admin {
-		margin-right: 0;
+		margin-left: 0;
 	}
 
 	.bprc-page-header {

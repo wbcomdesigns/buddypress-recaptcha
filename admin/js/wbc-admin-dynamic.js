@@ -43,9 +43,6 @@
 		// Handle ALTCHA key generation
 		initAltchaKeyGeneration();
 
-		// Handle test connection button
-		initTestConnection();
-
 	});
 
 	/**
@@ -166,76 +163,6 @@
 			key += chars.charAt(Math.floor(Math.random() * chars.length));
 		}
 		return key;
-	}
-
-	/**
-	 * Initialize test connection functionality
-	 */
-	function initTestConnection() {
-		// Make function globally accessible
-		window.wbc_test_captcha_connection = function() {
-			testCaptchaConnection();
-		};
-	}
-
-	/**
-	 * Test captcha connection
-	 */
-	function testCaptchaConnection() {
-		var service = $('input[name="wbc_captcha_service"]:checked').val();
-		if (!service) {
-			service = $('select#wbc_captcha_service').val();
-		}
-
-		if (!service) {
-			showNotice( t( 'select', 'Please select a service first.' ), 'error' );
-			return;
-		}
-
-		// Get the relevant keys based on service
-		var siteKey = '';
-		var secretKey = '';
-
-		switch(service) {
-			case 'recaptcha_v2':
-				siteKey = $('#wbc_recaptcha_v2_site_key').val();
-				secretKey = $('#wbc_recaptcha_v2_secret_key').val();
-				break;
-			case 'recaptcha_v3':
-				siteKey = $('#wbc_recaptcha_v3_site_key').val();
-				secretKey = $('#wbc_recaptcha_v3_secret_key').val();
-				break;
-			case 'turnstile':
-				siteKey = $('#wbc_turnstile_site_key').val();
-				secretKey = $('#wbc_turnstile_secret_key').val();
-				break;
-			case 'hcaptcha':
-				siteKey = $('#wbc_hcaptcha_site_key').val();
-				secretKey = $('#wbc_hcaptcha_secret_key').val();
-				break;
-			case 'altcha':
-				secretKey = $('#wbc_altcha_hmac_key').val();
-				siteKey = 'self-hosted'; // ALTCHA doesn't need a site key
-				break;
-		}
-
-		if (!siteKey || !secretKey) {
-			showNotice( t( 'enter_keys', 'Please enter both keys.' ), 'error' );
-			return;
-		}
-
-		// Show loading state
-		showNotice( t( 'testing', 'Testing connection...' ), 'info' );
-
-		// Here you would normally make an AJAX call to test the connection
-		// For now, we'll just simulate it
-		setTimeout(function() {
-			if (siteKey && secretKey) {
-				showNotice( t( 'success', 'Connection successful!' ), 'success' );
-			} else {
-				showNotice( t( 'error', 'Connection failed. Please check your keys.' ), 'error' );
-			}
-		}, 1000);
 	}
 
 	/**

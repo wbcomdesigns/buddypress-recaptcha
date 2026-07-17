@@ -120,7 +120,11 @@ add_action(
 //phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound	
 function wb_recaptcha_activation_redirect_settings( $plugin ) {
 
-	if ( plugin_basename( __FILE__ ) === $plugin && ( class_exists( 'WooCommerce' ) || class_exists( 'BuddyPress' ) || class_exists( 'bbPress' ) ) ) {
+	// No host-plugin gate: this is a general WordPress CAPTCHA manager and protects
+	// core WP login / register / lost-password / comments on their own. Gating the
+	// redirect on WooCommerce/BuddyPress/bbPress left plain-WordPress users on the
+	// plugins list with no signpost to the settings screen.
+	if ( plugin_basename( __FILE__ ) === $plugin ) {
 		if ( isset( $_REQUEST['action'] ) && 'activate' === $_REQUEST['action'] && isset( $_REQUEST['plugin'] ) && $plugin === $_REQUEST['plugin'] ) { //phpcs:ignore
 			wp_safe_redirect( admin_url( 'admin.php?page=buddypress-recaptcha' ) );
 			exit;

@@ -307,8 +307,9 @@ class WBC_Recaptcha_V2_Service extends WBC_Captcha_Service_Base {
 	 * @return string
 	 */
 	private function get_theme_for_context( $context ) {
-		// Use the global theme setting configured in admin.
-		return get_option( 'wbc_recaptcha_theme', 'light' );
+		// Resolves to the shared `wbc_recaptcha_theme` key (this provider's own
+		// hyphenated key is never written) — i.e. unchanged behaviour.
+		return $this->get_appearance_option( 'theme', 'light' );
 	}
 
 	/**
@@ -318,8 +319,9 @@ class WBC_Recaptcha_V2_Service extends WBC_Captcha_Service_Base {
 	 * @return string
 	 */
 	private function get_size_for_context( $context ) {
-		// Use the global size setting configured in admin.
-		return get_option( 'wbc_recaptcha_size', 'normal' );
+		// Resolves to the shared `wbc_recaptcha_size` key (this provider's own
+		// hyphenated key is never written) — i.e. unchanged behaviour.
+		return $this->get_appearance_option( 'size', 'normal' );
 	}
 
 	/**
@@ -350,14 +352,24 @@ class WBC_Recaptcha_V2_Service extends WBC_Captcha_Service_Base {
 	/**
 	 * Get error message
 	 *
-	 * @param string $context The context identifier.
-	 * @return string
+	 * @param string $context    The context identifier.
+	 * @param string $error_type Type of error: 'blank', 'invalid', 'no_response'.
+	 * @return string Message, or '' to defer to the shared per-type default.
 	 */
-	public function get_error_message( $context ) {
-		$error_msg = get_option( 'wc_settings_tab_recapcha_error_msg_captcha_blank' );
+	public function get_error_message( $context, $error_type = 'blank' ) {
+		$error_msg = function_exists( 'wbc_get_custom_captcha_error_option' )
+			? wbc_get_custom_captcha_error_option( $error_type )
+			: '';
 		$error_msg = str_replace( '[recaptcha]', 'reCAPTCHA', $error_msg );
 
 		if ( empty( $error_msg ) ) {
+			// The per-context copy below all reads "please complete the check", which
+			// only fits the 'blank' case. Defer other types to the shared defaults in
+			// wbc_get_captcha_error_message(), which are worded for those failures.
+			if ( 'blank' !== $error_type ) {
+				return '';
+			}
+
 			$default_messages = array(
 				'wp_login'         => __( 'Please complete the security check to log in.', 'buddypress-recaptcha' ),
 				'wp_register'      => __( 'Please complete the security check to register.', 'buddypress-recaptcha' ),

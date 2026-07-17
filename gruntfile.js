@@ -57,13 +57,24 @@ module.exports = function (grunt) {
 					ext: '.min.css', // Extension for minified files
 				}]
 			},
-			wbcom: {
+			// Settings-field styles that drive the admin form.
+			admin: {
 				files: [{
 					expand: true,
-					cwd: 'admin/wbcom/assets/css/', // Source directory for admin CSS files
+					cwd: 'admin/css/', // Source directory for admin CSS files
 					src: ['*.css', '!*.min.css'], // Minify all admin CSS files except already minified ones
-					dest: 'admin/wbcom/assets/css/min/', // Destination directory for minified admin CSS
+					dest: 'admin/css/min/', // Destination directory for minified admin CSS
 					ext: '.min.css', // Extension for minified files
+				}]
+			},
+			// Card-panel admin chrome (assets/css/admin.css).
+			chrome: {
+				files: [{
+					expand: true,
+					cwd: 'assets/css/',
+					src: ['*.css', '!*.min.css'],
+					dest: 'assets/css/min/',
+					ext: '.min.css',
 				}]
 			}
 		},
@@ -82,16 +93,30 @@ module.exports = function (grunt) {
 					ext: '.min.js', // Extension for minified files
 				}]
 			},
-			wbcom: {
+			// Settings-field scripts that drive the admin form.
+			admin: {
 				options: {
 					mangle: false, // Prevents variable name mangling
 				},
 				files: [{
 					expand: true,
-					cwd: 'admin/wbcom/assets/js/', // Source directory for admin JS files
+					cwd: 'admin/js/', // Source directory for admin JS files
 					src: ['*.js', '!*.min.js'], // Minify all admin JS files except already minified ones
-					dest: 'admin/wbcom/assets/js/min/', // Destination directory for minified admin JS
+					dest: 'admin/js/min/', // Destination directory for minified admin JS
 					ext: '.min.js', // Extension for minified files
+				}]
+			},
+			// Card-panel admin chrome (assets/js/admin.js).
+			chrome: {
+				options: {
+					mangle: false,
+				},
+				files: [{
+					expand: true,
+					cwd: 'assets/js/',
+					src: ['*.js', '!*.min.js'],
+					dest: 'assets/js/min/',
+					ext: '.min.js',
 				}]
 			}
 		},
@@ -103,16 +128,24 @@ module.exports = function (grunt) {
 				tasks: ['cssmin:public'], // Run public CSS minification task
 			},
 			adminCss: {
-				files: ['admin/wbcom/assets/css/*.css'], // Watch for changes in admin CSS files
-				tasks: ['cssmin:wbcom'], // Run admin CSS minification task
+				files: ['admin/css/*.css'], // Watch for changes in admin CSS files
+				tasks: ['cssmin:admin'], // Run admin CSS minification task
+			},
+			chromeCss: {
+				files: ['assets/css/*.css'], // Watch for changes in card-panel chrome CSS
+				tasks: ['cssmin:chrome'],
 			},
 			js: {
 				files: ['public/js/*.js'], // Watch for changes in public JS files
 				tasks: ['uglify:public'], // Run public JS minification task
 			},
 			adminJs: {
-				files: ['admin/wbcom/assets/js/*.js'], // Watch for changes in admin JS files
-				tasks: ['uglify:wbcom'], // Run admin JS minification task
+				files: ['admin/js/*.js'], // Watch for changes in admin JS files
+				tasks: ['uglify:admin'], // Run admin JS minification task
+			},
+			chromeJs: {
+				files: ['assets/js/*.js'], // Watch for changes in card-panel chrome JS
+				tasks: ['uglify:chrome'],
 			},
 			php: {
 				files: ['**/*.php'], // Watch for changes in PHP files
@@ -145,10 +178,17 @@ module.exports = function (grunt) {
 					},
 					{
 						expand: true,
-						cwd: 'admin/wbcom/assets/css/', // Source directory for admin CSS
+						cwd: 'admin/css/', // Source directory for admin CSS
 						src: ['*.css', '!**/*.min.css'], // Source files
-						dest: 'admin/wbcom/assets/css/rtl/', // Destination directory for admin RTL CSS
+						dest: 'admin/css/rtl/', // Destination directory for admin RTL CSS
 						flatten: true // Prevents creating subdirectories
+					},
+					{
+						expand: true,
+						cwd: 'assets/css/', // Card-panel admin chrome
+						src: ['*.css', '!**/*.min.css'],
+						dest: 'assets/css/rtl/',
+						flatten: true
 					}
 				]
 			}

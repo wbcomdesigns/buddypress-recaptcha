@@ -15,7 +15,13 @@
     "tested_up_to": "7.0",
     "requires_php": "7.4",
     "description": "Multi-provider CAPTCHA for WordPress (login/register/lost-password/comments), WooCommerce, BuddyPress, bbPress, and 7 form builders. 5 providers, 14 integrations, 29 protectable contexts.",
-    "providers_supported": ["recaptcha-v2", "recaptcha-v3", "turnstile", "hcaptcha", "altcha"],
+    "providers_supported": [
+      "recaptcha-v2",
+      "recaptcha-v3",
+      "turnstile",
+      "hcaptcha",
+      "altcha"
+    ],
     "extends": null,
     "extension_hook_consumed": null,
     "extension_hook_fired": "wbc_register_captcha_services",
@@ -24,11 +30,15 @@
     "distribution": "wbcomdesigns.com (EDD SL SDK keyless auto-updates, item_name 'reCaptcha for BuddyPress')"
   },
   "rest": {
-    "namespaces": ["altcha/v1"],
+    "namespaces": [
+      "altcha/v1"
+    ],
     "endpoints": [
       {
         "route": "/altcha/v1/challenge",
-        "methods": ["GET"],
+        "methods": [
+          "GET"
+        ],
         "handler": "altcha_generate_challenge_endpoint",
         "permission": "__return_true",
         "where": "includes/lib/altcha/class-altcha-lib.php:635-648 (register_rest_route at :640)",
@@ -70,31 +80,193 @@
       "render": "BPRC_Admin::render_page",
       "since": "2.1.0",
       "tabs": [
-        { "slug": "rfw-welcome", "label": "Overview", "group": "main", "form": false, "view": "includes/admin/views/overview.php", "source": "includes/admin/class-bprc-admin.php:65" },
-        { "slug": "rfw-general", "label": "Quick Setup", "group": "settings", "form": true, "source": "includes/admin/class-bprc-admin.php:71" },
-        { "slug": "protection", "label": "Protection", "group": "settings", "form": true, "source": "includes/admin/class-bprc-admin.php:77" },
-        { "slug": "advanced", "label": "Advanced", "group": "settings", "form": true, "source": "includes/admin/class-bprc-admin.php:83" },
-        { "slug": "updates", "label": "Updates", "group": "account", "form": false, "view": "includes/admin/views/updates.php", "source": "includes/admin/class-bprc-admin.php:89" },
-        { "slug": "discover", "label": "Discover", "group": "account", "form": false, "view": "includes/admin/views/discover.php", "source": "includes/admin/class-bprc-admin.php:95" }
+        {
+          "slug": "rfw-welcome",
+          "label": "Overview",
+          "group": "main",
+          "form": false,
+          "view": "includes/admin/views/overview.php",
+          "source": "includes/admin/class-bprc-admin.php:65"
+        },
+        {
+          "slug": "rfw-general",
+          "label": "Quick Setup",
+          "group": "settings",
+          "form": true,
+          "source": "includes/admin/class-bprc-admin.php:71"
+        },
+        {
+          "slug": "protection",
+          "label": "Protection",
+          "group": "settings",
+          "form": true,
+          "source": "includes/admin/class-bprc-admin.php:77"
+        },
+        {
+          "slug": "advanced",
+          "label": "Advanced",
+          "group": "settings",
+          "form": true,
+          "source": "includes/admin/class-bprc-admin.php:83"
+        },
+        {
+          "slug": "updates",
+          "label": "Updates",
+          "group": "account",
+          "form": false,
+          "view": "includes/admin/views/updates.php",
+          "source": "includes/admin/class-bprc-admin.php:89"
+        },
+        {
+          "slug": "discover",
+          "label": "Discover",
+          "group": "account",
+          "form": false,
+          "view": "includes/admin/views/discover.php",
+          "source": "includes/admin/class-bprc-admin.php:95"
+        }
       ],
       "tabs_filter": "bprc_admin_tabs (includes/admin/class-bprc-admin.php:104)",
-      "views": ["includes/admin/views/shell.php", "includes/admin/views/hub.php", "includes/admin/views/overview.php", "includes/admin/views/updates.php", "includes/admin/views/discover.php"],
+      "views": [
+        "includes/admin/views/shell.php",
+        "includes/admin/views/hub.php",
+        "includes/admin/views/overview.php",
+        "includes/admin/views/updates.php",
+        "includes/admin/views/discover.php"
+      ],
       "nonce_field": "bp_recaptcha_submit_fields_nonce",
       "nonce_action": "bp_recaptcha_submit_nonce",
       "note": "Card-panel admin. Tab slugs map 1:1 to legacy WBC_BuddyPress_Settings_Page sections — wbc_save()/wbc_output() switch on these strings, do not rename. The menu cap gate (manage_options) runs BEFORE render_page(), so the in-page nonce save is layered defense, not the sole gate."
     }
   ],
   "settings": [
-    { "key_pattern": "wbc_recaptcha_enable_on_*", "count": 29, "map_source": "includes/class-captcha-service-base.php:159-191 (get_context_option_map)", "examples": ["wbc_recaptcha_enable_on_wplogin", "wbc_recaptcha_enable_on_wpregister", "wbc_recaptcha_enable_on_wplostpassword", "wbc_recaptcha_enable_on_login", "wbc_recaptcha_enable_on_signup", "wbc_recaptcha_enable_on_lostpassword", "wbc_recaptcha_enable_on_buddypress", "wbc_recaptcha_enable_on_bp_group_create", "wbc_recaptcha_enable_on_bbpress_topic", "wbc_recaptcha_enable_on_bbpress_reply", "wbc_recaptcha_enable_on_guestcheckout", "wbc_recaptcha_enable_on_logincheckout", "wbc_recaptcha_enable_on_comment", "wbc_recaptcha_enable_on_cf7", "wbc_recaptcha_enable_on_wpforms", "wbc_recaptcha_enable_on_gravityforms", "wbc_recaptcha_enable_on_ninjaforms", "wbc_recaptcha_enable_on_forminator", "wbc_recaptcha_enable_on_elementorpro", "wbc_recaptcha_enable_on_divi", "wbc_recaptcha_enable_on_edd_checkout", "wbc_recaptcha_enable_on_edd_login", "wbc_recaptcha_enable_on_edd_register", "wbc_recaptcha_enable_on_memberpress_login", "wbc_recaptcha_enable_on_memberpress_register", "wbc_recaptcha_enable_on_um_login", "wbc_recaptcha_enable_on_um_register", "wbc_recaptcha_enable_on_um_password", "wbc_recaptcha_enable_on_widget_login"], "type": "yes|no", "purpose": "Per-context enable toggle (29 contexts). NOTE: the 'bp_register' context maps to wbc_recaptcha_enable_on_buddypress, not _signup_bp." },
-    { "key": "wbc_captcha_service", "type": "string", "default": "(auto-detected from configured keys)", "purpose": "Active provider id (recaptcha-v2 / recaptcha-v3 / turnstile / hcaptcha / altcha)" },
-    { "key_pattern": "wbc_<provider>_site_key / wbc_<provider>_secret_key", "examples": ["wbc_recaptcha_v2_site_key", "wbc_recaptcha_v3_site_key", "wbc_turnstile_site_key", "wbc_hcaptcha_site_key"], "type": "string", "purpose": "Per-provider API credentials (with hyphen-form + legacy wc_settings_tab_recapcha_* fallback for backward compat)" },
-    { "key": "wbc_recaptcha_theme", "type": "light|dark", "default": "light", "live": true, "read_at": ["includes/services/class-recaptcha-v2-service.php:311", "includes/services/class-hcaptcha-service.php:126"], "written_at": ["admin/includes/class-wbc-buddypress-settings-page.php:757", "admin/includes/class-wbc-buddypress-settings-page.php:1968"], "purpose": "Widget theme — the ONLY live theme option. Shared across reCAPTCHA v2 + hCaptcha. Turnstile and ALTCHA ignore it." },
-    { "key": "wbc_recaptcha_size", "type": "normal|compact|invisible", "default": "normal", "live": true, "read_at": ["includes/services/class-recaptcha-v2-service.php:322", "includes/services/class-hcaptcha-service.php:127"], "written_at": ["admin/includes/class-wbc-buddypress-settings-page.php:769", "admin/includes/class-wbc-buddypress-settings-page.php:1981"], "purpose": "Widget size — the ONLY live size option. Shared across reCAPTCHA v2 + hCaptcha." },
-    { "key": "wbc_recaptcha_ip_to_skip_captcha", "type": "string (csv)", "read_at": ["includes/class-captcha-service-manager.php:216", "includes/class-captcha-service-manager.php:479-481", "includes/recaptcha-helper-functions.php:205"], "matcher": "includes/recaptcha-helper-functions.php:135-194", "purpose": "IP whitelist — exact IP, dash-range (1.2.3.4-1.2.3.10), or CIDR (10.0.0.0/24, IPv4 only) since 2.1.0. Falls back to the legacy typo key wbc_recapcha_ip_to_skip_captcha at manager:481." },
-    { "key": "wbc_captcha_fail_closed", "type": "bool", "default": false, "since": "2.1.0", "read_at": ["includes/class-captcha-service-manager.php:283", "includes/class-captcha-service-manager.php:320"], "purpose": "Block forms when the active service is unconfigured or verify() throws (instead of fail-open). Filter: wbc_captcha_fail_closed." },
-    { "key": "wbc_captcha_strict_nonce", "type": "bool", "default": false, "since": "2.1.0", "read_at": ["includes/services/class-recaptcha-v2-service.php:204", "includes/services/class-hcaptcha-service.php:260", "includes/services/class-turnstile-service.php:164"], "purpose": "Require per-context nonce on plugin-controlled forms. Filter: wbc_captcha_strict_nonce. Wired in reCAPTCHA v2 + hCaptcha + Turnstile verify(). NOT wired in reCAPTCHA v3 or ALTCHA." },
-    { "key_pattern": "wbc_recapcha_disable_submitbtn_*", "purpose": "Per-context disable-submit-until-verified toggle (works for reCAPTCHA v2; hCaptcha wired in 2.1.0)" },
-    { "key_pattern": "wbc_recapcha_no_conflict / wbc_recapcha_no_conflict_v3", "purpose": "Dequeue other plugins' reCAPTCHA scripts to prevent conflicts" }
+    {
+      "key_pattern": "wbc_recaptcha_enable_on_*",
+      "count": 29,
+      "map_source": "includes/class-captcha-service-base.php:159-191 (get_context_option_map)",
+      "examples": [
+        "wbc_recaptcha_enable_on_wplogin",
+        "wbc_recaptcha_enable_on_wpregister",
+        "wbc_recaptcha_enable_on_wplostpassword",
+        "wbc_recaptcha_enable_on_login",
+        "wbc_recaptcha_enable_on_signup",
+        "wbc_recaptcha_enable_on_lostpassword",
+        "wbc_recaptcha_enable_on_buddypress",
+        "wbc_recaptcha_enable_on_bp_group_create",
+        "wbc_recaptcha_enable_on_bbpress_topic",
+        "wbc_recaptcha_enable_on_bbpress_reply",
+        "wbc_recaptcha_enable_on_guestcheckout",
+        "wbc_recaptcha_enable_on_logincheckout",
+        "wbc_recaptcha_enable_on_comment",
+        "wbc_recaptcha_enable_on_cf7",
+        "wbc_recaptcha_enable_on_wpforms",
+        "wbc_recaptcha_enable_on_gravityforms",
+        "wbc_recaptcha_enable_on_ninjaforms",
+        "wbc_recaptcha_enable_on_forminator",
+        "wbc_recaptcha_enable_on_elementorpro",
+        "wbc_recaptcha_enable_on_divi",
+        "wbc_recaptcha_enable_on_edd_checkout",
+        "wbc_recaptcha_enable_on_edd_login",
+        "wbc_recaptcha_enable_on_edd_register",
+        "wbc_recaptcha_enable_on_memberpress_login",
+        "wbc_recaptcha_enable_on_memberpress_register",
+        "wbc_recaptcha_enable_on_um_login",
+        "wbc_recaptcha_enable_on_um_register",
+        "wbc_recaptcha_enable_on_um_password",
+        "wbc_recaptcha_enable_on_widget_login"
+      ],
+      "type": "yes|no",
+      "purpose": "Per-context enable toggle (29 contexts). NOTE: the 'bp_register' context maps to wbc_recaptcha_enable_on_buddypress, not _signup_bp."
+    },
+    {
+      "key": "wbc_captcha_service",
+      "type": "string",
+      "default": "(auto-detected from configured keys)",
+      "purpose": "Active provider id (recaptcha-v2 / recaptcha-v3 / turnstile / hcaptcha / altcha)"
+    },
+    {
+      "key_pattern": "wbc_<provider>_site_key / wbc_<provider>_secret_key",
+      "examples": [
+        "wbc_recaptcha_v2_site_key",
+        "wbc_recaptcha_v3_site_key",
+        "wbc_turnstile_site_key",
+        "wbc_hcaptcha_site_key"
+      ],
+      "type": "string",
+      "purpose": "Per-provider API credentials (with hyphen-form + legacy wc_settings_tab_recapcha_* fallback for backward compat)"
+    },
+    {
+      "key": "wbc_recaptcha_theme",
+      "type": "light|dark",
+      "default": "light",
+      "live": true,
+      "read_at": [
+        "includes/services/class-recaptcha-v2-service.php:311",
+        "includes/services/class-hcaptcha-service.php:126"
+      ],
+      "written_at": [
+        "admin/includes/class-wbc-buddypress-settings-page.php:757",
+        "admin/includes/class-wbc-buddypress-settings-page.php:1968"
+      ],
+      "purpose": "Widget theme — the ONLY live theme option. Shared across reCAPTCHA v2 + hCaptcha. Turnstile and ALTCHA ignore it."
+    },
+    {
+      "key": "wbc_recaptcha_size",
+      "type": "normal|compact|invisible",
+      "default": "normal",
+      "live": true,
+      "read_at": [
+        "includes/services/class-recaptcha-v2-service.php:322",
+        "includes/services/class-hcaptcha-service.php:127"
+      ],
+      "written_at": [
+        "admin/includes/class-wbc-buddypress-settings-page.php:769",
+        "admin/includes/class-wbc-buddypress-settings-page.php:1981"
+      ],
+      "purpose": "Widget size — the ONLY live size option. Shared across reCAPTCHA v2 + hCaptcha."
+    },
+    {
+      "key": "wbc_recaptcha_ip_to_skip_captcha",
+      "type": "string (csv)",
+      "read_at": [
+        "includes/class-captcha-service-manager.php:216",
+        "includes/class-captcha-service-manager.php:479-481",
+        "includes/recaptcha-helper-functions.php:205"
+      ],
+      "matcher": "includes/recaptcha-helper-functions.php:135-194",
+      "purpose": "IP whitelist — exact IP, dash-range (1.2.3.4-1.2.3.10), or CIDR (10.0.0.0/24, IPv4 only) since 2.1.0. Falls back to the legacy typo key wbc_recapcha_ip_to_skip_captcha at manager:481."
+    },
+    {
+      "key": "wbc_captcha_fail_closed",
+      "type": "bool",
+      "default": false,
+      "since": "2.1.0",
+      "read_at": [
+        "includes/class-captcha-service-manager.php:283",
+        "includes/class-captcha-service-manager.php:320"
+      ],
+      "purpose": "Block forms when the active service is unconfigured or verify() throws (instead of fail-open). Filter: wbc_captcha_fail_closed."
+    },
+    {
+      "key": "wbc_captcha_strict_nonce",
+      "type": "bool",
+      "default": false,
+      "since": "2.1.0",
+      "read_at": [
+        "includes/services/class-recaptcha-v2-service.php:204",
+        "includes/services/class-hcaptcha-service.php:260",
+        "includes/services/class-turnstile-service.php:164"
+      ],
+      "purpose": "Require per-context nonce on plugin-controlled forms. Filter: wbc_captcha_strict_nonce. Wired in reCAPTCHA v2 + hCaptcha + Turnstile verify(). NOT wired in reCAPTCHA v3 or ALTCHA."
+    },
+    {
+      "key_pattern": "wbc_recapcha_disable_submitbtn_*",
+      "purpose": "Per-context disable-submit-until-verified toggle (works for reCAPTCHA v2; hCaptcha wired in 2.1.0)"
+    },
+    {
+      "key_pattern": "wbc_recapcha_no_conflict / wbc_recapcha_no_conflict_v3",
+      "purpose": "Dequeue other plugins' reCAPTCHA scripts to prevent conflicts"
+    }
   ],
   "shortcodes": [],
   "blocks": [
@@ -107,8 +279,20 @@
       "editor_script": "blocks/login-widget/index.js",
       "render": "WBC_Login_Block::render_block (render_callback)",
       "registered_at": "includes/class-wbc-login-block.php:28-35 (register_block_type_from_metadata)",
-      "attributes": ["welcomeMessage", "redirectUrl", "showLostPassword", "showRegisterLink", "showProfileLink"],
-      "supports": { "align": ["wide", "full"], "html": false },
+      "attributes": [
+        "welcomeMessage",
+        "redirectUrl",
+        "showLostPassword",
+        "showRegisterLink",
+        "showProfileLink"
+      ],
+      "supports": {
+        "align": [
+          "wide",
+          "full"
+        ],
+        "html": false
+      },
       "interactivity": false,
       "layout_owning": false,
       "purpose": "Gutenberg login block — renders the AJAX login form with the active CAPTCHA. Its apiVersion 3 is what sets the plugin's real WP 6.3 floor.",
@@ -116,86 +300,584 @@
     }
   ],
   "widgets": [
-    { "class": "WBC_Login_Widget", "extends": "WP_Widget", "where": "includes/widgets/class-wbc-login-widget.php:21", "registered_at": "includes/class-recaptcha-for-buddypress.php:782 (register_widget)", "purpose": "Classic-widget counterpart to the login block; shares WBC_AJAX_Login_Handler." }
+    {
+      "class": "WBC_Login_Widget",
+      "extends": "WP_Widget",
+      "where": "includes/widgets/class-wbc-login-widget.php:21",
+      "registered_at": "includes/class-recaptcha-for-buddypress.php:782 (register_widget)",
+      "purpose": "Classic-widget counterpart to the login block; shares WBC_AJAX_Login_Handler."
+    }
   ],
   "post_types": [],
   "taxonomies": [],
   "tables": [],
   "capabilities": [
-    { "cap": "manage_options", "default_roles": ["administrator"], "meta": false, "requires_context": "none", "use": "All admin pages + settings save handlers. Plugin defines NO custom capabilities." }
+    {
+      "cap": "manage_options",
+      "default_roles": [
+        "administrator"
+      ],
+      "meta": false,
+      "requires_context": "none",
+      "use": "All admin pages + settings save handlers. Plugin defines NO custom capabilities."
+    }
   ],
   "integrations": {
     "count": 14,
     "definition": "An integration is REAL only when it has BOTH (a) a public wiring class required in includes/class-recaptcha-for-buddypress.php and (b) an admin settings module registered in admin/includes/settings-modules/class-wbc-settings-module-loader.php:81-94. All 14 below satisfy both. Honest breakdown: 4 platform + 7 form builders + 3 e-commerce/membership = 14.",
     "counting_rule": "The count is 14 because there are exactly 14 settings modules. NOTE: WordPress core (login/register/lost-password) and WordPress comments are 15 wiring points but ONE integration — they share a single settings module (WBC_WordPress_Settings) and one Protection-tab section. Do not count them twice.",
     "platform": [
-      { "name": "WordPress core", "surfaces": ["login", "register", "lost password", "comments"], "wiring": ["public/lrl-classes/Login.php", "public/lrl-classes/Registration.php", "public/lrl-classes/Lostpassword.php", "public/woocommerce-extra/Woocommerce_Order.php (comment_form_fields)", "public/woocommerce-extra/Woocommerce_Filter.php (preprocess_comment)"], "required_at": "includes/class-recaptcha-for-buddypress.php:165-167 (login/register/lostpassword), :334-335 (comments)", "settings_module": "WBC_WordPress_Settings (admin/includes/settings-modules/class-wbc-wordpress-settings.php)", "registered_at": "class-wbc-settings-module-loader.php:81", "contexts": ["wp_login", "wp_register", "wp_lostpassword", "comment"], "note": "ONE integration covering 4 surfaces. Comments are registered unconditionally — NOT gated on WooCommerce; each callback self-checks its own enable flag. The comment field/verifier classes live in the woocommerce-extra/ directory for historical reasons only." },
-      { "name": "WooCommerce", "wiring": ["public/woocommerce-lrl-classes/Woocommerce_Register.php", "public/woocommerce-lrl-classes/Woocommerce_Login.php", "public/woocommerce-lrl-classes/Woocommerce_Lostpassword.php", "public/woocommerce-extra/Woocommerce_Review_Order.php", "public/woocommerce-extra/Woocommerce_Register_Post.php", "public/woocommerce-extra/LostpasswordPost.php", "public/woocommerce-extra/Woocommerce_Process_Login_Errors.php", "public/woocommerce-extra/Woocommerce_After_Checkout_Validation.php", "public/woocommerce-extra/Woocommerce_Filter.php", "public/woocommerce-extra/Woocommerce_Order.php"], "required_at": "includes/class-recaptcha-for-buddypress.php:168-177", "settings_module": "WBC_WooCommerce_Settings", "registered_at": "class-wbc-settings-module-loader.php:82", "contexts": ["woo_login", "woo_register", "woo_lostpassword", "woo_checkout_guest", "woo_checkout_login"] },
-      { "name": "BuddyPress", "wiring": ["public/bp-classes/Registrationbp.php"], "required_at": "includes/class-recaptcha-for-buddypress.php:180", "settings_module": "WBC_BuddyPress_Settings", "registered_at": "class-wbc-settings-module-loader.php:83", "contexts": ["bp_register", "bp_group_create"], "enabled_when": "class_exists('BuddyPress')" },
-      { "name": "bbPress", "wiring": ["public/bbPress/class-wbc-bbpress-topic-recaptcha.php", "public/bbPress/class-wbc-bbpress-reply-recaptcha.php"], "required_at": "includes/class-recaptcha-for-buddypress.php:218-219", "settings_module": "WBC_bbPress_Settings", "registered_at": "class-wbc-settings-module-loader.php:84", "contexts": ["bbpress_topic", "bbpress_reply"] }
+      {
+        "name": "WordPress core",
+        "surfaces": [
+          "login",
+          "register",
+          "lost password",
+          "comments"
+        ],
+        "wiring": [
+          "public/lrl-classes/Login.php",
+          "public/lrl-classes/Registration.php",
+          "public/lrl-classes/Lostpassword.php",
+          "public/woocommerce-extra/Woocommerce_Order.php (comment_form_fields)",
+          "public/woocommerce-extra/Woocommerce_Filter.php (preprocess_comment)"
+        ],
+        "required_at": "includes/class-recaptcha-for-buddypress.php:165-167 (login/register/lostpassword), :334-335 (comments)",
+        "settings_module": "WBC_WordPress_Settings (admin/includes/settings-modules/class-wbc-wordpress-settings.php)",
+        "registered_at": "class-wbc-settings-module-loader.php:81",
+        "contexts": [
+          "wp_login",
+          "wp_register",
+          "wp_lostpassword",
+          "comment"
+        ],
+        "note": "ONE integration covering 4 surfaces. Comments are registered unconditionally — NOT gated on WooCommerce; each callback self-checks its own enable flag. The comment field/verifier classes live in the woocommerce-extra/ directory for historical reasons only."
+      },
+      {
+        "name": "WooCommerce",
+        "wiring": [
+          "public/woocommerce-lrl-classes/Woocommerce_Register.php",
+          "public/woocommerce-lrl-classes/Woocommerce_Login.php",
+          "public/woocommerce-lrl-classes/Woocommerce_Lostpassword.php",
+          "public/woocommerce-extra/Woocommerce_Review_Order.php",
+          "public/woocommerce-extra/Woocommerce_Register_Post.php",
+          "public/woocommerce-extra/LostpasswordPost.php",
+          "public/woocommerce-extra/Woocommerce_Process_Login_Errors.php",
+          "public/woocommerce-extra/Woocommerce_After_Checkout_Validation.php",
+          "public/woocommerce-extra/Woocommerce_Filter.php",
+          "public/woocommerce-extra/Woocommerce_Order.php"
+        ],
+        "required_at": "includes/class-recaptcha-for-buddypress.php:168-177",
+        "settings_module": "WBC_WooCommerce_Settings",
+        "registered_at": "class-wbc-settings-module-loader.php:82",
+        "contexts": [
+          "woo_login",
+          "woo_register",
+          "woo_lostpassword",
+          "woo_checkout_guest",
+          "woo_checkout_login"
+        ]
+      },
+      {
+        "name": "BuddyPress",
+        "wiring": [
+          "public/bp-classes/Registrationbp.php"
+        ],
+        "required_at": "includes/class-recaptcha-for-buddypress.php:180",
+        "settings_module": "WBC_BuddyPress_Settings",
+        "registered_at": "class-wbc-settings-module-loader.php:83",
+        "contexts": [
+          "bp_register",
+          "bp_group_create"
+        ],
+        "enabled_when": "class_exists('BuddyPress')"
+      },
+      {
+        "name": "bbPress",
+        "wiring": [
+          "public/bbPress/class-wbc-bbpress-topic-recaptcha.php",
+          "public/bbPress/class-wbc-bbpress-reply-recaptcha.php"
+        ],
+        "required_at": "includes/class-recaptcha-for-buddypress.php:218-219",
+        "settings_module": "WBC_bbPress_Settings",
+        "registered_at": "class-wbc-settings-module-loader.php:84",
+        "contexts": [
+          "bbpress_topic",
+          "bbpress_reply"
+        ]
+      }
     ],
     "form_builders": [
-      { "name": "Contact Form 7", "wiring": ["public/cf7-classes/CF7_Form.php"], "required_at": "includes/class-recaptcha-for-buddypress.php:183", "settings_module": "WBC_CF7_Settings", "registered_at": "class-wbc-settings-module-loader.php:85", "contexts": ["cf7"] },
-      { "name": "WPForms", "wiring": ["public/wpforms-classes/WPForms_Form.php"], "required_at": "includes/class-recaptcha-for-buddypress.php:186", "settings_module": "WBC_WPForms_Settings", "registered_at": "class-wbc-settings-module-loader.php:86", "contexts": ["wpforms"] },
-      { "name": "Gravity Forms", "wiring": ["public/gravityforms-classes/GravityForms_Form.php"], "required_at": "includes/class-recaptcha-for-buddypress.php:189", "settings_module": "WBC_GravityForms_Settings", "registered_at": "class-wbc-settings-module-loader.php:87", "contexts": ["gravityforms"] },
-      { "name": "Ninja Forms", "wiring": ["public/ninjaforms-classes/NinjaForms_Form.php"], "required_at": "includes/class-recaptcha-for-buddypress.php:192", "settings_module": "WBC_NinjaForms_Settings", "registered_at": "class-wbc-settings-module-loader.php:88", "contexts": ["ninjaforms"] },
-      { "name": "Forminator", "wiring": ["public/forminator-classes/Forminator_Form.php"], "required_at": "includes/class-recaptcha-for-buddypress.php:195", "settings_module": "WBC_Forminator_Settings", "registered_at": "class-wbc-settings-module-loader.php:89", "contexts": ["forminator"] },
-      { "name": "Elementor Pro", "wiring": ["public/elementorpro-classes/ElementorPro_Form.php"], "required_at": "includes/class-recaptcha-for-buddypress.php:198", "settings_module": "WBC_ElementorPro_Settings", "registered_at": "class-wbc-settings-module-loader.php:90", "contexts": ["elementorpro"] },
-      { "name": "Divi Builder", "wiring": ["public/divi-classes/Divi_Form.php"], "required_at": "includes/class-recaptcha-for-buddypress.php:201", "settings_module": "WBC_Divi_Settings", "registered_at": "class-wbc-settings-module-loader.php:91", "contexts": ["divi"] }
+      {
+        "name": "Contact Form 7",
+        "wiring": [
+          "public/cf7-classes/CF7_Form.php"
+        ],
+        "required_at": "includes/class-recaptcha-for-buddypress.php:183",
+        "settings_module": "WBC_CF7_Settings",
+        "registered_at": "class-wbc-settings-module-loader.php:85",
+        "contexts": [
+          "cf7"
+        ]
+      },
+      {
+        "name": "WPForms",
+        "wiring": [
+          "public/wpforms-classes/WPForms_Form.php"
+        ],
+        "required_at": "includes/class-recaptcha-for-buddypress.php:186",
+        "settings_module": "WBC_WPForms_Settings",
+        "registered_at": "class-wbc-settings-module-loader.php:86",
+        "contexts": [
+          "wpforms"
+        ]
+      },
+      {
+        "name": "Gravity Forms",
+        "wiring": [
+          "public/gravityforms-classes/GravityForms_Form.php"
+        ],
+        "required_at": "includes/class-recaptcha-for-buddypress.php:189",
+        "settings_module": "WBC_GravityForms_Settings",
+        "registered_at": "class-wbc-settings-module-loader.php:87",
+        "contexts": [
+          "gravityforms"
+        ]
+      },
+      {
+        "name": "Ninja Forms",
+        "wiring": [
+          "public/ninjaforms-classes/NinjaForms_Form.php"
+        ],
+        "required_at": "includes/class-recaptcha-for-buddypress.php:192",
+        "settings_module": "WBC_NinjaForms_Settings",
+        "registered_at": "class-wbc-settings-module-loader.php:88",
+        "contexts": [
+          "ninjaforms"
+        ]
+      },
+      {
+        "name": "Forminator",
+        "wiring": [
+          "public/forminator-classes/Forminator_Form.php"
+        ],
+        "required_at": "includes/class-recaptcha-for-buddypress.php:195",
+        "settings_module": "WBC_Forminator_Settings",
+        "registered_at": "class-wbc-settings-module-loader.php:89",
+        "contexts": [
+          "forminator"
+        ]
+      },
+      {
+        "name": "Elementor Pro",
+        "wiring": [
+          "public/elementorpro-classes/ElementorPro_Form.php"
+        ],
+        "required_at": "includes/class-recaptcha-for-buddypress.php:198",
+        "settings_module": "WBC_ElementorPro_Settings",
+        "registered_at": "class-wbc-settings-module-loader.php:90",
+        "contexts": [
+          "elementorpro"
+        ]
+      },
+      {
+        "name": "Divi Builder",
+        "wiring": [
+          "public/divi-classes/Divi_Form.php"
+        ],
+        "required_at": "includes/class-recaptcha-for-buddypress.php:201",
+        "settings_module": "WBC_Divi_Settings",
+        "registered_at": "class-wbc-settings-module-loader.php:91",
+        "contexts": [
+          "divi"
+        ]
+      }
     ],
     "ecommerce_membership": [
-      { "name": "Easy Digital Downloads", "wiring": ["public/edd-classes/EDD_Form.php"], "required_at": "includes/class-recaptcha-for-buddypress.php:204", "settings_module": "WBC_EDD_Settings", "registered_at": "class-wbc-settings-module-loader.php:92", "contexts": ["edd_checkout", "edd_login", "edd_register"] },
-      { "name": "MemberPress", "wiring": ["public/memberpress-classes/MemberPress_Form.php"], "required_at": "includes/class-recaptcha-for-buddypress.php:207", "settings_module": "WBC_MemberPress_Settings", "registered_at": "class-wbc-settings-module-loader.php:93", "contexts": ["memberpress_login", "memberpress_register"] },
-      { "name": "Ultimate Member", "wiring": ["public/ultimatemember-classes/UltimateMember_Form.php"], "required_at": "includes/class-recaptcha-for-buddypress.php:210", "settings_module": "WBC_UltimateMember_Settings", "registered_at": "class-wbc-settings-module-loader.php:94", "contexts": ["um_login", "um_register", "um_password"] }
+      {
+        "name": "Easy Digital Downloads",
+        "wiring": [
+          "public/edd-classes/EDD_Form.php"
+        ],
+        "required_at": "includes/class-recaptcha-for-buddypress.php:204",
+        "settings_module": "WBC_EDD_Settings",
+        "registered_at": "class-wbc-settings-module-loader.php:92",
+        "contexts": [
+          "edd_checkout",
+          "edd_login",
+          "edd_register"
+        ]
+      },
+      {
+        "name": "MemberPress",
+        "wiring": [
+          "public/memberpress-classes/MemberPress_Form.php"
+        ],
+        "required_at": "includes/class-recaptcha-for-buddypress.php:207",
+        "settings_module": "WBC_MemberPress_Settings",
+        "registered_at": "class-wbc-settings-module-loader.php:93",
+        "contexts": [
+          "memberpress_login",
+          "memberpress_register"
+        ]
+      },
+      {
+        "name": "Ultimate Member",
+        "wiring": [
+          "public/ultimatemember-classes/UltimateMember_Form.php"
+        ],
+        "required_at": "includes/class-recaptcha-for-buddypress.php:210",
+        "settings_module": "WBC_UltimateMember_Settings",
+        "registered_at": "class-wbc-settings-module-loader.php:94",
+        "contexts": [
+          "um_login",
+          "um_register",
+          "um_password"
+        ]
+      }
     ],
     "explicitly_not_integrated": {
       "note": "DO NOT record these as integrations. All four were previously advertised in readme.txt with ZERO first-party code; the false claims were removed 2026-07-16. Verified absent by grep across all non-vendor PHP/JS.",
       "items": [
-        { "name": "Fluent Forms", "evidence": "No wiring class, no settings module, no context key, zero grep hits outside vendor/." },
-        { "name": "Formidable Forms", "evidence": "No wiring class, no settings module, no context key. The ONLY hits are inside the vendored ALTCHA library (includes/lib/altcha/settings.php:488-495, helpers.php:13-14, class-altcha-lib.php:63,205-206) — and that library's settings.php/admin.php are deliberately never required (fork note at class-altcha-lib.php:620-633), so even that code never runs." },
-        { "name": "WS Form", "evidence": "No wiring class, no settings module, no context key, zero grep hits outside vendor/." },
-        { "name": "FluentCart", "evidence": "No wiring class, no settings module, no context key, zero grep hits outside vendor/." }
+        {
+          "name": "Fluent Forms",
+          "evidence": "No wiring class, no settings module, no context key, zero grep hits outside vendor/."
+        },
+        {
+          "name": "Formidable Forms",
+          "evidence": "No wiring class, no settings module, no context key. The ONLY hits are inside the vendored ALTCHA library (includes/lib/altcha/settings.php:488-495, helpers.php:13-14, class-altcha-lib.php:63,205-206) — and that library's settings.php/admin.php are deliberately never required (fork note at class-altcha-lib.php:620-633), so even that code never runs."
+        },
+        {
+          "name": "WS Form",
+          "evidence": "No wiring class, no settings module, no context key, zero grep hits outside vendor/."
+        },
+        {
+          "name": "FluentCart",
+          "evidence": "No wiring class, no settings module, no context key, zero grep hits outside vendor/."
+        }
       ]
     },
     "context_count": 29,
     "context_map_source": "includes/class-captcha-service-base.php:159-191"
   },
   "services": [
-    { "key": "captcha-service-manager", "class": "WBC_Captcha_Service_Manager", "singleton": true, "where": "includes/class-captcha-service-manager.php", "added": "2.0.0", "purpose": "Registry + dispatcher for all 5 CAPTCHA services. Registers defaults at :63-84, fires wbc_register_captcha_services at :97, resolves the active service from the wbc_captcha_service option, owns IP-whitelist skip (:216, :473-481) and fail-closed policy (:283, :320)." },
-    { "key": "captcha-service-base", "class": "WBC_Captcha_Service_Base", "abstract": true, "where": "includes/class-captcha-service-base.php", "purpose": "Base class — owns context→nonce, context→form selector, context→submit selector, and context→enable-option maps (get_context_option_map at :159-191, 29 contexts). Provides no-conflict, IP-restriction, and render/verify guards (:442, :465)." },
-    { "key": "captcha-service-interface", "class": "WBC_Captcha_Service_Interface", "where": "includes/captcha-service-interface.php", "purpose": "Interface for custom 3rd-party services registered via the wbc_register_captcha_services action." },
-    { "key": "recaptcha-v2", "class": "WBC_Recaptcha_V2_Service", "where": "includes/services/class-recaptcha-v2-service.php", "registered_at": "includes/class-captcha-service-manager.php:64-67", "label": "Google reCAPTCHA v2", "fires": ["wbc_captcha_verified:234", "anr_recaptcha_domain:111,243"], "strict_nonce": "includes/services/class-recaptcha-v2-service.php:204" },
-    { "key": "recaptcha-v3", "class": "WBC_Recaptcha_V3_Service", "where": "includes/services/class-recaptcha-v3-service.php", "registered_at": "includes/class-captcha-service-manager.php:68-71", "label": "Google reCAPTCHA v3 (score-based)", "fires": ["wbc_recaptcha_v3_verify:313", "wbc_recaptcha_v3_score_threshold_value:388"], "note": "Does NOT fire wbc_captcha_verified — it uses the v3-specific wbc_recaptcha_v3_verify filter instead. Strict-nonce is NOT wired for v3." },
-    { "key": "turnstile", "class": "WBC_Turnstile_Service", "where": "includes/services/class-turnstile-service.php", "registered_at": "includes/class-captcha-service-manager.php:72-75", "label": "Cloudflare Turnstile", "fires": ["wbc_captcha_verified:194"], "strict_nonce": "includes/services/class-turnstile-service.php:164" },
-    { "key": "altcha", "class": "WBC_Altcha_Service", "where": "includes/services/class-altcha-service.php", "registered_at": "includes/class-captcha-service-manager.php:76-79", "label": "ALTCHA (self-hosted proof-of-work)", "fires": ["wbc_captcha_verified:349"], "note": "Requires includes/lib/altcha/class-altcha-lib.php (at class-altcha-service.php:22), which also registers the /altcha/v1/challenge REST route. Strict-nonce is NOT wired for ALTCHA." },
-    { "key": "hcaptcha", "class": "WBC_HCaptcha_Service", "where": "includes/services/class-hcaptcha-service.php", "registered_at": "includes/class-captcha-service-manager.php:80-83", "label": "hCaptcha", "fires": ["wbc_captcha_verified:297"], "strict_nonce": "includes/services/class-hcaptcha-service.php:260", "note": "Reads the SHARED wbc_recaptcha_theme/wbc_recaptcha_size options (:126-127), not wbc_hcaptcha_theme/_size — see static_analysis.dead_options." },
-    { "key": "ajax-login-handler", "class": "WBC_AJAX_Login_Handler", "where": "includes/class-wbc-ajax-login-handler.php", "added": "2.0.0" },
-    { "key": "login-block", "class": "WBC_Login_Block", "where": "includes/class-wbc-login-block.php", "added": "2.0.0" },
-    { "key": "login-widget", "class": "WBC_Login_Widget", "where": "includes/widgets/class-wbc-login-widget.php", "added": "2.0.0" },
-    { "key": "admin-card-panel", "class": "BPRC_Admin", "where": "includes/admin/class-bprc-admin.php", "added": "2.1.0", "prefix": "bprc", "purpose": "Card-panel admin. Registers the shared WB Plugins hub + CAPTCHA submenu (manage_options), renders 6 tabs via includes/admin/views/{shell,hub,overview,updates,discover}.php, and processes the settings save by delegating to WBC_BuddyPress_Settings_Page::wbc_save() — same nonce field/action/option keys as the legacy admin (UX-only migration)." },
-    { "key": "legacy-settings-page", "class": "WBC_BuddyPress_Settings_Page", "where": "admin/includes/class-wbc-buddypress-settings-page.php", "purpose": "Legacy WooCommerce-style settings engine. Still the save/render backend that BPRC_Admin delegates to; owns 11 of the 13 settings extension filters." },
-    { "key": "settings-module-loader", "class": "WBC_Settings_Module_Loader", "where": "admin/includes/settings-modules/class-wbc-settings-module-loader.php", "added": "2.1.0", "purpose": "Loads (:81-94) and registers the 14 per-integration settings modules; fires wbc_recaptcha_register_settings_modules at :153." },
-    { "key": "settings-renderer", "class": "WBC_Settings_Renderer", "where": "admin/includes/class-settings-renderer.php" },
-    { "key": "settings-integration", "class": "WBC_Settings_Integration", "where": "includes/class-settings-integration.php" },
-    { "key": "settings-migration", "class": "WBC_Settings_Migration", "where": "includes/class-settings-migration.php", "purpose": "Migrates old hyphen-format options to underscore format (e.g. wbc_recaptcha-v2_site_key → wbc_recaptcha_v2_site_key). Runs on admin_init priority 5 when is_migration_needed()." },
-    { "key": "option-migration", "class": "WBC_Option_Migration", "where": "includes/class-option-migration.php", "purpose": "Maps legacy wc_settings_tab_recapcha_* keys onto the wbc_* namespace." },
-    { "key": "option-name-compatibility", "class": "(procedural)", "where": "includes/option-name-compatibility.php", "purpose": "Runtime bridge for the recapcha→recaptcha typo family. NOTE: does NOT bridge the error-message keys to the wc_settings_tab_* names the readers use — see static_analysis.saved_but_not_applied." }
+    {
+      "key": "captcha-service-manager",
+      "class": "WBC_Captcha_Service_Manager",
+      "singleton": true,
+      "where": "includes/class-captcha-service-manager.php",
+      "added": "2.0.0",
+      "purpose": "Registry + dispatcher for all 5 CAPTCHA services. Registers defaults at :63-84, fires wbc_register_captcha_services at :97, resolves the active service from the wbc_captcha_service option, owns IP-whitelist skip (:216, :473-481) and fail-closed policy (:283, :320)."
+    },
+    {
+      "key": "captcha-service-base",
+      "class": "WBC_Captcha_Service_Base",
+      "abstract": true,
+      "where": "includes/class-captcha-service-base.php",
+      "purpose": "Base class — owns context→nonce, context→form selector, context→submit selector, and context→enable-option maps (get_context_option_map at :159-191, 29 contexts). Provides no-conflict, IP-restriction, and render/verify guards (:442, :465)."
+    },
+    {
+      "key": "captcha-service-interface",
+      "class": "WBC_Captcha_Service_Interface",
+      "where": "includes/captcha-service-interface.php",
+      "purpose": "Interface for custom 3rd-party services registered via the wbc_register_captcha_services action."
+    },
+    {
+      "key": "recaptcha-v2",
+      "class": "WBC_Recaptcha_V2_Service",
+      "where": "includes/services/class-recaptcha-v2-service.php",
+      "registered_at": "includes/class-captcha-service-manager.php:64-67",
+      "label": "Google reCAPTCHA v2",
+      "fires": [
+        "wbc_captcha_verified:234",
+        "anr_recaptcha_domain:111,243"
+      ],
+      "strict_nonce": "includes/services/class-recaptcha-v2-service.php:204"
+    },
+    {
+      "key": "recaptcha-v3",
+      "class": "WBC_Recaptcha_V3_Service",
+      "where": "includes/services/class-recaptcha-v3-service.php",
+      "registered_at": "includes/class-captcha-service-manager.php:68-71",
+      "label": "Google reCAPTCHA v3 (score-based)",
+      "fires": [
+        "wbc_recaptcha_v3_verify:313",
+        "wbc_recaptcha_v3_score_threshold_value:388"
+      ],
+      "note": "Does NOT fire wbc_captcha_verified — it uses the v3-specific wbc_recaptcha_v3_verify filter instead. Strict-nonce is NOT wired for v3."
+    },
+    {
+      "key": "turnstile",
+      "class": "WBC_Turnstile_Service",
+      "where": "includes/services/class-turnstile-service.php",
+      "registered_at": "includes/class-captcha-service-manager.php:72-75",
+      "label": "Cloudflare Turnstile",
+      "fires": [
+        "wbc_captcha_verified:194"
+      ],
+      "strict_nonce": "includes/services/class-turnstile-service.php:164"
+    },
+    {
+      "key": "altcha",
+      "class": "WBC_Altcha_Service",
+      "where": "includes/services/class-altcha-service.php",
+      "registered_at": "includes/class-captcha-service-manager.php:76-79",
+      "label": "ALTCHA (self-hosted proof-of-work)",
+      "fires": [
+        "wbc_captcha_verified:349"
+      ],
+      "note": "Requires includes/lib/altcha/class-altcha-lib.php (at class-altcha-service.php:22), which also registers the /altcha/v1/challenge REST route. Strict-nonce is NOT wired for ALTCHA."
+    },
+    {
+      "key": "hcaptcha",
+      "class": "WBC_HCaptcha_Service",
+      "where": "includes/services/class-hcaptcha-service.php",
+      "registered_at": "includes/class-captcha-service-manager.php:80-83",
+      "label": "hCaptcha",
+      "fires": [
+        "wbc_captcha_verified:297"
+      ],
+      "strict_nonce": "includes/services/class-hcaptcha-service.php:260",
+      "note": "Reads the SHARED wbc_recaptcha_theme/wbc_recaptcha_size options (:126-127), not wbc_hcaptcha_theme/_size — see static_analysis.dead_options."
+    },
+    {
+      "key": "ajax-login-handler",
+      "class": "WBC_AJAX_Login_Handler",
+      "where": "includes/class-wbc-ajax-login-handler.php",
+      "added": "2.0.0"
+    },
+    {
+      "key": "login-block",
+      "class": "WBC_Login_Block",
+      "where": "includes/class-wbc-login-block.php",
+      "added": "2.0.0"
+    },
+    {
+      "key": "login-widget",
+      "class": "WBC_Login_Widget",
+      "where": "includes/widgets/class-wbc-login-widget.php",
+      "added": "2.0.0"
+    },
+    {
+      "key": "admin-card-panel",
+      "class": "BPRC_Admin",
+      "where": "includes/admin/class-bprc-admin.php",
+      "added": "2.1.0",
+      "prefix": "bprc",
+      "purpose": "Card-panel admin. Registers the shared WB Plugins hub + CAPTCHA submenu (manage_options), renders 6 tabs via includes/admin/views/{shell,hub,overview,updates,discover}.php, and processes the settings save by delegating to WBC_BuddyPress_Settings_Page::wbc_save() — same nonce field/action/option keys as the legacy admin (UX-only migration)."
+    },
+    {
+      "key": "legacy-settings-page",
+      "class": "WBC_BuddyPress_Settings_Page",
+      "where": "admin/includes/class-wbc-buddypress-settings-page.php",
+      "purpose": "Legacy WooCommerce-style settings engine. Still the save/render backend that BPRC_Admin delegates to; owns 11 of the 13 settings extension filters."
+    },
+    {
+      "key": "settings-module-loader",
+      "class": "WBC_Settings_Module_Loader",
+      "where": "admin/includes/settings-modules/class-wbc-settings-module-loader.php",
+      "added": "2.1.0",
+      "purpose": "Loads (:81-94) and registers the 14 per-integration settings modules; fires wbc_recaptcha_register_settings_modules at :153."
+    },
+    {
+      "key": "settings-renderer",
+      "class": "WBC_Settings_Renderer",
+      "where": "admin/includes/class-settings-renderer.php"
+    },
+    {
+      "key": "settings-integration",
+      "class": "WBC_Settings_Integration",
+      "where": "includes/class-settings-integration.php"
+    },
+    {
+      "key": "settings-migration",
+      "class": "WBC_Settings_Migration",
+      "where": "includes/class-settings-migration.php",
+      "purpose": "Migrates old hyphen-format options to underscore format (e.g. wbc_recaptcha-v2_site_key → wbc_recaptcha_v2_site_key). Runs on admin_init priority 5 when is_migration_needed()."
+    },
+    {
+      "key": "option-migration",
+      "class": "WBC_Option_Migration",
+      "where": "includes/class-option-migration.php",
+      "purpose": "Maps legacy wc_settings_tab_recapcha_* keys onto the wbc_* namespace."
+    },
+    {
+      "key": "option-name-compatibility",
+      "class": "(procedural)",
+      "where": "includes/option-name-compatibility.php",
+      "purpose": "Runtime bridge for the recapcha→recaptcha typo family. NOTE: does NOT bridge the error-message keys to the wc_settings_tab_* names the readers use — see static_analysis.saved_but_not_applied."
+    }
   ],
   "hooks_fired": [
-    { "name": "wbc_register_captcha_services", "type": "action", "args_count": 1, "args_signature": ["WBC_Captcha_Service_Manager $manager"], "where": "includes/class-captcha-service-manager.php:97", "purpose": "PRIMARY EXTENSION POINT — allows 3rd-party plugins to register custom CAPTCHA service implementations (must implement WBC_Captcha_Service_Interface).", "consumed_by": [] },
-    { "name": "wbc_recaptcha_register_settings_modules", "type": "action", "args_count": 1, "args_signature": ["WBC_Settings_Module_Loader $loader"], "where": "admin/includes/settings-modules/class-wbc-settings-module-loader.php:153", "since": "2.1.0", "purpose": "Allow extensions to register additional settings modules.", "consumed_by": [] },
-    { "name": "wbc_recaptcha_settings_saved", "type": "action", "args_count": 1, "args_signature": ["string $section"], "where": "admin/includes/class-wbc-buddypress-settings-page.php:2446", "purpose": "Fires after the settings page saves a section — extensions can react to settings updates.", "consumed_by": [] },
-    { "name": "bp_accept_tos_errors", "type": "action", "args_count": 0, "where": "public/bp-classes/Registrationbp.php:31", "purpose": "BuddyPress signup ToS-acceptance hook fired during BP register CAPTCHA validation. Third-party (BP-ecosystem) hook name, intentionally not wbc_-prefixed.", "consumed_by": [] },
-    { "name": "wbc_should_render_captcha", "type": "filter", "args_count": 3, "args_signature": ["bool $should_render", "string $context", "string $service_id"], "where": "includes/class-captcha-service-base.php:442", "purpose": "Last-mile filter to skip captcha rendering for a specific context/request.", "consumed_by": [] },
-    { "name": "wbc_should_verify_captcha", "type": "filter", "args_count": 3, "args_signature": ["bool $should_verify", "string $context", "string $service_id"], "where": "includes/class-captcha-service-base.php:465", "purpose": "Last-mile filter to skip captcha verification.", "consumed_by": [] },
-    { "name": "wbc_captcha_verified", "type": "filter", "args_count": 4, "args_signature": ["bool $verified", "array $api_result", "string $response", "string $service_id"], "where": "includes/services/class-recaptcha-v2-service.php:234, class-turnstile-service.php:194, class-hcaptcha-service.php:297, class-altcha-service.php:349", "firer_count": 4, "purpose": "Override the verification result post-API-call.", "note": "Fired by 4 of the 5 services. reCAPTCHA v3 does NOT fire it — v3 consumers must use wbc_recaptcha_v3_verify instead. The pre-2026-07 manifest wrongly claimed 5 firers.", "consumed_by": [] },
-    { "name": "wbc_captcha_fail_closed", "type": "filter", "args_count": 2, "args_signature": ["bool $fail_closed", "string $context"], "where": "includes/class-captcha-service-manager.php:283, :320", "since": "2.1.0", "purpose": "Override the wbc_captcha_fail_closed option per-request — when true, missing config (:283) or a verify exception (:320) blocks instead of failing open.", "consumed_by": [] },
-    { "name": "wbc_captcha_strict_nonce", "type": "filter", "args_count": 3, "args_signature": ["bool $strict", "string $context", "string $service_id"], "where": "includes/services/class-recaptcha-v2-service.php:204, class-hcaptcha-service.php:260, class-turnstile-service.php:164", "firer_count": 3, "since": "2.1.0", "purpose": "Override the wbc_captcha_strict_nonce option per-request — when true, the per-context nonce is required.", "note": "Not wired in reCAPTCHA v3 or ALTCHA — strict-nonce has no effect when either is the active service.", "consumed_by": [] },
-    { "name": "wbc_recaptcha_v3_verify", "type": "filter", "args_count": 3, "args_signature": ["bool $verified", "array $result", "string $context"], "where": "includes/services/class-recaptcha-v3-service.php:313", "purpose": "v3-specific verification filter (operates on the score-bearing API result). This is v3's replacement for wbc_captcha_verified.", "consumed_by": [] },
-    { "name": "wbc_recaptcha_v3_score_threshold_value", "type": "filter", "args_count": 2, "args_signature": ["float $threshold", "string $context"], "where": "includes/services/class-recaptcha-v3-service.php:388", "purpose": "Override the reCAPTCHA v3 score threshold per-context.", "consumed_by": [] },
-    { "name": "anr_recaptcha_domain", "type": "filter", "args_count": 1, "args_signature": ["string $domain"], "where": "includes/services/class-recaptcha-v2-service.php:111, :243", "purpose": "Override the Google reCAPTCHA hostname (e.g. google.com → recaptcha.net for users behind the GFW). Third-party-compatible hook name (advanced-nocaptcha-recaptcha), intentionally not wbc_-prefixed.", "consumed_by": [] },
-    { "name": "bprc_admin_tabs", "type": "filter", "args_count": 1, "args_signature": ["array $tabs"], "where": "includes/admin/class-bprc-admin.php:104", "since": "2.1.0", "purpose": "Add/remove/reorder card-panel admin tabs.", "consumed_by": [] },
-    { "name": "wbc_recaptcha_*_settings (13 settings filters)", "type": "filter", "args_count": 1, "args_signature": ["array $settings"], "names": [
+    {
+      "name": "wbc_register_captcha_services",
+      "type": "action",
+      "args_count": 1,
+      "args_signature": [
+        "WBC_Captcha_Service_Manager $manager"
+      ],
+      "where": "includes/class-captcha-service-manager.php:97",
+      "purpose": "PRIMARY EXTENSION POINT — allows 3rd-party plugins to register custom CAPTCHA service implementations (must implement WBC_Captcha_Service_Interface).",
+      "consumed_by": []
+    },
+    {
+      "name": "wbc_recaptcha_register_settings_modules",
+      "type": "action",
+      "args_count": 1,
+      "args_signature": [
+        "WBC_Settings_Module_Loader $loader"
+      ],
+      "where": "admin/includes/settings-modules/class-wbc-settings-module-loader.php:153",
+      "since": "2.1.0",
+      "purpose": "Allow extensions to register additional settings modules.",
+      "consumed_by": []
+    },
+    {
+      "name": "wbc_recaptcha_settings_saved",
+      "type": "action",
+      "args_count": 1,
+      "args_signature": [
+        "string $section"
+      ],
+      "where": "admin/includes/class-wbc-buddypress-settings-page.php:2446",
+      "purpose": "Fires after the settings page saves a section — extensions can react to settings updates.",
+      "consumed_by": []
+    },
+    {
+      "name": "bp_accept_tos_errors",
+      "type": "action",
+      "args_count": 0,
+      "where": "public/bp-classes/Registrationbp.php:31",
+      "purpose": "BuddyPress signup ToS-acceptance hook fired during BP register CAPTCHA validation. Third-party (BP-ecosystem) hook name, intentionally not wbc_-prefixed.",
+      "consumed_by": []
+    },
+    {
+      "name": "wbc_should_render_captcha",
+      "type": "filter",
+      "args_count": 3,
+      "args_signature": [
+        "bool $should_render",
+        "string $context",
+        "string $service_id"
+      ],
+      "where": "includes/class-captcha-service-base.php:442",
+      "purpose": "Last-mile filter to skip captcha rendering for a specific context/request.",
+      "consumed_by": []
+    },
+    {
+      "name": "wbc_should_verify_captcha",
+      "type": "filter",
+      "args_count": 3,
+      "args_signature": [
+        "bool $should_verify",
+        "string $context",
+        "string $service_id"
+      ],
+      "where": "includes/class-captcha-service-base.php:465",
+      "purpose": "Last-mile filter to skip captcha verification.",
+      "consumed_by": []
+    },
+    {
+      "name": "wbc_captcha_verified",
+      "type": "filter",
+      "args_count": 4,
+      "args_signature": [
+        "bool $verified",
+        "array $api_result",
+        "string $response",
+        "string $service_id"
+      ],
+      "where": "includes/services/class-recaptcha-v2-service.php:234, class-turnstile-service.php:194, class-hcaptcha-service.php:297, class-altcha-service.php:349",
+      "firer_count": 4,
+      "purpose": "Override the verification result post-API-call.",
+      "note": "Fired by 4 of the 5 services. reCAPTCHA v3 does NOT fire it — v3 consumers must use wbc_recaptcha_v3_verify instead. The pre-2026-07 manifest wrongly claimed 5 firers.",
+      "consumed_by": []
+    },
+    {
+      "name": "wbc_captcha_fail_closed",
+      "type": "filter",
+      "args_count": 2,
+      "args_signature": [
+        "bool $fail_closed",
+        "string $context"
+      ],
+      "where": "includes/class-captcha-service-manager.php:283, :320",
+      "since": "2.1.0",
+      "purpose": "Override the wbc_captcha_fail_closed option per-request — when true, missing config (:283) or a verify exception (:320) blocks instead of failing open.",
+      "consumed_by": []
+    },
+    {
+      "name": "wbc_captcha_strict_nonce",
+      "type": "filter",
+      "args_count": 3,
+      "args_signature": [
+        "bool $strict",
+        "string $context",
+        "string $service_id"
+      ],
+      "where": "includes/services/class-recaptcha-v2-service.php:204, class-hcaptcha-service.php:260, class-turnstile-service.php:164",
+      "firer_count": 3,
+      "since": "2.1.0",
+      "purpose": "Override the wbc_captcha_strict_nonce option per-request — when true, the per-context nonce is required.",
+      "note": "Not wired in reCAPTCHA v3 or ALTCHA — strict-nonce has no effect when either is the active service.",
+      "consumed_by": []
+    },
+    {
+      "name": "wbc_recaptcha_v3_verify",
+      "type": "filter",
+      "args_count": 3,
+      "args_signature": [
+        "bool $verified",
+        "array $result",
+        "string $context"
+      ],
+      "where": "includes/services/class-recaptcha-v3-service.php:313",
+      "purpose": "v3-specific verification filter (operates on the score-bearing API result). This is v3's replacement for wbc_captcha_verified.",
+      "consumed_by": []
+    },
+    {
+      "name": "wbc_recaptcha_v3_score_threshold_value",
+      "type": "filter",
+      "args_count": 2,
+      "args_signature": [
+        "float $threshold",
+        "string $context"
+      ],
+      "where": "includes/services/class-recaptcha-v3-service.php:388",
+      "purpose": "Override the reCAPTCHA v3 score threshold per-context.",
+      "consumed_by": []
+    },
+    {
+      "name": "anr_recaptcha_domain",
+      "type": "filter",
+      "args_count": 1,
+      "args_signature": [
+        "string $domain"
+      ],
+      "where": "includes/services/class-recaptcha-v2-service.php:111, :243",
+      "purpose": "Override the Google reCAPTCHA hostname (e.g. google.com → recaptcha.net for users behind the GFW). Third-party-compatible hook name (advanced-nocaptcha-recaptcha), intentionally not wbc_-prefixed.",
+      "consumed_by": []
+    },
+    {
+      "name": "bprc_admin_tabs",
+      "type": "filter",
+      "args_count": 1,
+      "args_signature": [
+        "array $tabs"
+      ],
+      "where": "includes/admin/class-bprc-admin.php:104",
+      "since": "2.1.0",
+      "purpose": "Add/remove/reorder card-panel admin tabs.",
+      "consumed_by": []
+    },
+    {
+      "name": "wbc_recaptcha_*_settings (13 settings filters)",
+      "type": "filter",
+      "args_count": 1,
+      "args_signature": [
+        "array $settings"
+      ],
+      "names": [
         "wbc_recaptcha_quick_setup_settings (class-wbc-buddypress-settings-page.php:156)",
         "wbc_recaptcha_protection_settings (:726)",
         "wbc_recaptcha_combined_advanced_settings (:821)",
@@ -209,13 +891,40 @@
         "wbc_recaptcha_advanced_settings (:2145)",
         "wbc_recaptcha_all_protection_settings (class-wbc-settings-module-loader.php:215)",
         "wbc_recaptcha_all_checkbox_ids (class-wbc-settings-module-loader.php:241)"
-      ], "purpose": "Settings-page extension points for sub-tabs / fields. 11 fired by WBC_BuddyPress_Settings_Page, 2 by WBC_Settings_Module_Loader.", "consumed_by": [] },
-    { "name": "wbc_enable_setup_wizard", "type": "filter", "args_count": 1, "args_signature": ["bool $enable"], "where": "admin/class-wbc-setup-wizard.php:38", "live": false, "purpose": "Intended to enable/disable the setup wizard.", "note": "NEVER FIRES — admin/class-wbc-setup-wizard.php is never required by any file. See static_analysis.dead_code_files.", "consumed_by": [] },
-    { "name": "altcha_* (8 vendored-library hooks)", "type": "mixed", "where": "includes/lib/altcha/", "names": ["altcha_settings_integrations (action)", "altcha_verify_result (action)", "altcha_challenge_url (filter)", "altcha_integrations (filter)", "altcha_plugin_active (filter)", "altcha_translations (filter)", "altcha_widget_attrs (filter)", "altcha_widget_html (filter)"], "purpose": "Vendored ALTCHA library hooks — internal to the ALTCHA service, NOT part of the plugin's public API.", "note": "Only the hooks inside class-altcha-lib.php are reachable; those in settings.php/admin.php never fire because those files are never required.", "consumed_by": [] }
+      ],
+      "purpose": "Settings-page extension points for sub-tabs / fields. 11 fired by WBC_BuddyPress_Settings_Page, 2 by WBC_Settings_Module_Loader.",
+      "consumed_by": []
+    },
+    {
+      "name": "altcha_* (8 vendored-library hooks)",
+      "type": "mixed",
+      "where": "includes/lib/altcha/",
+      "names": [
+        "altcha_settings_integrations (action)",
+        "altcha_verify_result (action)",
+        "altcha_challenge_url (filter)",
+        "altcha_integrations (filter)",
+        "altcha_plugin_active (filter)",
+        "altcha_translations (filter)",
+        "altcha_widget_attrs (filter)",
+        "altcha_widget_html (filter)"
+      ],
+      "purpose": "Vendored ALTCHA library hooks — internal to the ALTCHA service, NOT part of the plugin's public API.",
+      "note": "Only the hooks inside class-altcha-lib.php are reachable; those in settings.php/admin.php never fire because those files are never required.",
+      "consumed_by": []
+    }
   ],
   "hooks_not_owned": {
     "note": "Fired by this plugin but owned by WP/WooCommerce core — re-dispatch only, NOT extension points of this plugin. Excluded from the hooks_fired_unique count.",
-    "names": ["admin_print_styles", "widget_title", "woocommerce_admin_field_*", "woocommerce_settings_*", "woocommerce_update_option", "woocommerce_update_option_*", "woocommerce_admin_settings_sanitize_option"]
+    "names": [
+      "admin_print_styles",
+      "widget_title",
+      "woocommerce_admin_field_*",
+      "woocommerce_settings_*",
+      "woocommerce_update_option",
+      "woocommerce_update_option_*",
+      "woocommerce_admin_settings_sanitize_option"
+    ]
   },
   "interactivity": [],
   "ui_activation": [],
@@ -226,98 +935,94 @@
     "js_only_activation": [],
     "dead_code_files": [
       {
-        "file": "admin/class-wbc-setup-wizard.php",
-        "class": "WBC_Setup_Wizard",
-        "severity": "high",
-        "evidence": "The file self-instantiates at :954 (`new WBC_Setup_Wizard();`) but NO file anywhere in the plugin requires/includes it. Verified: grep for 'setup-wizard'/'WBC_Setup_Wizard' outside the file itself returns zero hits; the plugin has no autoloader (no spl_autoload_register; composer autoload covers vendor/ only); includes/class-recaptcha-for-buddypress.php requires only admin/class-recaptcha-for-buddypress-admin.php (:154) and includes/admin/class-bprc-admin.php (:163) from the admin tree.",
-        "impact": "The entire ~954-line setup wizard is unreachable dead code. Its filter wbc_enable_setup_wizard never fires. New site owners get no guided first-run configuration. Previous manifests listed the wizard as a live feature.",
-        "action": "Needs a card — decide: wire it into the bootstrap, or delete it. Do NOT leave it half-shipped."
-      },
-      {
-        "file": "includes/lib/altcha/settings.php + includes/lib/altcha/admin.php",
-        "severity": "informational",
-        "evidence": "Neither file is ever required. This is DELIBERATE and documented in the fork note at includes/lib/altcha/class-altcha-lib.php:620-633 — loading them would (a) create a competing 'Settings > ALTCHA Anti-spam' page and (b) fatal on the undefined altcha_plugin_active().",
-        "impact": "No runtime impact — intentional. But it means (1) there is NO 'ALTCHA Options' admin page at runtime (the pre-2026-07 manifest wrongly listed one under options-general.php), and (2) the 32 register_setting() calls in settings.php never execute, so the plugin's live register_setting count is ZERO.",
-        "action": "None — keep as-is. Consider deleting the two unused files from the vendored copy to stop them re-appearing in audits."
+        "file": "(resolved) admin/class-wbc-setup-wizard.php, includes/lib/altcha/{settings,helpers,admin}.php, includes/lib/altcha/admin/options.php",
+        "severity": "resolved",
+        "resolved_on": "2026-07-17",
+        "evidence": "Runtime-confirmed dead before deletion: class_exists('WBC_Setup_Wizard') === false and function_exists('altcha_enqueue_scripts') === false on a booted WP 7.0 + BP 14.5 install.",
+        "impact": "None. All deleted on 2026-07-17. includes/lib/altcha/class-altcha-lib.php is retained and unchanged apart from its fork note.",
+        "action": "Done. Do not re-add. render_widget() in class-altcha-lib.php references the dropped helpers.php and is unsupported in this fork - see the fork note."
       }
     ],
     "dead_options": [
       {
-        "keys": ["wbc_hcaptcha_theme", "wbc_hcaptcha_size"],
-        "severity": "medium",
-        "written_at": ["admin/includes/class-wbc-buddypress-settings-page.php:1713", "admin/includes/class-wbc-buddypress-settings-page.php:1726"],
-        "read_at": [],
-        "evidence": "Admin settings render + save these field ids, but no get_option() call for either key exists anywhere in the plugin. WBC_HCaptcha_Service reads the SHARED wbc_recaptcha_theme/wbc_recaptcha_size instead (class-hcaptcha-service.php:126-127).",
-        "impact": "SAVED BUT NOT APPLIED. Changing the hCaptcha theme/size in the admin persists to the DB and silently does nothing.",
-        "action": "Needs a card. Either point the hCaptcha service at these keys, or remove the fields and document that appearance is shared."
-      },
-      {
-        "keys": ["wbc_turnstile_theme", "wbc_turnstile_size"],
-        "severity": "medium",
-        "written_at": ["admin/includes/class-wbc-buddypress-settings-page.php:2009", "admin/includes/class-wbc-buddypress-settings-page.php:2023"],
-        "read_at": [],
-        "evidence": "Admin settings render + save these field ids; no get_option() for either key exists. WBC_Turnstile_Service reads NEITHER these nor the shared wbc_recaptcha_* keys.",
-        "impact": "SAVED BUT NOT APPLIED. Turnstile has NO working appearance control at all — worse than hCaptcha, which at least honours the shared keys.",
-        "action": "Needs a card."
-      },
-      {
-        "keys": ["wbc_recaptcha_v3_badge"],
-        "severity": "medium",
-        "written_at": ["admin/includes/class-wbc-buddypress-settings-page.php:1994"],
-        "migrated_to_at": ["includes/class-option-migration.php:64 (from wc_settings_tab_demo_recapcha_v3_badge)"],
-        "read_at": [],
-        "evidence": "The key is a settings field id and a migration target, but no get_option() call for it exists anywhere.",
-        "impact": "SAVED BUT NOT APPLIED. The reCAPTCHA v3 badge-position control does nothing.",
-        "action": "Needs a card."
-      }
-    ],
-    "saved_but_not_applied": [
-      {
-        "feature": "Custom CAPTCHA error messages",
-        "severity": "medium",
-        "written_keys": ["wbc_recapcha_error_msg_captcha_blank", "wbc_recapcha_error_msg_captcha_invalid", "wbc_recapcha_error_msg_captcha_no_response"],
-        "written_at": ["admin/includes/class-wbc-buddypress-settings-page.php:2110", "admin/includes/class-wbc-buddypress-settings-page.php:2119", "admin/includes/class-wbc-buddypress-settings-page.php:2128"],
-        "read_keys_v2_path": ["wc_settings_tab_recapcha_error_msg_captcha_blank", "wc_settings_tab_recapcha_error_msg_captcha_invalid", "wc_settings_tab_recapcha_error_msg_captcha_no_response"],
-        "read_keys_v3_path": ["wbc_recapcha_error_msg_captcha_blank_v3", "wbc_recapcha_error_msg_v3_invalid_captcha", "wbc_recapcha_error_msg_captcha_no_response_v3"],
-        "read_at": ["includes/captcha-verification-helper.php:64-78", "includes/services/class-recaptcha-v2-service.php:357"],
-        "bridge_checked": "includes/option-name-compatibility.php:117-119 maps wbc_recapcha_error_msg_captcha_* → wbc_recaptcha_error_msg_captcha_* (a recapcha→recaptcha typo fix to a THIRD key name). It does NOT bridge the written keys to the wc_settings_tab_recapcha_* or *_v3 names the readers actually use.",
-        "impact": "Customising any CAPTCHA error message in the admin has NO EFFECT. The written key and every read key are different names, and no bridge connects them. Affects all contexts and both the v2 and v3 read paths.",
-        "action": "Needs a card. Fix the read side to the wbc_recapcha_error_msg_captcha_* names, or extend option-name-compatibility.php to bridge them. Do NOT fix by adding a fourth key name."
-      },
-      {
-        "feature": "Activation redirect to settings",
+        "keys": [
+          "wbc_recaptcha_v3_badge"
+        ],
         "severity": "low",
-        "where": "recaptcha-for-buddypress.php:120-130 (gate at :123)",
-        "evidence": "wb_recaptcha_activation_redirect_settings() only redirects when class_exists('WooCommerce') || class_exists('BuddyPress') || class_exists('bbPress').",
-        "impact": "A plain WordPress site (no Woo/BP/bbPress) gets NO signpost to the settings page after activation — despite WordPress core login/register/lost-password/comments being fully supported integrations. Leftover from the BuddyPress-only era; the gate no longer matches the plugin's scope.",
-        "action": "Needs a card. The gate should be removed — the plugin protects WP core out of the box."
+        "status": "control removed, not wired",
+        "decided_on": "2026-07-17",
+        "written_at": [],
+        "read_at": [],
+        "evidence": "Never user-reachable: its only writer was wbc_appearance_settings(), which no tab ever routed to. No badge rendering code has ever existed in the plugin (no .grecaptcha-badge CSS, no data-badge attribute).",
+        "impact": "None - the control was never visible, so removing it changes nothing a user could see.",
+        "action": "OWNER/QA CALL before implementing. Needs the v3 token path moved from implicit grecaptcha.execute() to explicit grecaptcha.render({badge,size:'invisible'}), plus Google's mandatory attribution text when the badge is hidden/inline. New feature on a security-critical path; not verifiable without real Google keys. The wc_settings_tab_demo_recapcha_v3_badge -> wbc_recaptcha_v3_badge migration is retained so legacy values survive."
       }
     ],
-    "stale_build_references": [
-      {
-        "file": "gruntfile.js",
-        "severity": "medium",
-        "evidence": "gruntfile.js:63-65, 91-93, 105-107, 113-115, 148-150 reference admin/wbcom/assets/{css,js}/ for cssmin, uglify, watch, and RTL tasks. The entire admin/wbcom/ directory NO LONGER EXISTS (removed in the 2.1.0 card-panel migration).",
-        "impact": "Those grunt subtasks operate on missing source dirs. Not currently fatal, but the build config lies about the tree and the RTL/minify tasks silently cover nothing for admin assets. The live admin assets are assets/css/admin.css + assets/js/admin.js, which the gruntfile does not process.",
-        "action": "Needs a card — repoint the grunt tasks at assets/ or drop the dead subtasks."
-      }
-    ],
+    "saved_but_not_applied": [],
+    "stale_build_references": [],
     "rest_hang_risks": [
-      { "where": "public/js/wbc-ajax-login.js", "path": "wp-admin/admin-ajax.php?action=wbc_ajax_login", "uses_abort_signal": false, "has_timeout_ms": null, "note": "AJAX login uses jQuery $.ajax without explicit timeout — failed networks leave the form spinner indefinitely. Low risk for a short login round-trip but worth a 30s timeout in a future refactor." }
+      {
+        "where": "public/js/wbc-ajax-login.js",
+        "path": "wp-admin/admin-ajax.php?action=wbc_ajax_login",
+        "uses_abort_signal": false,
+        "has_timeout_ms": null,
+        "note": "AJAX login uses jQuery $.ajax without explicit timeout — failed networks leave the form spinner indefinitely. Low risk for a short login round-trip but worth a 30s timeout in a future refactor."
+      }
     ],
     "visual_required_no_enforcement": [],
     "grid_track_overflow_risks": [],
     "hook_signature_drift": [
-      { "hook": "wbc_recaptcha_v3_verify", "note": "Fires with 3 args (verified, result, context) at class-recaptcha-v3-service.php:313. The pre-2026-07 manifest documented 2 args — integrators written against that doc will miss $context." },
-      { "hook": "wbc_recaptcha_settings_saved", "note": "Fires with 1 arg ($section) at class-wbc-buddypress-settings-page.php:2446. The pre-2026-07 manifest documented 0 args." }
+      {
+        "hook": "wbc_recaptcha_v3_verify",
+        "note": "Fires with 3 args (verified, result, context) at class-recaptcha-v3-service.php:313. The pre-2026-07 manifest documented 2 args — integrators written against that doc will miss $context."
+      },
+      {
+        "hook": "wbc_recaptcha_settings_saved",
+        "note": "Fires with 1 arg ($section) at class-wbc-buddypress-settings-page.php:2446. The pre-2026-07 manifest documented 0 args."
+      }
     ],
     "wppqa_findings": {
-      "plugin_dev_rules": { "high": 15, "medium": 7, "false_positive_high": 11, "real_high": 4, "new_admin_code_high": 0, "summary_at": "audit/wppqa-baseline-2026-06-04/SUMMARY.md", "stale": true, "note": "CARRIED OVER from the 2026-06-04 baseline — NOT re-run in the 2026-07-16 structural refresh (wppqa was explicitly out of scope). Treat these numbers as provisional until the next wppqa run. The 1 finding in the migrated card-panel is a false positive — the menu is registered with manage_options which WP enforces before render_page(), so the in-page nonce save is layered defense, not the sole authorization." },
-      "rest_js_contract": { "skipped": true, "reason": "the 1 ALTCHA REST route has no JS contract with plugin-owned JS" },
-      "wiring_completeness": { "skipped": true, "reason": "no templates/ directory" }
+      "plugin_dev_rules": {
+        "high": 15,
+        "medium": 7,
+        "false_positive_high": 11,
+        "real_high": 4,
+        "new_admin_code_high": 0,
+        "summary_at": "audit/wppqa-baseline-2026-06-04/SUMMARY.md",
+        "stale": true,
+        "note": "CARRIED OVER from the 2026-06-04 baseline — NOT re-run in the 2026-07-16 structural refresh (wppqa was explicitly out of scope). Treat these numbers as provisional until the next wppqa run. The 1 finding in the migrated card-panel is a false positive — the menu is registered with manage_options which WP enforces before render_page(), so the in-page nonce save is layered defense, not the sole authorization."
+      },
+      "rest_js_contract": {
+        "skipped": true,
+        "reason": "the 1 ALTCHA REST route has no JS contract with plugin-owned JS"
+      },
+      "wiring_completeness": {
+        "skipped": true,
+        "reason": "no templates/ directory"
+      }
+    },
+    "resolved_2026_07_17": {
+      "appearance_options": "FIXED. WBC_Captcha_Service_Base::get_appearance_option() resolves wbc_<provider>_<name> -> shared wbc_recaptcha_<name> -> default. hCaptcha + Turnstile now read their own keys; reCAPTCHA v2 resolves to the shared key exactly as before. Turnstile previously read per-context keys (wbc_turnstile_theme_<context>) that no screen ever wrote. The live Advanced tab now renders theme/size for whichever provider is active, defaulting to the currently-effective shared value so appearance does not change on upgrade.",
+      "error_messages": "FIXED. wbc_get_custom_captcha_error_option() in includes/captcha-verification-helper.php bridges wbc_recaptcha_error_msg_captcha_<type> -> wbc_recapcha_error_msg_captcha_<type> (typo spelling written by WBC_Settings_Migration) -> *_v3 keys when the v3 flow is active -> wc_settings_tab_recapcha_* . Advanced tab now exposes all three types; each field defaults to the currently-effective message so saving cannot clobber a legacy custom message.",
+      "hcaptcha_error_fatal": "FIXED (P1, previously unrecorded). wbc_get_captcha_error_message() guarded on method_exists(), true for protected methods, then called $service->get_error_message() from global scope. WBC_HCaptcha_Service::get_error_message() was protected -> PHP Error 'Call to protected method ... from global scope' on EVERY failed hCaptcha verification, across ~30 integration paths. Guard is now is_callable(); the method is public. CONTRACT: any service's get_error_message() must be public.",
+      "test_connection": "REMOVED. testCaptchaConnection() in admin/js/wbc-admin-dynamic.js never made an AJAX call and reported success whenever both fields were non-empty. Its only two triggers were the deleted setup wizard and wbc_service_documentation()/wbc_*_docs() in the settings page - which nothing ever called (quick setup uses wbc_simple_documentation() instead). Both the JS and the dead docs methods were deleted; no live button ever existed, so no endpoint was built.",
+      "activation_redirect": "FIXED. The class_exists('WooCommerce')||class_exists('BuddyPress')||class_exists('bbPress') gate was removed from recaptcha-for-buddypress.php.",
+      "gruntfile": "FIXED. cssmin/uglify/watch/rtlcss now target public/, admin/css, admin/js and assets/ (cssmin:admin, cssmin:chrome, uglify:admin, uglify:chrome). NOTE: the plugin enqueues UNMINIFIED sources everywhere, and nothing loads the min/ or rtl/ output - a separate open question, not a regression.",
+      "unreachable_settings_screens": "OPEN - needs an owner call. wbc_output()/wbc_save() only ever receive BPRC_Admin::get_tabs() slugs with form=>true (rfw-general/protection/advanced). wbc_appearance_settings() and wbc_advanced_settings() were deleted (sole writers of the never-read keys; superseded by the live Advanced tab). Still unreachable and LEFT ALONE because they carry an explicit 'Keep backward compatibility' marker: wbc_service_settings() (the default: case), wbc_wordpress_settings(), wbc_woocommerce_settings(), wbc_buddypress_settings(), wbc_bbpress_settings(). Note wbc_service_settings() still renders wbc_hcaptcha_theme/_size fields, which are now LIVE keys - harmless only because the screen is unreachable."
     }
   },
-  "buddypress_integration": { "enabled_when": "class_exists('BuddyPress')", "manager": "WBC_Captcha_Service_Manager (per-context render via bp_register / bp_signup_validate hooks)", "sub_classes": ["public/bp-classes/Registrationbp.php"], "contexts": ["bp_register", "bp_group_create"], "note": "BuddyPress is now 1 of 14 integrations, not the plugin's centre of gravity. The slug, text domain, and directory name are historical (WP.org) — see plugin.text_domain_note." },
+  "buddypress_integration": {
+    "enabled_when": "class_exists('BuddyPress')",
+    "manager": "WBC_Captcha_Service_Manager (per-context render via bp_register / bp_signup_validate hooks)",
+    "sub_classes": [
+      "public/bp-classes/Registrationbp.php"
+    ],
+    "contexts": [
+      "bp_register",
+      "bp_group_create"
+    ],
+    "note": "BuddyPress is now 1 of 14 integrations, not the plugin's centre of gravity. The slug, text domain, and directory name are historical (WP.org) — see plugin.text_domain_note."
+  },
   "frontend_assets": {
     "js": [
       "public/js/recaptcha-for-buddypress-public.js",
@@ -330,10 +1035,22 @@
       "public/css/recaptcha-for-buddypress-public.css",
       "public/css/wbc-ajax-login.css"
     ],
-    "admin_js": ["assets/js/admin.js"],
-    "admin_css": ["assets/css/admin.css"],
-    "minified": ["public/js/min/recaptcha-for-buddypress-public.min.js", "public/js/min/wbc-ajax-login.min.js", "public/css/min/recaptcha-for-buddypress-public.min.css", "public/css/min/wbc-ajax-login.min.css"],
-    "rtl": ["public/css/rtl/recaptcha-for-buddypress-public.css", "public/css/rtl/wbc-ajax-login.css"]
+    "admin_js": [
+      "assets/js/admin.js"
+    ],
+    "admin_css": [
+      "assets/css/admin.css"
+    ],
+    "minified": [
+      "public/js/min/recaptcha-for-buddypress-public.min.js",
+      "public/js/min/wbc-ajax-login.min.js",
+      "public/css/min/recaptcha-for-buddypress-public.min.css",
+      "public/css/min/wbc-ajax-login.min.css"
+    ],
+    "rtl": [
+      "public/css/rtl/recaptcha-for-buddypress-public.css",
+      "public/css/rtl/wbc-ajax-login.css"
+    ]
   },
   "cron": [],
   "wp_cli": [],
@@ -344,13 +1061,55 @@
     "always_sign_filter": null,
     "rate_limit_middleware": null,
     "nonce_pairs": [
-      { "nonce_action": "wbc_ajax_login_nonce", "field": "wbc_login_nonce", "verified_at": "includes/class-wbc-ajax-login-handler.php:28", "rendered_at": "includes/class-wbc-login-block.php:157, includes/widgets/class-wbc-login-widget.php:147" },
-      { "nonce_action": "bp_recaptcha_submit_nonce", "field": "bp_recaptcha_submit_fields_nonce", "declared_at": "includes/admin/class-bprc-admin.php:46-47", "purpose": "Admin settings save. Preserved from the legacy admin so an in-flight save posted from either UI stays valid." },
-      { "nonce_action": "<context>-nonce (per render context)", "field": "<context>-nonce", "verified_at": "verify() in reCAPTCHA v2 (:204), hCaptcha (:260), Turnstile (:164)", "purpose": "Per-context CSRF protection — advisory by default, mandatory under wbc_captcha_strict_nonce. NOT enforced by reCAPTCHA v3 or ALTCHA." }
+      {
+        "nonce_action": "wbc_ajax_login_nonce",
+        "field": "wbc_login_nonce",
+        "verified_at": "includes/class-wbc-ajax-login-handler.php:28",
+        "rendered_at": "includes/class-wbc-login-block.php:157, includes/widgets/class-wbc-login-widget.php:147"
+      },
+      {
+        "nonce_action": "bp_recaptcha_submit_nonce",
+        "field": "bp_recaptcha_submit_fields_nonce",
+        "declared_at": "includes/admin/class-bprc-admin.php:46-47",
+        "purpose": "Admin settings save. Preserved from the legacy admin so an in-flight save posted from either UI stays valid."
+      },
+      {
+        "nonce_action": "<context>-nonce (per render context)",
+        "field": "<context>-nonce",
+        "verified_at": "verify() in reCAPTCHA v2 (:204), hCaptcha (:260), Turnstile (:164)",
+        "purpose": "Per-context CSRF protection — advisory by default, mandatory under wbc_captcha_strict_nonce. NOT enforced by reCAPTCHA v3 or ALTCHA."
+      }
     ],
-    "ip_whitelist": { "option": "wbc_recaptcha_ip_to_skip_captcha", "legacy_option": "wbc_recapcha_ip_to_skip_captcha", "applied_at": ["includes/class-captcha-service-manager.php:216", "includes/class-captcha-service-manager.php:473-481"], "matcher": "includes/recaptcha-helper-functions.php:135-194", "formats": ["exact IP", "dash range (1.2.3.4-1.2.3.10)", "CIDR (10.0.0.0/24, IPv4 only)"] },
-    "fail_closed": { "option": "wbc_captcha_fail_closed", "default": false, "applied_at": ["includes/class-captcha-service-manager.php:283 (unconfigured service)", "includes/class-captcha-service-manager.php:320 (verify exception)"], "since": "2.1.0" },
-    "secrets_in_options": ["wbc_recaptcha_v2_secret_key", "wbc_recaptcha_v3_secret_key", "wbc_hcaptcha_secret_key", "wbc_turnstile_secret_key", "wbc_altcha_hmac_key"]
+    "ip_whitelist": {
+      "option": "wbc_recaptcha_ip_to_skip_captcha",
+      "legacy_option": "wbc_recapcha_ip_to_skip_captcha",
+      "applied_at": [
+        "includes/class-captcha-service-manager.php:216",
+        "includes/class-captcha-service-manager.php:473-481"
+      ],
+      "matcher": "includes/recaptcha-helper-functions.php:135-194",
+      "formats": [
+        "exact IP",
+        "dash range (1.2.3.4-1.2.3.10)",
+        "CIDR (10.0.0.0/24, IPv4 only)"
+      ]
+    },
+    "fail_closed": {
+      "option": "wbc_captcha_fail_closed",
+      "default": false,
+      "applied_at": [
+        "includes/class-captcha-service-manager.php:283 (unconfigured service)",
+        "includes/class-captcha-service-manager.php:320 (verify exception)"
+      ],
+      "since": "2.1.0"
+    },
+    "secrets_in_options": [
+      "wbc_recaptcha_v2_secret_key",
+      "wbc_recaptcha_v3_secret_key",
+      "wbc_hcaptcha_secret_key",
+      "wbc_turnstile_secret_key",
+      "wbc_altcha_hmac_key"
+    ]
   },
   "ci_guards": {
     "script": null,
@@ -360,7 +1119,10 @@
     "phpstan_config": "phpstan.neon",
     "phpstan_baseline": "phpstan-baseline.neon",
     "github_actions": ".github/workflows/ci.yml",
-    "composer_scripts": { "lint": "parallel-lint (excludes .git, vendor, node_modules)", "phpstan": "phpstan analyse --level=5 -c phpstan.neon" }
+    "composer_scripts": {
+      "lint": "parallel-lint (excludes .git, vendor, node_modules)",
+      "phpstan": "phpstan analyse --level=5 -c phpstan.neon"
+    }
   },
   "coding_rules": [
     "All option keys prefixed wbc_ (or legacy wbc_recapcha_ / wc_settings_tab_recapcha_ for original-typo back-compat). Before adding an option, grep BOTH the write and read side — this plugin has a documented history of write-only keys (see static_analysis.dead_options).",
@@ -378,18 +1140,53 @@
     "warning": "gruntfile.js still references the deleted admin/wbcom/ asset tree — see static_analysis.stale_build_references."
   },
   "category_sources": {
-    "rest":         ["includes/lib/altcha/**/*.php"],
-    "ajax":         ["includes/class-recaptcha-for-buddypress.php", "includes/class-wbc-ajax-login-handler.php"],
-    "admin_pages":  ["includes/admin/**/*.php", "admin/**/*.php"],
-    "settings":     ["admin/includes/**/*.php", "includes/class-settings-integration.php", "includes/class-captcha-service-base.php"],
-    "shortcodes":   [],
-    "blocks":       ["blocks/**/*.{php,json,js}", "includes/class-wbc-login-block.php"],
-    "widgets":      ["includes/widgets/**/*.php"],
-    "services":     ["includes/services/**/*.php", "includes/class-captcha-service-*.php", "includes/captcha-service-interface.php"],
-    "integrations": ["public/**/*.php", "admin/includes/settings-modules/**/*.php"],
-    "hooks_fired":  ["includes/**/*.php", "admin/**/*.php", "public/**/*.php"],
-    "frontend_assets": ["public/**/*.{js,css}", "assets/**/*.{js,css}", "blocks/**/*.js"],
-    "security":      ["includes/**/*.php", "admin/**/*.php"]
+    "rest": [
+      "includes/lib/altcha/**/*.php"
+    ],
+    "ajax": [
+      "includes/class-recaptcha-for-buddypress.php",
+      "includes/class-wbc-ajax-login-handler.php"
+    ],
+    "admin_pages": [
+      "includes/admin/**/*.php",
+      "admin/**/*.php"
+    ],
+    "settings": [
+      "admin/includes/**/*.php",
+      "includes/class-settings-integration.php",
+      "includes/class-captcha-service-base.php"
+    ],
+    "shortcodes": [],
+    "blocks": [
+      "blocks/**/*.{php,json,js}",
+      "includes/class-wbc-login-block.php"
+    ],
+    "widgets": [
+      "includes/widgets/**/*.php"
+    ],
+    "services": [
+      "includes/services/**/*.php",
+      "includes/class-captcha-service-*.php",
+      "includes/captcha-service-interface.php"
+    ],
+    "integrations": [
+      "public/**/*.php",
+      "admin/includes/settings-modules/**/*.php"
+    ],
+    "hooks_fired": [
+      "includes/**/*.php",
+      "admin/**/*.php",
+      "public/**/*.php"
+    ],
+    "frontend_assets": [
+      "public/**/*.{js,css}",
+      "assets/**/*.{js,css}",
+      "blocks/**/*.js"
+    ],
+    "security": [
+      "includes/**/*.php",
+      "admin/**/*.php"
+    ]
   },
   "generated": {
     "at": "2026-07-16T10:33:31+00:00",
@@ -400,8 +1197,10 @@
     "scan_path": ".",
     "php_file_count": 91,
     "schema_version": "v2.1",
-    "bundled_excluded": ["vendor/** (EDD SL SDK + composer dev tooling — out of scope)"],
+    "bundled_excluded": [
+      "vendor/** (EDD SL SDK + composer dev tooling — out of scope)"
+    ],
     "wppqa_run": false,
-    "notes": "STRUCTURAL REFRESH 2026-07-16. The 2026-06-04 manifest had drifted from shipped code; every section was re-derived from grep/glob, not carried over. Corrections: (1) shortcodes 1 → 0 — the plugin makes ZERO add_shortcode calls; the recorded wbcom_admin_setting_header shortcode lived in admin/wbcom/, a directory deleted in the 2.1.0 card-panel migration. (2) The wbcom_addons_cards AJAX action and the wbcom_add_header_menu / wbcom_add_plugin_license_code hooks were removed for the same reason — admin/wbcom/ no longer exists. (3) The 'ALTCHA Options' admin page was removed: includes/lib/altcha/admin.php is deliberately never required (fork note at class-altcha-lib.php:620-633). (4) Block name corrected from buddypress-recaptcha/login to wbc/login-widget per block.json; its apiVersion 3 is what sets the real WP 6.3 floor. (5) settings_register_setting_calls 34 → 0 live: all 32 register_setting() calls sit in the never-loaded includes/lib/altcha/settings.php. (6) hooks_fired_unique 42 → 35 (27 plugin-owned + 8 vendored ALTCHA); WP/WC core re-dispatch moved to hooks_not_owned. Newly recorded: bprc_admin_tabs, wbc_recaptcha_v3_score_threshold_value. (7) wbc_captcha_verified has 4 firers, not 5 — reCAPTCHA v3 uses wbc_recaptcha_v3_verify instead. (8) 14 integrations recorded with dual evidence (wiring class + settings module); Fluent Forms, Formidable Forms, WS Form, and FluentCart are explicitly recorded as NOT integrated — they had zero first-party code and their readme claims were removed 2026-07-16. Do not re-add them. (9) NEW FINDING: admin/class-wbc-setup-wizard.php is never required by any file — the whole setup wizard is unreachable dead code and its wbc_enable_setup_wizard filter never fires. Previous manifests listed it as live. (10) Bugs recorded, NOT fixed (each needs a card): dead appearance options (wbc_hcaptcha_theme/_size, wbc_turnstile_theme/_size, wbc_recaptcha_v3_badge), dead error-message keys, the Woo/BP/bbPress-only activation redirect, and gruntfile.js pointing at the deleted admin/wbcom/ tree. (11) Requires-at-least is 6.3 (was 6.9, which had no code justification); Plugin URI corrected; README.txt renamed to readme.txt. (12) wppqa was NOT re-run — static_analysis.wppqa_findings is carried over from 2026-06-04 and flagged stale:true. Verified unchanged: 5 providers, 29 contexts, 1 REST route, 1 block, 0 tables/CPTs/taxonomies/cron/WP-CLI, EDD item_id 1246648, phpstan level 5."
+    "notes": "FIX PASS 2026-07-17 (unreleased, on main; version NOT bumped). Resolved every item on the 2026-07-16 known-dead list plus one previously unrecorded P1 (protected get_error_message() fatal on hCaptcha). Deleted: the 953-line setup wizard, 4 never-loaded vendored ALTCHA files, 2 unreachable settings screens (wbc_appearance_settings/wbc_advanced_settings), the never-called wbc_service_documentation() + 5 wbc_*_docs() methods, and the fake testCaptchaConnection() JS. Wired: per-provider appearance with shared-key fallback, and an error-message key bridge. Removed rather than wired: the reCAPTCHA v3 badge (see static_analysis.dead_options). Hooks removed with their host code: wbc_enable_setup_wizard, wbc_recaptcha_appearance_settings, wbc_recaptcha_advanced_settings. POT REGEN REQUIRED before the next release (strings added + removed). Previous note follows. --- STRUCTURAL REFRESH 2026-07-16. The 2026-06-04 manifest had drifted from shipped code; every section was re-derived from grep/glob, not carried over. Corrections: (1) shortcodes 1 → 0 — the plugin makes ZERO add_shortcode calls; the recorded wbcom_admin_setting_header shortcode lived in admin/wbcom/, a directory deleted in the 2.1.0 card-panel migration. (2) The wbcom_addons_cards AJAX action and the wbcom_add_header_menu / wbcom_add_plugin_license_code hooks were removed for the same reason — admin/wbcom/ no longer exists. (3) The 'ALTCHA Options' admin page was removed: includes/lib/altcha/admin.php is deliberately never required (fork note at class-altcha-lib.php:620-633). (4) Block name corrected from buddypress-recaptcha/login to wbc/login-widget per block.json; its apiVersion 3 is what sets the real WP 6.3 floor. (5) settings_register_setting_calls 34 → 0 live: all 32 register_setting() calls sit in the never-loaded includes/lib/altcha/settings.php. (6) hooks_fired_unique 42 → 35 (27 plugin-owned + 8 vendored ALTCHA); WP/WC core re-dispatch moved to hooks_not_owned. Newly recorded: bprc_admin_tabs, wbc_recaptcha_v3_score_threshold_value. (7) wbc_captcha_verified has 4 firers, not 5 — reCAPTCHA v3 uses wbc_recaptcha_v3_verify instead. (8) 14 integrations recorded with dual evidence (wiring class + settings module); Fluent Forms, Formidable Forms, WS Form, and FluentCart are explicitly recorded as NOT integrated — they had zero first-party code and their readme claims were removed 2026-07-16. Do not re-add them. (9) NEW FINDING: admin/class-wbc-setup-wizard.php is never required by any file — the whole setup wizard is unreachable dead code and its wbc_enable_setup_wizard filter never fires. Previous manifests listed it as live. (10) Bugs recorded, NOT fixed (each needs a card): dead appearance options (wbc_hcaptcha_theme/_size, wbc_turnstile_theme/_size, wbc_recaptcha_v3_badge), dead error-message keys, the Woo/BP/bbPress-only activation redirect, and gruntfile.js pointing at the deleted admin/wbcom/ tree. (11) Requires-at-least is 6.3 (was 6.9, which had no code justification); Plugin URI corrected; README.txt renamed to readme.txt. (12) wppqa was NOT re-run — static_analysis.wppqa_findings is carried over from 2026-06-04 and flagged stale:true. Verified unchanged: 5 providers, 29 contexts, 1 REST route, 1 block, 0 tables/CPTs/taxonomies/cron/WP-CLI, EDD item_id 1246648, phpstan level 5."
   }
 }

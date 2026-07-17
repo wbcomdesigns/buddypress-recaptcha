@@ -98,9 +98,12 @@ class WBC_Turnstile_Service extends WBC_Captcha_Service_Base {
 			return;
 		}
 
-		// Get context-specific settings.
-		$theme = $this->get_option( 'theme_' . $context, 'light' );
-		$size  = $this->get_option( 'size_' . $context, 'normal' );
+		// Appearance: prefer Turnstile's own keys, fall back to the shared reCAPTCHA
+		// keys. This previously read `wbc_turnstile_theme_<context>` / `..._size_<context>`
+		// — per-context keys no screen ever wrote, so the widget was always stuck on the
+		// hardcoded defaults regardless of what the admin selected.
+		$theme = $this->get_appearance_option( 'theme', 'light' );
+		$size  = $this->get_appearance_option( 'size', 'normal' );
 
 		// Generate unique identifiers.
 		$callback = 'turnstileCallback_' . str_replace( '-', '_', $context );
@@ -231,8 +234,8 @@ class WBC_Turnstile_Service extends WBC_Captcha_Service_Base {
 		return array(
 			'class'         => 'cf-turnstile',
 			'data-sitekey'  => $this->get_site_key(),
-			'data-theme'    => $this->get_option( 'theme_' . $context, 'light' ),
-			'data-size'     => $this->get_option( 'size_' . $context, 'normal' ),
+			'data-theme'    => $this->get_appearance_option( 'theme', 'light' ),
+			'data-size'     => $this->get_appearance_option( 'size', 'normal' ),
 			'data-callback' => 'turnstileCallback_' . str_replace( '-', '_', $context ),
 		);
 	}
