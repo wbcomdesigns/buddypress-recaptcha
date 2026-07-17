@@ -138,7 +138,7 @@ abstract class WBC_Captcha_Service_Base implements WBC_Captcha_Service_Interface
 	 * Resolve an appearance option (theme / size / badge) for this provider.
 	 *
 	 * Each provider owns its own appearance key (`wbc_<provider>_<name>`, e.g.
-	 * `wbc_turnstile_theme`). Before 2.1.1 only the shared reCAPTCHA keys
+	 * `wbc_turnstile_theme`). Before 2.1.0 only the shared reCAPTCHA keys
 	 * (`wbc_recaptcha_theme` / `wbc_recaptcha_size`) were ever read, and they were
 	 * consumed by BOTH reCAPTCHA v2 and hCaptcha. Sites configured under that
 	 * behaviour must not change appearance on upgrade, so resolution is:
@@ -149,7 +149,7 @@ abstract class WBC_Captcha_Service_Base implements WBC_Captcha_Service_Interface
 	 *
 	 * Note `get_service_id()` returns hyphenated ids for the reCAPTCHA providers
 	 * (`recaptcha-v2`), so their own-key lookup simply misses and falls through to
-	 * the shared key — which is exactly the pre-2.1.1 behaviour.
+	 * the shared key — which is exactly the pre-2.1.0 behaviour.
 	 *
 	 * @param string $name    Appearance option suffix, e.g. 'theme' or 'size'.
 	 * @param mixed  $default Value to use when neither key is set.

@@ -166,9 +166,9 @@ if ( ! class_exists( 'WBC_BuddyPress_Settings_Page' ) ) :
 			$names = array(
 				'recaptcha-v2' => __( 'Google reCAPTCHA v2', 'buddypress-recaptcha' ),
 				'recaptcha-v3' => __( 'Google reCAPTCHA v3', 'buddypress-recaptcha' ),
-				'turnstile'    => __( 'Cloudflare Turnstile', 'buddypress-recaptcha' ),
-				'hcaptcha'     => __( 'hCaptcha', 'buddypress-recaptcha' ),
-				'altcha'       => __( 'ALTCHA', 'buddypress-recaptcha' ),
+				'turnstile'    => 'Cloudflare Turnstile',
+				'hcaptcha'     => 'hCaptcha',
+				'altcha'       => 'ALTCHA',
 			);
 			return isset( $names[ $service ] ) ? $names[ $service ] : $service;
 		}
@@ -963,15 +963,15 @@ if ( ! class_exists( 'WBC_BuddyPress_Settings_Page' ) ) :
 					'desc' => __( 'Invisible verification with score-based detection', 'buddypress-recaptcha' ),
 				),
 				'turnstile'    => array(
-					'name' => __( 'Cloudflare Turnstile', 'buddypress-recaptcha' ),
+					'name' => 'Cloudflare Turnstile',
 					'desc' => __( 'Privacy-friendly CAPTCHA alternative from Cloudflare', 'buddypress-recaptcha' ),
 				),
 				'hcaptcha'     => array(
-					'name' => __( 'hCaptcha', 'buddypress-recaptcha' ),
+					'name' => 'hCaptcha',
 					'desc' => __( 'Privacy-focused with rewards system', 'buddypress-recaptcha' ),
 				),
 				'altcha'       => array(
-					'name'  => __( 'ALTCHA', 'buddypress-recaptcha' ),
+					'name'  => 'ALTCHA',
 					'desc'  => __( 'Self-hosted solution, no external API required', 'buddypress-recaptcha' ),
 					'badge' => __( 'Privacy First', 'buddypress-recaptcha' ),
 				),
@@ -1151,7 +1151,7 @@ if ( ! class_exists( 'WBC_BuddyPress_Settings_Page' ) ) :
 				$services = array(
 					'recaptcha-v2' => __( 'Google reCAPTCHA v2 (Checkbox)', 'buddypress-recaptcha' ),
 					'recaptcha-v3' => __( 'Google reCAPTCHA v3 (Invisible)', 'buddypress-recaptcha' ),
-					'turnstile'    => __( 'Cloudflare Turnstile', 'buddypress-recaptcha' ),
+					'turnstile'    => 'Cloudflare Turnstile',
 				);
 			}
 
@@ -1169,18 +1169,18 @@ if ( ! class_exists( 'WBC_BuddyPress_Settings_Page' ) ) :
 			);
 
 			// Add plugin-specific integration sections.
-			$sections['wordpress'] = __( 'WordPress', 'buddypress-recaptcha' );
+			$sections['wordpress'] = 'WordPress';
 
 			if ( class_exists( 'WooCommerce' ) ) {
-				$sections['woocommerce'] = __( 'WooCommerce', 'buddypress-recaptcha' );
+				$sections['woocommerce'] = 'WooCommerce';
 			}
 
 			if ( class_exists( 'BuddyPress' ) ) {
-				$sections['buddypress'] = __( 'BuddyPress', 'buddypress-recaptcha' );
+				$sections['buddypress'] = 'BuddyPress';
 			}
 
 			if ( class_exists( 'bbPress' ) ) {
-				$sections['bbpress'] = __( 'bbPress', 'buddypress-recaptcha' );
+				$sections['bbpress'] = 'bbPress';
 			}
 
 			// No 'appearance' section: appearance now lives on the Advanced tab, which

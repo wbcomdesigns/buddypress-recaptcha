@@ -16,9 +16,9 @@ $bprc_service = get_option( 'wbc_captcha_service', 'recaptcha-v2' );
 $bprc_service_names = array(
 	'recaptcha-v2' => __( 'Google reCAPTCHA v2', 'buddypress-recaptcha' ),
 	'recaptcha-v3' => __( 'Google reCAPTCHA v3', 'buddypress-recaptcha' ),
-	'turnstile'    => __( 'Cloudflare Turnstile', 'buddypress-recaptcha' ),
-	'hcaptcha'     => __( 'hCaptcha', 'buddypress-recaptcha' ),
-	'altcha'       => __( 'ALTCHA', 'buddypress-recaptcha' ),
+	'turnstile'    => 'Cloudflare Turnstile',
+	'hcaptcha'     => 'hCaptcha',
+	'altcha'       => 'ALTCHA',
 );
 $bprc_service_label = isset( $bprc_service_names[ $bprc_service ] )
 	? $bprc_service_names[ $bprc_service ]

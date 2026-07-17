@@ -45,7 +45,7 @@ class WBC_Turnstile_Service extends WBC_Captcha_Service_Base {
 		// Translated here, not in init_config(): services are constructed while the
 		// plugin file loads, long before init, and calling __() there triggered WP 6.7's
 		// _load_textdomain_just_in_time notice on every page load.
-		return __( 'Cloudflare Turnstile', 'buddypress-recaptcha' );
+		return 'Cloudflare Turnstile';
 	}
 
 	/**

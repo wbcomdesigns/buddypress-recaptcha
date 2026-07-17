@@ -88,7 +88,12 @@ module.exports = function (grunt) {
 				files: [{
 					expand: true,
 					cwd: 'public/js/', // Source directory for public JS files
-					src: ['*.js', '!*.min.js'], // Minify all JS files except already minified ones
+					// Minify all JS files except already minified ones.
+					// altcha.js is a third-party vendored source shipped only so altcha.min.js
+					// has readable source alongside it (WordPress.org requirement). It is never
+					// enqueued and must not be re-minified - altcha.min.js is upstream's own
+					// build and has to stay byte-identical. See CLAUDE.md "Vendored libraries".
+					src: ['*.js', '!*.min.js', '!altcha.js'],
 					dest: 'public/js/min/', // Destination directory for minified JS
 					ext: '.min.js', // Extension for minified files
 				}]

@@ -241,7 +241,7 @@ class BPRC_Admin {
 					'secretKeyRequired' => __( '%s Secret Key is required', 'buddypress-recaptcha' ),
 					'providerV2'        => __( 'Google reCAPTCHA v2', 'buddypress-recaptcha' ),
 					'providerV3'        => __( 'Google reCAPTCHA v3', 'buddypress-recaptcha' ),
-					'providerTurnstile' => __( 'Cloudflare Turnstile', 'buddypress-recaptcha' ),
+					'providerTurnstile' => 'Cloudflare Turnstile',
 					'fixErrors'         => __( 'Please fix the following errors:', 'buddypress-recaptcha' ),
 					'getKeysHere'       => __( 'Get your keys here', 'buddypress-recaptcha' ),
 					'keyGenerated'      => __( 'Key Generated!', 'buddypress-recaptcha' ),

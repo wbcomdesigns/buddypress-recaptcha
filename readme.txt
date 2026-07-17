@@ -2,10 +2,10 @@
 Contributors: wbcomdesigns, vapvarun
 Donate link: https://wbcomdesigns.com/donate/
 Tags: captcha, recaptcha, spam protection, security, woocommerce
-Requires at least: 6.3
+Requires at least: 6.5
 Tested up to: 7.0
 Stable tag: 2.1.0
-Requires PHP: 7.4
+Requires PHP: 8.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: buddypress-recaptcha
@@ -86,8 +86,8 @@ Our support team can help with setup, provider keys, and troubleshooting a form 
 
 = Compatibility =
 
-* WordPress 6.3 and higher
-* PHP 7.4 and higher (8.0+ recommended)
+* WordPress 6.5 and higher
+* PHP 8.0 and higher
 * WooCommerce, BuddyPress, BuddyBoss Platform and bbPress are all optional - protection for each appears only when it is active
 * Works with the block editor and classic editor
 * Tested with popular themes including BuddyX and Reign
@@ -148,8 +148,8 @@ ALTCHA needs no keys and no account. It is self-hosted and generates its own HMA
 
 = Requirements =
 
-* WordPress 6.3 or higher
-* PHP 7.4 or higher
+* WordPress 6.5 or higher
+* PHP 8.0 or higher
 * API keys from your chosen provider (not required for ALTCHA)
 
 == Frequently Asked Questions ==
