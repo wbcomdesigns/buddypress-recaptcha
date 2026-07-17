@@ -1325,7 +1325,7 @@ if ( ! class_exists( 'WBC_BuddyPress_Settings_Page' ) ) :
 
 			// HTTPS warning.
 			$html .= '<div style="background: #ffebee; padding: 15px; border-radius: 5px; margin: 15px 0; border-left: 4px solid #f44336;">';
-			$html .= '<strong>' . esc_html__( '⚠️ HTTPS Required:', 'buddypress-recaptcha' ) . '</strong> ';
+			$html .= '<strong>' . esc_html__( 'HTTPS Required:', 'buddypress-recaptcha' ) . '</strong> ';
 			$html .= esc_html__( 'ALTCHA requires a secure HTTPS connection to work properly due to Web Crypto API requirements.', 'buddypress-recaptcha' );
 			$html .= '</div>';
 
@@ -1615,7 +1615,7 @@ if ( ! class_exists( 'WBC_BuddyPress_Settings_Page' ) ) :
 					'name'  => __( 'ALTCHA Settings', 'buddypress-recaptcha' ),
 					'type'  => 'title',
 					'id'    => 'wbc_altcha_settings',
-					'desc'  => __( 'Configure ALTCHA - Privacy-first, self-hosted captcha. No external API required.<br><strong>⚠️ HTTPS Required:</strong> ALTCHA requires a secure context (HTTPS) to work due to Web Crypto API requirements.', 'buddypress-recaptcha' ),
+					'desc'  => __( 'Configure ALTCHA - Privacy-first, self-hosted captcha. No external API required.<br><strong>HTTPS Required:</strong> ALTCHA requires a secure context (HTTPS) to work due to Web Crypto API requirements.', 'buddypress-recaptcha' ),
 					'class' => 'wbc-service-settings wbc-service-altcha',
 				),
 

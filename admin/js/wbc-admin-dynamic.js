@@ -10,6 +10,29 @@
 	'use strict';
 
 	/**
+	 * Translated strings injected by PHP via wp_localize_script() on the
+	 * 'recaptcha-for-buddypress-admin-dynamic' handle (BPRC_Admin::enqueue_assets).
+	 *
+	 * Every literal passed to t() below has a matching __() twin in that
+	 * localize array -- the literal is only a fallback for when the script is
+	 * loaded without its localized data. Never add a user-facing string here
+	 * without adding the same English text to the PHP array, or the POT
+	 * scanner will never see it and it can never be translated.
+	 */
+	var strings = ( window.wbc_admin && window.wbc_admin.strings ) || {};
+
+	/**
+	 * Read a translated string, falling back to the English source.
+	 *
+	 * @param {string} key      Key in the localized strings array.
+	 * @param {string} fallback English text mirroring the PHP __() value.
+	 * @return {string} Translated string.
+	 */
+	function t( key, fallback ) {
+		return strings[ key ] || fallback;
+	}
+
+	/**
 	 * Initialize dynamic settings on document ready
 	 */
 	$(document).ready(function() {
@@ -78,28 +101,28 @@
 	function updateServiceHelp(service) {
 		var helpTexts = {
 			'recaptcha_v2': {
-				title: 'Google reCAPTCHA v2 Configuration',
-				help: 'The classic checkbox CAPTCHA. Users must click "I\'m not a robot".',
+				title: t( 'v2_title', 'Google reCAPTCHA v2 Configuration' ),
+				help: t( 'v2_help', 'The classic checkbox CAPTCHA. Users must click "I\'m not a robot".' ),
 				docs: 'https://developers.google.com/recaptcha/docs/display'
 			},
 			'recaptcha_v3': {
-				title: 'Google reCAPTCHA v3 Configuration',
-				help: 'Invisible verification using risk analysis score.',
+				title: t( 'v3_title', 'Google reCAPTCHA v3 Configuration' ),
+				help: t( 'v3_help', 'Invisible verification using risk analysis score.' ),
 				docs: 'https://developers.google.com/recaptcha/docs/v3'
 			},
 			'turnstile': {
-				title: 'Cloudflare Turnstile Configuration',
-				help: 'Privacy-first CAPTCHA alternative from Cloudflare.',
+				title: t( 'turnstile_title', 'Cloudflare Turnstile Configuration' ),
+				help: t( 'turnstile_help', 'Privacy-first CAPTCHA alternative from Cloudflare.' ),
 				docs: 'https://developers.cloudflare.com/turnstile/'
 			},
 			'hcaptcha': {
-				title: 'hCaptcha Configuration',
-				help: 'Privacy-focused CAPTCHA that rewards websites.',
+				title: t( 'hcaptcha_title', 'hCaptcha Configuration' ),
+				help: t( 'hcaptcha_help', 'Privacy-focused CAPTCHA that rewards websites.' ),
 				docs: 'https://docs.hcaptcha.com/'
 			},
 			'altcha': {
-				title: 'ALTCHA Configuration',
-				help: 'Self-hosted proof-of-work challenge. No external API required.',
+				title: t( 'altcha_title', 'ALTCHA Configuration' ),
+				help: t( 'altcha_help', 'Self-hosted proof-of-work challenge. No external API required.' ),
 				docs: 'https://altcha.org/docs/'
 			}
 		};
@@ -126,7 +149,7 @@
 			$('#wbc_altcha_hmac_key').val(key);
 
 			// Show success message
-			showNotice('Random key generated successfully!', 'success');
+			showNotice( t( 'key_generated', 'Random key generated successfully!' ), 'success' );
 		});
 	}
 
@@ -165,7 +188,7 @@
 		}
 
 		if (!service) {
-			showNotice('Please select a captcha service first.', 'error');
+			showNotice( t( 'select', 'Please select a service first.' ), 'error' );
 			return;
 		}
 
@@ -197,20 +220,20 @@
 		}
 
 		if (!siteKey || !secretKey) {
-			showNotice('Please enter both site key and secret key.', 'error');
+			showNotice( t( 'enter_keys', 'Please enter both keys.' ), 'error' );
 			return;
 		}
 
 		// Show loading state
-		showNotice('Testing connection...', 'info');
+		showNotice( t( 'testing', 'Testing connection...' ), 'info' );
 
 		// Here you would normally make an AJAX call to test the connection
 		// For now, we'll just simulate it
 		setTimeout(function() {
 			if (siteKey && secretKey) {
-				showNotice('Connection test successful! Your keys appear to be valid.', 'success');
+				showNotice( t( 'success', 'Connection successful!' ), 'success' );
 			} else {
-				showNotice('Connection test failed. Please check your keys.', 'error');
+				showNotice( t( 'error', 'Connection failed. Please check your keys.' ), 'error' );
 			}
 		}, 1000);
 	}
@@ -227,11 +250,18 @@
 
 		// Create notice HTML
 		var noticeHtml = '<div class="notice notice-' + type + ' wbc-admin-notice is-dismissible" style="margin: 10px 0;">' +
-						  '<p>' + message + '</p>' +
+						  '<p></p>' +
 						  '<button type="button" class="notice-dismiss">' +
-						  '<span class="screen-reader-text">Dismiss this notice.</span>' +
+						  '<span class="screen-reader-text"></span>' +
 						  '</button>' +
 						  '</div>';
+
+		var $notice = $( noticeHtml );
+
+		// Set as text, not markup: the message may carry translated copy with
+		// characters that must not be parsed as HTML.
+		$notice.find( 'p' ).text( message );
+		$notice.find( '.screen-reader-text' ).text( t( 'dismiss_notice', 'Dismiss this notice.' ) );
 
 		// Find the best place to insert the notice
 		var $target = $('.wbc-quick-actions').first();
@@ -240,7 +270,7 @@
 		}
 
 		// Insert notice after target
-		$(noticeHtml).insertAfter($target);
+		$notice.insertAfter($target);
 
 		// Make dismissible
 		$('.wbc-admin-notice .notice-dismiss').on('click', function() {

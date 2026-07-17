@@ -230,6 +230,29 @@ class BPRC_Admin {
 			$version,
 			true
 		);
+		wp_localize_script(
+			'recaptcha-for-buddypress-admin',
+			'wbcAdminFields',
+			array(
+				'strings' => array(
+					/* translators: %s: CAPTCHA provider name, e.g. "Google reCAPTCHA v2". */
+					'siteKeyRequired'   => __( '%s Site Key is required', 'buddypress-recaptcha' ),
+					/* translators: %s: CAPTCHA provider name, e.g. "Google reCAPTCHA v2". */
+					'secretKeyRequired' => __( '%s Secret Key is required', 'buddypress-recaptcha' ),
+					'providerV2'        => __( 'Google reCAPTCHA v2', 'buddypress-recaptcha' ),
+					'providerV3'        => __( 'Google reCAPTCHA v3', 'buddypress-recaptcha' ),
+					'providerTurnstile' => __( 'Cloudflare Turnstile', 'buddypress-recaptcha' ),
+					'fixErrors'         => __( 'Please fix the following errors:', 'buddypress-recaptcha' ),
+					'getKeysHere'       => __( 'Get your keys here', 'buddypress-recaptcha' ),
+					'keyGenerated'      => __( 'Key Generated!', 'buddypress-recaptcha' ),
+					'toggleVisibility'  => __( 'Toggle visibility', 'buddypress-recaptcha' ),
+					'hideSecretKey'     => __( 'Hide Secret Key', 'buddypress-recaptcha' ),
+					'showSecretKey'     => __( 'Show Secret Key', 'buddypress-recaptcha' ),
+					'copyToClipboard'   => __( 'Copy to Clipboard', 'buddypress-recaptcha' ),
+					'copied'            => __( 'Copied!', 'buddypress-recaptcha' ),
+				),
+			)
+		);
 		wp_enqueue_script(
 			'recaptcha-for-buddypress-admin-dynamic',
 			RFB_PLUGIN_URL . 'admin/js/wbc-admin-dynamic.js',
@@ -243,11 +266,24 @@ class BPRC_Admin {
 			array(
 				'ajax_url' => admin_url( 'admin-ajax.php' ),
 				'strings'  => array(
-					'testing'    => __( 'Testing connection...', 'buddypress-recaptcha' ),
-					'success'    => __( 'Connection successful!', 'buddypress-recaptcha' ),
-					'error'      => __( 'Connection failed. Please check your keys.', 'buddypress-recaptcha' ),
-					'select'     => __( 'Please select a service first.', 'buddypress-recaptcha' ),
-					'enter_keys' => __( 'Please enter both keys.', 'buddypress-recaptcha' ),
+					'testing'          => __( 'Testing connection...', 'buddypress-recaptcha' ),
+					'success'          => __( 'Connection successful!', 'buddypress-recaptcha' ),
+					'error'            => __( 'Connection failed. Please check your keys.', 'buddypress-recaptcha' ),
+					'select'           => __( 'Please select a service first.', 'buddypress-recaptcha' ),
+					'enter_keys'       => __( 'Please enter both keys.', 'buddypress-recaptcha' ),
+					'key_generated'    => __( 'Random key generated successfully!', 'buddypress-recaptcha' ),
+					'dismiss_notice'   => __( 'Dismiss this notice.', 'buddypress-recaptcha' ),
+					// Per-service help card: title + one-line explanation.
+					'v2_title'         => __( 'Google reCAPTCHA v2 Configuration', 'buddypress-recaptcha' ),
+					'v2_help'          => __( 'The classic checkbox CAPTCHA. Users must click "I\'m not a robot".', 'buddypress-recaptcha' ),
+					'v3_title'         => __( 'Google reCAPTCHA v3 Configuration', 'buddypress-recaptcha' ),
+					'v3_help'          => __( 'Invisible verification using risk analysis score.', 'buddypress-recaptcha' ),
+					'turnstile_title'  => __( 'Cloudflare Turnstile Configuration', 'buddypress-recaptcha' ),
+					'turnstile_help'   => __( 'Privacy-first CAPTCHA alternative from Cloudflare.', 'buddypress-recaptcha' ),
+					'hcaptcha_title'   => __( 'hCaptcha Configuration', 'buddypress-recaptcha' ),
+					'hcaptcha_help'    => __( 'Privacy-focused CAPTCHA that rewards websites.', 'buddypress-recaptcha' ),
+					'altcha_title'     => __( 'ALTCHA Configuration', 'buddypress-recaptcha' ),
+					'altcha_help'      => __( 'Self-hosted proof-of-work challenge. No external API required.', 'buddypress-recaptcha' ),
 				),
 			)
 		);

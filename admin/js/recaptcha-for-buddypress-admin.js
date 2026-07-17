@@ -8,6 +8,43 @@
 	 * the selected captcha service.
 	 */
 
+	/**
+	 * Translated strings injected by PHP via wp_localize_script() on the
+	 * 'recaptcha-for-buddypress-admin' handle (BPRC_Admin::enqueue_assets).
+	 *
+	 * Every literal passed to t() below has a matching __() twin in that
+	 * localize array -- the literal is only a fallback for when the script is
+	 * loaded without its localized data. Never add a user-facing string here
+	 * without adding the same English text to the PHP array, or the POT
+	 * scanner will never see it and it can never be translated.
+	 */
+	var strings = ( window.wbcAdminFields && window.wbcAdminFields.strings ) || {};
+
+	/**
+	 * Read a translated string, falling back to the English source.
+	 *
+	 * @param {string} key      Key in the localized strings array.
+	 * @param {string} fallback English text mirroring the PHP __() value.
+	 * @return {string} Translated string.
+	 */
+	function t( key, fallback ) {
+		return strings[ key ] || fallback;
+	}
+
+	/**
+	 * Fill a single %s placeholder.
+	 *
+	 * Keeps the whole phrase in one translatable string so translators control
+	 * word order (never build a sentence by concatenating fragments).
+	 *
+	 * @param {string} template String containing one %s.
+	 * @param {string} value    Replacement value.
+	 * @return {string} Interpolated string.
+	 */
+	function sprintf1( template, value ) {
+		return String( template ).replace( '%s', value );
+	}
+
 	$(document).ready(function () {
 		// Initialize on page load
 		wbcInitializeServiceSettings();
@@ -81,37 +118,43 @@
 			var isValid = true;
 			var errors = [];
 			
+			var siteKeyRequired   = t( 'siteKeyRequired', '%s Site Key is required' );
+			var secretKeyRequired = t( 'secretKeyRequired', '%s Secret Key is required' );
+
 			// Validate service-specific required fields
 			switch(activeService) {
 				case 'recaptcha_v2':
+					var providerV2 = t( 'providerV2', 'Google reCAPTCHA v2' );
 					if (!$('#wc_settings_tab_recapcha_site_key').val()) {
-						errors.push('Google reCAPTCHA v2 Site Key is required');
+						errors.push( sprintf1( siteKeyRequired, providerV2 ) );
 						isValid = false;
 					}
 					if (!$('#wc_settings_tab_recapcha_secret_key').val()) {
-						errors.push('Google reCAPTCHA v2 Secret Key is required');
+						errors.push( sprintf1( secretKeyRequired, providerV2 ) );
 						isValid = false;
 					}
 					break;
-					
+
 				case 'recaptcha_v3':
+					var providerV3 = t( 'providerV3', 'Google reCAPTCHA v3' );
 					if (!$('#wc_settings_tab_recapcha_site_key_v3').val()) {
-						errors.push('Google reCAPTCHA v3 Site Key is required');
+						errors.push( sprintf1( siteKeyRequired, providerV3 ) );
 						isValid = false;
 					}
 					if (!$('#wc_settings_tab_recapcha_secret_key_v3').val()) {
-						errors.push('Google reCAPTCHA v3 Secret Key is required');
+						errors.push( sprintf1( secretKeyRequired, providerV3 ) );
 						isValid = false;
 					}
 					break;
-					
+
 				case 'turnstile':
+					var providerTurnstile = t( 'providerTurnstile', 'Cloudflare Turnstile' );
 					if (!$('#wbc_turnstile_site_key').val()) {
-						errors.push('Cloudflare Turnstile Site Key is required');
+						errors.push( sprintf1( siteKeyRequired, providerTurnstile ) );
 						isValid = false;
 					}
 					if (!$('#wbc_turnstile_secret_key').val()) {
-						errors.push('Cloudflare Turnstile Secret Key is required');
+						errors.push( sprintf1( secretKeyRequired, providerTurnstile ) );
 						isValid = false;
 					}
 					break;
@@ -125,13 +168,14 @@
 				$('.wbc-validation-error').remove();
 				
 				// Display error message
-				var errorHtml = '<div class="notice notice-error wbc-validation-error"><p><strong>Please fix the following errors:</strong></p><ul>';
+				var $errorNotice = $( '<div class="notice notice-error wbc-validation-error"><p><strong></strong></p><ul></ul></div>' );
+				$errorNotice.find( 'strong' ).text( t( 'fixErrors', 'Please fix the following errors:' ) );
+				var $errorList = $errorNotice.find( 'ul' );
 				errors.forEach(function(error) {
-					errorHtml += '<li>' + error + '</li>';
+					$errorList.append( $( '<li></li>' ).text( error ) );
 				});
-				errorHtml += '</ul></div>';
-				
-				$('h1').first().after(errorHtml);
+
+				$('h1').first().after($errorNotice);
 				
 				// Scroll to top to show errors
 				$('html, body').animate({
@@ -144,19 +188,31 @@
 		 * Add helper links for getting API keys
 		 */
 		function wbcAddHelperLinks() {
+			/**
+			 * Build a "Get your keys here" link for a provider's console.
+			 *
+			 * @param {string} url Provider console URL.
+			 * @return {jQuery} Link element with translated text.
+			 */
+			function wbcKeysLink( url ) {
+				return $( '<a target="_blank"></a>' )
+					.attr( 'href', url )
+					.text( t( 'getKeysHere', 'Get your keys here' ) );
+			}
+
 			// reCAPTCHA v2 helper
 			$('#wc_settings_tab_recapcha_site_key').closest('tr').find('.description').append(
-				' <a href="https://www.google.com/recaptcha/admin/create" target="_blank">Get your keys here</a>'
+				' ', wbcKeysLink( 'https://www.google.com/recaptcha/admin/create' )
 			);
-			
+
 			// reCAPTCHA v3 helper
 			$('#wc_settings_tab_recapcha_site_key_v3').closest('tr').find('.description').append(
-				' <a href="https://www.google.com/recaptcha/admin/create" target="_blank">Get your keys here</a>'
+				' ', wbcKeysLink( 'https://www.google.com/recaptcha/admin/create' )
 			);
-			
+
 			// Turnstile helper
 			$('#wbc_turnstile_site_key').closest('tr').find('.description').append(
-				' <a href="https://dash.cloudflare.com/sign-up?to=/:account/turnstile" target="_blank">Get your keys here</a>'
+				' ', wbcKeysLink( 'https://dash.cloudflare.com/sign-up?to=/:account/turnstile' )
 			);
 		}
 
@@ -182,7 +238,7 @@
 			// Show feedback
 			var $btn = $(this);
 			var originalText = $btn.text();
-			$btn.text('Key Generated!').prop('disabled', true);
+			$btn.text( t( 'keyGenerated', 'Key Generated!' ) ).prop('disabled', true);
 			setTimeout(function() {
 				$btn.text(originalText).prop('disabled', false);
 			}, 2000);
@@ -297,7 +353,8 @@
 				});
 
 				// Add toggle visibility button
-				var $toggleBtn = $('<button type="button" class="button button-secondary wbc-toggle-visibility" title="Toggle visibility">👁</button>');
+				var $toggleBtn = $('<button type="button" class="button button-secondary wbc-toggle-visibility">👁</button>')
+					.attr( 'title', t( 'toggleVisibility', 'Toggle visibility' ) );
 				$input.after($toggleBtn);
 
 				$toggleBtn.on('click', function(e) {
@@ -307,13 +364,13 @@
 						// Show real value
 						$input.val(realValue);
 						isMasked = false;
-						$(this).attr('title', 'Hide Secret Key');
+						$(this).attr( 'title', t( 'hideSecretKey', 'Hide Secret Key' ) );
 						$(this).html('🙈');
 					} else if (!isMasked && realValue) {
 						// Hide value
 						$input.val(wbcGetMaskedValue(realValue));
 						isMasked = true;
-						$(this).attr('title', 'Show Secret Key');
+						$(this).attr( 'title', t( 'showSecretKey', 'Show Secret Key' ) );
 						$(this).html('👁');
 					}
 
@@ -330,7 +387,8 @@
 			}
 
 			// Add copy button for all key fields
-			var $copyBtn = $('<button type="button" class="button button-secondary wbc-copy-key" title="Copy to Clipboard">📋</button>');
+			var $copyBtn = $('<button type="button" class="button button-secondary wbc-copy-key">📋</button>')
+				.attr( 'title', t( 'copyToClipboard', 'Copy to Clipboard' ) );
 
 			$wrapper.find('.wbc-toggle-visibility').length ?
 				$wrapper.find('.wbc-toggle-visibility').after($copyBtn) :
@@ -352,7 +410,7 @@
 					navigator.clipboard.writeText(valueToCopy).then(function() {
 						// Success feedback
 						var originalTitle = $copyBtn.attr('title');
-						$copyBtn.attr('title', 'Copied!');
+						$copyBtn.attr( 'title', t( 'copied', 'Copied!' ) );
 						$copyBtn.html('✅');
 						setTimeout(function() {
 							$copyBtn.html('📋');
@@ -370,7 +428,7 @@
 
 					// Success feedback
 					var originalTitle = $copyBtn.attr('title');
-					$copyBtn.attr('title', 'Copied!');
+					$copyBtn.attr( 'title', t( 'copied', 'Copied!' ) );
 					$copyBtn.html('✅');
 					setTimeout(function() {
 						$copyBtn.html('📋');

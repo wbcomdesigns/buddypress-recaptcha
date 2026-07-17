@@ -209,6 +209,7 @@ Yes. A POT file is included, along with a WPML configuration file.
 == Upgrade Notice ==
 
 = 2.1.0 =
+
 Security update: comment, lost-password and login forms are now verified on sites without WooCommerce, where they previously did nothing. Recommended for every site.
 
 == Changelog ==
@@ -216,6 +217,7 @@ Security update: comment, lost-password and login forms are now verified on site
 = 2.1.0 - June 2026 =
 
 * New      - Added a Discover tab to the admin with curated free Wbcom Designs tools.
+* New      - Added German, Spanish, French, Italian and Portuguese (Brazil) translations.
 * Improve  - Refreshed the settings screen with a modern card-based layout.
 * Improve  - reCAPTCHA and Turnstile scripts now load deferred on all browsers, improving page load speed and Core Web Vitals.
 * Improve  - More reliable ALTCHA spam detection.
@@ -225,6 +227,9 @@ Security update: comment, lost-password and login forms are now verified on site
 * Fix      - Removed unnecessary debug entries from the server error log.
 * Fix      - Prevented a rare fatal error when another plugin or theme uses the same generic class names.
 * Fix      - Prevented a fatal error on the front end when ALTCHA is the active provider.
+* Fix      - The plugin never registered its text domain, so bundled translations could never load.
+* Fix      - Block editor translations could never resolve, because the editor script was never told where this plugin keeps its translation files.
+* Fix      - Around thirty admin strings had no translatable source and always rendered in English.
 * Security - Comment forms are now protected on every site, not only sites running WooCommerce.
 * Security - Lost-password submissions are now verified on every site, not only sites running WooCommerce.
 * Security - BuddyPress group creation is now blocked when the CAPTCHA is not completed.

@@ -1,0 +1,68 @@
+{
+  "domain": "buddypress-recaptcha",
+  "potFile": "languages/buddypress-recaptcha.pot",
+  "languagesDir": "languages",
+  "engine": "claude",
+  "model": "haiku",
+  "batch": 400,
+  "makeJson": true,
+  "protect": [
+    "Wbcom",
+    "BuddyPress",
+    "BuddyBoss",
+    "WordPress",
+    "Pro",
+    "REST",
+    "API",
+    "URL",
+    "HTML",
+    "CSV",
+    "AI",
+    "ID",
+    "reCAPTCHA",
+    "hCaptcha",
+    "Turnstile",
+    "ALTCHA",
+    "Cloudflare",
+    "WooCommerce",
+    "bbPress",
+    "Contact Form 7",
+    "WPForms",
+    "Gravity Forms",
+    "Ninja Forms",
+    "Forminator",
+    "Elementor",
+    "Divi",
+    "MemberPress",
+    "Ultimate Member",
+    "Easy Digital Downloads",
+    "CAPTCHA"
+  ],
+  "locales": [
+    {
+      "locale": "de_DE",
+      "name": "German",
+      "register": "informal (du)"
+    },
+    {
+      "locale": "fr_FR",
+      "name": "French",
+      "register": "informal (tu)"
+    },
+    {
+      "locale": "es_ES",
+      "name": "Spanish",
+      "register": "informal (tú)"
+    },
+    {
+      "locale": "pt_BR",
+      "name": "Portuguese (Brazil)",
+      "register": "informal (você)"
+    },
+    {
+      "locale": "it_IT",
+      "name": "Italian",
+      "register": "informal (tu)"
+    }
+  ]
+}
