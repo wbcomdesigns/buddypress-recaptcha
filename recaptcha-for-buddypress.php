@@ -13,11 +13,11 @@
  *
  * @wordpress-plugin
  * Plugin Name:       Wbcom CAPTCHA Manager
- * Plugin URI:        https://wbcomdesigns.com/downloads/recaptcha-for-buddypress/
- * Description:       Complete CAPTCHA solution with support for reCAPTCHA v2, v3, Cloudflare Turnstile, hCaptcha, and ALTCHA. Protect WordPress, WooCommerce, BuddyPress, bbPress, and 10+ popular form builders from spam and bots with a modular, easy-to-manage interface.
- * Version:           2.0.2
- * Requires at least: 6.0
- * Tested up to:      6.9
+ * Plugin URI:        https://wbcomdesigns.com/downloads/buddypress-recaptcha/
+ * Description:       Complete CAPTCHA solution with support for reCAPTCHA v2, v3, Cloudflare Turnstile, hCaptcha, and ALTCHA. Protect WordPress, WooCommerce, BuddyPress, bbPress, and popular form builders from spam and bots with a modular, easy-to-manage interface.
+ * Version:           2.1.0
+ * Requires at least: 6.3
+ * Tested up to:      7.0
  * Requires PHP:      7.4
  * Author:            Wbcom Designs
  * Author URI:        https://wbcomdesigns.com/
@@ -38,7 +38,7 @@ if ( ! defined( 'WPINC' ) ) {
  * Rename this for your plugin and update it as you release new versions.
  */
 if ( ! defined( 'RFB_PLUGIN_VERSION' ) ) {
-	define( 'RFB_PLUGIN_VERSION', '2.0.2' );
+	define( 'RFB_PLUGIN_VERSION', '2.1.0' );
 }
 
 if ( ! defined( 'RFB_PLUGIN_FILE' ) ) {
@@ -113,23 +113,6 @@ add_action(
 );
 
 /**
- * Plugin activation check.
- *
- * Note: Plugin works standalone with WordPress core forms.
- * Additional integrations (WooCommerce, BuddyPress, bbPress)
- * are automatically detected and enabled via modular settings system.
- *
- * @since 1.0.0
- * @return void
- */
-//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound
-function wb_recaptcha_plugin_activation() {
-	register_activation_hook( __FILE__, 'activate_recaptcha_for_woocommerce' );
-}
-add_action( 'plugins_loaded', 'wb_recaptcha_plugin_activation' );
-
-
-/**
  * Redirect to plugin settings page after activated.
  *
  * @param string $plugin Get a plugin base url.
@@ -138,7 +121,7 @@ add_action( 'plugins_loaded', 'wb_recaptcha_plugin_activation' );
 function wb_recaptcha_activation_redirect_settings( $plugin ) {
 
 	if ( plugin_basename( __FILE__ ) === $plugin && ( class_exists( 'WooCommerce' ) || class_exists( 'BuddyPress' ) || class_exists( 'bbPress' ) ) ) {
-		if ( isset( $_REQUEST['action'] ) && $_REQUEST['action']  == 'activate' && isset( $_REQUEST['plugin'] ) && $_REQUEST['plugin'] == $plugin) { //phpcs:ignore
+		if ( isset( $_REQUEST['action'] ) && 'activate' === $_REQUEST['action'] && isset( $_REQUEST['plugin'] ) && $plugin === $_REQUEST['plugin'] ) { //phpcs:ignore
 			wp_safe_redirect( admin_url( 'admin.php?page=buddypress-recaptcha' ) );
 			exit;
 		}

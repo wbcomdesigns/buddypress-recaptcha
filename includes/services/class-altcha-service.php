@@ -10,7 +10,17 @@ defined( 'ABSPATH' ) || exit;
 
 // phpcs:disable Universal.Files.SeparateFunctionsFromOO.Mixed -- Helper function must be defined alongside service class.
 // Load ALTCHA verification library if standalone altcha-spam-protection plugin not active.
-if ( ! class_exists( 'AltchaPlugin' ) && ! is_plugin_active( 'altcha-spam-protection/altcha.php' ) ) {
+if ( ! class_exists( 'AltchaPlugin' ) && ( ! function_exists( 'is_plugin_active' ) || ! is_plugin_active( 'altcha-spam-protection/altcha.php' ) ) ) {
+	/*
+	 * Load the bundled ALTCHA library.
+	 *
+	 * This was never required, so AltchaPlugin did not exist and the library's
+	 * `rest_api_init` callback never ran - which meant /altcha/v1/challenge 404'd and
+	 * the ALTCHA provider could not issue a proof-of-work challenge to its widget.
+	 * The library defines the class, self-instantiates, and registers the route.
+	 */
+	require_once plugin_dir_path( __DIR__ ) . 'lib/altcha/class-altcha-lib.php';
+
 	// Define a minimal wrapper for ALTCHA verification.
 	if ( ! function_exists( 'altcha_random_secret' ) ) {
 		/**
@@ -27,8 +37,9 @@ if ( ! class_exists( 'AltchaPlugin' ) && ! is_plugin_active( 'altcha-spam-protec
 
 /**
  * ALTCHA implementation - Privacy-first, self-hosted proof-of-work captcha
+ *
+ * phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedClassFound
  */
-//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedClassFound
 class WBC_Altcha_Service extends WBC_Captcha_Service_Base {
 
 	/**
@@ -37,7 +48,7 @@ class WBC_Altcha_Service extends WBC_Captcha_Service_Base {
 	protected function init_config() {
 		$this->config = array(
 			'service_id'      => 'altcha',
-			'service_name'    => __( 'ALTCHA (Self-Hosted)', 'buddypress-recaptcha' ),
+			'service_name'    => 'ALTCHA (Self-Hosted)',
 			'script_url'      => plugins_url( 'public/js/altcha.min.js', dirname( __DIR__ ) ),
 			'verify_endpoint' => '', // Server-side verification handled differently.
 			'response_field'  => 'altcha',
@@ -59,7 +70,10 @@ class WBC_Altcha_Service extends WBC_Captcha_Service_Base {
 	 * @return string
 	 */
 	public function get_service_name() {
-		return $this->config['service_name'];
+		// Translated here, not in init_config(): services are constructed while the
+		// plugin file loads, long before init, and calling __() there triggered WP 6.7's
+		// _load_textdomain_just_in_time notice on every page load.
+		return __( 'ALTCHA (Self-Hosted)', 'buddypress-recaptcha' );
 	}
 
 	/**
@@ -342,7 +356,6 @@ class WBC_Altcha_Service extends WBC_Captcha_Service_Base {
 	 * @param string $hmac_key HMAC key.
 	 * @return bool
 	 */
-	//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 	private function verify_solution( $payload, $hmac_key ) {
 		// Validate base64 encoding.
 		if ( ! preg_match( '/^[A-Za-z0-9+\/=]+$/', $payload ) ) {

@@ -19,7 +19,7 @@
  * @subpackage bp_recaptcha/public
  * @author     Wbcom Designs <admin@wbcomdesigns.com>
  */
-class Registration {
+class WBC_Registration {
 
 	/**
 	 * Render captcha on registration form

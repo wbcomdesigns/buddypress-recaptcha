@@ -255,18 +255,17 @@ class AltchaPlugin {
 	}
 
 	function get_ip_address() {
-		foreach ( array( 'HTTP_CLIENT_IP', 'HTTP_X_FORWARDED_FOR', 'HTTP_X_FORWARDED', 'HTTP_X_CLUSTER_CLIENT_IP', 'HTTP_FORWARDED_FOR', 'HTTP_FORWARDED', 'REMOTE_ADDR' ) as $key ) {
-			if ( array_key_exists( $key, $_SERVER ) === true ) {
-				$value = trim( sanitize_text_field( $_SERVER[ $key ] ) );
-				foreach ( explode( ',', $value ) as $ip ) {
-					$ip = trim( $ip );
-
-					if ( filter_var( $ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE ) !== false ) {
-						return $ip;
-					}
-				}
+		// Trust only REMOTE_ADDR. The proxy headers (HTTP_X_FORWARDED_FOR etc.)
+		// are trivially spoofable by any client and were previously used by
+		// ALTCHA's IP detection — that is now fixed to match the rest of the
+		// plugin (see wb_recaptcha_get_the_user_ip()).
+		if ( isset( $_SERVER['REMOTE_ADDR'] ) ) {
+			$value = trim( sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) );
+			if ( '' !== $value && false !== filter_var( $value, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE ) ) {
+				return $value;
 			}
 		}
+		return '0.0.0.0';
 	}
 
 	public function get_challengeurl() {
@@ -559,13 +558,19 @@ class AltchaPlugin {
 				'timeout' => 15,
 			)
 		);
-		$status  = $resp['response']['code'];
+		if ( is_wp_error( $resp ) ) {
+			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+				error_log( sprintf( 'Spam Filter request failed - %s', $resp->get_error_message() ) ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+			}
+			return false;
+		}
+		$status = wp_remote_retrieve_response_code( $resp );
 		if ( $status === 200 ) {
-			$json                    = json_decode( $resp['body'], true );
+			$json                    = json_decode( wp_remote_retrieve_body( $resp ), true );
 			$this->spamfilter_result = $json;
 			return $json['classification'] !== 'BAD';
-		} else {
-			error_log( sprintf( 'Spam Filter responsed with %s - %s', $status, $resp['body'] ) );
+		} elseif ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+			error_log( sprintf( 'Spam Filter responsed with %s - %s', $status, wp_remote_retrieve_body( $resp ) ) ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
 		}
 		return false;
 	}
@@ -612,8 +617,20 @@ if ( ! isset( AltchaPlugin::$instance ) ) {
 	$altcha_plugin_instance->init();
 }
 
-require plugin_dir_path( __FILE__ ) . 'admin.php';
-require plugin_dir_path( __FILE__ ) . 'settings.php';
+/*
+ * Fork note: upstream loads its own admin screens here. This vendored copy does not,
+ * for two reasons:
+ *
+ * 1. Wbcom CAPTCHA Manager owns the CAPTCHA settings UI. Loading these would give the
+ *    site owner a second, competing "Settings > ALTCHA Anti-spam" page.
+ * 2. settings.php calls altcha_plugin_active(), which is defined in the standalone
+ *    ALTCHA plugin's main file - a file this bundle does not ship. Loading it fatals
+ *    the admin with "Call to undefined function altcha_plugin_active()".
+ *
+ * Everything this plugin actually needs from the library - the AltchaPlugin class, the
+ * challenge generator, and the /altcha/v1/challenge REST route registered below - lives
+ * in this file and does not depend on those two.
+ */
 
 add_action(
 	'rest_api_init',

@@ -143,8 +143,8 @@ class Woocommerce_Order {
 
 		// Verify captcha.
 		if ( function_exists( 'wbc_verify_captcha' ) ) {
-			if ( ! wbc_verify_captcha( 'comment_form' ) ) {
-				$error_msg = wbc_get_captcha_error_message( 'comment_form', 'invalid' );
+			if ( ! wbc_verify_captcha( 'comment' ) ) {
+				$error_msg = wbc_get_captcha_error_message( 'comment', 'invalid' );
 				wp_die(
 					esc_html( $error_msg ),
 					esc_html__( 'Comment Submission Failed', 'buddypress-recaptcha' ),

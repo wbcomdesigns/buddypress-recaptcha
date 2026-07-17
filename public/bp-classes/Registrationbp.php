@@ -71,17 +71,37 @@ class Registrationbp {
 	 * Validate BuddyPress group creation
 	 */
 	public function validate_bp_group_create_captcha() {
+		// Only guard the group-creation wizard, and only the group-details step
+		// where the CAPTCHA is actually rendered. groups_group_before_save also
+		// fires on later wizard steps and on admin edits of an existing group -
+		// none of which render a CAPTCHA, so verifying there would falsely block
+		// legitimate saves.
+		if ( ! function_exists( 'bp_is_group_create' ) || ! bp_is_group_create() ) {
+			return;
+		}
+		if ( function_exists( 'bp_is_group_creation_step' ) && ! bp_is_group_creation_step( 'group-details' ) ) {
+			return;
+		}
+
 		// Check if CAPTCHA is enabled for group creation.
 		$is_enabled = get_option( 'wbc_recaptcha_enable_on_bp_group_create' );
 		if ( 'yes' !== $is_enabled ) {
 			return;
 		}
 
-		// Verify captcha using the service manager.
-		if ( function_exists( 'wbc_verify_captcha' ) ) {
-			if ( ! wbc_verify_captcha( 'bp_group_create' ) ) {
-				$error_message = wbc_get_captcha_error_message( 'bp_group_create', 'invalid' );
-				buddypress()->groups->current_group->errors['group_create_captcha'] = $error_message;
+		// Verify captcha using the service manager. groups_group_before_save is a
+		// do_action whose return value is ignored, so we must abort the request
+		// ourselves: add a BuddyPress error message and redirect back to the
+		// group-details step before the group row is written.
+		if ( function_exists( 'wbc_verify_captcha' ) && ! wbc_verify_captcha( 'bp_group_create' ) ) {
+			$error_message = wbc_get_captcha_error_message( 'bp_group_create', 'invalid' );
+
+			if ( function_exists( 'bp_core_add_message' ) ) {
+				bp_core_add_message( $error_message, 'error' );
+			}
+
+			if ( function_exists( 'bp_core_redirect' ) && function_exists( 'bp_get_groups_directory_permalink' ) ) {
+				bp_core_redirect( trailingslashit( bp_get_groups_directory_permalink() . 'create/step/group-details' ) );
 			}
 		}
 	}

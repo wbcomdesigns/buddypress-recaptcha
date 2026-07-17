@@ -57,6 +57,13 @@ class WBC_Setup_Wizard {
 			return;
 		}
 
+		// The wizard renders and saves CAPTCHA service/keys/form options. It runs
+		// on admin_init (before the menu cap gate), so authorize here: only users
+		// who can manage options may view or submit any wizard step.
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_die( esc_html__( 'You do not have permission to access the setup wizard.', 'buddypress-recaptcha' ) );
+		}
+
 		$this->steps = array(
 			'welcome'  => array(
 				'name'    => __( 'Welcome', 'buddypress-recaptcha' ),
@@ -465,7 +472,7 @@ class WBC_Setup_Wizard {
 		<body class="wbc-setup">
 			<div class="wbc-setup-wizard">
 				<div class="wbc-setup-header">
-					<h1>🛡️ BuddyPress reCAPTCHA Setup</h1>
+					<h1>🛡️ <?php esc_html_e( 'BuddyPress reCAPTCHA Setup', 'buddypress-recaptcha' ); ?></h1>
 					<p><?php esc_html_e( 'Quick and easy spam protection for your site', 'buddypress-recaptcha' ); ?></p>
 				</div>
 		<?php
@@ -524,7 +531,7 @@ class WBC_Setup_Wizard {
 	 */
 	public function wbc_setup_welcome() {
 		?>
-		<h2><?php esc_html_e( 'Welcome to BuddyPress reCAPTCHA! 👋', 'buddypress-recaptcha' ); ?></h2>
+		<h2><?php esc_html_e( 'Welcome to Wbcom CAPTCHA Manager!', 'buddypress-recaptcha' ); ?></h2>
 		<p><?php esc_html_e( 'Thank you for choosing our plugin to protect your site from spam and bots. This quick setup wizard will help you get started in just a few minutes.', 'buddypress-recaptcha' ); ?></p>
 
 		<div class="wbc-features">
@@ -921,7 +928,7 @@ class WBC_Setup_Wizard {
 	public function wbc_setup_complete() {
 		?>
 		<div class="wbc-success-icon">✅</div>
-		<h2><?php esc_html_e( 'Setup Complete! 🎉', 'buddypress-recaptcha' ); ?></h2>
+		<h2><?php esc_html_e( 'Setup Complete!', 'buddypress-recaptcha' ); ?></h2>
 		<p><?php esc_html_e( 'Congratulations! Your site is now protected from spam and bots. Your selected forms are secured with captcha protection.', 'buddypress-recaptcha' ); ?></p>
 
 		<div class="wbc-alert wbc-alert-success">

@@ -1,0 +1,138 @@
+{
+  "plugin": {
+    "slug": "buddypress-recaptcha",
+    "name": "Wbcom CAPTCHA Manager",
+    "version": "2.1.0",
+    "requires_at_least": "6.3",
+    "requires_php": "7.4",
+    "tested_up_to": "7.0",
+    "extends": null
+  },
+  "counts": {
+    "rest_endpoints": 1,
+    "ajax_actions": 1,
+    "admin_pages": 2,
+    "admin_tabs": 6,
+    "blocks": 1,
+    "widgets": 1,
+    "shortcodes": 0,
+    "services": 19,
+    "integrations": 14,
+    "contexts": 29,
+    "hooks_fired_unique": 35,
+    "hooks_actions": 6,
+    "hooks_filters": 29,
+    "tables": 0,
+    "post_types": 0,
+    "taxonomies": 0,
+    "cron": 0,
+    "wp_cli": 0,
+    "settings_register_setting_calls": 0,
+    "providers_supported": 5
+  },
+  "count_notes": {
+    "ajax_actions": "1 action (wbc_ajax_login) registered on both wp_ajax_ and wp_ajax_nopriv_. The former wbcom_addons_cards action is gone — admin/wbcom/ was deleted in the 2.1.0 card-panel migration.",
+    "admin_pages": "2 live: the shared 'WB Plugins' hub (conditional — only when this is the first Wbcom plugin to load) and the 'CAPTCHA' submenu with 6 tabs. The previously-listed 'ALTCHA Options' page does NOT exist at runtime: includes/lib/altcha/admin.php is deliberately never required.",
+    "shortcodes": "ZERO. grep add_shortcode outside vendor/ returns no hits.",
+    "hooks_fired_unique": "35 = 27 plugin-owned (4 actions + 23 filters) + 8 vendored ALTCHA library hooks (2 actions + 6 filters). WP/WC core hooks the plugin merely re-dispatches (woocommerce_admin_field_*, admin_print_styles, widget_title, etc.) are NOT counted — see manifest.hooks_not_owned.",
+    "settings_register_setting_calls": "ZERO live. All 32 register_setting() calls live in includes/lib/altcha/settings.php, which is never required. The plugin's settings use the WooCommerce-style woocommerce_update_option path, not the Settings API.",
+    "services": "19 registered/loaded classes, including the 5 provider services, the manager/base/interface triad, the admin classes, and the migration helpers."
+  },
+  "providers": ["recaptcha-v2", "recaptcha-v3", "turnstile", "hcaptcha", "altcha"],
+  "provider_classes": {
+    "recaptcha-v2": "WBC_Recaptcha_V2_Service (includes/services/class-recaptcha-v2-service.php)",
+    "recaptcha-v3": "WBC_Recaptcha_V3_Service (includes/services/class-recaptcha-v3-service.php)",
+    "turnstile": "WBC_Turnstile_Service (includes/services/class-turnstile-service.php)",
+    "hcaptcha": "WBC_HCaptcha_Service (includes/services/class-hcaptcha-service.php)",
+    "altcha": "WBC_Altcha_Service (includes/services/class-altcha-service.php)"
+  },
+  "providers_registered_at": "includes/class-captcha-service-manager.php:63-84",
+  "integrations": {
+    "count": 14,
+    "breakdown": "4 platform + 7 form builders + 3 e-commerce/membership = 14",
+    "platform": ["WordPress core (login/register/lost-password/comments)", "WooCommerce", "BuddyPress", "bbPress"],
+    "form_builders": ["Contact Form 7", "WPForms", "Gravity Forms", "Ninja Forms", "Forminator", "Elementor Pro", "Divi Builder"],
+    "ecommerce_membership": ["Easy Digital Downloads", "MemberPress", "Ultimate Member"],
+    "evidence_rule": "Each has BOTH a public wiring class (required in includes/class-recaptcha-for-buddypress.php:165-219, :334-335) AND a settings module (registered in admin/includes/settings-modules/class-wbc-settings-module-loader.php:81-94).",
+    "counting_rule": "14 = the exact number of settings modules. WordPress core login/register/lost-password and WordPress comments are separate wiring points but ONE integration — they share WBC_WordPress_Settings and one Protection-tab section. Do not count them twice.",
+    "NOT_integrated": ["Fluent Forms", "Formidable Forms", "WS Form", "FluentCart"],
+    "NOT_integrated_note": "All four were falsely advertised with ZERO first-party code; readme claims removed 2026-07-16. Formidable appears ONLY inside the never-loaded vendored ALTCHA lib. Do NOT re-add them to docs, readme, or this manifest."
+  },
+  "key_classes": {
+    "manager": "WBC_Captcha_Service_Manager",
+    "base": "WBC_Captcha_Service_Base",
+    "interface": "WBC_Captcha_Service_Interface",
+    "ajax_login": "WBC_AJAX_Login_Handler",
+    "block": "WBC_Login_Block",
+    "widget": "WBC_Login_Widget",
+    "admin": "BPRC_Admin",
+    "settings_engine": "WBC_BuddyPress_Settings_Page",
+    "settings_modules": "WBC_Settings_Module_Loader"
+  },
+  "block": {
+    "name": "wbc/login-widget",
+    "api_version": 3,
+    "block_json": "blocks/login-widget/block.json",
+    "note": "apiVersion 3 is what sets the plugin's real WP 6.3 floor. The name is NOT buddypress-recaptcha/login (a pre-2026-07 manifest error)."
+  },
+  "extension_points": {
+    "register_custom_service": "wbc_register_captcha_services (action, includes/class-captcha-service-manager.php:97)",
+    "register_settings_module": "wbc_recaptcha_register_settings_modules (action, class-wbc-settings-module-loader.php:153)",
+    "skip_render": "wbc_should_render_captcha (filter, class-captcha-service-base.php:442)",
+    "skip_verify": "wbc_should_verify_captcha (filter, class-captcha-service-base.php:465)",
+    "override_verification": "wbc_captcha_verified (filter, 4 firers — NOT reCAPTCHA v3)",
+    "override_verification_v3": "wbc_recaptcha_v3_verify (filter, class-recaptcha-v3-service.php:313) — v3's replacement for wbc_captcha_verified",
+    "v3_score_threshold": "wbc_recaptcha_v3_score_threshold_value (filter, class-recaptcha-v3-service.php:388)",
+    "fail_closed": "wbc_captcha_fail_closed (option + filter, since 2.1.0, class-captcha-service-manager.php:283,320)",
+    "strict_nonce": "wbc_captcha_strict_nonce (option + filter, since 2.1.0, 3 firers — NOT reCAPTCHA v3 or ALTCHA)",
+    "admin_tabs": "bprc_admin_tabs (filter, includes/admin/class-bprc-admin.php:104)",
+    "recaptcha_domain": "anr_recaptcha_domain (filter, class-recaptcha-v2-service.php:111,243)"
+  },
+  "features_verified_live": {
+    "updates_tab": "includes/admin/class-bprc-admin.php:89 → includes/admin/views/updates.php",
+    "discover_tab": "includes/admin/class-bprc-admin.php:95 → includes/admin/views/discover.php",
+    "edd_auto_updates": "recaptcha-for-buddypress.php:97-113 (keyless, item_id 1246648)",
+    "ip_whitelist": "includes/class-captcha-service-manager.php:216, :473-481 + CIDR/range matcher at includes/recaptcha-helper-functions.php:135-194",
+    "fail_closed_mode": "includes/class-captcha-service-manager.php:283, :320",
+    "strict_nonce": "includes/services/class-hcaptcha-service.php:260, class-recaptcha-v2-service.php:204, class-turnstile-service.php:164",
+    "altcha_rest_challenge": "includes/lib/altcha/class-altcha-lib.php:635-648"
+  },
+  "features_verified_DEAD": {
+    "setup_wizard": "admin/class-wbc-setup-wizard.php is NEVER required by any file — the whole wizard is unreachable and wbc_enable_setup_wizard never fires. Previous manifests listed it as live. NEEDS A CARD.",
+    "hcaptcha_appearance": "wbc_hcaptcha_theme / wbc_hcaptcha_size written, never read (hCaptcha uses shared wbc_recaptcha_theme/size).",
+    "turnstile_appearance": "wbc_turnstile_theme / wbc_turnstile_size written, never read. Turnstile has NO working appearance control.",
+    "v3_badge_position": "wbc_recaptcha_v3_badge written, never read.",
+    "custom_error_messages": "Settings write wbc_recapcha_error_msg_captcha_{blank,invalid,no_response}; readers use wc_settings_tab_recapcha_* / *_v3; option-name-compatibility.php does NOT bridge them. Customising an error message has no effect.",
+    "activation_redirect_on_plain_wp": "recaptcha-for-buddypress.php:123 gates on WooCommerce||BuddyPress||bbPress — a plain WP site gets no signpost.",
+    "note": "All of the above are recorded, NOT fixed. Each needs a Basecamp card. See manifest.static_analysis.{dead_code_files,dead_options,saved_but_not_applied}."
+  },
+  "detail_files": {
+    "full_manifest": "audit/manifest.json",
+    "feature_audit": "audit/FEATURE_AUDIT.md",
+    "code_flows": "audit/CODE_FLOWS.md",
+    "role_matrix": "audit/ROLE_MATRIX.md",
+    "wiring_contract": "audit/CAPTCHA-WIRING-CONTRACT.md",
+    "audit_verdict": "audit/AUDIT-VERDICT-2026-06-29.md",
+    "graph": "audit/graph.html",
+    "wppqa_baseline": "audit/wppqa-baseline-2026-06-04/SUMMARY.md"
+  },
+  "wppqa_summary": {
+    "stale": true,
+    "note": "Carried over from the 2026-06-04 baseline. wppqa was NOT re-run in the 2026-07-16 structural refresh (explicitly out of scope). Treat as provisional.",
+    "high_findings": 15,
+    "real_high_findings": 4,
+    "false_positive_high": 11,
+    "medium_warnings": 7,
+    "release_blocking": 0
+  },
+  "generated": {
+    "at": "2026-07-16T10:33:31+00:00",
+    "from": "manual structural re-scan (grep/glob against shipped code)",
+    "branch": "release/2.1.0",
+    "head_commit": "3d666af",
+    "scan_scope": "full_rescan",
+    "php_file_count": 91,
+    "wppqa_run": false,
+    "schema_version": "v2.1"
+  }
+}

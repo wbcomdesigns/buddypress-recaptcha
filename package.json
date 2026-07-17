@@ -1,6 +1,6 @@
 {
   "name": "buddypress-recaptcha",
-  "version": "2.0.2",
+  "version": "2.1.0",
   "url": "https://github.com/wbcomdesigns/buddypress-recaptcha",
   "license": "GPL-2.0+",
   "description": "Complete CAPTCHA solution with support for multiple CAPTCHA services. Protect your WordPress, WooCommerce, BuddyPress, bbPress, and 10+ popular form builders from spam and bots.",
