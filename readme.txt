@@ -4,7 +4,7 @@ Donate link: https://wbcomdesigns.com/donate/
 Tags: captcha, recaptcha, spam protection, security, woocommerce
 Requires at least: 6.5
 Tested up to: 7.0
-Stable tag: 2.1.1
+Stable tag: 2.1.0
 Requires PHP: 8.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -214,27 +214,19 @@ Security update: comment, lost-password and login forms are now verified on site
 
 == Changelog ==
 
-= 2.1.1 - July 2026 =
-
-Fixes the Italian translation and the settings screens that lost their styling in 2.1.0.
-
-* Fix      - Italian admin labels were shifted by one, so menu items read as the wrong thing - "Settings" showed as "Account", "Save Changes" as "Plugin Updates". Realigned every affected entry and restored the seven translations that had been dropped.
-* Fix      - The Italian block editor sidebar for the CAPTCHA Login block carried the same shift and is now correct.
-* Fix      - Text fields on Quick Setup and Advanced were rendering at the browser default width and cut off their own values, so a saved error message could not be read back. They now fill the field column.
-* Fix      - The IP Whitelist box is a full-width monospace field again instead of a single narrow line.
-* Improve  - Section headings on Quick Setup, Protection and Advanced now match the Overview tab instead of using a different blue and type size.
-* Improve  - Protection toggle cards are the same width in every section; the BuddyPress group no longer stretches wider than the WordPress group.
-* Dev      - Settings-field styles are re-scoped to the card-panel shell introduced in 2.1.0, which had orphaned them.
-* Dev      - Admin content styles now consume the shared admin design tokens; five competing accent blues consolidated to one.
-* Dev      - Removed an unused appearance-cards stylesheet that was still being loaded on every admin screen.
-
-= 2.1.0 - June 2026 =
+= 2.1.0 - July 2026 =
 
 * New      - Added a Discover tab to the admin with curated free Wbcom Designs tools.
 * New      - Added German, Spanish, French, Italian and Portuguese (Brazil) translations.
 * Improve  - Refreshed the settings screen with a modern card-based layout.
 * Improve  - reCAPTCHA and Turnstile scripts now load deferred on all browsers, improving page load speed and Core Web Vitals.
 * Improve  - More reliable ALTCHA spam detection.
+* Improve  - Section headings on Quick Setup, Protection and Advanced match the Overview tab instead of using a different blue and type size.
+* Improve  - Protection toggle cards are the same width in every section; the BuddyPress group no longer stretches wider than the WordPress group.
+* Fix      - Italian admin labels were shifted by one, so menu items read as the wrong thing - "Settings" showed as "Account", "Save Changes" as "Plugin Updates". Realigned every affected entry and restored the seven translations that had been dropped.
+* Fix      - The Italian block editor sidebar for the CAPTCHA Login block carried the same shift and is now correct.
+* Fix      - Text fields on Quick Setup and Advanced rendered at the browser default width and cut off their own values, so a saved error message could not be read back. They now fill the field column.
+* Fix      - The IP Whitelist box is a full-width monospace field instead of a single narrow line.
 * Fix      - The CAPTCHA language setting now applies correctly for hCaptcha and reCAPTCHA v2.
 * Fix      - Corrected the language selector display on the Advanced settings tab.
 * Fix      - The reCAPTCHA v3 score threshold set in the admin now takes effect.
@@ -251,6 +243,10 @@ Fixes the Italian translation and the settings screens that lost their styling i
 * Security - The login form can no longer be submitted without completing the CAPTCHA on sites that do not use WooCommerce.
 * Security - The setup wizard is now restricted to administrators.
 * Dev      - Corrected the minimum supported WordPress version metadata.
+* Dev      - Settings-field styles are scoped to the card-panel shell, which had orphaned them.
+* Dev      - Admin content styles now consume the shared admin design tokens; five competing accent blues consolidated to one.
+* Dev      - Removed an unused appearance-cards stylesheet that was still being loaded on every admin screen.
+* Dev      - PHPStan level 5 runs clean against the plugin's own config.
 * Compat   - Tested with WordPress 7.0.
 
 = 2.0.2 =
