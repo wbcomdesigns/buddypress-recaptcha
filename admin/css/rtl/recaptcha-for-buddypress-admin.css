@@ -55,57 +55,112 @@
 /*--------------------------------------------------------------
 # Admin Tab Content
 --------------------------------------------------------------*/
+/*
+ * Section headings inside the settings tabs.
+ *
+ * These <h2>s come from the legacy WooCommerce-style field renderer, so the
+ * card-panel shell cannot style them - it only owns .bprc-card__title. Match
+ * that title language here (13px / uppercase / --bprc-admin-text) so a
+ * settings tab reads as the same product as the Overview tab. Previously a
+ * hard-coded 2A32EF at 20px - a fifth accent blue matching nothing on screen.
+ */
 #wb-recaptcha h2 {
-    margin-top: 0;
-    color: #2A32EF;
-    font-size: 20px;
+    margin: 0 0 16px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--bprc-admin-border);
+    color: var(--bprc-admin-text);
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
 }
 
-/* Uniform input styling for all input types */
+/*
+ * Field controls.
+ *
+ * SCOPE: .bprc-admin is the live wrapper. The card-panel migration in 2.1.0
+ * replaced .rfw-tab-content with .bprc-card__body inside .wrap.bprc-admin,
+ * and this file was never re-pointed - so every rule below was dead and the
+ * fields fell back to the browser default (a 180px text input that visibly
+ * clipped its own value on the Advanced tab). .rfw-tab-content is kept in the
+ * selector list for any screen still rendering the older markup.
+ *
+ * WIDTH: text-like controls fill the field column. These hold API keys,
+ * comma-separated IP lists and full error sentences - values the site owner
+ * has to be able to read back. Selects stay capped: they hold short
+ * enumerations and a full-width select just looks broken.
+ */
+.bprc-admin input[type="text"],
+.bprc-admin input[type="password"],
+.bprc-admin input[type="email"],
+.bprc-admin input[type="url"],
+.bprc-admin .wbc-secret-key-input,
 .rfw-tab-content input[type="text"],
 .rfw-tab-content input[type="password"],
 .rfw-tab-content input[type="email"],
 .rfw-tab-content input[type="url"],
-.rfw-tab-content input[type="number"],
-.wbcom-settings-section-wrap select,
 .rfw-tab-content .wbc-secret-key-input {
-    width: 400px !important;
-    max-width: 100% !important;
-    display: inline-block !important;
-    vertical-align: middle !important;
-    border-radius: 4px;
+    width: 100%;
+    max-width: 100%;
+    display: block;
+    border-radius: var(--bprc-admin-radius-sm);
     box-shadow: none;
-    height: 32px;
-    border: 1px solid #8c8f94;
-    background-color: #fff;
-    padding: 0 8px;
+    height: 36px;
+    border: 1px solid var(--bprc-admin-border-strong);
+    background-color: var(--bprc-admin-white);
+    padding: 0 10px;
     font-size: 14px;
     line-height: 2;
 }
 
-/* Ensure select boxes match input height */
+/* Selects: sized to their content, not to the column. */
+.bprc-admin .wbcom-settings-section-wrap select,
 .wbcom-settings-section-wrap select {
-    height: 32px !important;
-    padding: 2px 8px 2px 24px;
+    width: 100%;
+    max-width: 320px;
+    display: block;
+    border-radius: var(--bprc-admin-radius-sm);
+    box-shadow: none;
+    height: 36px !important;
+    border: 1px solid var(--bprc-admin-border-strong);
+    background-color: var(--bprc-admin-white);
+    padding: 2px 10px 2px 24px;
+    font-size: 14px;
 }
 
 /* Number inputs specific width */
+.bprc-admin input[type="number"],
 .rfw-tab-content input[type="number"] {
-    width: 100px !important;
+    width: 100px;
+    height: 36px;
+    border-radius: var(--bprc-admin-radius-sm);
+    border: 1px solid var(--bprc-admin-border-strong);
+    background-color: var(--bprc-admin-white);
+    padding: 0 10px;
+    font-size: 14px;
 }
 
 /* Textarea styling */
+.bprc-admin .wbcom-settings-section-wrap textarea,
 .rfw-tab-content textarea {
-    width: 400px !important;
-    max-width: 100% !important;
-    border-radius: 4px;
-    border: 1px solid #8c8f94;
-    background-color: #fff;
-    padding: 8px;
+    width: 100%;
+    max-width: 100%;
+    min-height: 90px;
+    border-radius: var(--bprc-admin-radius-sm);
+    border: 1px solid var(--bprc-admin-border-strong);
+    background-color: var(--bprc-admin-white);
+    padding: 8px 10px;
     font-size: 14px;
 }
 
 /* Focus states for all inputs */
+.bprc-admin input[type="text"]:focus,
+.bprc-admin input[type="password"]:focus,
+.bprc-admin input[type="email"]:focus,
+.bprc-admin input[type="url"]:focus,
+.bprc-admin input[type="number"]:focus,
+.bprc-admin .wbc-secret-key-input:focus,
+.bprc-admin .wbcom-settings-section-wrap textarea:focus,
 .rfw-tab-content input[type="text"]:focus,
 .rfw-tab-content input[type="password"]:focus,
 .rfw-tab-content input[type="email"]:focus,
@@ -114,9 +169,43 @@
 .wbcom-settings-section-wrap select:focus,
 .rfw-tab-content textarea:focus,
 .rfw-tab-content .wbc-secret-key-input:focus {
-    border-color: #2271b1;
-    box-shadow: 0 0 0 1px #2271b1;
+    border-color: var(--bprc-admin-accent);
+    box-shadow: 0 0 0 1px var(--bprc-admin-accent);
     outline: 2px solid transparent;
+}
+
+/*
+ * Key fields that carry an action button (copy / reveal / generate).
+ *
+ * The renderer emits the button as a plain sibling of the input inside
+ * .forminp. That worked while the input was a fixed-width inline-block, but
+ * now that inputs fill the column the button would be pushed onto its own
+ * line. Make just those rows a flex pair so the button stays on the field.
+ */
+.bprc-admin .forminp:has(> .wbc-copy-key),
+.bprc-admin .forminp:has(> .wbc-toggle-visibility),
+.bprc-admin .forminp:has(> .wbc-generate-hmac-key) {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.bprc-admin .forminp:has(> .wbc-copy-key) > input,
+.bprc-admin .forminp:has(> .wbc-toggle-visibility) > input,
+.bprc-admin .forminp:has(> .wbc-generate-hmac-key) > input {
+  flex: 1 1 auto;
+  width: auto;
+  min-width: 0;
+}
+
+/* gap already spaces the pair - the legacy margin would double it. */
+.bprc-admin .forminp > .wbc-copy-key,
+.bprc-admin .forminp > .wbc-toggle-visibility,
+.bprc-admin .forminp > .wbc-generate-hmac-key {
+  margin-right: 0 !important;
+  height: 36px !important;
+  line-height: 34px !important;
+  flex: 0 0 auto;
 }
 
 .rfw-tab-content .woocommerce-save-button {
@@ -160,9 +249,9 @@ h1.wbcom-plugin-heading {
   padding: 0 12px !important;
   min-width: 40px !important;
   font-size: 14px !important;
-  border: 1px solid #8c8f94 !important;
-  background: #f6f7f7 !important;
-  color: #50575e !important;
+  border: 1px solid var(--bprc-admin-border-strong) !important;
+  background: var(--bprc-admin-surface-1) !important;
+  color: var(--bprc-admin-text-3) !important;
   cursor: pointer !important;
   border-radius: 4px !important;
   margin-right: 8px !important;
@@ -173,16 +262,16 @@ h1.wbcom-plugin-heading {
 .wbc-toggle-visibility:hover,
 .wbc-copy-key:hover,
 .wbc-generate-hmac-key:hover {
-  background: #f0f0f1 !important;
-  border-color: #50575e !important;
-  color: #0a0a0a !important;
+  background: var(--bprc-admin-surface-2) !important;
+  border-color: var(--bprc-admin-text-3) !important;
+  color: var(--bprc-admin-text) !important;
 }
 
 .wbc-toggle-visibility:focus,
 .wbc-copy-key:focus,
 .wbc-generate-hmac-key:focus {
-  border-color: #2271b1 !important;
-  box-shadow: 0 0 0 1px #2271b1 !important;
+  border-color: var(--bprc-admin-accent) !important;
+  box-shadow: 0 0 0 1px var(--bprc-admin-accent) !important;
   outline: 2px solid transparent !important;
 }
 
@@ -216,13 +305,21 @@ h1.wbcom-plugin-heading {
 
 /* Adjust for smaller screens */
 @media screen and (max-width: 782px) {
+  .bprc-admin input[type="text"],
+  .bprc-admin input[type="password"],
+  .bprc-admin input[type="email"],
+  .bprc-admin input[type="url"],
+  .bprc-admin .wbc-secret-key-input,
+  .bprc-admin .wbcom-settings-section-wrap textarea,
+  .bprc-admin .wbcom-settings-section-wrap select,
   .rfw-tab-content input[type="text"],
   .rfw-tab-content input[type="password"],
   .rfw-tab-content input[type="email"],
   .rfw-tab-content input[type="url"],
   .rfw-tab-content .wbc-secret-key-input,
   .rfw-tab-content textarea {
-    width: 100% !important;
+    width: 100%;
+    max-width: 100%;
   }
 
   .wbcom-settings-section-wrap td,
@@ -285,7 +382,7 @@ h1.wbcom-plugin-heading {
 .wbc-settings-section-wrap .description {
   display: block;
   margin-top: 5px;
-  color: #646970;
+  color: var(--bprc-admin-text-3);
   font-size: 13px;
   font-style: normal;
 }
@@ -299,12 +396,12 @@ h1.wbcom-plugin-heading {
   display: block;
   margin-bottom: 15px;
   padding: 20px;
-  border: 3px solid #ddd;
+  border: 3px solid var(--bprc-admin-border);
   border-radius: 6px;
   cursor: pointer;
   transition: all 0.2s ease;
   position: relative;
-  background: #fff;
+  background: var(--bprc-admin-white);
 }
 
 .wbc-service-option:last-child {
@@ -312,7 +409,7 @@ h1.wbcom-plugin-heading {
 }
 
 .wbc-service-option:hover {
-  border-color: #999;
+  border-color: var(--bprc-admin-border-strong);
   transform: translateY(-2px);
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
@@ -320,8 +417,8 @@ h1.wbcom-plugin-heading {
 /* SELECTED STATE - Make it SUPER obvious */
 /* Using :has() selector for browsers that support it */
 .wbc-service-option:has(input[type="radio"]:checked) {
-  background: linear-gradient(-135deg, #0073aa 0%, #005a87 100%);
-  border-color: #0073aa;
+  background: linear-gradient(-135deg, var(--bprc-admin-accent) 0%, var(--bprc-admin-accent-hover) 100%);
+  border-color: var(--bprc-admin-accent);
   border-width: 4px;
   box-shadow: 0 4px 12px rgba(0, 115, 170, 0.3);
   transform: scale(1.02);
@@ -334,7 +431,7 @@ h1.wbcom-plugin-heading {
 
 .wbc-service-option:has(input[type="radio"]:checked) .wbc-service-badge {
   background: white;
-  color: #0073aa;
+  color: var(--bprc-admin-accent);
 }
 
 .wbc-service-option:has(input[type="radio"]:checked)::before {
@@ -345,7 +442,7 @@ h1.wbcom-plugin-heading {
   width: 40px;
   height: 40px;
   background: white;
-  color: #0073aa;
+  color: var(--bprc-admin-accent);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -357,8 +454,8 @@ h1.wbcom-plugin-heading {
 
 /* Fallback using JavaScript-added class for all browsers */
 .wbc-service-option.wbc-selected {
-  background: linear-gradient(-135deg, #0073aa 0%, #005a87 100%) !important;
-  border-color: #0073aa !important;
+  background: linear-gradient(-135deg, var(--bprc-admin-accent) 0%, var(--bprc-admin-accent-hover) 100%) !important;
+  border-color: var(--bprc-admin-accent) !important;
   border-width: 4px !important;
   box-shadow: 0 4px 12px rgba(0, 115, 170, 0.3) !important;
   transform: scale(1.02) !important;
@@ -371,7 +468,7 @@ h1.wbcom-plugin-heading {
 
 .wbc-service-option.wbc-selected .wbc-service-badge {
   background: white !important;
-  color: #0073aa !important;
+  color: var(--bprc-admin-accent) !important;
 }
 
 .wbc-service-option.wbc-selected::before {
@@ -382,7 +479,7 @@ h1.wbcom-plugin-heading {
   width: 40px;
   height: 40px;
   background: white;
-  color: #0073aa;
+  color: var(--bprc-admin-accent);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -399,7 +496,7 @@ h1.wbcom-plugin-heading {
   vertical-align: middle;
   margin-top: -3px;
   cursor: pointer;
-  accent-color: #0073aa;
+  accent-color: var(--bprc-admin-accent);
   position: relative;
 }
 
@@ -426,7 +523,7 @@ h1.wbcom-plugin-heading {
 }
 
 .wbc-service-desc {
-  color: #666;
+  color: var(--bprc-admin-text-3);
   margin-right: 36px;
   font-size: 14px;
   display: block;
@@ -434,7 +531,7 @@ h1.wbcom-plugin-heading {
 }
 
 .wbc-service-badge {
-  background: #0073aa;
+  background: var(--bprc-admin-accent);
   color: white;
   padding: 3px 10px;
   border-radius: 4px;
@@ -473,7 +570,7 @@ h1.wbcom-plugin-heading {
 
 /* Guide boxes */
 .wbc-guide-box {
-  background: #f9f9f9;
+  background: var(--bprc-admin-surface-1);
   padding: 20px;
   border-radius: 5px;
   margin: 15px 0;
@@ -485,19 +582,25 @@ h1.wbcom-plugin-heading {
 }
 
 .wbc-guide-google {
-  border-right: 4px solid #0073aa;
+  border-right: 4px solid var(--bprc-admin-accent);
 }
 
+/*
+ * The three below are deliberately NOT tokenised. Each is the provider's own
+ * brand colour and its job is to identify the vendor whose setup guide you are
+ * reading. Mapping them onto --bprc-admin-accent would make all four guide
+ * boxes look identical, which is the opposite of what they are for.
+ */
 .wbc-guide-cloudflare {
-  border-right: 4px solid #f48120;
+  border-right: 4px solid #f48120; /* Cloudflare orange */
 }
 
 .wbc-guide-hcaptcha {
-  border-right: 4px solid #7c3aed;
+  border-right: 4px solid #7c3aed; /* hCaptcha purple */
 }
 
 .wbc-guide-altcha {
-  border-right: 4px solid #10b981;
+  border-right: 4px solid #10b981; /* ALTCHA green */
 }
 
 .wbc-guide-steps {
@@ -508,7 +611,7 @@ h1.wbcom-plugin-heading {
 .wbc-guide-note {
   margin-top: 15px;
   padding: 10px;
-  background: #fff;
+  background: var(--bprc-admin-white);
   border-radius: 3px;
   margin-bottom: 0;
 }
@@ -516,15 +619,15 @@ h1.wbcom-plugin-heading {
 .wbc-guide-warning {
   margin-top: 15px;
   padding: 10px;
-  background: #fff3cd;
+  background: var(--bprc-admin-warn-light);
   border-radius: 3px;
   margin-bottom: 0;
 }
 
 /* Info box */
 .wbc-info-box {
-  background: #fff9e6;
-  border-right: 4px solid #f0b429;
+  background: var(--bprc-admin-warn-light);
+  border-right: 4px solid var(--bprc-admin-warn);
   padding: 20px;
   margin: 20px 0;
   border-radius: 4px;
@@ -532,7 +635,7 @@ h1.wbcom-plugin-heading {
 }
 
 .wbc-info-box p {
-  color: #856404;
+  color: var(--bprc-admin-text);
   line-height: 1.6;
   margin: 0;
   font-size: 15px;
@@ -566,17 +669,25 @@ h1.wbcom-plugin-heading {
   transform: translateY(-1px);
 }
 
-/* Protection Settings - Toggle Switch Layout */
+/*
+ * Protection Settings - Toggle Switch Layout
+ *
+ * auto-FILL, not auto-fit. auto-fit collapses the empty tracks, so a section
+ * with 2 toggles (BuddyPress Forms) stretched its cards to 462px while the
+ * 5-toggle section above it (WordPress Forms) sat at 304px - two different
+ * card sizes on one screen. auto-fill keeps the track count stable, so every
+ * section's cards line up regardless of how many forms it contains.
+ */
 .wbc-protection-group {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 12px;
   padding: 10px 0;
 }
 
 .wbc-protection-item {
-  background: #fff;
-  border: 2px solid #e0e0e0;
+  background: var(--bprc-admin-white);
+  border: 2px solid var(--bprc-admin-border);
   border-radius: 8px;
   padding: 16px 18px;
   transition: all 0.2s ease;
@@ -587,7 +698,7 @@ h1.wbcom-plugin-heading {
 }
 
 .wbc-protection-item:hover {
-  border-color: #0073aa;
+  border-color: var(--bprc-admin-accent);
   box-shadow: 0 2px 12px rgba(0, 115, 170, 0.15);
 }
 
@@ -612,7 +723,7 @@ h1.wbcom-plugin-heading {
   display: block;
   font-weight: 600;
   font-size: 14px;
-  color: #1d2327;
+  color: var(--bprc-admin-text);
   line-height: 1.4;
 }
 
@@ -629,7 +740,7 @@ h1.wbcom-plugin-heading {
   justify-content: center;
   width: 18px;
   height: 18px;
-  background: #0073aa;
+  background: var(--bprc-admin-accent);
   color: white;
   border-radius: 50%;
   font-size: 12px;
@@ -639,7 +750,7 @@ h1.wbcom-plugin-heading {
 }
 
 .wbc-tooltip:hover .wbc-tooltip-icon {
-  background: #005a87;
+  background: var(--bprc-admin-accent-hover);
   transform: scale(1.1);
 }
 
@@ -648,7 +759,7 @@ h1.wbcom-plugin-heading {
   right: 50%;
   bottom: calc(100% + 8px);
   transform: translateX(50%);
-  background: #1d2327;
+  background: var(--bprc-admin-text);
   color: white;
   padding: 8px 12px;
   border-radius: 6px;
@@ -671,7 +782,7 @@ h1.wbcom-plugin-heading {
   right: 50%;
   transform: translateX(50%);
   border: 6px solid transparent;
-  border-top-color: #1d2327;
+  border-top-color: var(--bprc-admin-text);
 }
 
 .wbc-tooltip:hover .wbc-tooltip-text {
@@ -702,7 +813,7 @@ h1.wbcom-plugin-heading {
   right: 0;
   left: 0;
   bottom: 0;
-  background-color: #ccc;
+  background-color: var(--bprc-admin-border-strong);
   transition: 0.3s;
   border-radius: 26px;
 }
@@ -722,7 +833,7 @@ h1.wbcom-plugin-heading {
 
 /* Checked state */
 .wbc-toggle-input:checked + .wbc-toggle-slider {
-  background-color: #46b450; /* WordPress green for "ON" */
+  background-color: var(--bprc-admin-success); /* WordPress green for "ON" */
 }
 
 .wbc-toggle-input:checked + .wbc-toggle-slider:before {
@@ -735,12 +846,12 @@ h1.wbcom-plugin-heading {
 
 /* Checked item state */
 .wbc-protection-item:has(.wbc-toggle-input:checked) {
-  border-color: #46b450;
-  background: #f7fcf7;
+  border-color: var(--bprc-admin-success);
+  background: var(--bprc-admin-success-light);
 }
 
 .wbc-protection-item:has(.wbc-toggle-input:checked) .wbc-protection-title {
-  color: #0a6e0e;
+  color: var(--bprc-admin-success);
 }
 
 /* Responsive */
@@ -767,24 +878,33 @@ h1.wbcom-plugin-heading {
 /*--------------------------------------------------------------
 # Advanced Tab Styling
 --------------------------------------------------------------*/
-/* Section title enhancement */
+/* Section title spacing: first heading sits flush, later ones get air above. */
 #wb-recaptcha h2 {
-  margin: 20px 0;
+  margin: 28px 0 16px;
 }
 
-/* Section description styling */
+#wb-recaptcha .bprc-card__body > *:first-child#wb-recaptcha h2,
+#wb-recaptcha h2:first-child {
+  margin-top: 0;
+}
+
+/*
+ * Section description styling. The heading now carries its own bottom rule,
+ * so the description sits under that rule rather than being pulled up over
+ * the old 20px title.
+ */
 #wb-recaptcha h2 + p {
-  margin-top: -10px;
-  margin-bottom: 25px;
-  color: #50575e;
-  font-size: 14px;
+  margin-top: 0;
+  margin-bottom: 20px;
+  color: var(--bprc-admin-text-3, var(--bprc-admin-text-3));
+  font-size: 13px;
   line-height: 1.6;
 }
 
 /* Advanced tab form table improvements */
 /* .rfw-tab-content .form-table {
-  background: #fff;
-  border: 1px solid #e5e5e5;
+  background: var(--bprc-admin-white);
+  border: 1px solid var(--bprc-admin-border);
   border-radius: 8px;
   padding: 20px;
   margin-bottom: 30px;
@@ -793,27 +913,29 @@ h1.wbcom-plugin-heading {
 
 .rfw-tab-content .form-table th {
   font-weight: 600;
-  color: #1d2327;
+  color: var(--bprc-admin-text);
   font-size: 14px;
 }
 
-/* Make textarea more visible with better styling */
+/* The IP whitelist holds machine input, so give it a monospace face. */
+.bprc-admin textarea#wbc_recaptcha_ip_to_skip_captcha,
 .rfw-tab-content textarea#wbc_recaptcha_ip_to_skip_captcha {
   font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', monospace;
   font-size: 13px;
   line-height: 1.6;
   resize: vertical;
-  background: #fafafa;
+  background: var(--bprc-admin-surface-1, var(--bprc-admin-surface-1));
 }
 
+.bprc-admin textarea#wbc_recaptcha_ip_to_skip_captcha:focus,
 .rfw-tab-content textarea#wbc_recaptcha_ip_to_skip_captcha:focus {
-  background: #fff;
+  background: var(--bprc-admin-white);
 }
 
 /* Info callout box for Advanced tab */
 .wbc-advanced-info {
-  background: linear-gradient(-135deg, #e8f4f8 0%, #f0f9fc 100%);
-  border-right: 4px solid #0073aa;
+  background: linear-gradient(-135deg, var(--bprc-admin-accent-light) 0%, var(--bprc-admin-accent-light) 100%);
+  border-right: 4px solid var(--bprc-admin-accent);
   padding: 16px 20px;
   margin: 20px 0;
   border-radius: 4px;
@@ -822,11 +944,11 @@ h1.wbcom-plugin-heading {
 
 .wbc-advanced-info p {
   margin: 0;
-  color: #1d2327;
+  color: var(--bprc-admin-text);
   font-size: 14px;
   line-height: 1.6;
 }
 
 .wbc-advanced-info strong {
-  color: #0073aa;
+  color: var(--bprc-admin-accent);
 }

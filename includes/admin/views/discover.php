@@ -101,7 +101,7 @@ $bprc_ecosystem = array(
 						<?php if ( file_exists( $bprc_ecosystem_dir . $bprc_product['logo'] ) ) : ?>
 							<img src="<?php echo esc_url( $bprc_ecosystem_url . $bprc_product['logo'] ); ?>" alt="<?php echo esc_attr( $bprc_product['name'] ); ?>" width="52" height="52" loading="lazy" />
 						<?php else : ?>
-							<span class="dashicons dashicons-<?php echo esc_attr( isset( $bprc_product['icon'] ) ? $bprc_product['icon'] : 'admin-plugins' ); ?>"></span>
+							<span class="dashicons dashicons-<?php echo esc_attr( $bprc_product['icon'] ); ?>"></span>
 						<?php endif; ?>
 					</span>
 					<h3 class="bprc-discover-card__title"><?php echo esc_html( $bprc_product['name'] ); ?></h3>

@@ -216,12 +216,6 @@ class BPRC_Admin {
 			array( 'bprc-admin' ),
 			$version
 		);
-		wp_enqueue_style(
-			'recaptcha-for-buddypress-admin-cards',
-			RFB_PLUGIN_URL . 'admin/css/recaptcha-appearance-cards.css',
-			array( 'bprc-admin' ),
-			$version
-		);
 
 		wp_enqueue_script(
 			'recaptcha-for-buddypress-admin',
