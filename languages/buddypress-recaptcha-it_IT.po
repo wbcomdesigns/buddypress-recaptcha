@@ -365,7 +365,7 @@ msgstr "Scuro"
 
 #: admin/includes/class-wbc-buddypress-settings-page.php:784
 msgid "Auto"
-msgstr "Auto"
+msgstr "Automatico"
 
 #: admin/includes/class-wbc-buddypress-settings-page.php:788
 #: admin/includes/class-wbc-buddypress-settings-page.php:1466
@@ -1092,7 +1092,7 @@ msgstr "Estone"
 
 #: admin/includes/class-wbc-buddypress-settings-page.php:1724
 msgid "Filipino"
-msgstr "Filipino"
+msgstr "Filippino"
 
 #: admin/includes/class-wbc-buddypress-settings-page.php:1725
 msgid "Finnish"
@@ -1239,7 +1239,7 @@ msgstr "Impostazioni di protezione salvate con successo."
 #: admin/includes/settings-modules/class-wbc-bbpress-settings.php:35
 #: admin/includes/settings-modules/class-wbc-bbpress-settings.php:55
 msgid "bbPress Forum Forms"
-msgstr "bbPress Forum Forms"
+msgstr "Moduli del forum bbPress"
 
 #: admin/includes/settings-modules/class-wbc-bbpress-settings.php:59
 msgid "New Topics"
@@ -1285,7 +1285,7 @@ msgstr "Divi Builder"
 
 #: admin/includes/settings-modules/class-wbc-divi-settings.php:56
 msgid "Divi Contact Forms"
-msgstr "Divi Contact Forms"
+msgstr "Moduli di contatto Divi"
 
 #: admin/includes/settings-modules/class-wbc-divi-settings.php:57
 msgid "Protect Divi Builder contact forms from spam submissions"
@@ -1319,7 +1319,7 @@ msgstr "Elementor Pro"
 
 #: admin/includes/settings-modules/class-wbc-elementorpro-settings.php:55
 msgid "Elementor Pro Forms"
-msgstr "Elementor Pro Forms"
+msgstr "Moduli di Elementor Pro"
 
 #: admin/includes/settings-modules/class-wbc-elementorpro-settings.php:56
 msgid "Protect all Elementor Pro forms from spam submissions"
@@ -1332,7 +1332,7 @@ msgstr "Forminator"
 
 #: admin/includes/settings-modules/class-wbc-forminator-settings.php:55
 msgid "Forminator Forms"
-msgstr "Forminator Forms"
+msgstr "Moduli di Forminator"
 
 #: admin/includes/settings-modules/class-wbc-forminator-settings.php:56
 msgid "Protect all Forminator forms from spam submissions"
@@ -1451,7 +1451,7 @@ msgstr "Blocca spam commenti"
 
 #: admin/includes/settings-modules/class-wbc-wordpress-settings.php:81
 msgid "AJAX Login Widget"
-msgstr "AJAX Login Widget"
+msgstr "Widget di accesso AJAX"
 
 #: admin/includes/settings-modules/class-wbc-wordpress-settings.php:82
 msgid "Protect AJAX login widget from brute-force attacks"
@@ -2145,7 +2145,7 @@ msgstr ""
 
 #: includes/widgets/class-wbc-login-widget.php:29
 msgid "CAPTCHA Login Widget"
-msgstr "CAPTCHA Login Widget"
+msgstr "Widget di accesso CAPTCHA"
 
 #: includes/widgets/class-wbc-login-widget.php:31
 msgid "Secure AJAX login form with CAPTCHA protection"
@@ -2223,7 +2223,7 @@ msgstr "Mostra Collegamento Profilo"
 #: blocks/login-widget/block.json
 msgctxt "block title"
 msgid "CAPTCHA Login"
-msgstr "CAPTCHA Login"
+msgstr "Accesso CAPTCHA"
 
 #: blocks/login-widget/block.json
 msgctxt "block description"
