@@ -221,6 +221,7 @@ Security update: comment, lost-password and login forms are now verified on site
 * Improve  - Refreshed the settings screen with a modern card-based layout.
 * Improve  - reCAPTCHA and Turnstile scripts now load deferred on all browsers, improving page load speed and Core Web Vitals.
 * Improve  - More reliable ALTCHA spam detection.
+* Improve  - Automatic updates ship preactivated - there is no license key to enter and no account step.
 * Improve  - Section headings on Quick Setup, Protection and Advanced match the Overview tab instead of using a different blue and type size.
 * Improve  - Protection toggle cards are the same width in every section; the BuddyPress group no longer stretches wider than the WordPress group.
 * Fix      - Italian admin labels were shifted by one, so menu items read as the wrong thing - "Settings" showed as "Account", "Save Changes" as "Plugin Updates". Realigned every affected entry and restored the seven translations that had been dropped.

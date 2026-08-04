@@ -16,7 +16,7 @@
  *   - Field output ............ WBC_BuddyPress_Settings_Page::wbc_output( $tab )
  *   - Settings-error group .... wbc_recaptcha_messages
  *   - Option keys ............. wbc_* (untouched)
- *   - EDD SL SDK .............. keyless registration in the main file (untouched)
+ *   - EDD SL SDK .............. preset-key registration in the main file (untouched)
  * Only the admin chrome changed (card-panel shell instead of the wrapper).
  *
  * @package    Recaptcha_For_BuddyPress

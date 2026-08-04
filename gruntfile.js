@@ -249,6 +249,7 @@ module.exports = function (grunt) {
                     '!vendor/php-stubs/**',
                     '!vendor/php-parallel-lint/**',
                     '!vendor/nikic/**',
+                    '!vendor/psr/**',
                     '!vendor/symfony/**',
                     '!vendor/bin/**',
                     '!composer.json',
@@ -314,6 +315,9 @@ module.exports = function (grunt) {
 					'!vendor/php-stubs/**',
 					'!vendor/php-parallel-lint/**',
 					'!vendor/szepeviktor/**',
+					'!vendor/gin0115/**',
+					'!vendor/nikic/**',
+					'!vendor/psr/**',
 					'!vendor/symfony/**',
 					'!vendor/bin/**',
 					'!AUDIT-REPORT.md'

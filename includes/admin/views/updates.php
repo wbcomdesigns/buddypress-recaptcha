@@ -2,11 +2,11 @@
 /**
  * Updates tab — automatic-update status for this free plugin.
  *
- * This plugin ships the official EDD SL SDK in KEYLESS mode (registered
- * in the main plugin file, item_id 1246648). There is no license key to
- * enter: updates flow automatically from wbcomdesigns.com. This tab is a
- * read-only status card replacing the legacy wbcom-license-page, which
- * was vestigial for a keyless free plugin.
+ * This plugin ships the official EDD SL SDK with a preset key (registered
+ * in the main plugin file, item_id 1246648). There is no license key for
+ * the customer to enter: updates flow automatically from wbcomdesigns.com.
+ * This tab is a read-only status card replacing the legacy
+ * wbcom-license-page, which was vestigial for a free plugin.
  *
  * @package Recaptcha_For_BuddyPress
  * @since   2.1.0
@@ -15,8 +15,9 @@
 defined( 'ABSPATH' ) || exit;
 
 $bprc_version  = defined( 'RFB_PLUGIN_VERSION' ) ? RFB_PLUGIN_VERSION : '';
-$bprc_sdk_live = class_exists( '\\EDD\\SoftwareLicensing\\SDK\\SDK' )
-	|| function_exists( 'edd_sl_sdk_register_1_0_2' );
+// Version-agnostic: any bundled copy of the SDK (this plugin's or another
+// Wbcom plugin's newer one) exposes this class once loaded.
+$bprc_sdk_live = class_exists( '\\EasyDigitalDownloads\\Updater\\Versions' );
 ?>
 <div class="bprc-card">
 	<div class="bprc-card__head">
