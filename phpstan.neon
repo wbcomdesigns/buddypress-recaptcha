@@ -12,11 +12,10 @@
 # excludePaths entry does not exist on disk - this config previously excluded
 # node_modules and dist, neither of which exist here, so the analysis never ran.
 #
-# phpstan-wordpress is included explicitly, exactly as in the other plugins. We removed
-# phpstan/extension-installer on purpose: this plugin TRACKS vendor/composer/* in git,
-# because it ships the EDD licensing SDK from vendor/, and extension-installer rewrites
-# those autoload maps to reference dev-only packages that never ship. Including the
-# extension by hand keeps the shipped autoload maps clean.
+# phpstan-wordpress is included explicitly, exactly as in the other plugins.
+# The EDD licensing SDK is plain-vendored at libs/edd-sl-sdk (uniform Wbcom layout,
+# kept in sync with BuddyNext's copy) and excluded below - it is third-party code
+# with its own upstream. Root vendor/ is dev-only and gitignored.
 includes:
     - phpstan-baseline.neon
     - vendor/szepeviktor/phpstan-wordpress/extension.neon
@@ -28,6 +27,7 @@ parameters:
     excludePaths:
         analyseAndScan:
             - vendor
+            - libs
             - node_modules (?)
             - dist (?)
             - assets (?)

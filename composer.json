@@ -4,8 +4,7 @@
     "type": "wordpress-plugin",
     "license": "GPL-2.0-or-later",
     "require": {
-        "php": ">=8.0",
-        "easy-digital-downloads/edd-sl-sdk": "^1.0.0"
+        "php": ">=8.0"
     },
     "require-dev": {
         "php-parallel-lint/php-parallel-lint": "^1.3",

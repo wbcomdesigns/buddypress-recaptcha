@@ -4,44 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b2e64419377e261d0e26f66c5fe0cfb8",
-    "packages": [
-        {
-            "name": "easy-digital-downloads/edd-sl-sdk",
-            "version": "1.0.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/awesomemotive/edd-sl-sdk.git",
-                "reference": "757cefcf9bd394f86e2f852bf286c325a5df1076"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/awesomemotive/edd-sl-sdk/zipball/757cefcf9bd394f86e2f852bf286c325a5df1076",
-                "reference": "757cefcf9bd394f86e2f852bf286c325a5df1076",
-                "shasum": ""
-            },
-            "require-dev": {
-                "codedungeon/phpunit-result-printer": "dev-master",
-                "phpunit/phpunit": "^8",
-                "yoast/phpunit-polyfills": "^1.0.5",
-                "yoast/wp-test-utils": "^1.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "EasyDigitalDownloads\\Updater\\": "src/"
-                }
-            },
-            "license": [
-                "GPL-2.0-or-later"
-            ],
-            "support": {
-                "source": "https://github.com/awesomemotive/edd-sl-sdk/tree/1.0.3",
-                "issues": "https://github.com/awesomemotive/edd-sl-sdk/issues"
-            },
-            "time": "2026-03-16T17:14:57+00:00"
-        }
-    ],
+    "content-hash": "3f92eaf2b574b446d7e86c27aceb1454",
+    "packages": [],
     "packages-dev": [
         {
             "name": "gin0115/buddypress-stubs",
@@ -1522,8 +1486,8 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=7.4"
+        "php": ">=8.0"
     },
     "platform-dev": {},
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.9.0"
 }

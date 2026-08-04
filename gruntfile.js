@@ -239,19 +239,11 @@ module.exports = function (grunt) {
 			dist: {
 				src: [
 					'**',
-                    // Dev-only tooling (PHPStan + stubs). Never ship these.
-                    // NOTE: vendor/ is NOT excluded wholesale here - vendor/easy-digital-downloads
-                    // is a RUNTIME dependency (the EDD licensing SDK) and must ship. Release builds
-                    // should run `composer install --no-dev` first; these excludes are belt-and-braces.
-                    '!vendor/phpstan/**',
-                    '!vendor/szepeviktor/**',
-                    '!vendor/gin0115/**',
-                    '!vendor/php-stubs/**',
-                    '!vendor/php-parallel-lint/**',
-                    '!vendor/nikic/**',
-                    '!vendor/psr/**',
-                    '!vendor/symfony/**',
-                    '!vendor/bin/**',
+                    // Root vendor/ is DEV-ONLY (PHPStan + stubs) since the EDD SL SDK moved to
+                    // libs/edd-sl-sdk (uniform Wbcom layout). libs/ is the runtime home for
+                    // bundled SDKs and MUST ship; its src/ survives because '!src/**' below is
+                    // root-anchored.
+                    '!vendor/**',
                     '!composer.json',
                     '!composer.lock',
                     '!phpstan.neon',
@@ -311,15 +303,6 @@ module.exports = function (grunt) {
 					'!**/*~',
 					'!**/#*',
 					'!**/*.zip',
-					'!vendor/phpstan/**',
-					'!vendor/php-stubs/**',
-					'!vendor/php-parallel-lint/**',
-					'!vendor/szepeviktor/**',
-					'!vendor/gin0115/**',
-					'!vendor/nikic/**',
-					'!vendor/psr/**',
-					'!vendor/symfony/**',
-					'!vendor/bin/**',
 					'!AUDIT-REPORT.md'
 				],
 				dest: 'dist/buddypress-recaptcha/'

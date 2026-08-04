@@ -90,7 +90,7 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-recaptcha-for-buddypress.p
 // ---------------------------------------------------------------------------
 // EDD Software Licensing SDK — automatic updates from wbcomdesigns.com.
 //
-// The SDK is vendored at vendor/easy-digital-downloads/edd-sl-sdk. Other Wbcom
+// The SDK is vendored at libs/edd-sl-sdk (uniform Wbcom layout). Other Wbcom
 // plugins (BuddyNext, Member Blog, Listora, ...) bundle the same SDK: its
 // versioned function guards and shared Versions registry make the double load
 // safe — the newest bundled copy wins and every plugin registers its own item
@@ -124,9 +124,9 @@ add_action(
 // notice instead of a white screen — licensing only gates updates, never
 // features, so CAPTCHA protection keeps working.
 //phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
-$rfb_sdk_path = plugin_dir_path( __FILE__ ) . 'vendor/easy-digital-downloads/edd-sl-sdk/edd-sl-sdk.php';
+$rfb_sdk_path = plugin_dir_path( __FILE__ ) . 'libs/edd-sl-sdk/edd-sl-sdk.php';
 if ( file_exists( $rfb_sdk_path )
-	&& file_exists( plugin_dir_path( __FILE__ ) . 'vendor/easy-digital-downloads/edd-sl-sdk/src/Versions.php' ) ) {
+	&& file_exists( plugin_dir_path( __FILE__ ) . 'libs/edd-sl-sdk/src/Versions.php' ) ) {
 	require_once $rfb_sdk_path;
 } elseif ( is_admin() ) {
 	add_action(
