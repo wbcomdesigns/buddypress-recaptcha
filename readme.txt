@@ -232,6 +232,7 @@ Security update: comment, lost-password and login forms are now verified on site
 * Fix      - Corrected the language selector display on the Advanced settings tab.
 * Fix      - The reCAPTCHA v3 score threshold set in the admin now takes effect.
 * Fix      - Removed unnecessary debug entries from the server error log.
+* Fix      - Prevented a fatal error on every failed hCaptcha verification.
 * Fix      - Prevented a rare fatal error when another plugin or theme uses the same generic class names.
 * Fix      - Prevented a fatal error on the front end when ALTCHA is the active provider.
 * Fix      - The plugin never registered its text domain, so bundled translations could never load.
