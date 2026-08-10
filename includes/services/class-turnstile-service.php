@@ -10,8 +10,9 @@ defined( 'ABSPATH' ) || exit;
 
 /**
  * Cloudflare Turnstile implementation
+ *
+ * phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedClassFound
  */
-//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedClassFound
 class WBC_Turnstile_Service extends WBC_Captcha_Service_Base {
 
 	/**
@@ -161,6 +162,12 @@ class WBC_Turnstile_Service extends WBC_Captcha_Service_Base {
 		// advisory mode (default) only validates when it is supplied — see
 		// `wbc_captcha_strict_nonce` option / filter.
 		$context = isset( $args['context'] ) ? $args['context'] : '';
+
+		// Skip only when render() would also have been skipped (IP allowlist / filter).
+		if ( $this->should_skip_verification( $context ) ) {
+			return true;
+		}
+
 		if ( ! empty( $context ) ) {
 			$nonce_action = $this->get_nonce_action( $context );
 			//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound

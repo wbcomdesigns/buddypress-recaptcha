@@ -48,8 +48,34 @@ all three must be true and must use the **same context string**:
 - **No fatals at load.** Internal classes must be uniquely prefixed (`WBC_*`);
   admin-only functions (`is_plugin_active()`) must be `function_exists`-guarded
   before use on the front end.
+- **Render must cover every seam that reaches the verifier** (added 2.2.0). A
+  verifier attached to an authentication/submission hook fires for *all* forms that
+  reach it, but a render hook only fires for the one form that calls it. Where the
+  verify seam is wider than the render seam, the form cannot be submitted at all.
+  Concretely: `login_form` fires only on wp-login.php, while `wp_authenticate_user`
+  verifies every login POST - so `login_form_middle` must also render, because that
+  is the only render hook `wp_login_form()` fires (Login/Logout block, login widget,
+  theme login forms). Before adding a verifier, enumerate every form that can reach
+  it and confirm each one renders.
+- **Never fix a render gap by weakening verify.** "Skip verification when the form
+  carried no CAPTCHA field" is an authentication bypass: anyone can strip the field
+  from the POST. Fix the render side.
+- **Skip rules must be symmetric** (added 2.2.0). Anything that suppresses the
+  widget - the `wbc_recaptcha_ip_to_skip_captcha` allowlist, the
+  `wbc_should_render_captcha` / `wbc_should_verify_captcha` filters - must suppress
+  verification too, or the visitor is asked to solve a CAPTCHA that was never shown.
+  Use `WBC_Captcha_Service_Base::should_skip_verification()`; do **not** re-check the
+  per-context enable flag there (an unmapped/empty context reads as "not enabled",
+  which in a verify path means bypass - that check belongs in the manager).
+- **Client-side bootstraps must tolerate a deferred provider script** (added 2.2.0).
+  The provider api.js is served with `defer`, while `wp_add_inline_script()` output
+  is not deferred and runs first. Any bootstrap that touches the provider global at
+  top level throws and silently disables the token for every context. Wait for the
+  global. Likewise, `wp_enqueue_script()` / `wp_add_inline_script()` are silent
+  no-ops once the footer scripts have printed - forms that render that late must
+  print their tags directly.
 
-## Status snapshot (2.1.0, post-fix)
+## Status snapshot (2.2.0, post-fix)
 
 | Context | Enable flag | Render | Verify | Independent of Woo |
 |---|---|---|---|---|

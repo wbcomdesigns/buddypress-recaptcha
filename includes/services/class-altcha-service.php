@@ -318,6 +318,14 @@ class WBC_Altcha_Service extends WBC_Captcha_Service_Base {
 	 * @return bool
 	 */
 	public function verify( $response, $args = array() ) {
+		// Skip only when render() would also have been skipped (IP allowlist / filter).
+		// Checked before the key guard: unlike the other providers ALTCHA fails closed
+		// when unconfigured, so an allowlisted visitor would otherwise be blocked by a
+		// missing key on a form that never showed a widget.
+		if ( $this->should_skip_verification( isset( $args['context'] ) ? $args['context'] : '' ) ) {
+			return true;
+		}
+
 		$hmac_key = $this->get_secret_key();
 		if ( empty( $hmac_key ) ) {
 			return false; // ALTCHA requires HMAC key.

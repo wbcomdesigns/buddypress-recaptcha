@@ -4,7 +4,7 @@ Donate link: https://wbcomdesigns.com/donate/
 Tags: captcha, recaptcha, spam protection, security, woocommerce
 Requires at least: 6.5
 Tested up to: 7.0
-Stable tag: 2.1.0
+Stable tag: 2.2.0
 Requires PHP: 8.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -208,11 +208,29 @@ Yes. A POT file is included, along with a WPML configuration file.
 
 == Upgrade Notice ==
 
+= 2.2.0 =
+
+Fixes lockouts introduced in 2.1.0. Login from a Login/Logout block, login widget or theme login form works again, and reCAPTCHA v3 now issues tokens on every protected form. Update immediately if you run 2.1.0.
+
 = 2.1.0 =
 
 Security update: comment, lost-password and login forms are now verified on sites without WooCommerce, where they previously did nothing. Recommended for every site.
 
 == Changelog ==
+
+= 2.2.0 - August 2026 =
+
+Fixes three cases where a CAPTCHA was verified on submit but never displayed, which made the affected form impossible to submit.
+
+* Fix      - reCAPTCHA v3 never issued a token, so every protected form failed verification and reloaded with the entered values cleared. The script that requests the token ran before the reCAPTCHA API had loaded and stopped with an error.
+* Fix      - Logging in from a Login/Logout block, a login widget or a theme login form always failed with "Security verification failed". These forms are built by wp_login_form(), which never received the CAPTCHA, while every login attempt was still being checked.
+* Fix      - The IP Whitelist hid the CAPTCHA but still required it, locking out the listed addresses on reCAPTCHA v2, hCaptcha, Turnstile and ALTCHA. Only reCAPTCHA v3 honoured the list.
+* Fix      - A form submitted before reCAPTCHA v3 finished loading is now held for a moment and submitted with a valid token, instead of being rejected.
+* Fix      - reCAPTCHA v3 now loads on forms placed on any page, including the front page, and on BuddyPress group creation and Easy Digital Downloads checkout.
+* Fix      - reCAPTCHA v3 forms that render after the page footer no longer lose their token.
+* Fix      - The settings screen scrolled sideways by two pixels on phones.
+* Dev      - Added the wbc_recaptcha_v3_is_captcha_page filter to preload the reCAPTCHA v3 script on pages the plugin cannot detect.
+* Dev      - The wbc_should_verify_captcha filter is now honoured by every provider, not only reCAPTCHA v3.
 
 = 2.1.0 - July 2026 =
 

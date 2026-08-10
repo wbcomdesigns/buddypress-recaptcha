@@ -144,6 +144,10 @@
 }
 
 .bprc-settings-sidebar {
+	/* border-box so the 1px border is inside the width. Without it the
+	   width:100% below 1024px resolves to 100% + 2px and the page scrolls
+	   sideways by exactly those 2px on mobile. */
+	box-sizing: border-box;
 	width: 240px;
 	flex-shrink: 0;
 	background: var(--bprc-admin-white);
