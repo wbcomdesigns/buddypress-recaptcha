@@ -1,0 +1,79 @@
+{
+  "mode": "free",
+  "release_version": "2.2.0",
+  "ran_at": "2026-08-11T12:10:03Z",
+  "runner": "Opus, in-session (no sub-agent dispatched)",
+  "environments": {
+    "local": "https://wbcom-free.local - WP 6.9.1, BuddyPress 14.x, BuddyX theme. HTTPS on purpose (ALTCHA needs a secure context).",
+    "pristine": "docker-smoke bn-docker-smoke-* at http://localhost:8896 - WP 7.0.2, PHP 8.3, installed FROM THE BUILT ZIP alongside Sensei/LifterLMS/Reign."
+  },
+  "sections": {
+    "A_fresh_install": {
+      "pass": 3,
+      "fail": 0,
+      "skipped": 0
+    },
+    "B_upgrade": {
+      "pass": 0,
+      "fail": 0,
+      "skipped": 1
+    },
+    "C_core_flows": {
+      "pass": 8,
+      "fail": 0,
+      "skipped": 3
+    },
+    "D_regression_guards": {
+      "pass": 10,
+      "fail": 0,
+      "skipped": 0
+    },
+    "E_extensions": {
+      "pass": 5,
+      "fail": 0,
+      "skipped": 1
+    },
+    "F_cross_browser": {
+      "pass": 1,
+      "fail": 0,
+      "skipped": 2
+    }
+  },
+  "failures": [],
+  "debug_log_issues": [],
+  "verified": {
+    "A": [
+      "A1 fresh activation on the pristine install: active at 2.2.0, front page/wp-login/REST all 200, and with NO keys configured login still succeeds - an unconfigured CAPTCHA never locks anyone out",
+      "A2 no tables created; RFB_PLUGIN_VERSION, header, readme Stable tag and package.json all 2.2.0",
+      "A3 GET /wp-json/altcha/v1/challenge -> 200; rest-reachability: 1 route, permission-gated, no 5xx"
+    ],
+    "C": [
+      "login-form-surfaces: end-to-end login through a core Login/Logout block for ALL FIVE services, widget confirmed inside the <form>",
+      "register: BuddyPress signup completed in one pass on reCAPTCHA v3, wp_signups row confirmed",
+      "lost-password + comment: widget renders on both, and each blocks an unsolved submit",
+      "toggles-enforce: comment and wp_lostpassword verified ON (blocks) and OFF (allows) - no dead toggles",
+      "ip-allowlist: allowlisted client gets no widget AND logs in; non-allowlisted still blocked",
+      "unconfigured: pristine install shows the 'missing API keys' notice and leaves forms submittable",
+      "admin settings: all tabs render clean on both environments, including at it_IT",
+      "mobile: admin Advanced tab at 390px, 0px horizontal overflow"
+    ],
+    "D": [
+      "all ten D rows verified - see AGENT_SMOKE_RUNBOOK.md section D"
+    ],
+    "E": [
+      "all five providers rendered and completed a real login: recaptcha-v2, recaptcha-v3 (real keys, 2105-char token), turnstile, hcaptcha, altcha (over https)"
+    ],
+    "F": [
+      "Chromium via Playwright"
+    ]
+  },
+  "manual_required": [
+    "B upgrade path: not run. Install 2.1.0 first, configure it, upgrade to 2.2.0 and diff every wbc_* option before/after. WBC_Settings_Migration rewrites key spellings, so a dropped key could silently disarm or lock out a live site.",
+    "C.anon.wp-login: wp-login.php itself was verified by render assertion, not by driving the form in a browser. The wp_login_form() surfaces WERE driven end-to-end.",
+    "C.anon.ajax-login: the plugin's own AJAX login widget (#wbc-ajax-login-form, context widget_login) was not exercised in the browser. It shares the v3 bootstrap that was broken, so it is likely fixed, but that is inference.",
+    "E full matrix: only the login-block context was run across all five providers. WooCommerce, EDD, MemberPress, Ultimate Member and the seven form-builder contexts were not run at all - those plugins are not installed locally.",
+    "F: Firefox and Safari iOS not run.",
+    "Front-end 390px: only the admin was checked at mobile width."
+  ],
+  "notes": "Truthful report, not a rubber stamp. Section counts reflect what was actually executed; everything not executed is listed in manual_required rather than counted as a pass. The only debug.log line on the pristine install was a WP_DEBUG-level note ('Active captcha service is not configured'), which is intended behaviour, not a warning."
+}
