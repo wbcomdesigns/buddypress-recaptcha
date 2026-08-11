@@ -1,0 +1,55 @@
+{
+    "openapi": "3.1.0",
+    "info": {
+        "title": "Wbcom CAPTCHA Manager REST API",
+        "version": "2.2.0",
+        "description": "REST surface of the Wbcom CAPTCHA Manager plugin. It is deliberately tiny: a single public endpoint that issues an ALTCHA proof-of-work challenge to the browser. Everything else the plugin does (rendering and verifying CAPTCHAs) happens through WordPress hooks and admin-ajax, not REST.\n\nThis document is generated from the live route registrations, scoped to this plugin's own namespace only, so it never includes routes from WooCommerce, BuddyPress or any other plugin on the same install.",
+        "contact": {
+            "name": "Wbcom Designs",
+            "url": "https://wbcomdesigns.com/"
+        },
+        "license": {
+            "name": "GPL-2.0-or-later"
+        }
+    },
+    "servers": [
+        {
+            "url": "https://your-site.com/wp-json",
+            "description": "Your WordPress site (replace with your domain)"
+        }
+    ],
+    "tags": [
+        {
+            "name": "ALTCHA"
+        }
+    ],
+    "security": [],
+    "components": {
+        "securitySchemes": []
+    },
+    "paths": {
+        "/altcha/v1/challenge": {
+            "get": {
+                "tags": [
+                    "ALTCHA"
+                ],
+                "operationId": "get_altcha_v1_challenge",
+                "security": [],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "401": {
+                        "description": "Authentication required or invalid."
+                    },
+                    "403": {
+                        "description": "Not permitted."
+                    },
+                    "404": {
+                        "description": "Not found."
+                    }
+                }
+            }
+        }
+    }
+}
