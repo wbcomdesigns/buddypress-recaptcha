@@ -1201,13 +1201,13 @@
     ]
   },
   "generated": {
-    "at": "2026-07-16T10:33:31+00:00",
-    "from": "manual structural re-scan (grep/glob against shipped code) — every entry backed by a verified file:line",
-    "branch": "release/2.1.0",
-    "head_commit": "3d666af",
+    "at": "2026-08-11T11:57:57Z",
+    "from": "targeted 2.2.0 delta on top of the 2026-07-16 structural re-scan — render/verify seam fixes, new wbc_recaptcha_v3_is_captcha_page filter, should_skip_verification() across all five providers, v3 no-conflict key resolution; hook locations re-verified against source",
+    "branch": "main",
+    "head_commit": "51ca302",
     "scan_scope": "full_rescan",
     "scan_path": ".",
-    "php_file_count": 91,
+    "php_file_count": 88,
     "schema_version": "v2.1",
     "bundled_excluded": [
       "vendor/** (EDD SL SDK + composer dev tooling — out of scope)"

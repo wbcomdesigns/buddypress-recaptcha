@@ -2,7 +2,7 @@
   "plugin": {
     "slug": "buddypress-recaptcha",
     "name": "Wbcom CAPTCHA Manager",
-    "version": "2.1.0",
+    "version": "2.2.0",
     "requires_at_least": "6.3",
     "requires_php": "7.4",
     "tested_up_to": "7.0",
@@ -38,7 +38,13 @@
     "settings_register_setting_calls": "ZERO live. All 32 register_setting() calls live in includes/lib/altcha/settings.php, which is never required. The plugin's settings use the WooCommerce-style woocommerce_update_option path, not the Settings API.",
     "services": "19 registered/loaded classes, including the 5 provider services, the manager/base/interface triad, the admin classes, and the migration helpers."
   },
-  "providers": ["recaptcha-v2", "recaptcha-v3", "turnstile", "hcaptcha", "altcha"],
+  "providers": [
+    "recaptcha-v2",
+    "recaptcha-v3",
+    "turnstile",
+    "hcaptcha",
+    "altcha"
+  ],
   "provider_classes": {
     "recaptcha-v2": "WBC_Recaptcha_V2_Service (includes/services/class-recaptcha-v2-service.php)",
     "recaptcha-v3": "WBC_Recaptcha_V3_Service (includes/services/class-recaptcha-v3-service.php)",
@@ -50,12 +56,34 @@
   "integrations": {
     "count": 14,
     "breakdown": "4 platform + 7 form builders + 3 e-commerce/membership = 14",
-    "platform": ["WordPress core (login/register/lost-password/comments)", "WooCommerce", "BuddyPress", "bbPress"],
-    "form_builders": ["Contact Form 7", "WPForms", "Gravity Forms", "Ninja Forms", "Forminator", "Elementor Pro", "Divi Builder"],
-    "ecommerce_membership": ["Easy Digital Downloads", "MemberPress", "Ultimate Member"],
+    "platform": [
+      "WordPress core (login/register/lost-password/comments)",
+      "WooCommerce",
+      "BuddyPress",
+      "bbPress"
+    ],
+    "form_builders": [
+      "Contact Form 7",
+      "WPForms",
+      "Gravity Forms",
+      "Ninja Forms",
+      "Forminator",
+      "Elementor Pro",
+      "Divi Builder"
+    ],
+    "ecommerce_membership": [
+      "Easy Digital Downloads",
+      "MemberPress",
+      "Ultimate Member"
+    ],
     "evidence_rule": "Each has BOTH a public wiring class (required in includes/class-recaptcha-for-buddypress.php:165-219, :334-335) AND a settings module (registered in admin/includes/settings-modules/class-wbc-settings-module-loader.php:81-94).",
     "counting_rule": "14 = the exact number of settings modules. WordPress core login/register/lost-password and WordPress comments are separate wiring points but ONE integration — they share WBC_WordPress_Settings and one Protection-tab section. Do not count them twice.",
-    "NOT_integrated": ["Fluent Forms", "Formidable Forms", "WS Form", "FluentCart"],
+    "NOT_integrated": [
+      "Fluent Forms",
+      "Formidable Forms",
+      "WS Form",
+      "FluentCart"
+    ],
     "NOT_integrated_note": "All four were falsely advertised with ZERO first-party code; readme claims removed 2026-07-16. Formidable appears ONLY inside the never-loaded vendored ALTCHA lib. Do NOT re-add them to docs, readme, or this manifest."
   },
   "key_classes": {
@@ -126,7 +154,7 @@
     "release_blocking": 0
   },
   "generated": {
-    "at": "2026-07-16T10:33:31+00:00",
+    "at": "2026-08-11T11:57:57Z",
     "from": "manual structural re-scan (grep/glob against shipped code)",
     "branch": "release/2.1.0",
     "head_commit": "3d666af",
