@@ -11,6 +11,10 @@ jobs:
     name: PHP Lint
     runs-on: ubuntu-latest
     strategy:
+      # Report every PHP version independently. With fail-fast on, the 8.1 failure
+      # below cancelled 8.2 and 8.3 mid-run, so both reported red having actually
+      # linted clean - which made a dev-toolchain problem look like a code problem.
+      fail-fast: false
       matrix:
         php: ['8.1', '8.2', '8.3']
     steps:
@@ -22,8 +26,18 @@ jobs:
           php-version: ${{ matrix.php }}
           tools: composer
 
+      # --ignore-platform-reqs is deliberate and scoped to the lint job. The dev
+      # toolchain in composer.lock (symfony/console 7.x via php-stubs/generator)
+      # requires PHP >= 8.2, so a plain install cannot resolve on 8.1 and the job
+      # died before linting a single file - red since 2026-08-04 for a reason that
+      # had nothing to do with the plugin.
+      #
+      # The plugin itself supports PHP 7.4+, so linting on the LOWEST version in
+      # the matrix is the point of this job; dropping 8.1 would have hidden real
+      # syntax problems. Nothing here executes plugin code - parallel-lint only
+      # parses - so installing dev tools whose own runtime floor is higher is safe.
       - name: Install dependencies
-        run: composer install --no-interaction --prefer-dist
+        run: composer install --no-interaction --prefer-dist --ignore-platform-reqs
 
       - name: Run PHP Lint
         run: composer lint
