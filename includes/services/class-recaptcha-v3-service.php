@@ -536,11 +536,23 @@ class WBC_Recaptcha_V3_Service extends WBC_Captcha_Service_Base {
 			$this->dequeue_conflicting_scripts();
 		}
 
-		// A form can render after the footer scripts have already printed (some
-		// form builders and page builders output that late). Enqueuing then is a
-		// silent no-op, so print the tag directly instead. Load order does not
-		// matter: the bootstrap in add_inline_script() waits for grecaptcha.
+		/*
+		 * A form can render after the footer scripts have already printed (some
+		 * form builders and page builders output that late). Enqueuing then is a
+		 * silent no-op, so print the tag directly instead. Load order does not
+		 * matter: the bootstrap in add_inline_script() waits for grecaptcha.
+		 *
+		 * The printed tag is invisible to wp_script_is(), so the guard above cannot
+		 * see it. Track it separately - the manager calls enqueue_scripts() and then
+		 * render() calls enqueue_script() again, which would otherwise emit api.js
+		 * twice with the same DOM id and load Google's script twice.
+		 */
 		if ( $this->scripts_already_printed() ) {
+			if ( self::$printed_late_script_tag ) {
+				return;
+			}
+			self::$printed_late_script_tag = true;
+
 			wp_print_script_tag(
 				array(
 					'id'    => 'wbc-recaptcha-v3-js',
@@ -559,6 +571,17 @@ class WBC_Recaptcha_V3_Service extends WBC_Captcha_Service_Base {
 			true
 		);
 	}
+
+	/**
+	 * Whether the deferred api.js tag has already been printed directly this request.
+	 *
+	 * Only used on the late-render path, where the tag never enters the WP script
+	 * registry and so is invisible to wp_script_is().
+	 *
+	 * @since 2.2.0
+	 * @var bool
+	 */
+	private static $printed_late_script_tag = false;
 
 	/**
 	 * Whether WordPress has already printed the footer scripts for this request.
