@@ -1,0 +1,26 @@
+{
+  "$schema": "https://wpmediaverse.com/schemas/wp-plugin-qa-config-v1.json",
+  "slug": "buddypress-recaptcha",
+  "name": "Wbcom CAPTCHA Manager",
+  "version_constant": "RFB_PLUGIN_VERSION",
+  "main_file": "recaptcha-for-buddypress.php",
+  "base_url": "https://wbcom-free.local",
+  "wp_path": "/Users/varundubey/Local Sites/wbcom-free/app/public",
+  "autologin_param": "autologin",
+  "rest_namespace": "altcha/v1",
+  "front_routes": ["/register/", "/groups/create/", "/wp-login.php"],
+  "pair": null,
+  "basecamp": {
+    "project_id": 37595344,
+    "bugs_column_id": 7416113398
+  },
+  "modes": ["free"],
+  "report_path": "docs/qa/.last-smoke-pass.json",
+  "supplements_path": null,
+  "notes": {
+    "base_url_is_https": "HTTPS on purpose. ALTCHA solves its proof-of-work with the Web Crypto API, which browsers expose only in a secure context, so on http:// the ALTCHA widget hangs on 'Verifying...' and every ALTCHA form is unsubmittable. Running the walk over http would report a false ALTCHA failure.",
+    "provider_matrix": "This plugin's real risk surface is provider x context, not role x viewport. Every render/verify journey must be run for all five services (recaptcha-v2, recaptcha-v3, turnstile, hcaptcha, altcha) by switching wbc_captcha_service, because each has its own render path and its own verify().",
+    "test_keys": "reCAPTCHA v2, Turnstile and hCaptcha all publish always-pass test keys; ALTCHA needs only a local HMAC secret. reCAPTCHA v3 has NO public test key - a real site+secret pair registered for the test domain is required, otherwise grecaptcha.execute() rejects and no token is ever produced.",
+    "no_build_release_script": "This plugin packages via grunt (gruntfile.js), not bin/build-release.sh, so the build-time smoke/docs gates are not wired. Gates must be run manually per the release skill until a build-release.sh is added."
+  }
+}
