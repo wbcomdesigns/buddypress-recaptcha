@@ -3,7 +3,7 @@
   "plugin": {
     "slug": "buddypress-recaptcha",
     "name": "Wbcom CAPTCHA Manager",
-    "version": "2.1.0",
+    "version": "2.2.0",
     "namespace": "global (WBC_* / Recaptcha_For_BuddyPress* / BPRC_* class prefixes — no PSR-4 namespace)",
     "main_file": "recaptcha-for-buddypress.php",
     "plugin_uri": "https://wbcomdesigns.com/downloads/buddypress-recaptcha/",
@@ -760,7 +760,7 @@
         "string $context",
         "string $service_id"
       ],
-      "where": "includes/class-captcha-service-base.php:442",
+      "where": "includes/class-captcha-service-base.php:477",
       "purpose": "Last-mile filter to skip captcha rendering for a specific context/request.",
       "consumed_by": []
     },
@@ -773,8 +773,8 @@
         "string $context",
         "string $service_id"
       ],
-      "where": "includes/class-captcha-service-base.php:465",
-      "purpose": "Last-mile filter to skip captcha verification.",
+      "where": "includes/class-captcha-service-base.php:510",
+      "purpose": "Last-mile filter to skip captcha verification. Since 2.2.0 it is applied by WBC_Captcha_Service_Base::should_skip_verification() and honoured by ALL five providers; before that only reCAPTCHA v3 consulted it, so the filter (and the wbc_recaptcha_ip_to_skip_captcha allowlist) hid the widget without skipping the check on the other four.",
       "consumed_by": []
     },
     {
@@ -843,7 +843,7 @@
         "float $threshold",
         "string $context"
       ],
-      "where": "includes/services/class-recaptcha-v3-service.php:388",
+      "where": "includes/services/class-recaptcha-v3-service.php:390",
       "purpose": "Override the reCAPTCHA v3 score threshold per-context.",
       "consumed_by": []
     },
@@ -911,6 +911,18 @@
       ],
       "purpose": "Vendored ALTCHA library hooks — internal to the ALTCHA service, NOT part of the plugin's public API.",
       "note": "Only the hooks inside class-altcha-lib.php are reachable; those in settings.php/admin.php never fire because those files are never required.",
+      "consumed_by": []
+    },
+    {
+      "name": "wbc_recaptcha_v3_is_captcha_page",
+      "type": "filter",
+      "args_count": 1,
+      "args_signature": [
+        "bool $is_captcha_page"
+      ],
+      "where": "includes/services/class-recaptcha-v3-service.php:519",
+      "since": "2.2.0",
+      "purpose": "Pre-load the reCAPTCHA v3 api.js on a page the built-in allowlist cannot detect. render() self-enqueues, so this is only needed when a form is injected so late that it renders after the footer scripts have printed.",
       "consumed_by": []
     }
   ],

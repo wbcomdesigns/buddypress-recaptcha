@@ -478,25 +478,35 @@ abstract class WBC_Captcha_Service_Base implements WBC_Captcha_Service_Interface
 	}
 
 	/**
-	 * Check if captcha should be verified for the context
+	 * Whether verification must be skipped for this request.
+	 *
+	 * Mirrors the skip rules in should_render() — and deliberately ONLY those rules.
+	 * Every provider must call this, because a rule that suppresses the widget but
+	 * not the check asks the visitor to solve a CAPTCHA that was never displayed,
+	 * which makes the form impossible to submit. That was the case for the IP
+	 * allowlist and the `wbc_should_render_captcha` filter on every provider except
+	 * reCAPTCHA v3 up to 2.1.0.
+	 *
+	 * The per-context enable flag is NOT checked here. It is the manager's job
+	 * (WBC_Captcha_Service_Manager::verify()), and it must stay there: an unknown or
+	 * empty context maps to no option and so reads as "not enabled", which in this
+	 * method would mean "skip verification" — an authentication bypass reachable by
+	 * anyone who can make the context resolve empty.
+	 *
+	 * @since 2.2.0
 	 *
 	 * @param string $context The context identifier.
-	 * @return bool
+	 * @return bool True when verification should be skipped.
 	 */
-	protected function should_verify( $context ) {
-		// Check if enabled for context.
-		if ( ! $this->is_enabled_for_context( $context ) ) {
-			return false;
-		}
-
-		// Check IP restriction.
+	protected function should_skip_verification( $context ) {
+		// IP allowlist — same check should_render() makes.
 		$recaptcha_system_ip = get_option( 'wbc_recaptcha_ip_to_skip_captcha' );
 		if ( $recaptcha_system_ip && function_exists( 'wb_recaptcha_restriction_recaptcha_by_ip' ) && wb_recaptcha_restriction_recaptcha_by_ip() ) {
-			return false;
+			return true;
 		}
 
 		// Allow filtering.
 		//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
-		return apply_filters( 'wbc_should_verify_captcha', true, $context, $this->get_service_id() );
+		return ! apply_filters( 'wbc_should_verify_captcha', true, $context, $this->get_service_id() );
 	}
 }

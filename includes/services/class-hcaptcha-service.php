@@ -10,8 +10,9 @@ defined( 'ABSPATH' ) || exit;
 
 /**
  * HCaptcha implementation - Privacy-focused alternative to reCAPTCHA.
+ *
+ * phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedClassFound
  */
-//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedClassFound
 class WBC_HCaptcha_Service extends WBC_Captcha_Service_Base {
 
 	/**
@@ -147,14 +148,16 @@ class WBC_HCaptcha_Service extends WBC_Captcha_Service_Base {
 				data-callback="<?php echo esc_attr( $callback ); ?>"></div>
 		</div>
 		<?php
-		// Per-widget styling.
-		//  - `text-align:center` on the wrapper visually balances the widget
-		//    inside the form (the iframe is inline-block at every size).
-		//  - Scaling is applied ONLY at the default "normal" size — applying
-		//    it to "compact" / "invisible" produces a misaligned widget. The
-		//    `transform-origin: 0 0` mirrors the reCAPTCHA v2 service so the
-		//    widget stays aligned with surrounding fields without needing a
-		//    negative-margin hack.
+		/*
+		 * Per-widget styling.
+		 *  - `text-align:center` on the wrapper visually balances the widget
+		 *    inside the form (the iframe is inline-block at every size).
+		 *  - Scaling is applied ONLY at the default "normal" size — applying
+		 *    it to "compact" / "invisible" produces a misaligned widget. The
+		 *    `transform-origin: 0 0` mirrors the reCAPTCHA v2 service so the
+		 *    widget stays aligned with surrounding fields without needing a
+		 *    negative-margin hack.
+		 */
 		?>
 		<style type="text/css">
 		.wbc_hcaptcha_field{ text-align:center; }
@@ -268,6 +271,12 @@ class WBC_HCaptcha_Service extends WBC_Captcha_Service_Base {
 		// plugin renders itself (WP / BuddyPress / bbPress) — opt in via the
 		// `wbc_captcha_strict_nonce` option (or the same-named filter).
 		$context = isset( $args['context'] ) ? $args['context'] : '';
+
+		// Skip only when render() would also have been skipped (IP allowlist / filter).
+		if ( $this->should_skip_verification( $context ) ) {
+			return true;
+		}
+
 		if ( ! empty( $context ) ) {
 			$nonce_action = $this->get_nonce_action( $context );
 			//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound

@@ -210,7 +210,9 @@ class WBC_Recaptcha_V3_Service extends WBC_Captcha_Service_Base {
 	public function verify( $response, $args = array() ) {
 		// Extract context from args for backward compatibility.
 		$context = isset( $args['context'] ) ? $args['context'] : '';
-		if ( ! $this->should_verify( $context ) ) {
+
+		// Skip only when render() would also have been skipped (IP allowlist / filter).
+		if ( $this->should_skip_verification( $context ) ) {
 			return true;
 		}
 
@@ -459,36 +461,62 @@ class WBC_Recaptcha_V3_Service extends WBC_Captcha_Service_Base {
 	 * @return bool
 	 */
 	private function is_captcha_page() {
+		$is_captcha_page = false;
+
 		// Login pages.
 		if ( in_array( $GLOBALS['pagenow'], array( 'wp-login.php', 'wp-register.php' ), true ) ) {
-			return true;
+			$is_captcha_page = true;
 		}
 
 		// WooCommerce pages.
-		if ( class_exists( 'WooCommerce' ) ) {
+		if ( ! $is_captcha_page && class_exists( 'WooCommerce' ) ) {
 			if ( is_account_page() || is_checkout() ) {
-				return true;
+				$is_captcha_page = true;
 			}
 		}
 
-		// BuddyPress pages.
-		if ( function_exists( 'bp_is_register_page' ) && bp_is_register_page() ) {
-			return true;
+		// BuddyPress registration and group creation.
+		if ( ! $is_captcha_page && function_exists( 'bp_is_register_page' ) && bp_is_register_page() ) {
+			$is_captcha_page = true;
+		}
+		if ( ! $is_captcha_page && function_exists( 'bp_is_group_create' ) && bp_is_group_create() ) {
+			$is_captcha_page = true;
 		}
 
 		// bbPress pages.
-		if ( class_exists( 'bbPress' ) ) {
+		if ( ! $is_captcha_page && class_exists( 'bbPress' ) ) {
 			if ( is_singular( array( 'forum', 'topic' ) ) ) {
-				return true;
+				$is_captcha_page = true;
 			}
 		}
 
-		// Comments.
-		if ( is_singular() && comments_open() ) {
-			return true;
+		// Easy Digital Downloads checkout / account.
+		if ( ! $is_captcha_page && function_exists( 'edd_is_checkout' ) && edd_is_checkout() ) {
+			$is_captcha_page = true;
 		}
 
-		return false;
+		// Comments.
+		if ( ! $is_captcha_page && is_singular() && comments_open() ) {
+			$is_captcha_page = true;
+		}
+
+		/*
+		 * This list is only a pre-warm: render() enqueues the script itself, so a form
+		 * on any other page still works. It cannot be exhaustive, because the login
+		 * widget, the Login/Logout block and every form-builder integration (CF7,
+		 * WPForms, Gravity, Ninja, Forminator, Elementor, Divi, MemberPress, Ultimate
+		 * Member) can appear on literally any page, including the front page.
+		 *
+		 * The filter lets a site pre-warm the script on pages this cannot know about -
+		 * useful when a form is injected so late that it renders after the footer
+		 * scripts have already printed.
+		 *
+		 * @since 2.2.0
+		 *
+		 * @param bool $is_captcha_page Whether to pre-load the v3 script on this request.
+		 */
+		//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
+		return (bool) apply_filters( 'wbc_recaptcha_v3_is_captcha_page', $is_captcha_page );
 	}
 
 	/**
@@ -497,7 +525,7 @@ class WBC_Recaptcha_V3_Service extends WBC_Captcha_Service_Base {
 	 * @return void
 	 */
 	private function enqueue_script() {
-		if ( wp_script_is( 'wbc-recaptcha-v3', 'enqueued' ) ) {
+		if ( wp_script_is( 'wbc-recaptcha-v3', 'enqueued' ) || wp_script_is( 'wbc-recaptcha-v3', 'done' ) ) {
 			return;
 		}
 
@@ -506,6 +534,33 @@ class WBC_Recaptcha_V3_Service extends WBC_Captcha_Service_Base {
 		// Check for no-conflict mode.
 		if ( 'yes' === get_option( 'wbc_recapcha_no_conflict_v3' ) ) {
 			$this->dequeue_conflicting_scripts();
+		}
+
+		/*
+		 * A form can render after the footer scripts have already printed (some
+		 * form builders and page builders output that late). Enqueuing then is a
+		 * silent no-op, so print the tag directly instead. Load order does not
+		 * matter: the bootstrap in add_inline_script() waits for grecaptcha.
+		 *
+		 * The printed tag is invisible to wp_script_is(), so the guard above cannot
+		 * see it. Track it separately - the manager calls enqueue_scripts() and then
+		 * render() calls enqueue_script() again, which would otherwise emit api.js
+		 * twice with the same DOM id and load Google's script twice.
+		 */
+		if ( $this->scripts_already_printed() ) {
+			if ( self::$printed_late_script_tag ) {
+				return;
+			}
+			self::$printed_late_script_tag = true;
+
+			wp_print_script_tag(
+				array(
+					'id'    => 'wbc-recaptcha-v3-js',
+					'src'   => 'https://www.google.com/recaptcha/api.js?render=' . rawurlencode( $site_key ),
+					'defer' => true,
+				)
+			);
+			return;
 		}
 
 		wp_enqueue_script(
@@ -518,6 +573,32 @@ class WBC_Recaptcha_V3_Service extends WBC_Captcha_Service_Base {
 	}
 
 	/**
+	 * Whether the deferred api.js tag has already been printed directly this request.
+	 *
+	 * Only used on the late-render path, where the tag never enters the WP script
+	 * registry and so is invisible to wp_script_is().
+	 *
+	 * @since 2.2.0
+	 * @var bool
+	 */
+	private static $printed_late_script_tag = false;
+
+	/**
+	 * Whether WordPress has already printed the footer scripts for this request.
+	 *
+	 * Past that point wp_enqueue_script() / wp_add_inline_script() do nothing at all
+	 * and fail silently, which would leave the form with a hidden token field that
+	 * nothing ever fills in.
+	 *
+	 * @since 2.2.0
+	 *
+	 * @return bool
+	 */
+	private function scripts_already_printed() {
+		return (bool) did_action( 'wp_print_footer_scripts' );
+	}
+
+	/**
 	 * Add inline script for specific form
 	 *
 	 * @param string $context The context identifier.
@@ -527,52 +608,137 @@ class WBC_Recaptcha_V3_Service extends WBC_Captcha_Service_Base {
 	 * @return void
 	 */
 	private function add_inline_script( $context, $site_key, $action, $token_field_id ) {
-		// Generate token function with error handling.
+		/*
+		 * This inline script is attached to the `wbc-recaptcha-v3` handle, which IS
+		 * Google's api.js — and that tag is served with `defer` (see
+		 * Recaptcha_For_BuddyPress_Public::google_recaptcha_defer_parsing_of_js()).
+		 *
+		 * An inline "after" script is NOT deferred: it runs during parsing, while the
+		 * deferred api.js only runs once parsing has finished. So anything that touches
+		 * `grecaptcha` at top level throws "grecaptcha is not defined", which aborted
+		 * this whole IIFE — no initial token, no refresh interval, no submit handler.
+		 * The hidden token field then stayed empty and every v3 context failed
+		 * server-side verification.
+		 *
+		 * Everything below therefore waits for `grecaptcha` to exist before touching it,
+		 * and the form is held back on submit if the token has not landed yet, rather
+		 * than posting empty and bouncing the user back to a re-rendered form.
+		 */
 		$script = "
 		(function() {
 			var siteKey = '" . esc_js( $site_key ) . "';
 			var action = '" . esc_js( $action ) . "';
 			var tokenFieldId = '" . esc_js( $token_field_id ) . "';
+			var MAX_WAIT = 20000;
+			var POLL_INTERVAL = 50;
 
-			// Function to generate and set token.
-			function generateToken() {
-				grecaptcha.execute(siteKey, {action: action})
-					.then(function(token) {
-						var tokenField = document.getElementById(tokenFieldId);
-						if (tokenField) {
-							tokenField.value = token;
-						}
-					})
-					.catch(function(error) {
-						console.error('reCAPTCHA v3 error:', error);
-						// Still allow form submission even if reCAPTCHA fails.
-						// Server-side will handle missing token appropriately.
-					});
+			function getField() {
+				return document.getElementById(tokenFieldId);
 			}
 
-			// Generate initial token on page load.
-			grecaptcha.ready(function() {
-				generateToken();
-
-				// Regenerate token every 110 seconds (token expires in 120 seconds).
-				// This ensures we always have a fresh token.
-				setInterval(function() {
-					generateToken();
-				}, 110000);
-			});
-
-			// Also regenerate token on form submission to ensure freshness.
-			document.addEventListener('DOMContentLoaded', function() {
-				var tokenField = document.getElementById(tokenFieldId);
-				if (tokenField && tokenField.form) {
-					tokenField.form.addEventListener('submit', function(e) {
-						// Regenerate token on submit for maximum freshness.
-						generateToken();
-					}, false);
+			// Resolve once the deferred api.js has executed and defined grecaptcha.
+			function whenGrecaptchaReady(callback) {
+				if (window.grecaptcha && typeof window.grecaptcha.ready === 'function') {
+					window.grecaptcha.ready(callback);
+					return;
 				}
-			});
+				var waited = 0;
+				var timer = setInterval(function() {
+					if (window.grecaptcha && typeof window.grecaptcha.ready === 'function') {
+						clearInterval(timer);
+						window.grecaptcha.ready(callback);
+						return;
+					}
+					waited += POLL_INTERVAL;
+					if (waited >= MAX_WAIT) {
+						clearInterval(timer);
+						console.error('reCAPTCHA v3: api.js did not load within ' + (MAX_WAIT / 1000) + 's.');
+					}
+				}, POLL_INTERVAL);
+			}
+
+			// Generate a token and write it into the hidden field.
+			function generateToken() {
+				return new Promise(function(resolve) {
+					whenGrecaptchaReady(function() {
+						window.grecaptcha.execute(siteKey, {action: action})
+							.then(function(token) {
+								var tokenField = getField();
+								if (tokenField) {
+									tokenField.value = token;
+								}
+								resolve(token);
+							})
+							.catch(function(error) {
+								console.error('reCAPTCHA v3 error:', error);
+								resolve('');
+							});
+					});
+				});
+			}
+
+			// Initial token, then refresh every 110s (tokens expire after 120s).
+			generateToken();
+			setInterval(generateToken, 110000);
+
+			function bindForm() {
+				var tokenField = getField();
+				if (!tokenField || !tokenField.form || tokenField.form.wbcV3Bound) {
+					return;
+				}
+				var form = tokenField.form;
+				form.wbcV3Bound = true;
+
+				form.addEventListener('submit', function(e) {
+					var field = getField();
+
+					// Token already present: refresh in the background, submit now.
+					if (field && field.value) {
+						generateToken();
+						return;
+					}
+
+					// No token yet — hold the submit, fetch one, then resubmit once.
+					if (form.wbcV3Submitting) {
+						return;
+					}
+					form.wbcV3Submitting = true;
+					var submitter = e.submitter || null;
+					e.preventDefault();
+
+					generateToken().then(function() {
+						if (submitter && typeof form.requestSubmit === 'function') {
+							form.requestSubmit(submitter);
+						} else if (typeof form.requestSubmit === 'function') {
+							form.requestSubmit();
+						} else {
+							if (submitter && submitter.name) {
+								var proxy = document.createElement('input');
+								proxy.type = 'hidden';
+								proxy.name = submitter.name;
+								proxy.value = submitter.value || '';
+								form.appendChild(proxy);
+							}
+							form.submit();
+						}
+					});
+				}, false);
+			}
+
+			if ('loading' === document.readyState) {
+				document.addEventListener('DOMContentLoaded', bindForm);
+			} else {
+				bindForm();
+			}
 		})();
 		";
+
+		// Same late-render case as enqueue_script(): once the footer scripts are out,
+		// wp_add_inline_script() is a silent no-op, so print the bootstrap directly.
+		if ( $this->scripts_already_printed() ) {
+			wp_print_inline_script_tag( $script );
+			return;
+		}
 
 		wp_add_inline_script( 'wbc-recaptcha-v3', $script );
 	}

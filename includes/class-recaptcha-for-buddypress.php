@@ -340,14 +340,28 @@ class Recaptcha_For_BuddyPress {
 		$is_wp_login_recaptcha_enabled = get_option( 'wbc_recaptcha_enable_on_wplogin' );
 		if ( 'yes' === $is_wp_login_recaptcha_enabled ) {
 			// Server-side CAPTCHA validation for WordPress core login (/wp-login.php).
-			// This MUST be registered independently of WooCommerce: the CAPTCHA field is
-			// rendered on the core login form above (login_form), so its validator has to
-			// run whether or not WooCommerce is active. wp_authenticate_user fires for every
-			// authentication path (wp-login.php submit via button/Enter/direct POST, and the
-			// WooCommerce login form, which authenticates through wp_signon()), so attaching
-			// it here also keeps the WooCommerce login path validated.
+			// This MUST be registered independently of WooCommerce, because
+			// wp_authenticate_user fires for every authentication path (wp-login.php submit
+			// via button/Enter/direct POST, the WooCommerce login form, and any form built
+			// with wp_login_form() that posts to wp-login.php), so attaching it here also
+			// keeps the WooCommerce login path validated.
 			$wp_login_filter = new Woocommerce_Filter();
 			add_filter( 'wp_authenticate_user', array( $wp_login_filter, 'woo_wp_verify_login_captcha' ), 10, 2 );
+
+			/*
+			 * Render side for that same validator.
+			 *
+			 * `login_form` only fires on wp-login.php. Everything else that logs a user in
+			 * through core - the Login/Logout block, the login widget, theme login modals -
+			 * is built by wp_login_form(), which fires only login_form_top/middle/bottom.
+			 * Registering the validator without this filter is what made login impossible
+			 * from those forms: nothing rendered, yet every POST was verified.
+			 *
+			 * This is deliberately NOT gated on WooCommerce and NOT behind an extra opt-in
+			 * toggle. Verification is already gated by wbc_recaptcha_enable_on_wplogin, and
+			 * render must follow verify exactly - any gap between the two locks users out.
+			 */
+			add_filter( 'login_form_middle', array( $login, 'filter_login_form_middle' ), 10, 1 );
 
 			add_action( 'bppcp_after_login_form', array( $registration, 'woo_extra_wp_register_form' ) );
 			add_action( 'bppcp_after_register_form', array( $registration, 'woo_extra_wp_register_form' ) );
@@ -423,20 +437,16 @@ class Recaptcha_For_BuddyPress {
 		// render-blocking otherwise, hurting LCP/FCP and Core Web Vitals.
 		add_filter( 'script_loader_tag', array( $plugin_public, 'google_recaptcha_defer_parsing_of_js' ), 10 );
 
-		// Custom login form integration - only if WooCommerce is active.
-		if ( class_exists( 'WooCommerce' ) ) {
-			// Check if custom login form is enabled (works for all service types).
-			$custom_login_enabled = get_option( 'wbc_recaptcha_custom_wp_login_form_login' );
-			if ( 'yes' !== $custom_login_enabled ) {
-				// Check v3 specific option for backward compatibility.
-				$custom_login_enabled = get_option( 'wbc_recaptcha_v3_custom_wp_login_form_login' );
-			}
-
-			if ( 'yes' === $custom_login_enabled ) {
-				$woocommerce_login = new Woocommerce_Login();
-				add_filter( 'login_form_middle', array( $woocommerce_login, 'woo_extra_login_fields' ), 10, 2 );
-			}
-		}
+		/*
+		 * `login_form_middle` used to be registered here, gated on WooCommerce being
+		 * active plus an off-by-default `wbc_recaptcha_custom_wp_login_form_login`
+		 * toggle, and pointed at Woocommerce_Login::woo_extra_login_fields(). That
+		 * wiring could not work: the callback echoes instead of returning (so its
+		 * markup landed outside the <form> and was never submitted) and it rendered
+		 * the `woo_login` context, while the validator on wp_authenticate_user
+		 * verifies `wp_login`. It is now registered once, unconditionally, next to
+		 * that validator in define_public_hooks() - see WBC_Login::filter_login_form_middle().
+		 */
 	}
 
 	/**
