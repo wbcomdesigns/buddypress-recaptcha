@@ -228,6 +228,7 @@ Fixes three cases where a CAPTCHA was verified on submit but never displayed, wh
 * Fix      - A form submitted before reCAPTCHA v3 finished loading is now held for a moment and submitted with a valid token, instead of being rejected.
 * Fix      - reCAPTCHA v3 now loads on forms placed on any page, including the front page, and on BuddyPress group creation and Easy Digital Downloads checkout.
 * Fix      - reCAPTCHA v3 forms that render after the page footer no longer lose their token.
+* Fix      - reCAPTCHA v3 no-conflict mode had no effect on sites upgraded from an earlier version, so a competing CAPTCHA script from another plugin was never removed.
 * Fix      - The settings screen scrolled sideways by two pixels on phones.
 * Dev      - Added the wbc_recaptcha_v3_is_captcha_page filter to preload the reCAPTCHA v3 script on pages the plugin cannot detect.
 * Dev      - The wbc_should_verify_captcha filter is now honoured by every provider, not only reCAPTCHA v3.
