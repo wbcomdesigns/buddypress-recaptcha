@@ -101,11 +101,6 @@ parameters:
 			path: includes/class-recaptcha-for-buddypress.php
 
 		-
-			message: "#^Filter callback return statement is missing\\.$#"
-			count: 1
-			path: includes/class-recaptcha-for-buddypress.php
-
-		-
 			message: "#^If condition is always true\\.$#"
 			count: 1
 			path: includes/class-settings-integration.php

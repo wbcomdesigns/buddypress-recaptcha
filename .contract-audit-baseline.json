@@ -1,0 +1,121 @@
+{
+  "generated": "2026-08-11T11:55:46Z",
+  "note": "First triage 2026-08-11 (2.2.0). Every entry below was checked against source individually - no bulk baselining. All are option-read-never-written on config keys that are intentionally writer-less: opt-in filters, defaulted advanced overrides, back-compat fallbacks, and migration sources. The one REAL bug this audit found (reCAPTCHA v3 no-conflict mode read only the pre-migration key spelling, so it was permanently off on migrated sites) was FIXED, not baselined. Warnings are left unsuppressed on purpose.",
+  "suppressions": [
+    {
+      "id": "option-read-never-written:wbc_captcha_fail_closed",
+      "reason": "Opt-in hardening switch with no settings field by design. Read through the same-named filter (wbc_captcha_fail_closed), so a site enables it via that filter or `wp option update`. Default-off is the documented backwards-compatible behaviour; a missing writer is expected, not drift.",
+      "severity": "error"
+    },
+    {
+      "id": "option-read-never-written:wbc_captcha_strict_nonce",
+      "reason": "Opt-in hardening switch with no settings field by design. Read through the same-named filter (wbc_captcha_strict_nonce), so a site enables it via that filter or `wp option update`. Default-off is the documented backwards-compatible behaviour; a missing writer is expected, not drift.",
+      "severity": "error"
+    },
+    {
+      "id": "option-read-never-written:wbc_recapcha_bbpress_reply_action_v3",
+      "reason": "Advanced per-context reCAPTCHA v3 action-name override, read in WBC_Recaptcha_V3_Service::get_action_for_context() with the default 'bbPress_reply'. The action name only labels the score in Google's console, so there is deliberately no settings field; unset means the default applies. Verified 2026-08-11.",
+      "severity": "error"
+    },
+    {
+      "id": "option-read-never-written:wbc_recapcha_bbpress_topic_action_v3",
+      "reason": "Advanced per-context reCAPTCHA v3 action-name override, read in WBC_Recaptcha_V3_Service::get_action_for_context() with the default 'bbPress_topic'. The action name only labels the score in Google's console, so there is deliberately no settings field; unset means the default applies. Verified 2026-08-11.",
+      "severity": "error"
+    },
+    {
+      "id": "option-read-never-written:wbc_recapcha_checkout_action_v3",
+      "reason": "Advanced per-context reCAPTCHA v3 action-name override, read in WBC_Recaptcha_V3_Service::get_action_for_context() with the default 'checkout'. The action name only labels the score in Google's console, so there is deliberately no settings field; unset means the default applies. Verified 2026-08-11.",
+      "severity": "error"
+    },
+    {
+      "id": "option-read-never-written:wbc_recapcha_login_action_v3",
+      "reason": "Advanced per-context reCAPTCHA v3 action-name override, read in WBC_Recaptcha_V3_Service::get_action_for_context() with the default 'login'. The action name only labels the score in Google's console, so there is deliberately no settings field; unset means the default applies. Verified 2026-08-11.",
+      "severity": "error"
+    },
+    {
+      "id": "option-read-never-written:wbc_recapcha_lostpassword_action_v3",
+      "reason": "Advanced per-context reCAPTCHA v3 action-name override, read in WBC_Recaptcha_V3_Service::get_action_for_context() with the default 'lostpassword'. The action name only labels the score in Google's console, so there is deliberately no settings field; unset means the default applies. Verified 2026-08-11.",
+      "severity": "error"
+    },
+    {
+      "id": "option-read-never-written:wbc_recapcha_signup_action_v3",
+      "reason": "Advanced per-context reCAPTCHA v3 action-name override, read in WBC_Recaptcha_V3_Service::get_action_for_context() with the default 'signup'. The action name only labels the score in Google's console, so there is deliberately no settings field; unset means the default applies. Verified 2026-08-11.",
+      "severity": "error"
+    },
+    {
+      "id": "option-read-never-written:wbc_recapcha_signup_action_v3_bp",
+      "reason": "Advanced per-context reCAPTCHA v3 action-name override, read in WBC_Recaptcha_V3_Service::get_action_for_context() with the default 'signup'. The action name only labels the score in Google's console, so there is deliberately no settings field; unset means the default applies. Verified 2026-08-11.",
+      "severity": "error"
+    },
+    {
+      "id": "option-read-never-written:wbc_recapcha_wp_login_method_action_v3",
+      "reason": "Advanced per-context reCAPTCHA v3 action-name override, read in WBC_Recaptcha_V3_Service::get_action_for_context() with the default 'wp_login'. The action name only labels the score in Google's console, so there is deliberately no settings field; unset means the default applies. Verified 2026-08-11.",
+      "severity": "error"
+    },
+    {
+      "id": "option-read-never-written:wbc_recapcha_wp_lostpassword_method_action_v3",
+      "reason": "Advanced per-context reCAPTCHA v3 action-name override, read in WBC_Recaptcha_V3_Service::get_action_for_context() with the default 'wp_lostpassword'. The action name only labels the score in Google's console, so there is deliberately no settings field; unset means the default applies. Verified 2026-08-11.",
+      "severity": "error"
+    },
+    {
+      "id": "option-read-never-written:wbc_recapcha_wp_register_method_action_v3",
+      "reason": "Advanced per-context reCAPTCHA v3 action-name override, read in WBC_Recaptcha_V3_Service::get_action_for_context() with the default 'wp_registration'. The action name only labels the score in Google's console, so there is deliberately no settings field; unset means the default applies. Verified 2026-08-11.",
+      "severity": "error"
+    },
+    {
+      "id": "option-read-never-written:wbc_recaptcha-v2_secret_key",
+      "reason": "Back-compat read-only fallback. get_site_key()/get_secret_key() try the canonical 'wbc_recaptcha_v2_secret_key' first and only consult this hyphen spelling for installs that predate WBC_Settings_Migration. Nothing should ever write it again - that is the point.",
+      "severity": "error"
+    },
+    {
+      "id": "option-read-never-written:wbc_recaptcha-v2_site_key",
+      "reason": "Back-compat read-only fallback. get_site_key()/get_secret_key() try the canonical 'wbc_recaptcha_v2_site_key' first and only consult this hyphen spelling for installs that predate WBC_Settings_Migration. Nothing should ever write it again - that is the point.",
+      "severity": "error"
+    },
+    {
+      "id": "option-read-never-written:wbc_recaptcha-v2_size",
+      "reason": "Legacy option read ONLY by WBC_Settings_Migration as the migration source, to populate 'wbc_recaptcha_v2_size'. A migration source is read-never-written by definition.",
+      "severity": "error"
+    },
+    {
+      "id": "option-read-never-written:wbc_recaptcha-v2_theme",
+      "reason": "Legacy option read ONLY by WBC_Settings_Migration as the migration source, to populate 'wbc_recaptcha_v2_theme'. A migration source is read-never-written by definition.",
+      "severity": "error"
+    },
+    {
+      "id": "option-read-never-written:wbc_recaptcha-v3_secret_key",
+      "reason": "Back-compat read-only fallback. get_site_key()/get_secret_key() try the canonical 'wbc_recaptcha_v3_secret_key' first and only consult this hyphen spelling for installs that predate WBC_Settings_Migration. Nothing should ever write it again - that is the point.",
+      "severity": "error"
+    },
+    {
+      "id": "option-read-never-written:wbc_recaptcha-v3_site_key",
+      "reason": "Back-compat read-only fallback. get_site_key()/get_secret_key() try the canonical 'wbc_recaptcha_v3_site_key' first and only consult this hyphen spelling for installs that predate WBC_Settings_Migration. Nothing should ever write it again - that is the point.",
+      "severity": "error"
+    },
+    {
+      "id": "option-read-never-written:wbc_recaptcha_badge_v3",
+      "reason": "Deliberately unwired - see CLAUDE.md 'Deliberately not implemented'. The badge-position control was removed in 2.1.0 because no badge rendering code has ever existed and implementing it needs the v3 token path moved to explicit grecaptcha.render() plus Google's mandatory attribution text. The key stays mapped in class-option-migration.php so any legacy value survives for a future implementation.",
+      "severity": "error"
+    },
+    {
+      "id": "option-read-never-written:wbc_recaptcha_lang",
+      "reason": "Legacy option read ONLY by WBC_Settings_Migration as the migration source, to populate 'wbc_recaptcha_language'. A migration source is read-never-written by definition.",
+      "severity": "error"
+    },
+    {
+      "id": "option-read-never-written:wbc_recaptcha_login_recpacha_for_req_btn",
+      "reason": "Advanced no-UI toggle read with an explicit 'no' default in Woocommerce_After_Checkout_Validation. Unset means payment-request buttons are NOT skipped, i.e. the more protective direction. Settable via `wp option update`. Surfacing a settings field is a product decision, tracked separately.",
+      "severity": "error"
+    },
+    {
+      "id": "option-read-never-written:wbc_recaptcha_score_threshold_v3",
+      "reason": "Legacy option read ONLY by WBC_Settings_Migration as the migration source, to populate 'wbc_recaptcha_v3_score_threshold'. A migration source is read-never-written by definition.",
+      "severity": "error"
+    },
+    {
+      "id": "option-read-never-written:wbc_recaptcha_skip_comment_for_logged_in",
+      "reason": "Advanced no-UI toggle read in the comment/order paths. Unset resolves falsy, i.e. logged-in users are still challenged - the MORE protective direction, so an absent writer cannot weaken security. Settable via `wp option update`. Surfacing a settings field is a product decision, tracked separately.",
+      "severity": "error"
+    }
+  ]
+}

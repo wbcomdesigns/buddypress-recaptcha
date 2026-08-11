@@ -74,7 +74,34 @@ class WBC_Recaptcha_V3_Service extends WBC_Captcha_Service_Base {
 	 * @return bool
 	 */
 	public function requires_no_conflict() {
-		return 'yes' === get_option( 'wbc_recapcha_no_conflict_v3' );
+		return 'yes' === $this->get_no_conflict_setting();
+	}
+
+	/**
+	 * Resolve no-conflict mode across both option spellings.
+	 *
+	 * No-conflict was stored per provider as `wbc_recapcha_no_conflict_v3`, and
+	 * WBC_Settings_Migration consolidates it into `wbc_recapcha_no_conflict`. This
+	 * service read only the `_v3` spelling, so on any site that had been migrated -
+	 * i.e. the canonical key was the one holding the value - no-conflict mode was
+	 * silently off. Resolve exactly the way wbc_get_no_conflict_option() does.
+	 *
+	 * @since 2.2.0
+	 *
+	 * @return string 'yes' or 'no'.
+	 */
+	private function get_no_conflict_setting() {
+		if ( function_exists( 'wbc_get_no_conflict_option' ) ) {
+			return wbc_get_no_conflict_option();
+		}
+
+		foreach ( array( 'wbc_recapcha_no_conflict', 'wbc_recapcha_no_conflict_v3' ) as $key ) {
+			if ( 'yes' === get_option( $key ) ) {
+				return 'yes';
+			}
+		}
+
+		return 'no';
 	}
 
 	/**
@@ -532,7 +559,7 @@ class WBC_Recaptcha_V3_Service extends WBC_Captcha_Service_Base {
 		$site_key = $this->get_site_key();
 
 		// Check for no-conflict mode.
-		if ( 'yes' === get_option( 'wbc_recapcha_no_conflict_v3' ) ) {
+		if ( 'yes' === $this->get_no_conflict_setting() ) {
 			$this->dequeue_conflicting_scripts();
 		}
 
