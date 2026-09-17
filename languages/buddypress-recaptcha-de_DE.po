@@ -2068,12 +2068,12 @@ msgstr "authentifizierung"
 
 #: admin/includes/settings-modules/class-wbc-wordpress-settings.php:81
 msgid "Comments: Skip for Logged-in Users"
-msgstr ""
+msgstr "Kommentare: Für angemeldete Benutzer überspringen"
 
 #: admin/includes/settings-modules/class-wbc-wordpress-settings.php:82
 msgid "When Comment Form is on, only visitors who are not logged in see the CAPTCHA. Admins and editors never see it on comments."
-msgstr ""
+msgstr "Wenn das Kommentarformular aktiv ist, sehen nur nicht angemeldete Besucher das CAPTCHA. Administratoren und Redakteure sehen es bei Kommentaren nie."
 
 #: recaptcha-for-buddypress.php:136
 msgid "Wbcom CAPTCHA Manager: the bundled update SDK is incomplete, so automatic updates are turned off. Reinstall the plugin from a complete package to restore them. Every other feature works normally."
-msgstr ""
+msgstr "Wbcom CAPTCHA Manager: Das mitgelieferte Update-SDK ist unvollständig, daher sind automatische Updates deaktiviert. Installiere das Plugin aus einem vollständigen Paket neu, um sie wiederherzustellen. Alle anderen Funktionen arbeiten normal."
