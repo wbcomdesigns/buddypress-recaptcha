@@ -19,6 +19,8 @@
  * 3. The `wbc_captcha_error_message` filter (2.2.1) reaches every place a CAPTCHA
  *    error is shown - lost password, comments, WooCommerce checkout and the
  *    disabled-submit tooltip - with ( $message, $context, $service_id, $error_type ).
+ * 4. Provider widget scripts do not depend on jQuery, which wp-login.php loads only
+ *    after the form (2.2.1).
  *
  * Every exemption is paired with a control that must still be rejected, so an
  * over-wide bypass fails this script as surely as the original bug does.
@@ -250,6 +252,17 @@ $rendered = ob_get_clean();
 $cases[]  = array( 'error filter: hCaptcha disabled-submit tooltip (was read from the provider directly)', false !== strpos( $rendered, 'FILTERED:wp_login:hcaptcha:blank' ) );
 
 remove_filter( 'wbc_captcha_error_message', $tag_message, 10 );
+
+// Inline widget scripts must not depend on jQuery (2.2.1): wp-login.php loads it in
+// the footer, after the form, so "disable submit until solved" threw and never ran
+// there. The wp_login render above already forces the disable-submit option on.
+foreach ( array( 'recaptcha-v2', 'hcaptcha', 'turnstile' ) as $service_id ) {
+	$use_provider( $service_id );
+	ob_start();
+	$manager->render( 'wp_login' );
+	$rendered = ob_get_clean();
+	$cases[]  = array( "{$service_id}: login widget script has no jQuery dependency", '' !== $rendered && false === strpos( $rendered, 'jQuery' ) );
+}
 
 // phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped -- CLI report, not HTML.
 $failed = 0;

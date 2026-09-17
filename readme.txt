@@ -226,6 +226,7 @@ Admins can send password resets and reply to comments from the dashboard again, 
 * Improve  - Admins and editors no longer see the CAPTCHA on comment forms, since they can approve any comment.
 * Fix      - Sending a password reset from Users or Edit User reported "0 password reset emails sent" when the Lost Password CAPTCHA was on. Admin screens show no CAPTCHA, so the reset was always rejected. The front-end Lost Password form stays protected.
 * Fix      - Replying to a comment from the Comments screen or the Dashboard failed with "Security verification failed" when the Comment Form CAPTCHA was on. Front-end comment forms stay protected.
+* Fix      - The "disable submit until the CAPTCHA is solved" option did nothing on the WordPress login, registration and lost password screens with reCAPTCHA v2 or hCaptcha. The button now stays disabled until the check is completed.
 * Dev      - Added the wbc_captcha_error_message filter to change the CAPTCHA error text for any protected form, such as a different message on checkout than on comments.
 * Dev      - The wbc_should_render_captcha filter is now honoured by every provider, not only reCAPTCHA v3, so skipping a CAPTCHA with it and wbc_should_verify_captcha hides the widget and skips the check together.
 

@@ -92,6 +92,11 @@ all three must be true and must use the **same context string**:
   Use `WBC_Captcha_Service_Base::should_skip_verification()`; do **not** re-check the
   per-context enable flag there (an unmapped/empty context reads as "not enabled",
   which in a verify path means bypass - that check belongs in the manager).
+- **Inline widget scripts use plain DOM, never jQuery** (added 2.2.1). They print
+  inside the form, and wp-login.php loads jQuery in the footer (after the form)
+  while block themes may not load it at all. Toggle submit buttons through
+  `WBC_Captcha_Service_Base::submit_buttons_js()`. Guard: the "no jQuery dependency"
+  cases in `tests/audit/admin-actions-captcha.php`.
 - **Client-side bootstraps must tolerate a deferred provider script** (added 2.2.0).
   The provider api.js is served with `defer`, while `wp_add_inline_script()` output
   is not deferred and runs first. Any bootstrap that touches the provider global at

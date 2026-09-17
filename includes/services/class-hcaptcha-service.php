@@ -170,28 +170,36 @@ class WBC_HCaptcha_Service extends WBC_Captcha_Service_Base {
 		<?php endif; ?>
 		</style>
 		<script type="text/javascript">
-		<?php if ( $disable_submit ) : ?>
-			jQuery( document ).ready( function() {
-				<?php $interval_var = uniqid( 'wbc_hcap_int_' ); ?>
-				var <?php echo esc_html( $interval_var ); ?> = setInterval( function() {
-					clearInterval( <?php echo esc_html( $interval_var ); ?> );
-					jQuery( '<?php echo esc_js( $this->get_submit_button_selector( $context ) ); ?>' ).attr( 'disabled', true );
-					jQuery( '<?php echo esc_js( $this->get_submit_button_selector( $context ) ); ?>' ).attr( 'title', '<?php echo esc_js( wbc_get_captcha_error_message( $context, 'blank' ) ); ?>' );
-				}, 500 );
-			} );
-		<?php endif; ?>
-		window.<?php echo esc_js( $callback ); ?> = function( response ) {
-			if ( response && response.length !== 0 ) {
-				<?php if ( $disable_submit ) : ?>
-				jQuery( '<?php echo esc_js( $this->get_submit_button_selector( $context ) ); ?>' ).removeAttr( 'disabled' );
-				jQuery( '<?php echo esc_js( $this->get_submit_button_selector( $context ) ); ?>' ).removeAttr( 'title' );
-				<?php endif; ?>
-
-				if ( typeof woo_<?php echo esc_js( str_replace( '-', '_', $context ) ); ?>_captcha_verified === 'function' ) {
-					woo_<?php echo esc_js( str_replace( '-', '_', $context ) ); ?>_captcha_verified( response );
+		(function () {
+			var solved = false;
+			window.<?php echo esc_js( $callback ); ?> = function (response) {
+				if (!response || response.length === 0) {
+					return;
 				}
+				solved = true;
+				<?php if ( $disable_submit ) : ?>
+					<?php echo $this->submit_buttons_js( $context, false ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- JS built from JSON-encoded values. ?>
+				<?php endif; ?>
+				if (typeof woo_<?php echo esc_js( str_replace( '-', '_', $context ) ); ?>_captcha_verified === "function") {
+					woo_<?php echo esc_js( str_replace( '-', '_', $context ) ); ?>_captcha_verified(response);
+				}
+			};
+			<?php if ( $disable_submit ) : ?>
+			// Disable after the form has rendered (the button follows the widget), unless the check was already solved.
+			var disableSubmit = function () {
+				setTimeout(function () {
+					if (!solved) {
+						<?php echo $this->submit_buttons_js( $context, true ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- JS built from JSON-encoded values. ?>
+					}
+				}, 500);
+			};
+			if (document.readyState === 'loading') {
+				document.addEventListener('DOMContentLoaded', disableSubmit);
+			} else {
+				disableSubmit();
 			}
-		};
+			<?php endif; ?>
+		})();
 		</script>
 		<?php
 	}
