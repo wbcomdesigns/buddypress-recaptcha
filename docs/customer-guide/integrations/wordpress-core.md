@@ -172,16 +172,37 @@ add_filter( 'wbc_captcha_error_message', function( $message ) {
 
 ---
 
-### Exclude Logged-in Users from Comment CAPTCHA
+### Logged-in Users and the Comment CAPTCHA
 
-Don't show CAPTCHA for logged-in users on comments:
+Registration and login are already protected, so a logged-in member has passed a CAPTCHA to get in. Use the **Comments: Skip for Logged-in Users** toggle under **Protection → WordPress Forms** to decide whether members see it again on comments.
 
-**This is the default behavior**, but you can customize:
+| Who is commenting | Toggle on | Toggle off |
+|---|---|---|
+| Logged-out visitor | CAPTCHA | CAPTCHA |
+| Logged-in member (subscriber, customer, author) | No CAPTCHA | CAPTCHA |
+| Admin or editor (can moderate comments) | No CAPTCHA | No CAPTCHA |
+
+- **New installs (2.2.1+):** the toggle starts **on**.
+- **Sites updated from an earlier version:** the toggle starts **off**, so members keep seeing the CAPTCHA until you change it.
+- Admins and editors never see it on comments, because they can approve any comment anyway. Replies sent from the dashboard (**Comments → Reply**) never need a CAPTCHA either.
+
+**Keep it off** if your site has open registration and spam accounts post comments after signing up.
+
+**Developers:** to skip the comment CAPTCHA for more users than the toggle does (for example one role, with the toggle off for everyone else), hook the same callback to both `wbc_should_render_captcha` and `wbc_should_verify_captcha`, so the widget and the check always agree:
 
 ```php
-// Show CAPTCHA even for logged-in users on comments
-add_filter( 'wbc_comment_form_show_for_logged_in', '__return_true' );
+// Let WooCommerce customers comment without a CAPTCHA.
+function my_skip_comment_captcha_for_customers( $should, $context ) {
+	if ( 'comment' === $context && in_array( 'customer', (array) wp_get_current_user()->roles, true ) ) {
+		return false;
+	}
+	return $should;
+}
+add_filter( 'wbc_should_render_captcha', 'my_skip_comment_captcha_for_customers', 10, 2 );
+add_filter( 'wbc_should_verify_captcha', 'my_skip_comment_captcha_for_customers', 10, 2 );
 ```
+
+Both filters receive `( $should, $context, $service_id )`; return `false` to skip. They can add exemptions but cannot bring the CAPTCHA back for users the toggle already exempts.
 
 ---
 

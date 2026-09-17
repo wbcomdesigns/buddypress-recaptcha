@@ -77,6 +77,13 @@ class WBC_WordPress_Settings extends WBC_Settings_Module_Abstract {
 					'default' => 'yes',
 				),
 				array(
+					'id'      => 'wbc_recaptcha_skip_comment_for_logged_in',
+					'label'   => __( 'Comments: Skip for Logged-in Users', 'buddypress-recaptcha' ),
+					'desc'    => __( 'When Comment Form is on, only visitors who are not logged in see the CAPTCHA. Admins and editors never see it on comments.', 'buddypress-recaptcha' ),
+					// Unsaved means members are still challenged; new installs get "yes" on activation.
+					'default' => 'no',
+				),
+				array(
 					'id'      => 'wbc_recaptcha_enable_on_widget_login',
 					'label'   => __( 'AJAX Login Widget', 'buddypress-recaptcha' ),
 					'desc'    => __( 'Protect AJAX login widget from brute-force attacks', 'buddypress-recaptcha' ),
@@ -97,6 +104,7 @@ class WBC_WordPress_Settings extends WBC_Settings_Module_Abstract {
 			'wbc_recaptcha_enable_on_wpregister',
 			'wbc_recaptcha_enable_on_wplostpassword',
 			'wbc_recaptcha_enable_on_comment',
+			'wbc_recaptcha_skip_comment_for_logged_in',
 			'wbc_recaptcha_enable_on_widget_login',
 		);
 	}

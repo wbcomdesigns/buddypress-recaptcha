@@ -50,6 +50,17 @@ all three must be true and must use the **same context string**:
   and `edit_post`). Never exempt on `is_admin()` (front-end AJAX forms run through
   admin-ajax.php) or on "no CAPTCHA field was posted" (a bot just omits it).
   Guard: `wp eval-file tests/audit/admin-actions-captcha.php` (fixed in 2.2.1).
+- **Who skips the comment CAPTCHA has one home.** Comment form render, WooCommerce
+  review render and the comment validator all ask
+  `wbc_skip_comment_captcha_for_current_user()`: logged out never skips, users with
+  `moderate_comments` always skip, other members skip only when
+  `wbc_recaptcha_skip_comment_for_logged_in` is `yes` (absent = challenge, which is
+  how existing sites keep their behaviour; the activator writes `yes` on fresh
+  installs only). Never re-add an inline `is_user_logged_in()` check at a call site.
+- **Render and verify filters are a pair on every provider.**
+  `wbc_should_render_captcha` is applied in `WBC_Captcha_Service_Manager::render()`
+  and `wbc_should_verify_captcha` in `should_skip_verification()`, for all five
+  providers (the render half was reCAPTCHA-v3-only until 2.2.1).
 - **Aborting must use a hook whose result is honored.** `do_action` hooks like
   `groups_group_before_save` ignore return values and error bags; to block, call
   `bp_core_add_message()` + `bp_core_redirect()` (scoped to the exact creation

@@ -220,10 +220,13 @@ Security update: comment, lost-password and login forms are now verified on site
 
 = 2.2.1 - September 2026 =
 
-Admins can send password resets and reply to comments from the dashboard again.
+Admins can send password resets and reply to comments from the dashboard again, and you can choose whether logged-in members see the comment CAPTCHA.
 
+* New      - Added a "Comments: Skip for Logged-in Users" setting under Protection. New installs start with it on; sites that update keep showing the comment CAPTCHA to members until you change it.
+* Improve  - Admins and editors no longer see the CAPTCHA on comment forms, since they can approve any comment.
 * Fix      - Sending a password reset from Users or Edit User reported "0 password reset emails sent" when the Lost Password CAPTCHA was on. Admin screens show no CAPTCHA, so the reset was always rejected. The front-end Lost Password form stays protected.
 * Fix      - Replying to a comment from the Comments screen or the Dashboard failed with "Security verification failed" when the Comment Form CAPTCHA was on. Front-end comment forms stay protected.
+* Dev      - The wbc_should_render_captcha filter is now honoured by every provider, not only reCAPTCHA v3, so skipping a CAPTCHA with it and wbc_should_verify_captcha hides the widget and skips the check together.
 
 = 2.2.0 - August 2026 =
 

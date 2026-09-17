@@ -29,6 +29,42 @@ if ( ! function_exists( 'wbc_verify_captcha' ) ) {
 	}
 }
 
+if ( ! function_exists( 'wbc_skip_comment_captcha_for_current_user' ) ) {
+	/**
+	 * Whether the comment CAPTCHA is skipped for the current user.
+	 *
+	 * The comment form, the WooCommerce review form and the comment validator all
+	 * call this, so a visitor is never shown a CAPTCHA that is not checked, or
+	 * checked for one that was never shown.
+	 *
+	 * - Logged out: never skipped.
+	 * - Can moderate comments: always skipped. They can approve any comment, so a
+	 *   CAPTCHA on their own protects nothing.
+	 * - Any other logged-in user: skipped when "Skip for Logged-in Users" is on.
+	 *   Missing option means not skipped, so sites that never saved the setting
+	 *   keep the behaviour they had.
+	 *
+	 * Developers can exempt more users (e.g. one role) with the existing
+	 * `wbc_should_render_captcha` / `wbc_should_verify_captcha` filters; those run
+	 * after this check, so they cannot re-require users this function exempts.
+	 *
+	 * @since 2.2.1
+	 *
+	 * @return bool True when the current user comments without a CAPTCHA.
+	 */
+	function wbc_skip_comment_captcha_for_current_user() { //phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound
+		if ( ! is_user_logged_in() ) {
+			return false;
+		}
+
+		if ( current_user_can( 'moderate_comments' ) ) {
+			return true;
+		}
+
+		return 'yes' === get_option( 'wbc_recaptcha_skip_comment_for_logged_in' );
+	}
+}
+
 if ( ! function_exists( 'wbc_get_custom_captcha_error_option' ) ) {
 	/**
 	 * Resolve the admin-configured custom error message for an error type.
