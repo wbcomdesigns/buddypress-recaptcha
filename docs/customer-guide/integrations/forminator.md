@@ -37,14 +37,7 @@ Protects all Forminator features:
 
 ## 🎨 Customization
 
-### Exclude Forms
-
-```php
-add_filter( 'wbc_forminator_exclude_forms', function( $excluded ) {
-    $excluded[] = 123; // Form ID
-    return $excluded;
-});
-```
+Excluding a single Forminator form by ID is not supported - the CAPTCHA toggle applies to the whole Forminator integration, not individual forms.
 
 ### Custom Error
 

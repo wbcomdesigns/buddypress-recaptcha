@@ -38,14 +38,7 @@ Protects all Ninja Forms types:
 
 ## 🎨 Customization
 
-### Exclude Forms
-
-```php
-add_filter( 'wbc_ninjaforms_exclude_forms', function( $excluded ) {
-    $excluded[] = 5; // Form ID
-    return $excluded;
-});
-```
+Excluding a single Ninja Form by ID is not supported - the CAPTCHA toggle applies to the whole Ninja Forms integration, not individual forms.
 
 ### Custom Error
 

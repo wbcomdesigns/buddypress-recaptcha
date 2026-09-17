@@ -487,28 +487,7 @@ For users with very old devices:
 
 ## 🔄 Advanced Configuration
 
-### Custom Difficulty Levels
-
-For developers, adjust difficulty in code:
-
-```php
-// Add to your theme's functions.php or custom plugin
-add_filter( 'wbc_altcha_difficulty', function( $difficulty ) {
-    // Options: 'easy', 'medium', 'hard'
-    return 'medium';
-});
-```
-
-### Custom Timeout
-
-Adjust how long a challenge remains valid:
-
-```php
-// Challenge expires after X seconds
-add_filter( 'wbc_altcha_timeout', function( $timeout ) {
-    return 300; // 5 minutes (default)
-});
-```
+There is no filter to change ALTCHA's difficulty or challenge timeout - both are controlled by the `wbc_altcha_max_number` (proof-of-work complexity, default 100000) and `wbc_altcha_expires` (challenge lifetime in seconds, default 3600) options, which do not currently have a settings-screen control in this release.
 
 ### Custom Styling
 

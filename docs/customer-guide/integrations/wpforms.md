@@ -85,19 +85,7 @@ One-click protection for **all WPForms** on your site including:
 
 ### Exclude Specific Forms
 
-Skip CAPTCHA on certain forms:
-
-```php
-// Add to theme's functions.php
-add_filter( 'wbc_wpforms_exclude_forms', function( $excluded ) {
-    $excluded[] = 123; // WPForms form ID
-    return $excluded;
-});
-```
-
-**Find Form ID:**
-- Go to **WPForms → All Forms**
-- ID shown in form list
+Excluding a single WPForms form by ID is not supported - the CAPTCHA toggle applies to the whole WPForms integration, not individual forms.
 
 ---
 
@@ -115,11 +103,7 @@ The filter receives `( $message, $context, $service_id, $error_type )` and cover
 
 ### CAPTCHA Position
 
-```php
-add_filter( 'wbc_wpforms_captcha_position', function() {
-    return 'before_submit'; // or 'after_form'
-});
-```
+The CAPTCHA position follows the integration's own form hook and cannot be moved by a filter.
 
 ---
 

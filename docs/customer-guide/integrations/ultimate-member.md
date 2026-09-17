@@ -84,24 +84,13 @@ The filter receives `( $message, $context, $service_id, $error_type )` and cover
 
 ### Skip CAPTCHA for Specific Registration Forms
 
-If you have multiple UM registration forms:
-
-```php
-add_filter( 'wbc_um_exclude_forms', function( $excluded ) {
-    $excluded[] = 123; // Form ID
-    return $excluded;
-});
-```
+Excluding one Ultimate Member form by ID is not supported - the CAPTCHA toggle applies to the whole Ultimate Member integration, not individual forms.
 
 ---
 
 ### CAPTCHA Position
 
-```php
-add_filter( 'wbc_um_captcha_position', function() {
-    return 'before_submit'; // or 'after_fields'
-});
-```
+The CAPTCHA position follows the integration's own form hook and cannot be moved by a filter.
 
 ---
 

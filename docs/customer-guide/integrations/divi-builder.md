@@ -39,13 +39,7 @@ Protects Divi contact form modules:
 
 ### Exclude Specific Forms
 
-```php
-add_filter( 'wbc_divi_exclude_forms', function( $excluded ) {
-    // Exclude by page ID or form identifier
-    $excluded[] = 123; // Page ID
-    return $excluded;
-});
-```
+Excluding a single Divi contact form by ID is not supported - the CAPTCHA toggle applies to the whole Divi Builder integration, not individual forms.
 
 ### Custom Error Message
 
@@ -59,11 +53,7 @@ The filter receives `( $message, $context, $service_id, $error_type )` and cover
 
 ### CAPTCHA Position
 
-```php
-add_filter( 'wbc_divi_captcha_position', function() {
-    return 'before_submit'; // or 'after_fields'
-});
-```
+The CAPTCHA position follows the integration's own form hook and cannot be moved by a filter.
 
 ---
 

@@ -41,17 +41,7 @@ Protects Elementor Pro form widgets:
 
 ### Exclude Specific Forms
 
-```php
-add_filter( 'wbc_elementor_exclude_forms', function( $excluded ) {
-    $excluded[] = 'form_id_123'; // Elementor form ID
-    return $excluded;
-});
-```
-
-**Find Form ID:**
-- Edit page in Elementor
-- Select form widget
-- Check Form ID in settings
+Excluding a single Elementor Pro form by ID is not supported - the CAPTCHA toggle applies to the whole Elementor Pro integration, not individual forms.
 
 ### Custom Error Message
 
