@@ -146,29 +146,19 @@ It's important to test that CAPTCHA works correctly on each form.
 
 ### CAPTCHA Position on Comment Form
 
-By default, CAPTCHA appears at the bottom of the comment form. To change position:
+The CAPTCHA is added as the last field of the comment form, after the other fields (including the cookies consent checkbox) and just above the submit button. There is no setting to move it.
 
-**Add to your theme's `functions.php`:**
-
-```php
-// Move CAPTCHA above submit button
-add_filter( 'wbc_comment_form_captcha_position', function() {
-    return 'before_submit';
-});
-```
+**Developers:** the field is added through WordPress's `comment_form_fields` filter at priority 20 under the key `captcha`, so a later callback on that filter can reorder the fields array.
 
 ---
 
 ### Custom Error Messages
 
-Customize the error message shown when CAPTCHA fails:
+Change the messages shown when a CAPTCHA fails, without code:
 
-```php
-// Custom error for failed CAPTCHA
-add_filter( 'wbc_captcha_error_message', function( $message ) {
-    return 'Please verify you are human before submitting.';
-});
-```
+1. Go to **WB Plugins → CAPTCHA Manager → Advanced**.
+2. Edit **Error Message** (CAPTCHA not completed), **Invalid Captcha Error** (verification failed) or **No Response Error** (the CAPTCHA service could not be reached).
+3. Save. Leave a field empty to use the default message.
 
 ---
 
