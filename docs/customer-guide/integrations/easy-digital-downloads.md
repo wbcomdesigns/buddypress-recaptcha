@@ -98,16 +98,16 @@ add_filter( 'wbc_edd_checkout_skip_logged_in', '__return_true' );
 ### Custom Error Messages
 
 ```php
-// Checkout error
-add_filter( 'wbc_edd_checkout_error_message', function( $message ) {
-    return 'Please verify you are human to complete your purchase.';
-});
-
-// Registration error
-add_filter( 'wbc_edd_register_error_message', function( $message ) {
-    return 'Please complete the security check to create your account.';
-});
+add_filter( 'wbc_captcha_error_message', function( $message, $context ) {
+    $messages = array(
+        'edd_checkout' => 'Please verify you are human to complete your purchase.',
+        'edd_register' => 'Please complete the security check to create your account.',
+    );
+    return $messages[ $context ] ?? $message;
+}, 10, 2 );
 ```
+
+The filter receives `( $message, $context, $service_id, $error_type )` and covers every form the plugin protects. To change the message for all forms without code, use the fields on the **Advanced** tab.
 
 ---
 

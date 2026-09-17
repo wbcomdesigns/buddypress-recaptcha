@@ -16,6 +16,9 @@
  *    - logged-out visitors always get it.
  *    Rendering and verifying must agree for every one of those users - a widget
  *    that is not checked, or a check for a widget that was never shown, is a bug.
+ * 3. The `wbc_captcha_error_message` filter (2.2.1) reaches every place a CAPTCHA
+ *    error is shown - lost password, comments, WooCommerce checkout and the
+ *    disabled-submit tooltip - with ( $message, $context, $service_id, $error_type ).
  *
  * Every exemption is paired with a control that must still be rejected, so an
  * over-wide bypass fails this script as surely as the original bug does.
@@ -201,6 +204,52 @@ foreach ( array( 'recaptcha-v2', 'recaptcha-v3', 'hcaptcha', 'turnstile', 'altch
 	remove_filter( 'wbc_should_render_captcha', $skip_comment, 10 );
 	remove_filter( 'wbc_should_verify_captcha', $skip_comment, 10 );
 }
+
+// wbc_captcha_error_message (2.2.1) must reach every place a CAPTCHA error is
+// shown, with the documented arguments. Each probe message encodes the arguments
+// it was called with, so a wrong context or provider fails the case.
+$tag_message = static function ( $message, $context, $service_id, $error_type ) {
+	return "FILTERED:{$context}:{$service_id}:{$error_type}";
+};
+$use_provider( 'turnstile' );
+wp_set_current_user( 0 );
+
+$result  = retrieve_password( $subscriber->user_login );
+$cases[] = array( 'CONTROL without the filter the lost-password error is the plugin message', is_wp_error( $result ) && 0 !== strpos( $result->get_error_message( 'captcha_error' ), 'FILTERED:' ) );
+
+add_filter( 'wbc_captcha_error_message', $tag_message, 10, 4 );
+
+$result  = retrieve_password( $subscriber->user_login );
+$cases[] = array( 'error filter: lost-password error', is_wp_error( $result ) && 'FILTERED:wp_lostpassword:turnstile:invalid' === $result->get_error_message( 'captcha_error' ) );
+
+try {
+	apply_filters( 'preprocess_comment', $probe_comment );
+	$comment_error = '';
+} catch ( \RuntimeException $e ) {
+	$comment_error = $e->getMessage();
+}
+$cases[] = array( 'error filter: comment error', false !== strpos( $comment_error, 'FILTERED:comment:turnstile:invalid' ) );
+
+$forced_options['wbc_recaptcha_enable_on_guestcheckout'] = 'yes';
+add_filter( 'pre_option_wbc_recaptcha_enable_on_guestcheckout', static fn() => $forced_options['wbc_recaptcha_enable_on_guestcheckout'] );
+$checkout = ( new \Woocommerce_After_Checkout_Validation() )->woocomm_validate_checkout_captcha( array(), new \WP_Error() );
+$cases[]  = array( 'error filter: checkout error (was a hard-coded string)', 'FILTERED:woo_checkout_guest:turnstile:invalid' === $checkout->get_error_message( 'g-recaptcha_error' ) );
+
+$use_provider( 'recaptcha-v2' );
+add_filter( 'pre_option_wbc_recaptcha_enable_on_wplogin', static fn() => 'yes' );
+add_filter( 'pre_option_wbc_recapcha_disable_submitbtn_wp_login', static fn() => 'yes' );
+ob_start();
+$manager->render( 'wp_login' );
+$rendered = ob_get_clean();
+$cases[]  = array( 'error filter: reCAPTCHA v2 disabled-submit tooltip (was read from the provider directly)', false !== strpos( $rendered, 'FILTERED:wp_login:recaptcha-v2:blank' ) );
+
+$use_provider( 'hcaptcha' );
+ob_start();
+$manager->render( 'wp_login' );
+$rendered = ob_get_clean();
+$cases[]  = array( 'error filter: hCaptcha disabled-submit tooltip (was read from the provider directly)', false !== strpos( $rendered, 'FILTERED:wp_login:hcaptcha:blank' ) );
+
+remove_filter( 'wbc_captcha_error_message', $tag_message, 10 );
 
 // phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped -- CLI report, not HTML.
 $failed = 0;

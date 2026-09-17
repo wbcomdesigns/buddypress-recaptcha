@@ -81,16 +81,16 @@ add_filter( 'wbc_memberpress_show_login_for_logged_in', '__return_true' );
 ### Custom Error Messages
 
 ```php
-// Registration error
-add_filter( 'wbc_memberpress_register_error_message', function( $message ) {
-    return 'Please verify you are human to join our membership.';
-});
-
-// Login error
-add_filter( 'wbc_memberpress_login_error_message', function( $message ) {
-    return 'Please complete the security check to log in.';
-});
+add_filter( 'wbc_captcha_error_message', function( $message, $context ) {
+    $messages = array(
+        'memberpress_register' => 'Please verify you are human to join our membership.',
+        'memberpress_login'    => 'Please complete the security check to log in.',
+    );
+    return $messages[ $context ] ?? $message;
+}, 10, 2 );
 ```
+
+The filter receives `( $message, $context, $service_id, $error_type )` and covers every form the plugin protects. To change the message for all forms without code, use the fields on the **Advanced** tab.
 
 ---
 

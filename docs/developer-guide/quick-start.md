@@ -120,9 +120,9 @@ add_filter( 'wbc_active_captcha_service', function( $service_id, $context ) {
 ```php
 add_filter( 'wbc_captcha_error_message', function( $message, $context ) {
     $custom_messages = array(
-        'checkout'     => __( 'Please complete verification to finish your purchase.', 'textdomain' ),
-        'registration' => __( 'Please verify you are human to create an account.', 'textdomain' ),
-        'contact'      => __( 'Please complete the security check to send your message.', 'textdomain' ),
+        'woo_checkout_guest' => __( 'Please complete verification to finish your purchase.', 'textdomain' ),
+        'wp_register'        => __( 'Please verify you are human to create an account.', 'textdomain' ),
+        'cf7'                => __( 'Please complete the security check to send your message.', 'textdomain' ),
     );
 
     return $custom_messages[ $context ] ?? $message;

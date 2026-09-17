@@ -153,7 +153,7 @@ class WBC_Recaptcha_V2_Service extends WBC_Captcha_Service_Base {
 				var <?php echo esc_html( $interval_var ); ?> = setInterval(function() {
 					clearInterval(<?php echo esc_html( $interval_var ); ?>);
 					jQuery('<?php echo esc_js( $this->get_submit_button_selector( $context ) ); ?>').attr("disabled", true);
-					jQuery('<?php echo esc_js( $this->get_submit_button_selector( $context ) ); ?>').attr("title", "<?php echo esc_html( $this->get_error_message( $context ) ); ?>");
+					jQuery('<?php echo esc_js( $this->get_submit_button_selector( $context ) ); ?>').attr("title", "<?php echo esc_js( wbc_get_captcha_error_message( $context, 'blank' ) ); ?>");
 				}, 500);
 			});
 		<?php endif; ?>

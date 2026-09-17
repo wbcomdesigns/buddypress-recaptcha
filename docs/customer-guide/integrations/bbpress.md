@@ -176,16 +176,16 @@ add_filter( 'wbc_bbpress_reply_captcha_position', function() {
 Customize error messages for bbPress forms:
 
 ```php
-// Custom new topic error
-add_filter( 'wbc_bbpress_topic_error_message', function( $message ) {
-    return 'Please verify you are human before posting to the forum.';
-});
-
-// Custom reply error
-add_filter( 'wbc_bbpress_reply_error_message', function( $message ) {
-    return 'Please complete the security check to post your reply.';
-});
+add_filter( 'wbc_captcha_error_message', function( $message, $context ) {
+    $messages = array(
+        'bbpress_topic' => 'Please verify you are human before posting to the forum.',
+        'bbpress_reply' => 'Please complete the security check to post your reply.',
+    );
+    return $messages[ $context ] ?? $message;
+}, 10, 2 );
 ```
+
+The filter receives `( $message, $context, $service_id, $error_type )` and covers every form the plugin protects. To change the message for all forms without code, use the fields on the **Advanced** tab.
 
 ---
 

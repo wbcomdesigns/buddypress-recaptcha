@@ -50,10 +50,12 @@ add_filter( 'wbc_ninjaforms_exclude_forms', function( $excluded ) {
 ### Custom Error
 
 ```php
-add_filter( 'wbc_ninjaforms_error_message', function( $message ) {
-    return 'Please verify you are human.';
-});
+add_filter( 'wbc_captcha_error_message', function( $message, $context ) {
+    return 'ninjaforms' === $context ? 'Please verify you are human.' : $message;
+}, 10, 2 );
 ```
+
+The filter receives `( $message, $context, $service_id, $error_type )` and covers every form the plugin protects. To change the message for all forms without code, use the fields on the **Advanced** tab.
 
 ---
 

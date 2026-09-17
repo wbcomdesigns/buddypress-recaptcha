@@ -327,26 +327,28 @@ add_filter( 'wbc_captcha_validation_result', function( $result, $context, $respo
 
 #### `wbc_captcha_error_message`
 
-**Description:** Filters the CAPTCHA error message.
+**Since:** 2.2.1
+
+**Description:** Filters the CAPTCHA error message shown to the visitor. It runs after the provider's message, the admin messages on the **Advanced** tab and the built-in default are resolved, so it can override any of them for one form. Every integration builds its error through `wbc_get_captcha_error_message()`, so this one filter covers all protected forms, including the WooCommerce checkout error and the tooltip on a disabled submit button.
 
 **Parameters:**
-- `string $message` - Error message
-- `string $context` - Form context
-- `string $service_id` - CAPTCHA service ID
+- `string $message` - The resolved error message
+- `string $context` - Form context, for example `wp_login`, `wp_register`, `wp_lostpassword`, `comment`, `woo_login`, `woo_register`, `woo_checkout_guest`, `woo_checkout_login`, `bp_register`, `bp_group_create`, `bbpress_topic`, `bbpress_reply`, `cf7`, `wpforms`, `gravityforms`, `ninjaforms`, `forminator`, `elementorpro`, `divi`, `edd_checkout`, `edd_login`, `edd_register`, `memberpress_login`, `memberpress_register`, `um_login`, `um_register`, `um_password`, `widget_login`
+- `string $service_id` - Active provider: `recaptcha-v2`, `recaptcha-v3`, `hcaptcha`, `turnstile`, `altcha`, or `''` when none is set up
+- `string $error_type` - `blank` (CAPTCHA not completed), `invalid` (verification failed) or `no_response` (provider unreachable)
 
 **Example:**
 ```php
-add_filter( 'wbc_captcha_error_message', function( $message, $context, $service_id ) {
-    // Customize messages by context
+add_filter( 'wbc_captcha_error_message', function( $message, $context, $service_id, $error_type ) {
     $messages = array(
-        'login'        => __( 'Please complete the security check to log in.', 'textdomain' ),
-        'registration' => __( 'Please verify you are human to create an account.', 'textdomain' ),
-        'checkout'     => __( 'Please complete verification to finalize your purchase.', 'textdomain' ),
-        'contact'      => __( 'Please verify you are human to send your message.', 'textdomain' ),
+        'wp_login'           => __( 'Please complete the security check to log in.', 'textdomain' ),
+        'wp_register'        => __( 'Please verify you are human to create an account.', 'textdomain' ),
+        'woo_checkout_guest' => __( 'Please complete verification to finalize your purchase.', 'textdomain' ),
+        'cf7'                => __( 'Please verify you are human to send your message.', 'textdomain' ),
     );
 
     return $messages[ $context ] ?? $message;
-}, 10, 3 );
+}, 10, 4 );
 ```
 
 ---
@@ -662,10 +664,12 @@ add_filter( 'wbc_wp_login_skip_captcha', function( $skip, $username ) {
 // Skip checkout CAPTCHA for logged-in customers
 add_filter( 'wbc_woocommerce_checkout_skip_logged_in', '__return_true' );
 
-// Custom error on checkout
-add_filter( 'wbc_woocommerce_checkout_error', function( $message ) {
-    return __( 'Please complete security verification to place your order.', 'textdomain' );
-} );
+// Custom error on checkout (guest and logged-in)
+add_filter( 'wbc_captcha_error_message', function( $message, $context ) {
+    return in_array( $context, array( 'woo_checkout_guest', 'woo_checkout_login' ), true )
+        ? __( 'Please complete security verification to place your order.', 'textdomain' )
+        : $message;
+}, 10, 2 );
 ```
 
 ### BuddyPress
@@ -675,9 +679,11 @@ add_filter( 'wbc_woocommerce_checkout_error', function( $message ) {
 add_filter( 'wbc_buddypress_registration_skip_invited', '__return_true' );
 
 // Custom registration error
-add_filter( 'wbc_buddypress_registration_error', function( $message ) {
-    return __( 'Please verify you are human to join our community.', 'textdomain' );
-} );
+add_filter( 'wbc_captcha_error_message', function( $message, $context ) {
+    return 'bp_register' === $context
+        ? __( 'Please verify you are human to join our community.', 'textdomain' )
+        : $message;
+}, 10, 2 );
 ```
 
 ### Contact Form 7

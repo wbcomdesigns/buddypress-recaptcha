@@ -203,16 +203,17 @@ add_filter( 'wbc_woocommerce_checkout_skip_logged_in', '__return_true' );
 Customize error messages for WooCommerce forms:
 
 ```php
-// Custom checkout error
-add_filter( 'wbc_woocommerce_checkout_error_message', function( $message ) {
-    return 'Please verify you are human to complete your purchase.';
-});
-
-// Custom registration error
-add_filter( 'wbc_woocommerce_register_error_message', function( $message ) {
-    return 'Please complete the security check to create your account.';
-});
+add_filter( 'wbc_captcha_error_message', function( $message, $context ) {
+    $messages = array(
+        'woo_checkout_guest' => 'Please verify you are human to complete your purchase.',
+        'woo_checkout_login' => 'Please verify you are human to complete your purchase.',
+        'woo_register'       => 'Please complete the security check to create your account.',
+    );
+    return $messages[ $context ] ?? $message;
+}, 10, 2 );
 ```
+
+The filter receives `( $message, $context, $service_id, $error_type )` and covers every form the plugin protects. To change the message for all forms without code, use the fields on the **Advanced** tab.
 
 ---
 

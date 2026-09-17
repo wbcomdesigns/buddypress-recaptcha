@@ -61,6 +61,10 @@ all three must be true and must use the **same context string**:
   `wbc_should_render_captcha` is applied in `WBC_Captcha_Service_Manager::render()`
   and `wbc_should_verify_captcha` in `should_skip_verification()`, for all five
   providers (the render half was reCAPTCHA-v3-only until 2.2.1).
+- **Every CAPTCHA error message comes from `wbc_get_captcha_error_message( $context, $type )`.**
+  That is where the Advanced-tab messages and the `wbc_captcha_error_message` filter
+  (2.2.1) apply. Never hard-code the text at a call site or ask a provider for
+  `get_error_message()` directly - either skips the filter.
 - **Aborting must use a hook whose result is honored.** `do_action` hooks like
   `groups_group_before_save` ignore return values and error bags; to block, call
   `bp_core_add_message()` + `bp_core_redirect()` (scoped to the exact creation

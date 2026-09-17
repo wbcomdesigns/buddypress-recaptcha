@@ -134,11 +134,12 @@ add_filter( 'wbc_cf7_exclude_forms', function( $excluded ) {
 Customize the CAPTCHA error message:
 
 ```php
-// Custom CF7 CAPTCHA error
-add_filter( 'wbc_cf7_error_message', function( $message ) {
-    return 'Please verify you are human before sending your message.';
-});
+add_filter( 'wbc_captcha_error_message', function( $message, $context ) {
+    return 'cf7' === $context ? 'Please verify you are human before sending your message.' : $message;
+}, 10, 2 );
 ```
+
+The filter receives `( $message, $context, $service_id, $error_type )` and covers every form the plugin protects. To change the message for all forms without code, use the fields on the **Advanced** tab.
 
 ---
 

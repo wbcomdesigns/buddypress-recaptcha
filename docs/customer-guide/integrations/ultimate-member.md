@@ -69,16 +69,16 @@ Protects Ultimate Member forms:
 ### Custom Error Messages
 
 ```php
-// Registration error
-add_filter( 'wbc_um_register_error_message', function( $message ) {
-    return 'Please verify you are human to join our community.';
-});
-
-// Login error
-add_filter( 'wbc_um_login_error_message', function( $message ) {
-    return 'Please complete the security check to access your account.';
-});
+add_filter( 'wbc_captcha_error_message', function( $message, $context ) {
+    $messages = array(
+        'um_register' => 'Please verify you are human to join our community.',
+        'um_login'    => 'Please complete the security check to access your account.',
+    );
+    return $messages[ $context ] ?? $message;
+}, 10, 2 );
 ```
+
+The filter receives `( $message, $context, $service_id, $error_type )` and covers every form the plugin protects. To change the message for all forms without code, use the fields on the **Advanced** tab.
 
 ---
 

@@ -294,8 +294,8 @@ add_filter( 'wbc_skip_captcha', function( $skip, $context ) {
 **Customize Error Messages:**
 ```php
 add_filter( 'wbc_captcha_error_message', function( $message, $context ) {
-    // Context-specific messages
-    if ( $context === 'checkout' ) {
+    // Context-specific messages (guest checkout)
+    if ( 'woo_checkout_guest' === $context ) {
         return __( 'Please verify you are human to complete your purchase.', 'your-textdomain' );
     }
     return $message;

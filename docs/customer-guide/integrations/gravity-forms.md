@@ -98,10 +98,12 @@ add_filter( 'wbc_gravity_exclude_forms', function( $excluded ) {
 ### Custom Error Message
 
 ```php
-add_filter( 'wbc_gravity_error_message', function( $message ) {
-    return 'Please complete the security verification.';
-});
+add_filter( 'wbc_captcha_error_message', function( $message, $context ) {
+    return 'gravityforms' === $context ? 'Please complete the security verification.' : $message;
+}, 10, 2 );
 ```
+
+The filter receives `( $message, $context, $service_id, $error_type )` and covers every form the plugin protects. To change the message for all forms without code, use the fields on the **Advanced** tab.
 
 ---
 

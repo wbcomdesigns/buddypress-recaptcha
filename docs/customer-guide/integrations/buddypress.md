@@ -165,16 +165,16 @@ add_filter( 'wbc_bp_register_captcha_position', function() {
 Customize error messages for BuddyPress forms:
 
 ```php
-// Custom registration error message
-add_filter( 'wbc_bp_register_error_message', function( $message ) {
-    return 'Please verify you are human to join our community.';
-});
-
-// Custom group creation error message
-add_filter( 'wbc_bp_group_create_error_message', function( $message ) {
-    return 'Please complete the CAPTCHA to create your group.';
-});
+add_filter( 'wbc_captcha_error_message', function( $message, $context ) {
+    $messages = array(
+        'bp_register'     => 'Please verify you are human to join our community.',
+        'bp_group_create' => 'Please complete the CAPTCHA to create your group.',
+    );
+    return $messages[ $context ] ?? $message;
+}, 10, 2 );
 ```
+
+The filter receives `( $message, $context, $service_id, $error_type )` and covers every form the plugin protects. To change the message for all forms without code, use the fields on the **Advanced** tab.
 
 ---
 
