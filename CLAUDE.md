@@ -23,7 +23,7 @@
 ## Quick reference
 
 - **Main file**: `recaptcha-for-buddypress.php`
-- **Version**: `2.1.0`
+- **Version**: `2.2.1`
 - **Class prefixes**: `WBC_*`, `Recaptcha_For_BuddyPress*`, `BPRC_*` (no PSR-4 namespace)
 - **Requires at least**: `6.3` — set by `blocks/login-widget/block.json` `apiVersion 3`. This is the real code-justified floor; do not raise it without a code reason. (History: a truthful 5.9 was set 2026-06-04, then overwritten with an unjustified 6.9; corrected to 6.3 on 2026-07-16.)
 - **Text domain**: `buddypress-recaptcha`

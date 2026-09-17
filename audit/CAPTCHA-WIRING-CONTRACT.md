@@ -40,6 +40,16 @@ all three must be true and must use the **same context string**:
   legitimate user. When one WP hook (e.g. `lostpassword_post`) serves two forms
   (WP core + WooCommerce), use ONE callback that selects the context by which
   `<context>-nonce` field is present in `$_POST`.
+- **wp-admin actions that fire a front-end hook are exempt, and nothing wider is.**
+  No admin screen renders a CAPTCHA, so verifying there always fails. Core's
+  admin password reset (Users row/bulk action, Edit User > Send Reset Link) runs
+  `retrieve_password()` -> `lostpassword_post`; the validator skips when
+  `current_user_can( 'edit_users' )`. Core's Comments/Dashboard reply runs
+  `wp_ajax_replyto-comment` -> `preprocess_comment`; the validator skips while
+  `doing_action( 'wp_ajax_replyto-comment' )` (core has already checked its nonce
+  and `edit_post`). Never exempt on `is_admin()` (front-end AJAX forms run through
+  admin-ajax.php) or on "no CAPTCHA field was posted" (a bot just omits it).
+  Guard: `wp eval-file tests/audit/admin-actions-captcha.php` (fixed in 2.2.1).
 - **Aborting must use a hook whose result is honored.** `do_action` hooks like
   `groups_group_before_save` ignore return values and error bags; to block, call
   `bp_core_add_message()` + `bp_core_redirect()` (scoped to the exact creation

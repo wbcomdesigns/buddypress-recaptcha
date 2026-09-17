@@ -4,7 +4,7 @@ Donate link: https://wbcomdesigns.com/donate/
 Tags: captcha, recaptcha, spam protection, security, woocommerce
 Requires at least: 6.5
 Tested up to: 7.0
-Stable tag: 2.2.0
+Stable tag: 2.2.1
 Requires PHP: 8.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -217,6 +217,13 @@ Fixes lockouts introduced in 2.1.0. Login from a Login/Logout block, login widge
 Security update: comment, lost-password and login forms are now verified on sites without WooCommerce, where they previously did nothing. Recommended for every site.
 
 == Changelog ==
+
+= 2.2.1 - September 2026 =
+
+Admins can send password resets and reply to comments from the dashboard again.
+
+* Fix      - Sending a password reset from Users or Edit User reported "0 password reset emails sent" when the Lost Password CAPTCHA was on. Admin screens show no CAPTCHA, so the reset was always rejected. The front-end Lost Password form stays protected.
+* Fix      - Replying to a comment from the Comments screen or the Dashboard failed with "Security verification failed" when the Comment Form CAPTCHA was on. Front-end comment forms stay protected.
 
 = 2.2.0 - August 2026 =
 

@@ -61,6 +61,10 @@ Fill this section from the plugin's fixed-bug history. Every row here is a bug t
 - [ ] (placeholder) D.v3-token: v3 active, load /register/ → hidden token field is non-empty and no grecaptcha console error
 - [ ] (placeholder) D.loginform-render: log in from a core Login/Logout block → CAPTCHA renders inside that form and login succeeds
 
+- [ ] D.admin-reset (2.2.1): WordPress Lost Password toggle ON (default), as admin → Users → hover a user → Send password reset → notice "Password reset link sent." (not "sent to 0 users"); repeat with the bulk action and Edit User → Send Reset Link. Control: logged out, submit wp-login.php?action=lostpassword with the CAPTCHA unsolved → rejected
+- [ ] D.admin-comment-reply (2.2.1): Comment Form toggle ON (default), as admin AND as editor → Comments → Reply → reply is saved. Control: logged out, submit a front-end comment with the CAPTCHA unsolved → "Security verification failed"
+- [ ] D.admin-actions-script (2.2.1): `wp eval-file wp-content/plugins/buddypress-recaptcha/tests/audit/admin-actions-captcha.php` exits 0
+
 **Rule:** every customer-visible fix that ships after this document adds a new row here in the same PR.
 
 ## E — Extensions / addons / premium features (if applicable)

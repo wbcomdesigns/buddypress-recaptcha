@@ -121,45 +121,6 @@ class Woocommerce_Order {
 	}
 
 	/**
-	 * Verify comment captcha
-	 *
-	 * @param array $commentdata Comment data.
-	 * @return array
-	 */
-	public function woo_verify_comment_captcha( $commentdata ) {
-		// Check if captcha is enabled for comments.
-		$is_enabled = get_option( 'wbc_recaptcha_enable_on_comment' );
-		if ( 'yes' !== $is_enabled ) {
-			return $commentdata;
-		}
-
-		// Skip for logged-in users if configured.
-		if ( is_user_logged_in() ) {
-			$skip_for_logged_in = get_option( 'wbc_recaptcha_skip_comment_for_logged_in' );
-			if ( 'yes' === $skip_for_logged_in ) {
-				return $commentdata;
-			}
-		}
-
-		// Verify captcha.
-		if ( function_exists( 'wbc_verify_captcha' ) ) {
-			if ( ! wbc_verify_captcha( 'comment' ) ) {
-				$error_msg = wbc_get_captcha_error_message( 'comment', 'invalid' );
-				wp_die(
-					esc_html( $error_msg ),
-					esc_html__( 'Comment Submission Failed', 'buddypress-recaptcha' ),
-					array(
-						'response'  => 403,
-						'back_link' => true,
-					)
-				);
-			}
-		}
-
-		return $commentdata;
-	}
-
-	/**
 	 * Add CAPTCHA to WooCommerce product review form
 	 *
 	 * WooCommerce builds the comment form fields manually and passes them to comment_form(),
