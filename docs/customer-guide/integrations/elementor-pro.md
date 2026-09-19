@@ -41,25 +41,17 @@ Protects Elementor Pro form widgets:
 
 ### Exclude Specific Forms
 
-```php
-add_filter( 'wbc_elementor_exclude_forms', function( $excluded ) {
-    $excluded[] = 'form_id_123'; // Elementor form ID
-    return $excluded;
-});
-```
-
-**Find Form ID:**
-- Edit page in Elementor
-- Select form widget
-- Check Form ID in settings
+Excluding a single Elementor Pro form by ID is not supported - the CAPTCHA toggle applies to the whole Elementor Pro integration, not individual forms.
 
 ### Custom Error Message
 
 ```php
-add_filter( 'wbc_elementor_error_message', function( $message ) {
-    return 'Please verify you are human before submitting.';
-});
+add_filter( 'wbc_captcha_error_message', function( $message, $context ) {
+    return 'elementorpro' === $context ? 'Please verify you are human before submitting.' : $message;
+}, 10, 2 );
 ```
+
+The filter receives `( $message, $context, $service_id, $error_type )` and covers every form the plugin protects. To change the message for all forms without code, use the fields on the **Advanced** tab.
 
 ### CAPTCHA in Popups
 

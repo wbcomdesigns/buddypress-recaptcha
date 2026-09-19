@@ -127,18 +127,13 @@ class WBC_Turnstile_Service extends WBC_Captcha_Service_Base {
 		</p>
 		
 		<script type="text/javascript">
-		window.<?php echo esc_js( $callback ); ?> = function(token) {
-			if(token){
-				// Handle successful verification.
-				var submitBtn = jQuery('<?php echo esc_js( $this->get_submit_button_selector( $context ) ); ?>');
-				if(submitBtn.length) {
-					submitBtn.removeAttr("disabled");
-					submitBtn.removeAttr("title");
-				}
-				
-				if (typeof woo_<?php echo esc_js( str_replace( '-', '_', $context ) ); ?>_captcha_verified === "function") {
-					woo_<?php echo esc_js( str_replace( '-', '_', $context ) ); ?>_captcha_verified(token);
-				}
+		window.<?php echo esc_js( $callback ); ?> = function (token) {
+			if (!token) {
+				return;
+			}
+			<?php echo $this->submit_buttons_js( $context, false ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- JS built from JSON-encoded values. ?>
+			if (typeof woo_<?php echo esc_js( str_replace( '-', '_', $context ) ); ?>_captcha_verified === "function") {
+				woo_<?php echo esc_js( str_replace( '-', '_', $context ) ); ?>_captcha_verified(token);
 			}
 		};
 		</script>

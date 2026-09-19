@@ -3,7 +3,7 @@
   "plugin": {
     "slug": "buddypress-recaptcha",
     "name": "Wbcom CAPTCHA Manager",
-    "version": "2.2.0",
+    "version": "2.2.1",
     "namespace": "global (WBC_* / Recaptcha_For_BuddyPress* / BPRC_* class prefixes — no PSR-4 namespace)",
     "main_file": "recaptcha-for-buddypress.php",
     "plugin_uri": "https://wbcomdesigns.com/downloads/buddypress-recaptcha/",
@@ -177,6 +177,14 @@
       ],
       "type": "yes|no",
       "purpose": "Per-context enable toggle (29 contexts). NOTE: the 'bp_register' context maps to wbc_recaptcha_enable_on_buddypress, not _signup_bp."
+    },
+    {
+      "key": "wbc_recaptcha_skip_comment_for_logged_in",
+      "type": "yes|no",
+      "default": "yes on a fresh install (activator); absent on existing sites, which reads as no",
+      "admin": "Protection > WordPress Forms > Comments: Skip for Logged-in Users (since 2.2.1)",
+      "read_by": "wbc_skip_comment_captcha_for_current_user() in includes/captcha-verification-helper.php (comment form render, WooCommerce review render, comment verify)",
+      "purpose": "Logged-in users who cannot moderate comments skip the comment CAPTCHA when yes. Users with moderate_comments always skip; logged-out visitors never do."
     },
     {
       "key": "wbc_captcha_service",
@@ -760,8 +768,22 @@
         "string $context",
         "string $service_id"
       ],
-      "where": "includes/class-captcha-service-base.php:477",
-      "purpose": "Last-mile filter to skip captcha rendering for a specific context/request.",
+      "where": "includes/class-captcha-service-manager.php (render) + includes/class-captcha-service-base.php:477 (should_render, reCAPTCHA v3)",
+      "purpose": "Last-mile filter to skip captcha rendering for a specific context/request. Since 2.2.1 applied in WBC_Captcha_Service_Manager::render() for ALL five providers; before that only reCAPTCHA v3 consulted it, so on the other four a callback that skipped verification still showed the widget. Hook the same callback to wbc_should_verify_captcha so render and verify agree.",
+      "consumed_by": []
+    },
+    {
+      "name": "wbc_captcha_error_message",
+      "type": "filter",
+      "args_count": 4,
+      "args_signature": [
+        "string $message",
+        "string $context",
+        "string $service_id",
+        "string $error_type"
+      ],
+      "where": "includes/captcha-verification-helper.php (wbc_get_captcha_error_message)",
+      "purpose": "Since 2.2.1. Filters every CAPTCHA error shown to a visitor, after the provider message, the Advanced-tab admin message and the built-in default are resolved. Documented in the developer and customer guides since before 2.0 but never implemented until 2.2.1. The WooCommerce checkout nonce error and the reCAPTCHA v2 / hCaptcha disabled-submit tooltip now go through the helper too, so no CAPTCHA error bypasses it.",
       "consumed_by": []
     },
     {

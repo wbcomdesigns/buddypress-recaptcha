@@ -29,6 +29,42 @@ if ( ! function_exists( 'wbc_verify_captcha' ) ) {
 	}
 }
 
+if ( ! function_exists( 'wbc_skip_comment_captcha_for_current_user' ) ) {
+	/**
+	 * Whether the comment CAPTCHA is skipped for the current user.
+	 *
+	 * The comment form, the WooCommerce review form and the comment validator all
+	 * call this, so a visitor is never shown a CAPTCHA that is not checked, or
+	 * checked for one that was never shown.
+	 *
+	 * - Logged out: never skipped.
+	 * - Can moderate comments: always skipped. They can approve any comment, so a
+	 *   CAPTCHA on their own protects nothing.
+	 * - Any other logged-in user: skipped when "Skip for Logged-in Users" is on.
+	 *   Missing option means not skipped, so sites that never saved the setting
+	 *   keep the behaviour they had.
+	 *
+	 * Developers can exempt more users (e.g. one role) with the existing
+	 * `wbc_should_render_captcha` / `wbc_should_verify_captcha` filters; those run
+	 * after this check, so they cannot re-require users this function exempts.
+	 *
+	 * @since 2.2.1
+	 *
+	 * @return bool True when the current user comments without a CAPTCHA.
+	 */
+	function wbc_skip_comment_captcha_for_current_user() { //phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound
+		if ( ! is_user_logged_in() ) {
+			return false;
+		}
+
+		if ( current_user_can( 'moderate_comments' ) ) {
+			return true;
+		}
+
+		return 'yes' === get_option( 'wbc_recaptcha_skip_comment_for_logged_in' );
+	}
+}
+
 if ( ! function_exists( 'wbc_get_custom_captcha_error_option' ) ) {
 	/**
 	 * Resolve the admin-configured custom error message for an error type.
@@ -105,6 +141,9 @@ if ( ! function_exists( 'wbc_get_captcha_error_message' ) ) {
 	/**
 	 * Get captcha error message for context and error type.
 	 *
+	 * Every integration builds its CAPTCHA error through this function, so the
+	 * `wbc_captcha_error_message` filter below reaches all of them.
+	 *
 	 * @param string $context    The context.
 	 * @param string $error_type Type of error: 'blank', 'invalid', 'no_response'.
 	 * @return string
@@ -133,23 +172,36 @@ if ( ! function_exists( 'wbc_get_captcha_error_message' ) ) {
 		 * every failed verification, on every integration that reports an error.
 		 * is_callable() reflects the visibility actually available from here.
 		 */
+		$message = '';
 		if ( $service && is_callable( array( $service, 'get_error_message' ) ) ) {
-			$custom_message = $service->get_error_message( $context, $error_type );
-			if ( ! empty( $custom_message ) ) {
-				return $custom_message;
-			}
+			$message = $service->get_error_message( $context, $error_type );
 		}
 
 		// Fall back to the admin-configured message, resolved across the current and
 		// all historic option keys.
-		$custom_message = wbc_get_custom_captcha_error_option( $error_type );
-
-		if ( ! empty( $custom_message ) ) {
-			// Replace [recaptcha] placeholder.
-			$custom_message = str_replace( '[recaptcha]', __( 'Security check', 'buddypress-recaptcha' ), $custom_message );
-			return $custom_message;
+		if ( empty( $message ) ) {
+			$message = str_replace( '[recaptcha]', __( 'Security check', 'buddypress-recaptcha' ), wbc_get_custom_captcha_error_option( $error_type ) );
 		}
 
-		return isset( $default_messages[ $error_type ] ) ? $default_messages[ $error_type ] : $default_messages['invalid'];
+		if ( empty( $message ) ) {
+			$message = isset( $default_messages[ $error_type ] ) ? $default_messages[ $error_type ] : $default_messages['invalid'];
+		}
+
+		/**
+		 * Filters the CAPTCHA error message shown to the visitor.
+		 *
+		 * Runs after the provider message, the admin-configured message (Advanced
+		 * tab) and the built-in default are resolved, so it can override any of them
+		 * per form.
+		 *
+		 * @since 2.2.1
+		 *
+		 * @param string $message    The resolved error message.
+		 * @param string $context    Form context, e.g. 'wp_login', 'comment', 'woo_checkout_guest', 'cf7'.
+		 * @param string $service_id Active provider id ('recaptcha-v2', 'recaptcha-v3', 'hcaptcha', 'turnstile', 'altcha'), or '' when none.
+		 * @param string $error_type 'blank', 'invalid' or 'no_response'.
+		 */
+		//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
+		return (string) apply_filters( 'wbc_captcha_error_message', $message, $context, $service ? $service->get_service_id() : '', $error_type );
 	}
 }

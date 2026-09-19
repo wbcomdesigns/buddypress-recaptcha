@@ -87,8 +87,11 @@ Protects Easy Digital Downloads forms:
 ### Skip CAPTCHA for Logged-In Customers
 
 ```php
-// Skip checkout CAPTCHA if customer logged in
-add_filter( 'wbc_edd_checkout_skip_logged_in', '__return_true' );
+function my_skip_edd_checkout_for_logged_in( $should, $context, $service_id ) {
+    return 'edd_checkout' === $context && is_user_logged_in() ? false : $should;
+}
+add_filter( 'wbc_should_render_captcha', 'my_skip_edd_checkout_for_logged_in', 10, 3 );
+add_filter( 'wbc_should_verify_captcha', 'my_skip_edd_checkout_for_logged_in', 10, 3 );
 ```
 
 **Recommended:** Improves UX for returning customers.
@@ -98,26 +101,22 @@ add_filter( 'wbc_edd_checkout_skip_logged_in', '__return_true' );
 ### Custom Error Messages
 
 ```php
-// Checkout error
-add_filter( 'wbc_edd_checkout_error_message', function( $message ) {
-    return 'Please verify you are human to complete your purchase.';
-});
-
-// Registration error
-add_filter( 'wbc_edd_register_error_message', function( $message ) {
-    return 'Please complete the security check to create your account.';
-});
+add_filter( 'wbc_captcha_error_message', function( $message, $context ) {
+    $messages = array(
+        'edd_checkout' => 'Please verify you are human to complete your purchase.',
+        'edd_register' => 'Please complete the security check to create your account.',
+    );
+    return $messages[ $context ] ?? $message;
+}, 10, 2 );
 ```
+
+The filter receives `( $message, $context, $service_id, $error_type )` and covers every form the plugin protects. To change the message for all forms without code, use the fields on the **Advanced** tab.
 
 ---
 
 ### CAPTCHA Position on Checkout
 
-```php
-add_filter( 'wbc_edd_checkout_captcha_position', function() {
-    return 'before_payment'; // or 'after_customer_info'
-});
-```
+The CAPTCHA position on checkout follows the integration's own form hook and cannot be moved by a filter.
 
 ---
 
@@ -204,9 +203,7 @@ add_filter( 'wbc_edd_checkout_captcha_position', function() {
 
 ### 3. Skip for Logged-In Customers
 
-```php
-add_filter( 'wbc_edd_checkout_skip_logged_in', '__return_true' );
-```
+See [Skip CAPTCHA for Logged-In Customers](#skip-captcha-for-logged-in-customers) above.
 
 **Benefits:**
 - Better UX for repeat customers

@@ -1,24 +1,22 @@
-# Copyright (C) 2026 Wbcom Designs
-# This file is distributed under the GPL-2.0+.
 msgid ""
 msgstr ""
 "Project-Id-Version: Wbcom CAPTCHA Manager 2.1.0\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/buddypress-"
-"recaptcha\n"
-"POT-Creation-Date: 2026-07-17T10:19:04+00:00\n"
-"PO-Revision-Date: 2026-07-16T11:32:28+00:00\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/buddypress-recaptcha\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
-"Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2026-07-17T10:19:04+00:00\n"
+"PO-Revision-Date: 2026-07-16T11:32:28+00:00\n"
+"Language: it\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: buddypress-recaptcha\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. Plugin Name of the plugin
-#: recaptcha-for-buddypress.php includes/admin/class-bprc-admin.php:142
+#: recaptcha-for-buddypress.php
+#: includes/admin/class-bprc-admin.php:142
 #: includes/admin/views/shell.php:28
 msgid "Wbcom CAPTCHA Manager"
 msgstr "Wbcom CAPTCHA Manager"
@@ -30,16 +28,8 @@ msgstr "https://wbcomdesigns.com/downloads/buddypress-recaptcha/"
 
 #. Description of the plugin
 #: recaptcha-for-buddypress.php
-msgid ""
-"Complete CAPTCHA solution with support for reCAPTCHA v2, v3, Cloudflare "
-"Turnstile, hCaptcha, and ALTCHA. Protect WordPress, WooCommerce, BuddyPress, "
-"bbPress, and popular form builders from spam and bots with a modular, easy-"
-"to-manage interface."
-msgstr ""
-"Soluzione CAPTCHA completa con supporto per reCAPTCHA v2, v3, Cloudflare "
-"Turnstile, hCaptcha e ALTCHA. Proteggi WordPress, WooCommerce, BuddyPress, "
-"bbPress e i più popolari form builder da spam e bot con un'interfaccia "
-"modulare e facile da gestire."
+msgid "Complete CAPTCHA solution with support for reCAPTCHA v2, v3, Cloudflare Turnstile, hCaptcha, and ALTCHA. Protect WordPress, WooCommerce, BuddyPress, bbPress, and popular form builders from spam and bots with a modular, easy-to-manage interface."
+msgstr "Soluzione CAPTCHA completa con supporto per reCAPTCHA v2, v3, Cloudflare Turnstile, hCaptcha e ALTCHA. Proteggi WordPress, WooCommerce, BuddyPress, bbPress e i più popolari form builder da spam e bot con un'interfaccia modulare e facile da gestire."
 
 #. Author of the plugin
 #: recaptcha-for-buddypress.php
@@ -52,12 +42,8 @@ msgid "https://wbcomdesigns.com/"
 msgstr "https://wbcomdesigns.com/"
 
 #: admin/includes/class-settings-renderer.php:402
-msgid ""
-"The settings of this image size have been disabled because its values are "
-"being overwritten by a filter."
-msgstr ""
-"Le impostazioni di questa dimensione dell'immagine sono state disabilitate "
-"perché i suoi valori vengono sovrascritti da un filtro."
+msgid "The settings of this image size have been disabled because its values are being overwritten by a filter."
+msgstr "Le impostazioni di questa dimensione dell'immagine sono state disabilitate perché i suoi valori vengono sovrascritti da un filtro."
 
 #: admin/includes/class-settings-renderer.php:418
 msgid "Hard crop?"
@@ -119,12 +105,8 @@ msgid "Step 1: Choose Your CAPTCHA Service"
 msgstr "Passo 1: Scegli il tuo servizio CAPTCHA"
 
 #: admin/includes/class-wbc-buddypress-settings-page.php:72
-msgid ""
-"Select which CAPTCHA service you want to use, then click \"Save Selection\" "
-"to continue."
-msgstr ""
-"Seleziona quale servizio CAPTCHA desideri utilizzare, quindi fai clic su "
-"\"Salva selezione\" per continuare."
+msgid "Select which CAPTCHA service you want to use, then click \"Save Selection\" to continue."
+msgstr "Seleziona quale servizio CAPTCHA desideri utilizzare, quindi fai clic su \"Salva selezione\" per continuare."
 
 #: admin/includes/class-wbc-buddypress-settings-page.php:93
 msgid "Step 2: Add Your API Keys"
@@ -145,23 +127,21 @@ msgid "Follow these instructions to obtain your API keys."
 msgstr "Segui queste istruzioni per ottenere le tue chiavi API."
 
 #: admin/includes/class-wbc-buddypress-settings-page.php:147
-msgid ""
-"Please select a CAPTCHA service above and click \"Save Selection\" to "
-"continue with the setup."
-msgstr ""
-"Seleziona un servizio CAPTCHA qui sopra e fai clic su \"Salva selezione\" "
-"per continuare con la configurazione."
+msgid "Please select a CAPTCHA service above and click \"Save Selection\" to continue with the setup."
+msgstr "Seleziona un servizio CAPTCHA qui sopra e fai clic su \"Salva selezione\" per continuare con la configurazione."
 
 #: admin/includes/class-wbc-buddypress-settings-page.php:167
 #: admin/includes/class-wbc-buddypress-settings-page.php:957
-#: includes/admin/class-bprc-admin.php:242 includes/admin/views/overview.php:17
-#: includes/services/class-recaptcha-v2-service.php:48
+#: includes/admin/class-bprc-admin.php:236
+#: includes/admin/views/overview.php:17
+#: includes/services/class-recaptcha-v2-service.php:49
 msgid "Google reCAPTCHA v2"
 msgstr "Google reCAPTCHA v2"
 
 #: admin/includes/class-wbc-buddypress-settings-page.php:168
 #: admin/includes/class-wbc-buddypress-settings-page.php:962
-#: includes/admin/class-bprc-admin.php:243 includes/admin/views/overview.php:18
+#: includes/admin/class-bprc-admin.php:237
+#: includes/admin/views/overview.php:18
 msgid "Google reCAPTCHA v3"
 msgstr "Google reCAPTCHA v3"
 
@@ -241,8 +221,7 @@ msgstr "Soglia di punteggio"
 #: admin/includes/class-wbc-buddypress-settings-page.php:263
 #: admin/includes/class-wbc-buddypress-settings-page.php:575
 msgid "Minimum score (0.0 to 1.0) to pass verification. Default: 0.5"
-msgstr ""
-"Punteggio minimo (da 0,0 a 1,0) per superare la verifica. Predefinito: 0,5"
+msgstr "Punteggio minimo (da 0,0 a 1,0) per superare la verifica. Predefinito: 0,5"
 
 #: admin/includes/class-wbc-buddypress-settings-page.php:278
 #: admin/includes/class-wbc-buddypress-settings-page.php:599
@@ -291,12 +270,8 @@ msgstr "ALTCHA - Chiave segreta HMAC"
 
 #: admin/includes/class-wbc-buddypress-settings-page.php:337
 #: admin/includes/class-wbc-buddypress-settings-page.php:670
-msgid ""
-"Generate a random secret key for challenge signing. ALTCHA is self-hosted "
-"and requires HTTPS."
-msgstr ""
-"Genera una chiave segreta casuale per la firma della sfida. ALTCHA è self-"
-"hosted e richiede HTTPS."
+msgid "Generate a random secret key for challenge signing. ALTCHA is self-hosted and requires HTTPS."
+msgstr "Genera una chiave segreta casuale per la firma della sfida. ALTCHA è self-hosted e richiede HTTPS."
 
 #: admin/includes/class-wbc-buddypress-settings-page.php:337
 #: admin/includes/class-wbc-buddypress-settings-page.php:672
@@ -338,12 +313,8 @@ msgid "Form Protection Settings"
 msgstr "Impostazioni di protezione dei moduli"
 
 #: admin/includes/class-wbc-buddypress-settings-page.php:710
-msgid ""
-"Choose which forms to protect from spam and bots. Enable protection where "
-"you need it most."
-msgstr ""
-"Scegli quali moduli proteggere da spam e bot. Abilita la protezione dove ne "
-"hai più bisogno."
+msgid "Choose which forms to protect from spam and bots. Enable protection where you need it most."
+msgstr "Scegli quali moduli proteggere da spam e bot. Abilita la protezione dove ne hai più bisogno."
 
 #: admin/includes/class-wbc-buddypress-settings-page.php:737
 msgid "Advanced Settings"
@@ -409,14 +380,13 @@ msgid "IP addresses that skip captcha (comma-separated)"
 msgstr "Indirizzi IP che saltano il CAPTCHA (separati da virgola)"
 
 #: admin/includes/class-wbc-buddypress-settings-page.php:838
-#: includes/services/class-hcaptcha-service.php:251
-#: includes/services/class-recaptcha-v2-service.php:386
+#: includes/services/class-hcaptcha-service.php:262
+#: includes/services/class-recaptcha-v2-service.php:400
 msgid "Please complete the security check."
 msgstr "Completa il controllo di sicurezza."
 
 #: admin/includes/class-wbc-buddypress-settings-page.php:839
-#: includes/captcha-verification-helper.php:123
-#: public/woocommerce-extra/Woocommerce_After_Checkout_Validation.php:53
+#: includes/captcha-verification-helper.php:162
 msgid "Security verification failed. Please try again."
 msgstr "Verifica di sicurezza non riuscita. Riprova."
 
@@ -454,8 +424,7 @@ msgstr "Lingua"
 
 #: admin/includes/class-wbc-buddypress-settings-page.php:882
 msgid "Language for captcha widget (leave empty for auto-detect)"
-msgstr ""
-"Lingua per il widget CAPTCHA (lascia vuoto per il rilevamento automatico)"
+msgstr "Lingua per il widget CAPTCHA (lascia vuoto per il rilevamento automatico)"
 
 #: admin/includes/class-wbc-buddypress-settings-page.php:934
 msgid "Get your API keys: "
@@ -507,13 +476,11 @@ msgstr "Accedi con il tuo account Google"
 
 #: admin/includes/class-wbc-buddypress-settings-page.php:1037
 msgid "Enter a label for your site (e.g., \"My WordPress Site\")"
-msgstr ""
-"Immetti un'etichetta per il tuo sito (ad es. \"Il mio sito WordPress\")"
+msgstr "Immetti un'etichetta per il tuo sito (ad es. \"Il mio sito WordPress\")"
 
 #: admin/includes/class-wbc-buddypress-settings-page.php:1038
 msgid "Select \"reCAPTCHA v2\" → \"I'm not a robot\" Checkbox"
-msgstr ""
-"Seleziona \"reCAPTCHA v2\" → \"Non sono un robot\" Casella di controllo"
+msgstr "Seleziona \"reCAPTCHA v2\" → \"Non sono un robot\" Casella di controllo"
 
 #: admin/includes/class-wbc-buddypress-settings-page.php:1039
 msgid "Add your domain(s) - both with and without www"
@@ -560,12 +527,8 @@ msgid "Add your domain(s)"
 msgstr "Aggiungi il tuo dominio/i"
 
 #: admin/includes/class-wbc-buddypress-settings-page.php:1066
-msgid ""
-"Note: reCAPTCHA v3 runs invisibly in the background and uses a score system "
-"(0.0 to 1.0) to detect bots."
-msgstr ""
-"Nota: reCAPTCHA v3 viene eseguito invisibilmente in background e utilizza un "
-"sistema di punteggio (da 0,0 a 1,0) per rilevare i bot."
+msgid "Note: reCAPTCHA v3 runs invisibly in the background and uses a score system (0.0 to 1.0) to detect bots."
+msgstr "Nota: reCAPTCHA v3 viene eseguito invisibilmente in background e utilizza un sistema di punteggio (da 0,0 a 1,0) per rilevare i bot."
 
 #: admin/includes/class-wbc-buddypress-settings-page.php:1076
 msgid "How to Get Cloudflare Turnstile Keys"
@@ -632,10 +595,8 @@ msgid "How to Configure ALTCHA"
 msgstr "Come configurare ALTCHA"
 
 #: admin/includes/class-wbc-buddypress-settings-page.php:1120
-msgid ""
-"ALTCHA is a self-hosted solution that doesn't require external API keys."
-msgstr ""
-"ALTCHA è una soluzione self-hosted che non richiede chiavi API esterne."
+msgid "ALTCHA is a self-hosted solution that doesn't require external API keys."
+msgstr "ALTCHA è una soluzione self-hosted che non richiede chiavi API esterne."
 
 #: admin/includes/class-wbc-buddypress-settings-page.php:1122
 msgid "Click the \"Generate HMAC Key\" button above"
@@ -654,12 +615,8 @@ msgid "ALTCHA will work immediately without external services"
 msgstr "ALTCHA funzionerà immediatamente senza servizi esterni"
 
 #: admin/includes/class-wbc-buddypress-settings-page.php:1127
-msgid ""
-"Important: ALTCHA requires HTTPS to function properly. Make sure your site "
-"uses SSL."
-msgstr ""
-"Importante: ALTCHA richiede HTTPS per funzionare correttamente. Assicurati "
-"che il tuo sito utilizzi SSL."
+msgid "Important: ALTCHA requires HTTPS to function properly. Make sure your site uses SSL."
+msgstr "Importante: ALTCHA richiede HTTPS per funzionare correttamente. Assicurati che il tuo sito utilizzi SSL."
 
 #: admin/includes/class-wbc-buddypress-settings-page.php:1152
 msgid "Google reCAPTCHA v2 (Checkbox)"
@@ -743,12 +700,8 @@ msgid "Enter your Google reCAPTCHA v3 secret key"
 msgstr "Immetti la tua chiave segreta di Google reCAPTCHA v3"
 
 #: admin/includes/class-wbc-buddypress-settings-page.php:1320
-msgid ""
-"Set the minimum score (0.0 to 1.0) to pass verification. Higher scores mean "
-"stricter validation."
-msgstr ""
-"Imposta il punteggio minimo (da 0,0 a 1,0) per superare la verifica. "
-"Punteggi più alti significano convalida più rigorosa."
+msgid "Set the minimum score (0.0 to 1.0) to pass verification. Higher scores mean stricter validation."
+msgstr "Imposta il punteggio minimo (da 0,0 a 1,0) per superare la verifica. Punteggi più alti significano convalida più rigorosa."
 
 #: admin/includes/class-wbc-buddypress-settings-page.php:1338
 msgid "Cloudflare Turnstile Settings"
@@ -767,28 +720,16 @@ msgid "ALTCHA Settings"
 msgstr "Impostazioni di ALTCHA"
 
 #: admin/includes/class-wbc-buddypress-settings-page.php:1373
-msgid ""
-"Configure ALTCHA - Privacy-first, self-hosted captcha. No external API "
-"required.<br><strong>HTTPS Required:</strong> ALTCHA requires a secure "
-"context (HTTPS) to work due to Web Crypto API requirements."
-msgstr ""
-"Configura ALTCHA - Privacy-first, captcha self-hosted. Nessuna API esterna "
-"richiesta.<br><strong>HTTPS Richiesto:</strong> ALTCHA richiede un contesto "
-"sicuro (HTTPS) per funzionare a causa dei requisiti dell'API Web Crypto."
+msgid "Configure ALTCHA - Privacy-first, self-hosted captcha. No external API required.<br><strong>HTTPS Required:</strong> ALTCHA requires a secure context (HTTPS) to work due to Web Crypto API requirements."
+msgstr "Configura ALTCHA - Privacy-first, captcha self-hosted. Nessuna API esterna richiesta.<br><strong>HTTPS Richiesto:</strong> ALTCHA richiede un contesto sicuro (HTTPS) per funzionare a causa dei requisiti dell'API Web Crypto."
 
 #: admin/includes/class-wbc-buddypress-settings-page.php:1378
 msgid "HMAC Key"
 msgstr "Chiave HMAC"
 
 #: admin/includes/class-wbc-buddypress-settings-page.php:1381
-msgid ""
-"Enter a secret HMAC key for challenge signing. <button type=\"button\" "
-"class=\"button button-secondary wbc-generate-hmac-key\" style=\"margin-left: "
-"10px;\">Generate Random Key</button>"
-msgstr ""
-"Immetti una chiave HMAC segreta per la firma della sfida. <button "
-"type=\"button\" class=\"button button-secondary wbc-generate-hmac-key\" "
-"style=\"margin-left: 10px;\">Genera chiave casuale</button>"
+msgid "Enter a secret HMAC key for challenge signing. <button type=\"button\" class=\"button button-secondary wbc-generate-hmac-key\" style=\"margin-left: 10px;\">Generate Random Key</button>"
+msgstr "Immetti una chiave HMAC segreta per la firma della sfida. <button type=\"button\" class=\"button button-secondary wbc-generate-hmac-key\" style=\"margin-left: 10px;\">Genera chiave casuale</button>"
 
 #: admin/includes/class-wbc-buddypress-settings-page.php:1382
 msgid "Your HMAC secret key (32+ characters recommended)"
@@ -799,12 +740,8 @@ msgid "Complexity (Max Number)"
 msgstr "Complessità (numero massimo)"
 
 #: admin/includes/class-wbc-buddypress-settings-page.php:1390
-msgid ""
-"Maximum number for proof-of-work challenge (higher = harder, recommended: "
-"50000-100000)"
-msgstr ""
-"Numero massimo per la sfida proof-of-work (più alto = più difficile, "
-"consigliato: 50000-100000)"
+msgid "Maximum number for proof-of-work challenge (higher = harder, recommended: 50000-100000)"
+msgstr "Numero massimo per la sfida proof-of-work (più alto = più difficile, consigliato: 50000-100000)"
 
 #: admin/includes/class-wbc-buddypress-settings-page.php:1396
 msgid "Challenge Expiration"
@@ -859,29 +796,16 @@ msgid "hCaptcha Settings"
 msgstr "Impostazioni di hCaptcha"
 
 #: admin/includes/class-wbc-buddypress-settings-page.php:1443
-msgid ""
-"Configure hCaptcha - Privacy-focused alternative to reCAPTCHA. Get your keys "
-"from <a href=\"https://www.hcaptcha.com/\" target=\"_blank\">hCaptcha.com</a>"
-msgstr ""
-"Configura hCaptcha - Alternativa focalizzata sulla privacy a reCAPTCHA. "
-"Ottieni le tue chiavi da <a href=\"https://www.hcaptcha.com/\" "
-"target=\"_blank\">hCaptcha.com</a>"
+msgid "Configure hCaptcha - Privacy-focused alternative to reCAPTCHA. Get your keys from <a href=\"https://www.hcaptcha.com/\" target=\"_blank\">hCaptcha.com</a>"
+msgstr "Configura hCaptcha - Alternativa focalizzata sulla privacy a reCAPTCHA. Ottieni le tue chiavi da <a href=\"https://www.hcaptcha.com/\" target=\"_blank\">hCaptcha.com</a>"
 
 #: admin/includes/class-wbc-buddypress-settings-page.php:1451
-msgid ""
-"Enter your hCaptcha site key (automatically uses hCaptcha plugin settings if "
-"installed)"
-msgstr ""
-"Immetti la tua chiave del sito hCaptcha (utilizza automaticamente le "
-"impostazioni del plugin hCaptcha se installate)"
+msgid "Enter your hCaptcha site key (automatically uses hCaptcha plugin settings if installed)"
+msgstr "Immetti la tua chiave del sito hCaptcha (utilizza automaticamente le impostazioni del plugin hCaptcha se installate)"
 
 #: admin/includes/class-wbc-buddypress-settings-page.php:1460
-msgid ""
-"Enter your hCaptcha secret key (automatically uses hCaptcha plugin settings "
-"if installed)"
-msgstr ""
-"Immetti la tua chiave segreta hCaptcha (utilizza automaticamente le "
-"impostazioni del plugin hCaptcha se installate)"
+msgid "Enter your hCaptcha secret key (automatically uses hCaptcha plugin settings if installed)"
+msgstr "Immetti la tua chiave segreta hCaptcha (utilizza automaticamente le impostazioni del plugin hCaptcha se installate)"
 
 #: admin/includes/class-wbc-buddypress-settings-page.php:1469
 msgid "Widget theme"
@@ -907,8 +831,7 @@ msgstr "Modulo di accesso"
 
 #: admin/includes/class-wbc-buddypress-settings-page.php:1519
 msgid "Protect WordPress login form from brute force attacks"
-msgstr ""
-"Proteggi il modulo di accesso di WordPress dagli attacchi di forza bruta"
+msgstr "Proteggi il modulo di accesso di WordPress dagli attacchi di forza bruta"
 
 #: admin/includes/class-wbc-buddypress-settings-page.php:1524
 #: admin/includes/class-wbc-buddypress-settings-page.php:1579
@@ -1004,9 +927,7 @@ msgstr "Moduli di BuddyPress"
 
 #: admin/includes/class-wbc-buddypress-settings-page.php:1646
 msgid "Enable reCAPTCHA protection for BuddyPress community features"
-msgstr ""
-"Abilita la protezione reCAPTCHA per le funzionalità della comunità di "
-"BuddyPress"
+msgstr "Abilita la protezione reCAPTCHA per le funzionalità della comunità di BuddyPress"
 
 #: admin/includes/class-wbc-buddypress-settings-page.php:1650
 #: admin/includes/settings-modules/class-wbc-buddypress-settings.php:55
@@ -1213,20 +1134,12 @@ msgstr "Vietnamita"
 #. translators: %s: Service name
 #: admin/includes/class-wbc-buddypress-settings-page.php:1846
 #, php-format
-msgid ""
-"Both Site Key and Secret Key are required for %s. Please enter valid API "
-"keys or leave both fields empty."
-msgstr ""
-"Sia la Site Key che la Secret Key sono necessarie per %s. Inserisci delle "
-"API key valide o lascia entrambi i campi vuoti."
+msgid "Both Site Key and Secret Key are required for %s. Please enter valid API keys or leave both fields empty."
+msgstr "Sia la Site Key che la Secret Key sono necessarie per %s. Inserisci delle API key valide o lascia entrambi i campi vuoti."
 
 #: admin/includes/class-wbc-buddypress-settings-page.php:1859
-msgid ""
-"ALTCHA HMAC Key cannot be empty. Please enter a valid key or leave the field "
-"unchanged."
-msgstr ""
-"La ALTCHA HMAC Key non può essere vuota. Inserisci una chiave valida o "
-"lascia il campo invariato."
+msgid "ALTCHA HMAC Key cannot be empty. Please enter a valid key or leave the field unchanged."
+msgstr "La ALTCHA HMAC Key non può essere vuota. Inserisci una chiave valida o lascia il campo invariato."
 
 #: admin/includes/class-wbc-buddypress-settings-page.php:1910
 msgid "Settings saved successfully."
@@ -1449,11 +1362,11 @@ msgstr "Modulo Commenti"
 msgid "Stop comment spam"
 msgstr "Blocca spam commenti"
 
-#: admin/includes/settings-modules/class-wbc-wordpress-settings.php:81
+#: admin/includes/settings-modules/class-wbc-wordpress-settings.php:88
 msgid "AJAX Login Widget"
 msgstr "Widget di accesso AJAX"
 
-#: admin/includes/settings-modules/class-wbc-wordpress-settings.php:82
+#: admin/includes/settings-modules/class-wbc-wordpress-settings.php:89
 msgid "Protect AJAX login widget from brute-force attacks"
 msgstr "Proteggi il widget di login AJAX dagli attacchi brute-force"
 
@@ -1471,7 +1384,8 @@ msgstr "Proteggi tutti i WPForms dall'invio di spam"
 msgid "Overview"
 msgstr "Panoramica"
 
-#: includes/admin/class-bprc-admin.php:72 includes/admin/views/overview.php:99
+#: includes/admin/class-bprc-admin.php:72
+#: includes/admin/views/overview.php:99
 msgid "Quick Setup"
 msgstr "Configurazione rapida"
 
@@ -1479,7 +1393,8 @@ msgstr "Configurazione rapida"
 msgid "Protection"
 msgstr "Protezione"
 
-#: includes/admin/class-bprc-admin.php:90 includes/admin/views/overview.php:85
+#: includes/admin/class-bprc-admin.php:90
+#: includes/admin/views/overview.php:85
 msgid "Updates"
 msgstr "Aggiornamenti"
 
@@ -1488,7 +1403,8 @@ msgid "Discover"
 msgstr "Scopri"
 
 #: includes/admin/class-bprc-admin.php:130
-#: includes/admin/class-bprc-admin.php:131 includes/admin/views/hub.php:57
+#: includes/admin/class-bprc-admin.php:131
+#: includes/admin/views/hub.php:57
 msgid "WB Plugins"
 msgstr "WB Plugins"
 
@@ -1509,126 +1425,111 @@ msgid "Cancel"
 msgstr "Annulla"
 
 #. translators: %s: CAPTCHA provider name, e.g. "Google reCAPTCHA v2".
-#: includes/admin/class-bprc-admin.php:239
+#: includes/admin/class-bprc-admin.php:233
 #, php-format
 msgid "%s Site Key is required"
 msgstr "%s Site Key è richiesta"
 
 #. translators: %s: CAPTCHA provider name, e.g. "Google reCAPTCHA v2".
-#: includes/admin/class-bprc-admin.php:241
+#: includes/admin/class-bprc-admin.php:235
 #, php-format
 msgid "%s Secret Key is required"
 msgstr "%s Secret Key è richiesta"
 
-#: includes/admin/class-bprc-admin.php:245
+#: includes/admin/class-bprc-admin.php:239
 msgid "Please fix the following errors:"
 msgstr "Per favore, correggi i seguenti errori:"
 
-#: includes/admin/class-bprc-admin.php:246
+#: includes/admin/class-bprc-admin.php:240
 msgid "Get your keys here"
 msgstr "Ottieni le tue chiavi qui"
 
-#: includes/admin/class-bprc-admin.php:247
+#: includes/admin/class-bprc-admin.php:241
 msgid "Key Generated!"
 msgstr "Chiave Generata!"
 
-#: includes/admin/class-bprc-admin.php:248
+#: includes/admin/class-bprc-admin.php:242
 msgid "Toggle visibility"
 msgstr "Attiva/disattiva visibilità"
 
-#: includes/admin/class-bprc-admin.php:249
+#: includes/admin/class-bprc-admin.php:243
 msgid "Hide Secret Key"
 msgstr "Nascondi Secret Key"
 
-#: includes/admin/class-bprc-admin.php:250
+#: includes/admin/class-bprc-admin.php:244
 msgid "Show Secret Key"
 msgstr "Mostra Secret Key"
 
-#: includes/admin/class-bprc-admin.php:251
+#: includes/admin/class-bprc-admin.php:245
 msgid "Copy to Clipboard"
 msgstr "Copia negli Appunti"
 
-#: includes/admin/class-bprc-admin.php:252
+#: includes/admin/class-bprc-admin.php:246
 msgid "Copied!"
 msgstr "Copiato!"
 
-#: includes/admin/class-bprc-admin.php:269
+#: includes/admin/class-bprc-admin.php:263
 msgid "Random key generated successfully!"
 msgstr "Chiave casuale generata con successo!"
 
-#: includes/admin/class-bprc-admin.php:270
+#: includes/admin/class-bprc-admin.php:264
 msgid "Dismiss this notice."
 msgstr "Ignora questo avviso."
 
-#: includes/admin/class-bprc-admin.php:272
+#: includes/admin/class-bprc-admin.php:266
 msgid "Google reCAPTCHA v2 Configuration"
 msgstr "Configurazione Google reCAPTCHA v2"
 
-#: includes/admin/class-bprc-admin.php:273
+#: includes/admin/class-bprc-admin.php:267
 msgid "The classic checkbox CAPTCHA. Users must click \"I'm not a robot\"."
-msgstr ""
-"Il classico CAPTCHA con casella di controllo. Gli utenti devono fare clic su "
-"\"Non sono un robot\"."
+msgstr "Il classico CAPTCHA con casella di controllo. Gli utenti devono fare clic su \"Non sono un robot\"."
 
-#: includes/admin/class-bprc-admin.php:274
+#: includes/admin/class-bprc-admin.php:268
 msgid "Google reCAPTCHA v3 Configuration"
 msgstr "Configurazione Google reCAPTCHA v3"
 
-#: includes/admin/class-bprc-admin.php:275
+#: includes/admin/class-bprc-admin.php:269
 msgid "Invisible verification using risk analysis score."
 msgstr "Verifica invisibile utilizzando il punteggio di analisi del rischio."
 
-#: includes/admin/class-bprc-admin.php:276
+#: includes/admin/class-bprc-admin.php:270
 msgid "Cloudflare Turnstile Configuration"
 msgstr "Configurazione Cloudflare Turnstile"
 
-#: includes/admin/class-bprc-admin.php:277
+#: includes/admin/class-bprc-admin.php:271
 msgid "Privacy-first CAPTCHA alternative from Cloudflare."
 msgstr "Alternativa CAPTCHA privacy-first di Cloudflare."
 
-#: includes/admin/class-bprc-admin.php:278
+#: includes/admin/class-bprc-admin.php:272
 msgid "hCaptcha Configuration"
 msgstr "Configurazione hCaptcha"
 
-#: includes/admin/class-bprc-admin.php:279
+#: includes/admin/class-bprc-admin.php:273
 msgid "Privacy-focused CAPTCHA that rewards websites."
 msgstr "CAPTCHA incentrato sulla privacy che premia i siti web."
 
-#: includes/admin/class-bprc-admin.php:280
+#: includes/admin/class-bprc-admin.php:274
 msgid "ALTCHA Configuration"
 msgstr "Configurazione ALTCHA"
 
-#: includes/admin/class-bprc-admin.php:281
+#: includes/admin/class-bprc-admin.php:275
 msgid "Self-hosted proof-of-work challenge. No external API required."
 msgstr "Sfida proof-of-work self-hosted. Nessuna API esterna richiesta."
 
 #: includes/admin/views/discover.php:22
-msgid ""
-"A free, fast community theme for BuddyPress, BuddyBoss and PeepSo with a "
-"modern layout and dark mode."
-msgstr ""
-"Un tema comunità gratuito e veloce per BuddyPress, BuddyBoss e PeepSo con un "
-"layout moderno e modalità scura."
+msgid "A free, fast community theme for BuddyPress, BuddyBoss and PeepSo with a modern layout and dark mode."
+msgstr "Un tema comunità gratuito e veloce per BuddyPress, BuddyBoss e PeepSo con un layout moderno e modalità scura."
 
 #: includes/admin/views/discover.php:29
-msgid ""
-"The full community stack: activity feeds, member spaces, profiles, and "
-"private messaging on WordPress."
-msgstr ""
-"Lo stack comunità completo: feed di attività, spazi membri, profili e "
-"messaggistica privata su WordPress."
+msgid "The full community stack: activity feeds, member spaces, profiles, and private messaging on WordPress."
+msgstr "Lo stack comunità completo: feed di attività, spazi membri, profili e messaggistica privata su WordPress."
 
 #: includes/admin/views/discover.php:36
-msgid ""
-"Self-moderating forums and Q&A boards that stay fast well beyond 100,000 "
-"topics."
-msgstr ""
-"Forum auto-moderati e board Q&A che rimangono veloci ben oltre i 100.000 "
-"topic."
+msgid "Self-moderating forums and Q&A boards that stay fast well beyond 100,000 topics."
+msgstr "Forum auto-moderati e board Q&A che rimangono veloci ben oltre i 100.000 topic."
 
 #: includes/admin/views/discover.php:43
-msgid ""
-"A photo and video hub with albums, reactions, following, and private chat."
+msgid "A photo and video hub with albums, reactions, following, and private chat."
 msgstr "Un hub di foto e video con album, reazioni, seguito e chat privata."
 
 #: includes/admin/views/discover.php:50
@@ -1636,58 +1537,32 @@ msgid "Run community events with RSVPs, calendars, and front-end submissions."
 msgstr "Gestisci eventi comunità con RSVP, calendari e invii front-end."
 
 #: includes/admin/views/discover.php:57
-msgid ""
-"Reward members with points, badges, and leaderboards to keep engagement high."
-msgstr ""
-"Premia i membri con punti, distintivi e classifiche per mantenere "
-"l'engagement alto."
+msgid "Reward members with points, badges, and leaderboards to keep engagement high."
+msgstr "Premia i membri con punti, distintivi e classifiche per mantenere l'engagement alto."
 
 #: includes/admin/views/discover.php:64
-msgid ""
-"Searchable directories with ten listing types, ratings, maps, and front-end "
-"submissions."
-msgstr ""
-"Directory ricercabili con dieci tipi di inserzioni, valutazioni, mappe e "
-"invii front-end."
+msgid "Searchable directories with ten listing types, ratings, maps, and front-end submissions."
+msgstr "Directory ricercabili con dieci tipi di inserzioni, valutazioni, mappe e invii front-end."
 
 #: includes/admin/views/discover.php:71
-msgid ""
-"Add a job board with front-end listings, applications, and employer profiles."
-msgstr ""
-"Aggiungi una job board con inserzioni front-end, candidature e profili dei "
-"datori di lavoro."
+msgid "Add a job board with front-end listings, applications, and employer profiles."
+msgstr "Aggiungi una job board con inserzioni front-end, candidature e profili dei datori di lavoro."
 
 #: includes/admin/views/discover.php:78
-msgid ""
-"Create, sell, and auto-grade online courses, then hand out certificates "
-"automatically."
-msgstr ""
-"Crea, vendi e valuta automaticamente corsi online, quindi distribuisci "
-"certificati automaticamente."
+msgid "Create, sell, and auto-grade online courses, then hand out certificates automatically."
+msgstr "Crea, vendi e valuta automaticamente corsi online, quindi distribuisci certificati automaticamente."
 
 #: includes/admin/views/discover.php:85
-msgid ""
-"A free service marketplace with vendor dashboards, an 11-status order flow, "
-"and Stripe or PayPal built in."
-msgstr ""
-"Un marketplace di servizi gratuito con dashboard dei fornitori, un flusso di "
-"ordini a 11 stati e Stripe o PayPal integrati."
+msgid "A free service marketplace with vendor dashboards, an 11-status order flow, and Stripe or PayPal built in."
+msgstr "Un marketplace di servizi gratuito con dashboard dei fornitori, un flusso di ordini a 11 stati e Stripe o PayPal integrati."
 
 #: includes/admin/views/discover.php:93
 msgid "More Free Tools from Wbcom Designs"
 msgstr "Altri Strumenti Gratuiti da Wbcom Designs"
 
 #: includes/admin/views/discover.php:94
-msgid ""
-"CAPTCHA Manager keeps your forms free of spam and bots. These free tools "
-"from Wbcom Designs build out the community behind those forms: the theme and "
-"network itself, forums, media, events, gamification, directories, jobs, "
-"courses, and services."
-msgstr ""
-"CAPTCHA Manager mantiene i tuoi moduli liberi da spam e bot. Questi "
-"strumenti gratuiti di Wbcom Designs costruiscono la comunità dietro quei "
-"moduli: il tema e la rete stessa, forum, media, eventi, gamificazione, "
-"directory, lavori, corsi e servizi."
+msgid "CAPTCHA Manager keeps your forms free of spam and bots. These free tools from Wbcom Designs build out the community behind those forms: the theme and network itself, forums, media, events, gamification, directories, jobs, courses, and services."
+msgstr "CAPTCHA Manager mantiene i tuoi moduli liberi da spam e bot. Questi strumenti gratuiti di Wbcom Designs costruiscono la comunità dietro quei moduli: il tema e la rete stessa, forum, media, eventi, gamificazione, directory, lavori, corsi e servizi."
 
 #: includes/admin/views/discover.php:110
 msgid "Get it free"
@@ -1712,8 +1587,7 @@ msgid "No Wbcom plugins attached to this hub yet"
 msgstr "Nessun plugin Wbcom collegato a questo hub ancora"
 
 #: includes/admin/views/hub.php:85
-msgid ""
-"Activate one or more Wbcom plugins and they will appear here automatically."
+msgid "Activate one or more Wbcom plugins and they will appear here automatically."
 msgstr "Attiva uno o più plugin Wbcom e appariranno qui automaticamente."
 
 #: includes/admin/views/hub.php:100
@@ -1725,14 +1599,8 @@ msgid "About WB Plugins"
 msgstr "Informazioni su WB Plugins"
 
 #: includes/admin/views/hub.php:114
-msgid ""
-"This hub is the single entry point for every Wbcom Designs plugin installed "
-"on your site. Each plugin lives on its own page under this menu and keeps "
-"its own settings and data."
-msgstr ""
-"Questo hub è il singolo punto di ingresso per ogni plugin Wbcom Designs "
-"installato sul tuo sito. Ogni plugin vive nella sua pagina sotto questo menu "
-"e mantiene le sue impostazioni e dati."
+msgid "This hub is the single entry point for every Wbcom Designs plugin installed on your site. Each plugin lives on its own page under this menu and keeps its own settings and data."
+msgstr "Questo hub è il singolo punto di ingresso per ogni plugin Wbcom Designs installato sul tuo sito. Ogni plugin vive nella sua pagina sotto questo menu e mantiene le sue impostazioni e dati."
 
 #: includes/admin/views/hub.php:118
 msgid "Visit wbcomdesigns.com for more plugins and themes →"
@@ -1745,18 +1613,12 @@ msgstr "Non selezionato"
 #. translators: %s: URL to the Quick Setup tab.
 #: includes/admin/views/overview.php:58
 #, php-format
-msgid ""
-"Your active CAPTCHA service is missing its API keys. <a href=\"%s\">Finish "
-"setup</a> so spam protection actually runs."
-msgstr ""
-"Il tuo servizio CAPTCHA attivo manca delle sue API key. <a "
-"href=\"%s\">Completa la configurazione</a> affinché la protezione dallo spam "
-"funzioni veramente."
+msgid "Your active CAPTCHA service is missing its API keys. <a href=\"%s\">Finish setup</a> so spam protection actually runs."
+msgstr "Il tuo servizio CAPTCHA attivo manca delle sue API key. <a href=\"%s\">Completa la configurazione</a> affinché la protezione dallo spam funzioni veramente."
 
 #: includes/admin/views/overview.php:69
 msgid "Your CAPTCHA service is configured and ready to protect your forms."
-msgstr ""
-"Il tuo servizio CAPTCHA è configurato e pronto a proteggere i tuoi moduli."
+msgstr "Il tuo servizio CAPTCHA è configurato e pronto a proteggere i tuoi moduli."
 
 #: includes/admin/views/overview.php:75
 msgid "Active Service"
@@ -1783,12 +1645,8 @@ msgid "Get Started"
 msgstr "Inizia"
 
 #: includes/admin/views/overview.php:93
-msgid ""
-"Choose a CAPTCHA service, add your keys, then turn on protection for the "
-"forms you want to guard."
-msgstr ""
-"Scegli un servizio CAPTCHA, aggiungi le tue chiavi, quindi attiva la "
-"protezione per i moduli che desideri proteggere."
+msgid "Choose a CAPTCHA service, add your keys, then turn on protection for the forms you want to guard."
+msgstr "Scegli un servizio CAPTCHA, aggiungi le tue chiavi, quindi attiva la protezione per i moduli che desideri proteggere."
 
 #: includes/admin/views/overview.php:103
 msgid "Choose Forms to Protect"
@@ -1799,24 +1657,17 @@ msgid "Help &amp; Support"
 msgstr "Aiuto &amp; Supporto"
 
 #: includes/admin/views/overview.php:112
-msgid ""
-"Everything you need to set up, troubleshoot, and get the most out of the "
-"plugin."
-msgstr ""
-"Tutto ciò di cui hai bisogno per configurare, risolvere i problemi e "
-"ottenere il massimo dal plugin."
+msgid "Everything you need to set up, troubleshoot, and get the most out of the plugin."
+msgstr "Tutto ciò di cui hai bisogno per configurare, risolvere i problemi e ottenere il massimo dal plugin."
 
-#: includes/admin/views/overview.php:117 includes/admin/views/shell.php:90
+#: includes/admin/views/overview.php:117
+#: includes/admin/views/shell.php:90
 msgid "Documentation"
 msgstr "Documentazione"
 
 #: includes/admin/views/overview.php:118
-msgid ""
-"Step-by-step setup guides and best practices for every supported CAPTCHA "
-"service."
-msgstr ""
-"Guide di configurazione passo dopo passo e best practice per ogni servizio "
-"CAPTCHA supportato."
+msgid "Step-by-step setup guides and best practices for every supported CAPTCHA service."
+msgstr "Guide di configurazione passo dopo passo e best practice per ogni servizio CAPTCHA supportato."
 
 #: includes/admin/views/overview.php:119
 msgid "Read Documentation"
@@ -1827,34 +1678,25 @@ msgid "Support Center"
 msgstr "Centro Supporto"
 
 #: includes/admin/views/overview.php:123
-msgid ""
-"Get expert help with setup, configuration, and troubleshooting from our team."
-msgstr ""
-"Ottieni aiuto esperto con la configurazione, la configurazione e la "
-"risoluzione dei problemi dal nostro team."
+msgid "Get expert help with setup, configuration, and troubleshooting from our team."
+msgstr "Ottieni aiuto esperto con la configurazione, la configurazione e la risoluzione dei problemi dal nostro team."
 
 #: includes/admin/views/overview.php:124
 msgid "Get Support"
 msgstr "Ottieni Supporto"
 
-#: includes/admin/views/overview.php:127 includes/admin/views/overview.php:129
+#: includes/admin/views/overview.php:127
+#: includes/admin/views/overview.php:129
 msgid "Send Feedback"
 msgstr "Invia Feedback"
 
 #: includes/admin/views/overview.php:128
-msgid ""
-"Share your experience and suggestions to help us make the plugin even better."
-msgstr ""
-"Condividi la tua esperienza e i suggerimenti per aiutarci a rendere il "
-"plugin ancora migliore."
+msgid "Share your experience and suggestions to help us make the plugin even better."
+msgstr "Condividi la tua esperienza e i suggerimenti per aiutarci a rendere il plugin ancora migliore."
 
 #: includes/admin/views/shell.php:29
-msgid ""
-"Protect WordPress, BuddyPress, WooCommerce, bbPress, and 10+ form builders "
-"from spam and bots with reCAPTCHA, Turnstile, hCaptcha, or ALTCHA."
-msgstr ""
-"Proteggi WordPress, BuddyPress, WooCommerce, bbPress e 10+ form builder "
-"dallo spam e dai bot con reCAPTCHA, Turnstile, hCaptcha o ALTCHA."
+msgid "Protect WordPress, BuddyPress, WooCommerce, bbPress, and 10+ form builders from spam and bots with reCAPTCHA, Turnstile, hCaptcha, or ALTCHA."
+msgstr "Proteggi WordPress, BuddyPress, WooCommerce, bbPress e 10+ form builder dallo spam e dai bot con reCAPTCHA, Turnstile, hCaptcha o ALTCHA."
 
 #: includes/admin/views/shell.php:57
 msgid "CAPTCHA Manager"
@@ -1880,7 +1722,8 @@ msgstr "Account"
 msgid "Resources"
 msgstr "Risorse"
 
-#: includes/admin/views/shell.php:92 includes/admin/views/shell.php:98
+#: includes/admin/views/shell.php:92
+#: includes/admin/views/shell.php:98
 msgid "(opens in a new tab)"
 msgstr "(si apre in una nuova scheda)"
 
@@ -1896,97 +1739,69 @@ msgstr "Salva Selezione"
 msgid "Save Changes"
 msgstr "Salva Modifiche"
 
-#: includes/admin/views/updates.php:23
+#: includes/admin/views/updates.php:24
 msgid "Plugin Updates"
 msgstr "Aggiornamenti Plugin"
 
-#: includes/admin/views/updates.php:24
-msgid ""
-"Wbcom CAPTCHA Manager is a free plugin. Updates are delivered automatically "
-"— no license key required."
-msgstr ""
-"Wbcom CAPTCHA Manager è un plugin gratuito. Gli aggiornamenti vengono "
-"consegnati automaticamente — nessuna chiave di licenza richiesta."
+#: includes/admin/views/updates.php:25
+msgid "Wbcom CAPTCHA Manager is a free plugin. Updates are delivered automatically — no license key required."
+msgstr "Wbcom CAPTCHA Manager è un plugin gratuito. Gli aggiornamenti vengono consegnati automaticamente — nessuna chiave di licenza richiesta."
 
-#: includes/admin/views/updates.php:30
-msgid ""
-"Automatic updates are active. New versions appear under Dashboard → Updates "
-"and Plugins like any other plugin."
-msgstr ""
-"Gli aggiornamenti automatici sono attivi. Le nuove versioni appaiono sotto "
-"Dashboard → Aggiornamenti e Plugin come qualsiasi altro plugin."
+#: includes/admin/views/updates.php:31
+msgid "Automatic updates are active. New versions appear under Dashboard → Updates and Plugins like any other plugin."
+msgstr "Gli aggiornamenti automatici sono attivi. Le nuove versioni appaiono sotto Dashboard → Aggiornamenti e Plugin come qualsiasi altro plugin."
 
-#: includes/admin/views/updates.php:35
-msgid ""
-"The update service could not be detected. Re-install the plugin from "
-"wbcomdesigns.com if updates stop appearing."
-msgstr ""
-"Il servizio di aggiornamento non è stato rilevato. Reinstalla il plugin da "
-"wbcomdesigns.com se gli aggiornamenti smettono di apparire."
+#: includes/admin/views/updates.php:36
+msgid "The update service could not be detected. Re-install the plugin from wbcomdesigns.com if updates stop appearing."
+msgstr "Il servizio di aggiornamento non è stato rilevato. Reinstalla il plugin da wbcomdesigns.com se gli aggiornamenti smettono di apparire."
 
-#: includes/admin/views/updates.php:41
+#: includes/admin/views/updates.php:42
 msgid "Installed version"
 msgstr "Versione Installata"
 
-#: includes/admin/views/updates.php:42
+#: includes/admin/views/updates.php:43
 msgid "Unknown"
 msgstr "Sconosciuto"
 
-#: includes/admin/views/updates.php:45
+#: includes/admin/views/updates.php:46
 msgid "Update channel"
 msgstr "Canale Aggiornamento"
 
-#: includes/admin/views/updates.php:47
+#: includes/admin/views/updates.php:48
 msgid "wbcomdesigns.com (automatic)"
 msgstr "wbcomdesigns.com (automatico)"
 
 #. translators: %s: URL to the Wbcom Designs account page.
-#: includes/admin/views/updates.php:53
+#: includes/admin/views/updates.php:54
 #, php-format
-msgid ""
-"Manage your downloads and account at <a href=\"%s\" target=\"_blank\" "
-"rel=\"noopener noreferrer\">wbcomdesigns.com</a>."
-msgstr ""
-"Gestisci i tuoi download e il tuo account su <a href=\"%s\" "
-"target=\"_blank\" rel=\"noopener noreferrer\">wbcomdesigns.com</a>."
+msgid "Manage your downloads and account at <a href=\"%s\" target=\"_blank\" rel=\"noopener noreferrer\">wbcomdesigns.com</a>."
+msgstr "Gestisci i tuoi download e il tuo account su <a href=\"%s\" target=\"_blank\" rel=\"noopener noreferrer\">wbcomdesigns.com</a>."
 
-#: includes/captcha-verification-helper.php:122
+#: includes/captcha-verification-helper.php:161
 msgid "Please complete the security check to continue."
 msgstr "Completa il controllo di sicurezza per continuare."
 
-#: includes/captcha-verification-helper.php:124
+#: includes/captcha-verification-helper.php:163
 msgid "Unable to verify security check. Please refresh the page and try again."
-msgstr ""
-"Impossibile verificare il controllo di sicurezza. Aggiorna la pagina e "
-"riprova."
+msgstr "Impossibile verificare il controllo di sicurezza. Aggiorna la pagina e riprova."
 
-#: includes/captcha-verification-helper.php:149
+#: includes/captcha-verification-helper.php:183
 msgid "Security check"
 msgstr "Controllo di sicurezza"
 
 #. translators: %1$s: opening anchor tag, %2$s: closing anchor tag
-#: includes/class-captcha-service-manager.php:354
+#: includes/class-captcha-service-manager.php:362
 #, php-format
-msgid ""
-"Wbcom CAPTCHA Manager is enabled but the active service is not configured. "
-"Forms are currently unprotected — %1$sopen settings%2$s and add your API "
-"keys."
-msgstr ""
-"Wbcom CAPTCHA Manager è attivo ma il servizio selezionato non è configurato. "
-"I moduli non sono attualmente protetti — %1$sapri le impostazioni%2$s e "
-"aggiungi le tue chiavi API."
+msgid "Wbcom CAPTCHA Manager is enabled but the active service is not configured. Forms are currently unprotected — %1$sopen settings%2$s and add your API keys."
+msgstr "Wbcom CAPTCHA Manager è attivo ma il servizio selezionato non è configurato. I moduli non sono attualmente protetti — %1$sapri le impostazioni%2$s e aggiungi le tue chiavi API."
 
 #. translators: %s: Settings page URL
-#: includes/class-captcha-service-manager.php:423
+#: includes/class-captcha-service-manager.php:431
 #, php-format
-msgid ""
-"Captcha service is not properly configured. Please %1$sconfigure your "
-"captcha settings%2$s."
-msgstr ""
-"Il servizio Captcha non è configurato correttamente. Per favore "
-"%1$sconfigura le impostazioni del captcha%2$s."
+msgid "Captcha service is not properly configured. Please %1$sconfigure your captcha settings%2$s."
+msgstr "Il servizio Captcha non è configurato correttamente. Per favore %1$sconfigura le impostazioni del captcha%2$s."
 
-#: includes/class-recaptcha-for-buddypress.php:834
+#: includes/class-recaptcha-for-buddypress.php:844
 msgid "An error occurred. Please try again."
 msgstr "Si è verificato un errore. Riprova."
 
@@ -2004,7 +1819,8 @@ msgstr "Per favore, inserisci sia il nome utente che la password."
 msgid "Welcome back, %s!"
 msgstr "Bentornato, %s!"
 
-#: includes/class-wbc-login-block.php:66 includes/class-wbc-login-block.php:96
+#: includes/class-wbc-login-block.php:66
+#: includes/class-wbc-login-block.php:96
 #: includes/widgets/class-wbc-login-widget.php:65
 #: includes/widgets/class-wbc-login-widget.php:160
 msgid "Welcome back, {username}!"
@@ -2091,57 +1907,48 @@ msgid "ALTCHA requires HTTPS or localhost:"
 msgstr "ALTCHA richiede HTTPS o localhost:"
 
 #: includes/services/class-altcha-service.php:269
-msgid ""
-"ALTCHA uses Web Crypto API which requires a secure context (HTTPS). For "
-"local development, use localhost or .local/.test domains."
-msgstr ""
-"ALTCHA utilizza Web Crypto API che richiede un contesto sicuro (HTTPS). Per "
-"lo sviluppo locale, utilizza localhost o domini .local/.test."
+msgid "ALTCHA uses Web Crypto API which requires a secure context (HTTPS). For local development, use localhost or .local/.test domains."
+msgstr "ALTCHA utilizza Web Crypto API che richiede un contesto sicuro (HTTPS). Per lo sviluppo locale, utilizza localhost o domini .local/.test."
 
 #: includes/services/class-altcha-service.php:270
 msgid "Your current host:"
 msgstr "Il tuo host attuale:"
 
 #: includes/services/class-altcha-service.php:271
-msgid ""
-"For production: Enable HTTPS. For local testing: Use localhost, 127.0.0.1, "
-"or .local domains."
-msgstr ""
-"Per la produzione: Abilita HTTPS. Per il test locale: Utilizza localhost, "
-"127.0.0.1 o domini .local."
+msgid "For production: Enable HTTPS. For local testing: Use localhost, 127.0.0.1, or .local domains."
+msgstr "Per la produzione: Abilita HTTPS. Per il test locale: Utilizza localhost, 127.0.0.1 o domini .local."
 
-#: includes/services/class-recaptcha-v2-service.php:374
-#: includes/services/class-recaptcha-v2-service.php:377
+#: includes/services/class-recaptcha-v2-service.php:388
+#: includes/services/class-recaptcha-v2-service.php:391
 msgid "Please complete the security check to log in."
 msgstr "Completa il controllo di sicurezza per accedere."
 
-#: includes/services/class-recaptcha-v2-service.php:375
-#: includes/services/class-recaptcha-v2-service.php:378
-#: includes/services/class-recaptcha-v2-service.php:380
+#: includes/services/class-recaptcha-v2-service.php:389
+#: includes/services/class-recaptcha-v2-service.php:392
+#: includes/services/class-recaptcha-v2-service.php:394
 msgid "Please complete the security check to register."
 msgstr "Completa il controllo di sicurezza per registrarti."
 
-#: includes/services/class-recaptcha-v2-service.php:376
-#: includes/services/class-recaptcha-v2-service.php:379
+#: includes/services/class-recaptcha-v2-service.php:390
+#: includes/services/class-recaptcha-v2-service.php:393
 msgid "Please complete the security check to reset your password."
 msgstr "Completa il controllo di sicurezza per ripristinare la password."
 
-#: includes/services/class-recaptcha-v2-service.php:381
+#: includes/services/class-recaptcha-v2-service.php:395
 msgid "Please complete the security check to submit your topic."
 msgstr "Completa il controllo di sicurezza per inviare il tuo topic."
 
-#: includes/services/class-recaptcha-v2-service.php:382
+#: includes/services/class-recaptcha-v2-service.php:396
 msgid "Please complete the security check to submit your reply."
 msgstr "Completa il controllo di sicurezza per inviare la tua risposta."
 
-#: includes/services/class-recaptcha-v2-service.php:383
+#: includes/services/class-recaptcha-v2-service.php:397
 msgid "Please complete the security check to place your order."
 msgstr "Completa il controllo di sicurezza per effettuare il tuo ordine."
 
-#: includes/services/class-recaptcha-v3-service.php:181
+#: includes/services/class-recaptcha-v3-service.php:208
 msgid "reCAPTCHA v3 is not properly configured. Please check your settings."
-msgstr ""
-"reCAPTCHA v3 non è configurato correttamente. Controlla le tue impostazioni."
+msgstr "reCAPTCHA v3 non è configurato correttamente. Controlla le tue impostazioni."
 
 #: includes/widgets/class-wbc-login-widget.php:29
 msgid "CAPTCHA Login Widget"
@@ -2183,8 +1990,7 @@ msgstr "Mostra il collegamento \"Il Mio Profilo\" quando connesso"
 msgid "ERROR:"
 msgstr "ERRORE:"
 
-#: public/woocommerce-extra/Woocommerce_Filter.php:120
-#: public/woocommerce-extra/Woocommerce_Order.php:150
+#: public/woocommerce-extra/Woocommerce_Filter.php:113
 msgid "Comment Submission Failed"
 msgstr "Invio Commento Fallito"
 
@@ -2259,3 +2065,15 @@ msgstr "recaptcha"
 msgctxt "block keyword"
 msgid "authentication"
 msgstr "autenticazione"
+
+#: admin/includes/settings-modules/class-wbc-wordpress-settings.php:81
+msgid "Comments: Skip for Logged-in Users"
+msgstr "Commenti: salta per gli utenti connessi"
+
+#: admin/includes/settings-modules/class-wbc-wordpress-settings.php:82
+msgid "When Comment Form is on, only visitors who are not logged in see the CAPTCHA. Admins and editors never see it on comments."
+msgstr "Quando il Modulo Commenti è attivo, solo i visitatori non connessi vedono il CAPTCHA. Amministratori ed editori non lo vedono mai nei commenti."
+
+#: recaptcha-for-buddypress.php:136
+msgid "Wbcom CAPTCHA Manager: the bundled update SDK is incomplete, so automatic updates are turned off. Reinstall the plugin from a complete package to restore them. Every other feature works normally."
+msgstr "Wbcom CAPTCHA Manager: l'SDK di aggiornamento incluso è incompleto, quindi gli aggiornamenti automatici sono disattivati. Reinstalla il plugin da un pacchetto completo per ripristinarli. Tutte le altre funzioni operano normalmente."

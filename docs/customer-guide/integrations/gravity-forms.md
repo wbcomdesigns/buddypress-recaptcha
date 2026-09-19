@@ -80,48 +80,37 @@ One-click protection for **all Gravity Forms** including:
 
 ## 🎨 Customization
 
-### Exclude Specific Forms
-
-```php
-// Add to theme's functions.php
-add_filter( 'wbc_gravity_exclude_forms', function( $excluded ) {
-    $excluded[] = 5; // Gravity Form ID
-    return $excluded;
-});
-```
-
-**Find Form ID:**
-- **Forms → All Forms** - ID in list
-
----
+Excluding a single Gravity Form by ID is not supported - the CAPTCHA toggle applies to the whole Gravity Forms integration, not individual forms.
 
 ### Custom Error Message
 
 ```php
-add_filter( 'wbc_gravity_error_message', function( $message ) {
-    return 'Please complete the security verification.';
-});
+add_filter( 'wbc_captcha_error_message', function( $message, $context ) {
+    return 'gravityforms' === $context ? 'Please complete the security verification.' : $message;
+}, 10, 2 );
 ```
+
+The filter receives `( $message, $context, $service_id, $error_type )` and covers every form the plugin protects. To change the message for all forms without code, use the fields on the **Advanced** tab.
 
 ---
 
 ### CAPTCHA on Multi-Page Forms
 
-By default, CAPTCHA appears on the last page (before final submit):
-
-```php
-// Show on first page instead
-add_filter( 'wbc_gravity_captcha_page', function() {
-    return 1; // Page number
-});
-```
+CAPTCHA always appears on the last page (before final submit). This follows the integration's own form hook and cannot be moved by a filter.
 
 ---
 
 ### Skip for Logged-In Users
 
 ```php
-add_filter( 'wbc_gravity_skip_logged_in', '__return_true' );
+function my_skip_gravityforms_for_logged_in( $should, $context, $service_id ) {
+    if ( 'gravityforms' === $context && is_user_logged_in() ) {
+        return false;
+    }
+    return $should;
+}
+add_filter( 'wbc_should_render_captcha', 'my_skip_gravityforms_for_logged_in', 10, 3 );
+add_filter( 'wbc_should_verify_captcha', 'my_skip_gravityforms_for_logged_in', 10, 3 );
 ```
 
 ---

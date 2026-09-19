@@ -86,61 +86,42 @@ function my_custom_form() {
     <?php
 }
 
-// Method 2: Use filter (applies globally)
-add_filter( 'wbc_skip_captcha', function( $skip, $context, $user_id ) {
-    // Skip for logged-in users
-    if ( $user_id > 0 ) {
-        return true;
-    }
-    return $skip;
-}, 10, 3 );
+// Method 2: Use filters (applies globally). Pair should_render + should_verify
+// so the widget and the server-side check agree.
+function my_skip_for_logged_in( $value, $context, $service_id ) {
+    return is_user_logged_in() ? false : $value;
+}
+add_filter( 'wbc_should_render_captcha', 'my_skip_for_logged_in', 10, 3 );
+add_filter( 'wbc_should_verify_captcha', 'my_skip_for_logged_in', 10, 3 );
 ```
 
 ---
 
-### Example 3: Different CAPTCHA Services by Form
+### Example 3: Custom Error Messages
 
 ```php
-add_filter( 'wbc_active_captcha_service', function( $service_id, $context ) {
-    // Map contexts to services
-    $service_map = array(
-        'checkout'     => 'turnstile',    // Invisible, best UX
-        'registration' => 'recaptcha_v2', // Visible, more secure
-        'contact'      => 'turnstile',    // Invisible
-    );
-
-    return $service_map[ $context ] ?? $service_id;
-}, 10, 2 );
-```
-
----
-
-### Example 4: Custom Error Messages
-
-```php
-add_filter( 'wbc_captcha_error_message', function( $message, $context ) {
+add_filter( 'wbc_captcha_error_message', function( $message, $context, $service_id, $error_type ) {
     $custom_messages = array(
-        'checkout'     => __( 'Please complete verification to finish your purchase.', 'textdomain' ),
-        'registration' => __( 'Please verify you are human to create an account.', 'textdomain' ),
-        'contact'      => __( 'Please complete the security check to send your message.', 'textdomain' ),
+        'woo_checkout_guest' => __( 'Please complete verification to finish your purchase.', 'textdomain' ),
+        'wp_register'        => __( 'Please verify you are human to create an account.', 'textdomain' ),
+        'cf7'                => __( 'Please complete the security check to send your message.', 'textdomain' ),
     );
 
     return $custom_messages[ $context ] ?? $message;
-}, 10, 2 );
+}, 10, 4 );
 ```
 
 ---
 
-### Example 5: Adjust reCAPTCHA v3 Threshold
+### Example 4: Adjust reCAPTCHA v3 Threshold
 
 ```php
-add_filter( 'wbc_recaptcha_v3_threshold', function( $threshold, $context ) {
+add_filter( 'wbc_recaptcha_v3_score_threshold_value', function( $threshold, $context ) {
     // Stricter for registration, lenient for comments
     $thresholds = array(
-        'registration' => 0.7, // Strict
-        'checkout'     => 0.6,
-        'contact'      => 0.5,
-        'comment'      => 0.4, // Lenient
+        'wp_register' => 0.7, // Strict
+        'woo_checkout_guest' => 0.6,
+        'comment'     => 0.4, // Lenient
     );
 
     return $thresholds[ $context ] ?? $threshold;
@@ -272,22 +253,6 @@ add_action( 'wp_head', function() {
 
 ---
 
-### Wrap CAPTCHA with Custom HTML
-
-```php
-add_filter( 'wbc_captcha_html', function( $html, $context ) {
-    $wrapper = '<div class="custom-captcha-box">';
-    $wrapper .= '<h4>' . __( 'Security Check', 'textdomain' ) . '</h4>';
-    $wrapper .= $html;
-    $wrapper .= '<p class="help-text">' . __( 'This helps prevent spam.', 'textdomain' ) . '</p>';
-    $wrapper .= '</div>';
-
-    return $wrapper;
-}, 10, 2 );
-```
-
----
-
 ## 🔍 Debugging
 
 ### Enable Debug Mode
@@ -301,19 +266,17 @@ define( 'WP_DEBUG_LOG', true );
 ### Add Debug Logging
 
 ```php
-add_action( 'wbc_before_captcha_validation', function( $context ) {
+add_filter( 'wbc_should_verify_captcha', function( $should_verify, $context, $service_id ) {
     error_log( "CAPTCHA validation starting for: {$context}" );
-} );
+    return $should_verify;
+}, 5, 3 );
 
-add_action( 'wbc_after_captcha_validation', function( $result, $context ) {
-    error_log( sprintf(
-        "CAPTCHA result for %s: %s - %s",
-        $context,
-        $result['success'] ? 'SUCCESS' : 'FAIL',
-        $result['message']
-    ) );
-}, 10, 2 );
+add_filter( 'wbc_captcha_verified', function( $verified, $api_result, $response, $service_id ) {
+    error_log( sprintf( 'CAPTCHA result for service %s: %s', $service_id, $verified ? 'SUCCESS' : 'FAIL' ) );
+    return $verified;
+}, 10, 4 );
 ```
+`wbc_captcha_verified` has no `$context` and reCAPTCHA v3 never fires it - hook `wbc_recaptcha_v3_verify` separately for v3.
 
 ### Check if Service is Active
 
@@ -363,21 +326,14 @@ add_action( 'wp_enqueue_scripts', 'my_enqueue_captcha' );
 ### 3. Conditional Loading
 
 ```php
-// Only load on specific forms
-function should_load_captcha() {
-    // Check if we're on a page that needs CAPTCHA
-    if ( is_admin() ) {
-        return false;
-    }
-
-    if ( is_user_logged_in() && current_user_can( 'manage_options' ) ) {
-        return false;
-    }
-
-    return true;
+// Hide + skip CAPTCHA for admins; the built-in per-provider render() already
+// only enqueues scripts when the widget actually renders, so there is no
+// separate "should load" filter to hook.
+function my_skip_for_admins( $value, $context, $service_id ) {
+    return current_user_can( 'manage_options' ) ? false : $value;
 }
-
-add_filter( 'wbc_load_captcha', 'should_load_captcha' );
+add_filter( 'wbc_should_render_captcha', 'my_skip_for_admins', 10, 3 );
+add_filter( 'wbc_should_verify_captcha', 'my_skip_for_admins', 10, 3 );
 ```
 
 ---
@@ -453,22 +409,27 @@ if ( isset( $_POST['my_form_nonce'] ) ) {
 ### 3. Rate Limiting
 
 ```php
-// Combine CAPTCHA with rate limiting
-add_action( 'wbc_captcha_validation_failed', function( $context ) {
-    $ip = $_SERVER['REMOTE_ADDR'];
-    $key = "failed_captcha_{$ip}";
+// Combine CAPTCHA with rate limiting. wbc_captcha_verified fires on failure
+// too (it's a filter, not a validation-failed action), so count from there.
+add_filter( 'wbc_captcha_verified', function( $verified, $api_result, $response, $service_id ) {
+    if ( ! $verified ) {
+        $ip  = $_SERVER['REMOTE_ADDR'] ?? '';
+        $key = "failed_captcha_{$ip}";
 
-    $attempts = get_transient( $key ) ?: 0;
-    $attempts++;
+        $attempts = (int) get_transient( $key );
+        $attempts++;
 
-    set_transient( $key, $attempts, HOUR_IN_SECONDS );
+        set_transient( $key, $attempts, HOUR_IN_SECONDS );
 
-    // Block after 5 failures
-    if ( $attempts >= 5 ) {
-        wp_die( 'Too many failed attempts. Please try again later.' );
+        if ( $attempts >= 5 ) {
+            wp_die( 'Too many failed attempts. Please try again later.' );
+        }
     }
-} );
+
+    return $verified;
+}, 10, 4 );
 ```
+reCAPTCHA v3 does not fire `wbc_captcha_verified` - hook `wbc_recaptcha_v3_verify` separately if you also need to rate-limit v3.
 
 ---
 

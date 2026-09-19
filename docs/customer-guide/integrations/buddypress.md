@@ -144,60 +144,51 @@ This guide covers CAPTCHA protection for:
 
 ## 🎨 Customization
 
-### CAPTCHA Position on Registration Form
-
-The default position works with most BuddyPress themes, but you can customize:
-
-**Move CAPTCHA to different position:**
-
-```php
-// Add to your theme's functions.php
-add_filter( 'wbc_bp_register_captcha_position', function() {
-    // Options: 'before_submit', 'after_submit', 'before_profile_fields'
-    return 'before_submit';
-});
-```
-
----
+The CAPTCHA position on the registration and group-creation forms follows BuddyPress's own template hooks and cannot be moved by a filter.
 
 ### Custom Error Messages
 
 Customize error messages for BuddyPress forms:
 
 ```php
-// Custom registration error message
-add_filter( 'wbc_bp_register_error_message', function( $message ) {
-    return 'Please verify you are human to join our community.';
-});
-
-// Custom group creation error message
-add_filter( 'wbc_bp_group_create_error_message', function( $message ) {
-    return 'Please complete the CAPTCHA to create your group.';
-});
+add_filter( 'wbc_captcha_error_message', function( $message, $context ) {
+    $messages = array(
+        'bp_register'     => 'Please verify you are human to join our community.',
+        'bp_group_create' => 'Please complete the CAPTCHA to create your group.',
+    );
+    return $messages[ $context ] ?? $message;
+}, 10, 2 );
 ```
+
+The filter receives `( $message, $context, $service_id, $error_type )` and covers every form the plugin protects. To change the message for all forms without code, use the fields on the **Advanced** tab.
 
 ---
 
 ### Skip CAPTCHA for Invited Members
 
-If you use BuddyPress invitations, skip CAPTCHA for invited members:
+If you use BuddyPress invitations, hide and skip CAPTCHA for invited members. Hook the same callback to both filters so the widget and the check agree:
 
 ```php
-// Skip CAPTCHA if user was invited
-add_filter( 'wbc_bp_register_skip_invited', '__return_true' );
+function my_skip_captcha_for_invited( $should, $context, $service_id ) {
+    if ( 'bp_register' === $context && isset( $_GET['invite'] ) ) {
+        return false;
+    }
+    return $should;
+}
+add_filter( 'wbc_should_render_captcha', 'my_skip_captcha_for_invited', 10, 3 );
+add_filter( 'wbc_should_verify_captcha', 'my_skip_captcha_for_invited', 10, 3 );
 ```
 
 ---
 
-### Different CAPTCHA for Group Creation
+### Different reCAPTCHA v3 Threshold for Group Creation
 
-Use different settings for group creation vs registration:
+Use a stricter score threshold for group creation than for registration (reCAPTCHA v3 only):
 
 ```php
-// More strict CAPTCHA for group creation
-add_filter( 'wbc_bp_group_captcha_threshold', function( $threshold ) {
-    return 0.7; // Stricter (only for reCAPTCHA v3)
-});
+add_filter( 'wbc_recaptcha_v3_score_threshold_value', function( $threshold, $context ) {
+    return 'bp_group_create' === $context ? 0.7 : $threshold;
+}, 10, 2 );
 ```
 
 ---

@@ -245,6 +245,14 @@ class WBC_Captcha_Service_Manager {
 				return;
 			}
 
+			// The render half of the pair every provider's verify() honours through
+			// should_skip_verification(). Until 2.2.1 only reCAPTCHA v3 applied it, so on
+			// the other four a filter that skipped the check still showed the widget.
+			//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
+			if ( ! apply_filters( 'wbc_should_render_captcha', true, $context, $service->get_service_id() ) ) {
+				return;
+			}
+
 			// Enqueue scripts.
 			if ( method_exists( $service, 'enqueue_scripts' ) ) {
 				$service->enqueue_scripts( $context );

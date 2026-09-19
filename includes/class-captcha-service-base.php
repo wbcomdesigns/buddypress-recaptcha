@@ -377,7 +377,32 @@ abstract class WBC_Captcha_Service_Base implements WBC_Captcha_Service_Interface
 	}
 
 	/**
-	 * Get submit button selector
+	 * JavaScript statement that disables or re-enables a context's submit button(s).
+	 *
+	 * Plain DOM, deliberately not jQuery: providers print this inside the form, and
+	 * wp-login.php loads jQuery in the footer (after the form), while block themes may
+	 * not load it at all. The jQuery version threw "jQuery is not defined" there, so
+	 * "disable submit until solved" never worked on the login, register and lost
+	 * password screens, and the solved-callback died before reaching the
+	 * `woo_<context>_captcha_verified` hook.
+	 *
+	 * @since 2.2.1
+	 *
+	 * @param string $context The context identifier.
+	 * @param bool   $disable True to disable and set the "complete the check" title, false to re-enable.
+	 * @return string JS statement; selector and title are JSON-encoded, safe inside a script tag.
+	 */
+	protected function submit_buttons_js( $context, $disable ) {
+		$selector = wp_json_encode( $this->get_submit_button_selector( $context ), JSON_HEX_TAG | JSON_HEX_AMP );
+		if ( ! $disable ) {
+			return 'document.querySelectorAll(' . $selector . ').forEach(function(b){b.disabled=false;b.removeAttribute("title");});';
+		}
+		$title = wp_json_encode( wbc_get_captcha_error_message( $context, 'blank' ), JSON_HEX_TAG | JSON_HEX_AMP );
+		return 'document.querySelectorAll(' . $selector . ').forEach(function(b){b.disabled=true;b.setAttribute("title",' . $title . ');});';
+	}
+
+	/**
+	 * Get the CSS selector of a context's submit button(s).
 	 *
 	 * @param string $context The context identifier.
 	 * @return string

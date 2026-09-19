@@ -40,6 +40,31 @@ all three must be true and must use the **same context string**:
   legitimate user. When one WP hook (e.g. `lostpassword_post`) serves two forms
   (WP core + WooCommerce), use ONE callback that selects the context by which
   `<context>-nonce` field is present in `$_POST`.
+- **wp-admin actions that fire a front-end hook are exempt, and nothing wider is.**
+  No admin screen renders a CAPTCHA, so verifying there always fails. Core's
+  admin password reset (Users row/bulk action, Edit User > Send Reset Link) runs
+  `retrieve_password()` -> `lostpassword_post`; the validator skips when
+  `current_user_can( 'edit_users' )`. Core's Comments/Dashboard reply runs
+  `wp_ajax_replyto-comment` -> `preprocess_comment`; the validator skips while
+  `doing_action( 'wp_ajax_replyto-comment' )` (core has already checked its nonce
+  and `edit_post`). Never exempt on `is_admin()` (front-end AJAX forms run through
+  admin-ajax.php) or on "no CAPTCHA field was posted" (a bot just omits it).
+  Guard: `wp eval-file tests/audit/admin-actions-captcha.php` (fixed in 2.2.1).
+- **Who skips the comment CAPTCHA has one home.** Comment form render, WooCommerce
+  review render and the comment validator all ask
+  `wbc_skip_comment_captcha_for_current_user()`: logged out never skips, users with
+  `moderate_comments` always skip, other members skip only when
+  `wbc_recaptcha_skip_comment_for_logged_in` is `yes` (absent = challenge, which is
+  how existing sites keep their behaviour; the activator writes `yes` on fresh
+  installs only). Never re-add an inline `is_user_logged_in()` check at a call site.
+- **Render and verify filters are a pair on every provider.**
+  `wbc_should_render_captcha` is applied in `WBC_Captcha_Service_Manager::render()`
+  and `wbc_should_verify_captcha` in `should_skip_verification()`, for all five
+  providers (the render half was reCAPTCHA-v3-only until 2.2.1).
+- **Every CAPTCHA error message comes from `wbc_get_captcha_error_message( $context, $type )`.**
+  That is where the Advanced-tab messages and the `wbc_captcha_error_message` filter
+  (2.2.1) apply. Never hard-code the text at a call site or ask a provider for
+  `get_error_message()` directly - either skips the filter.
 - **Aborting must use a hook whose result is honored.** `do_action` hooks like
   `groups_group_before_save` ignore return values and error bags; to block, call
   `bp_core_add_message()` + `bp_core_redirect()` (scoped to the exact creation
@@ -67,6 +92,11 @@ all three must be true and must use the **same context string**:
   Use `WBC_Captcha_Service_Base::should_skip_verification()`; do **not** re-check the
   per-context enable flag there (an unmapped/empty context reads as "not enabled",
   which in a verify path means bypass - that check belongs in the manager).
+- **Inline widget scripts use plain DOM, never jQuery** (added 2.2.1). They print
+  inside the form, and wp-login.php loads jQuery in the footer (after the form)
+  while block themes may not load it at all. Toggle submit buttons through
+  `WBC_Captcha_Service_Base::submit_buttons_js()`. Guard: the "no jQuery dependency"
+  cases in `tests/audit/admin-actions-captcha.php`.
 - **Client-side bootstraps must tolerate a deferred provider script** (added 2.2.0).
   The provider api.js is served with `defer`, while `wp_add_inline_script()` output
   is not deferred and runs first. Any bootstrap that touches the provider global at

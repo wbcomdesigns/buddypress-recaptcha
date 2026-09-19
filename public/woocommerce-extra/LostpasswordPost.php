@@ -28,6 +28,16 @@ class LostpasswordPost {
 	 * @return WP_Error
 	 */
 	public function woocomm_validate_lostpassword_captcha( $validation_errors ) {
+		// Resets sent from wp-admin (Users > Send password reset, its bulk action, and
+		// Edit User > Send Reset Link) call retrieve_password(), which fires this same
+		// hook, but no admin screen renders a CAPTCHA, so verifying here would always
+		// block them. A user who can edit users can already reset any password, so
+		// exempting them removes no protection. Logged-out requests are still verified.
+		// Not is_admin(): front-end AJAX lost-password forms also run through admin-ajax.php.
+		if ( current_user_can( 'edit_users' ) ) {
+			return $validation_errors;
+		}
+
 		// lostpassword_post fires for BOTH the WordPress core lost-password form
 		// and the WooCommerce one. Pick the context by the nonce field the form
 		// rendered, so the correct enable-flag is honoured and the single-use

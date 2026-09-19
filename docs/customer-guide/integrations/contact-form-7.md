@@ -99,33 +99,13 @@ This guide covers CAPTCHA protection for:
 
 ### CAPTCHA Position
 
-By default, CAPTCHA appears above the submit button. To customize:
-
-```php
-// Add to your theme's functions.php
-add_filter( 'wbc_cf7_captcha_position', function() {
-    return 'before_submit'; // Options: 'before_submit', 'after_form'
-});
-```
+By default, CAPTCHA appears above the submit button. This follows the integration's own form hook and cannot be moved by a filter.
 
 ---
 
 ### Exclude Specific Forms
 
-Don't want CAPTCHA on certain forms? Exclude by form ID:
-
-```php
-// Skip CAPTCHA on specific CF7 forms
-add_filter( 'wbc_cf7_exclude_forms', function( $excluded ) {
-    $excluded[] = 123; // CF7 form ID to exclude
-    $excluded[] = 456; // Another form ID
-    return $excluded;
-});
-```
-
-**Finding Form ID:**
-1. Go to **Contact → Contact Forms**
-2. Form ID is shown in the list (the number in URL or shortcode)
+Excluding one CF7 form by ID is not supported - `wbc_should_render_captcha` / `wbc_should_verify_captcha` only receive the `cf7` context, not a form ID. The CAPTCHA toggle applies to the whole Contact Form 7 integration.
 
 ---
 
@@ -134,24 +114,18 @@ add_filter( 'wbc_cf7_exclude_forms', function( $excluded ) {
 Customize the CAPTCHA error message:
 
 ```php
-// Custom CF7 CAPTCHA error
-add_filter( 'wbc_cf7_error_message', function( $message ) {
-    return 'Please verify you are human before sending your message.';
-});
+add_filter( 'wbc_captcha_error_message', function( $message, $context ) {
+    return 'cf7' === $context ? 'Please verify you are human before sending your message.' : $message;
+}, 10, 2 );
 ```
+
+The filter receives `( $message, $context, $service_id, $error_type )` and covers every form the plugin protects. To change the message for all forms without code, use the fields on the **Advanced** tab.
 
 ---
 
 ### Enable Only on Specific Forms
 
-Enable CAPTCHA only on certain forms, not all:
-
-```php
-// Only show CAPTCHA on specific forms
-add_filter( 'wbc_cf7_include_only', function( $form_ids ) {
-    return array( 123, 456 ); // Only these form IDs
-});
-```
+Limiting CAPTCHA to only certain CF7 forms is not supported for the same reason - the integration's filters don't receive a form ID. The toggle protects every Contact Form 7 form on the site.
 
 ---
 

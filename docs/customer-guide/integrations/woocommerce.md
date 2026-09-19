@@ -171,27 +171,18 @@ This guide covers CAPTCHA protection for:
 
 ## 🎨 Customization
 
-### CAPTCHA Position on Checkout
-
-By default, CAPTCHA appears at a strategic point in the checkout form. To customize:
-
-```php
-// Move CAPTCHA after billing fields
-add_filter( 'wbc_woocommerce_checkout_captcha_position', function() {
-    // Options: 'before_order_notes', 'after_customer_details', 'before_payment'
-    return 'before_payment';
-});
-```
-
----
+The CAPTCHA position on checkout follows the integration's own form hook and cannot be moved by a filter.
 
 ### Skip CAPTCHA for Registered Customers
 
-Don't show CAPTCHA on checkout for logged-in customers:
+Hide and skip CAPTCHA on checkout for customers who are already logged in (`woo_checkout_login` context) - guest checkout (`woo_checkout_guest`) stays protected:
 
 ```php
-// Skip CAPTCHA if customer is logged in
-add_filter( 'wbc_woocommerce_checkout_skip_logged_in', '__return_true' );
+function my_skip_woo_checkout_for_logged_in( $should, $context, $service_id ) {
+    return 'woo_checkout_login' === $context ? false : $should;
+}
+add_filter( 'wbc_should_render_captcha', 'my_skip_woo_checkout_for_logged_in', 10, 3 );
+add_filter( 'wbc_should_verify_captcha', 'my_skip_woo_checkout_for_logged_in', 10, 3 );
 ```
 
 **Recommendation:** This improves UX for returning customers while still protecting guest checkouts.
@@ -203,32 +194,33 @@ add_filter( 'wbc_woocommerce_checkout_skip_logged_in', '__return_true' );
 Customize error messages for WooCommerce forms:
 
 ```php
-// Custom checkout error
-add_filter( 'wbc_woocommerce_checkout_error_message', function( $message ) {
-    return 'Please verify you are human to complete your purchase.';
-});
-
-// Custom registration error
-add_filter( 'wbc_woocommerce_register_error_message', function( $message ) {
-    return 'Please complete the security check to create your account.';
-});
+add_filter( 'wbc_captcha_error_message', function( $message, $context ) {
+    $messages = array(
+        'woo_checkout_guest' => 'Please verify you are human to complete your purchase.',
+        'woo_checkout_login' => 'Please verify you are human to complete your purchase.',
+        'woo_register'       => 'Please complete the security check to create your account.',
+    );
+    return $messages[ $context ] ?? $message;
+}, 10, 2 );
 ```
+
+The filter receives `( $message, $context, $service_id, $error_type )` and covers every form the plugin protects. To change the message for all forms without code, use the fields on the **Advanced** tab.
 
 ---
 
 ### Different CAPTCHA for Different Forms
 
-Use stricter CAPTCHA for checkout than login:
+Use a stricter reCAPTCHA v3 score threshold for checkout than login:
 
 ```php
-// Stricter threshold for checkout (reCAPTCHA v3 only)
-add_filter( 'wbc_woocommerce_checkout_captcha_threshold', function( $threshold ) {
-    return 0.7; // More strict for checkout
-});
-
-add_filter( 'wbc_woocommerce_login_captcha_threshold', function( $threshold ) {
-    return 0.5; // Normal for login
-});
+add_filter( 'wbc_recaptcha_v3_score_threshold_value', function( $threshold, $context ) {
+    $thresholds = array(
+        'woo_checkout_guest' => 0.7, // More strict
+        'woo_checkout_login' => 0.7,
+        'woo_login'          => 0.5, // Normal
+    );
+    return $thresholds[ $context ] ?? $threshold;
+}, 10, 2 );
 ```
 
 ---

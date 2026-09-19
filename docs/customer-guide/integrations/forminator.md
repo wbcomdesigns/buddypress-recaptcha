@@ -37,22 +37,17 @@ Protects all Forminator features:
 
 ## 🎨 Customization
 
-### Exclude Forms
-
-```php
-add_filter( 'wbc_forminator_exclude_forms', function( $excluded ) {
-    $excluded[] = 123; // Form ID
-    return $excluded;
-});
-```
+Excluding a single Forminator form by ID is not supported - the CAPTCHA toggle applies to the whole Forminator integration, not individual forms.
 
 ### Custom Error
 
 ```php
-add_filter( 'wbc_forminator_error_message', function( $message ) {
-    return 'Please complete the security check.';
-});
+add_filter( 'wbc_captcha_error_message', function( $message, $context ) {
+    return 'forminator' === $context ? 'Please complete the security check.' : $message;
+}, 10, 2 );
 ```
+
+The filter receives `( $message, $context, $service_id, $error_type )` and covers every form the plugin protects. To change the message for all forms without code, use the fields on the **Advanced** tab.
 
 ---
 

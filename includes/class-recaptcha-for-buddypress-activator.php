@@ -30,6 +30,24 @@ class Recaptcha_For_BuddyPress_Activator { // phpcs:ignore WordPress.NamingConve
 	 * @since    1.0.0
 	 */
 	public static function activate() {
+		// A site that has never run any version of the plugin has none of the keys
+		// older versions wrote. Checked before the defaults below add them.
+		$legacy_keys      = array(
+			'wbc_recaptcha_enable_on_comment',
+			'wbc_recapcha_enable_on_comment',
+			'wbc_captcha_service',
+			'wbc_settings_migration_v2_completed',
+			'wc_settings_tab_recapcha_site_key',
+			'wc_settings_tab_recapcha_site_key_v3',
+		);
+		$is_fresh_install = true;
+		foreach ( $legacy_keys as $legacy_key ) {
+			if ( false !== get_option( $legacy_key ) ) {
+				$is_fresh_install = false;
+				break;
+			}
+		}
+
 		// Initialize default protection options if they don't exist.
 		$defaults = array(
 			// WordPress Core Forms.
@@ -78,6 +96,13 @@ class Recaptcha_For_BuddyPress_Activator { // phpcs:ignore WordPress.NamingConve
 			if ( false === get_option( $option_name ) ) {
 				add_option( $option_name, $default_value );
 			}
+		}
+
+		// New installs let logged-in members comment without a CAPTCHA. Existing sites
+		// are left without the option, which keeps challenging members as they always
+		// have, so an update or a reactivation never quietly lowers protection.
+		if ( $is_fresh_install ) {
+			add_option( 'wbc_recaptcha_skip_comment_for_logged_in', 'yes' );
 		}
 	}
 }

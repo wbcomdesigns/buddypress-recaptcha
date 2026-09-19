@@ -91,7 +91,7 @@ class WBC_Login_Widget extends WP_Widget {
 		$redirect_url = ! empty( $instance['redirect_url'] ) ? $instance['redirect_url'] : home_url();
 		?>
 		<div class="wbc-login-widget-form">
-			<form id="wbc-ajax-login-form" method="post">
+			<form id="wbc-ajax-login-form" method="post" data-wbc-v3-self-submit>
 				<div class="wbc-form-messages"></div>
 
 				<p class="wbc-login-username">

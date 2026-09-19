@@ -663,8 +663,22 @@ class WBC_Recaptcha_V3_Service extends WBC_Captcha_Service_Base {
 				return document.getElementById(tokenFieldId);
 			}
 
+			// Shared by every v3 form on the page. refresh(fieldId) lets a form that sends
+			// itself (the AJAX login widget) fetch a fresh, single-use token right before
+			// sending. Token requests run one at a time, so a refresh made while the
+			// page's first token is still loading waits for it: even if the refresh
+			// itself fails, the field then holds the newest token there is.
+			var v3 = window.wbcRecaptchaV3 = window.wbcRecaptchaV3 || {
+				queue: Promise.resolve(),
+				refreshers: {},
+				refresh: function(fieldId) {
+					var refresher = this.refreshers[fieldId];
+					return refresher ? refresher() : Promise.resolve('');
+				}
+			};
+
 			// Resolve once the deferred api.js has executed and defined grecaptcha.
-			function whenGrecaptchaReady(callback) {
+			function whenGrecaptchaReady(callback, onTimeout) {
 				if (window.grecaptcha && typeof window.grecaptcha.ready === 'function') {
 					window.grecaptcha.ready(callback);
 					return;
@@ -680,29 +694,43 @@ class WBC_Recaptcha_V3_Service extends WBC_Captcha_Service_Base {
 					if (waited >= MAX_WAIT) {
 						clearInterval(timer);
 						console.error('reCAPTCHA v3: api.js did not load within ' + (MAX_WAIT / 1000) + 's.');
+						onTimeout();
 					}
 				}, POLL_INTERVAL);
 			}
 
-			// Generate a token and write it into the hidden field.
+			// Generate a token and write it into the hidden field. Always resolves, so a
+			// caller waiting on it is never left hanging; an empty result never
+			// overwrites a token that is already in the field.
 			function generateToken() {
+				var job = v3.queue.then(function() {
+					return requestToken();
+				});
+				v3.queue = job;
+				return job;
+			}
+
+			function requestToken() {
 				return new Promise(function(resolve) {
 					whenGrecaptchaReady(function() {
 						window.grecaptcha.execute(siteKey, {action: action})
 							.then(function(token) {
 								var tokenField = getField();
-								if (tokenField) {
+								if (token && tokenField) {
 									tokenField.value = token;
 								}
-								resolve(token);
+								resolve(token || '');
 							})
 							.catch(function(error) {
 								console.error('reCAPTCHA v3 error:', error);
 								resolve('');
 							});
+					}, function() {
+						resolve('');
 					});
 				});
 			}
+			v3.refreshers[tokenFieldId] = generateToken;
 
 			// Initial token, then refresh every 110s (tokens expire after 120s).
 			generateToken();
@@ -715,6 +743,13 @@ class WBC_Recaptcha_V3_Service extends WBC_Captcha_Service_Base {
 				}
 				var form = tokenField.form;
 				form.wbcV3Bound = true;
+
+				// Forms that send themselves (the AJAX login widget) request a fresh
+				// token through wbcRecaptchaV3.refresh(). Holding and re-submitting them
+				// here too would send the request twice, the first time with no token.
+				if (form.hasAttribute('data-wbc-v3-self-submit')) {
+					return;
+				}
 
 				form.addEventListener('submit', function(e) {
 					var field = getField();

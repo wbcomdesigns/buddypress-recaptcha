@@ -79,18 +79,6 @@ class Woocommerce_Filter {
 	}
 
 	/**
-	 * Display comment form captcha
-	 *
-	 * @return void
-	 */
-	public function woo_display_comment_captcha() {
-		// Use the service manager to render captcha.
-		if ( function_exists( 'wbc_captcha_service_manager' ) ) {
-			wbc_captcha_service_manager()->render( 'comment' );
-		}
-	}
-
-	/**
 	 * Verify comment captcha
 	 *
 	 * @param array $commentdata Comment data.
@@ -103,12 +91,17 @@ class Woocommerce_Filter {
 			return $commentdata;
 		}
 
-		// Skip for logged-in users if configured.
-		if ( is_user_logged_in() ) {
-			$skip_for_logged_in = get_option( 'wbc_recaptcha_skip_comment_for_logged_in' );
-			if ( 'yes' === $skip_for_logged_in ) {
-				return $commentdata;
-			}
+		// Replies sent from wp-admin (Comments > Reply, the Dashboard Activity widget)
+		// run through core's replyto-comment AJAX handler, which has already checked
+		// its nonce and the user's edit_post capability. No admin screen renders a
+		// CAPTCHA, so verifying here would always reject the reply.
+		if ( doing_action( 'wp_ajax_replyto-comment' ) ) {
+			return $commentdata;
+		}
+
+		// Moderators always, other members per "Skip for Logged-in Users".
+		if ( wbc_skip_comment_captcha_for_current_user() ) {
+			return $commentdata;
 		}
 
 		// Verify captcha.

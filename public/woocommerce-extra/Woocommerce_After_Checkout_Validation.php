@@ -50,7 +50,7 @@ class Woocommerce_After_Checkout_Validation {
 		}
 
 		if ( ! wp_verify_nonce( $nonce_value, 'woocommerce-process_checkout' ) ) {
-			$validation_errors->add( 'g-recaptcha_error', __( 'Security verification failed. Please try again.', 'buddypress-recaptcha' ) );
+			$validation_errors->add( 'g-recaptcha_error', wbc_get_captcha_error_message( $context, 'invalid' ) );
 			return $validation_errors;
 		}
 

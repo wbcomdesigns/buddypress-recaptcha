@@ -61,7 +61,35 @@ Fill this section from the plugin's fixed-bug history. Every row here is a bug t
 - [ ] (placeholder) D.v3-token: v3 active, load /register/ → hidden token field is non-empty and no grecaptcha console error
 - [ ] (placeholder) D.loginform-render: log in from a core Login/Logout block → CAPTCHA renders inside that form and login succeeds
 
+- [ ] D.admin-reset (2.2.1): WordPress Lost Password toggle ON (default), as admin → Users → hover a user → Send password reset → notice "Password reset link sent." (not "sent to 0 users"); repeat with the bulk action and Edit User → Send Reset Link. Control: logged out, submit wp-login.php?action=lostpassword with the CAPTCHA unsolved → rejected
+- [ ] D.admin-comment-reply (2.2.1): Comment Form toggle ON (default), as admin AND as editor → Comments → Reply → reply is saved. Control: logged out, submit a front-end comment with the CAPTCHA unsolved → "Security verification failed"
+- [ ] D.comment-logged-in (2.2.1): Comment Form ON. Protection → "Comments: Skip for Logged-in Users" ON → subscriber sees no CAPTCHA and the comment posts; editor sees none; logged out sees it and is rejected unsolved. Toggle OFF → subscriber sees it and is rejected unsolved; editor still sees none
+- [ ] D.wplogin-disable-submit (2.2.1): reCAPTCHA v2 (and hCaptcha) with "disable submit" ON for WordPress Login → logged out, wp-login.php: Log In button is disabled with a "complete the security check" tooltip and the console has no "jQuery is not defined"; solve the CAPTCHA → button enables; wrong password → "password incorrect" (not a CAPTCHA error). Repeat on Lost Password
+- [ ] D.v3-ajax-login (2.2.1): reCAPTCHA v3 ON, Login Widget toggle ON, logged out. Page with the CAPTCHA Login block AND a core Login/Logout block: type credentials and click Log In as soon as the page loads → exactly ONE admin-ajax request, carrying a non-empty wbc_recaptcha_widget_login_token, and a real login result (not "Security verification failed"). Wrong password then click again → second single request with a token. Use real v3 keys: Google's test key issues only one token per page load
+- [ ] D.admin-actions-script (2.2.1): `wp eval-file wp-content/plugins/buddypress-recaptcha/tests/audit/admin-actions-captcha.php` exits 0
+
 **Rule:** every customer-visible fix that ships after this document adds a new row here in the same PR.
+
+### D.matrix - provider x form walk (from the 2.2.1 full-flow audit)
+
+Run for **each provider** (reCAPTCHA v2, reCAPTCHA v3, hCaptcha, Turnstile; ALTCHA only on HTTPS) with the matching toggle ON. For every form: (1) the widget, or for v3 a non-empty hidden token, is inside the form; (2) no JS errors in the console; (3) submit with the CAPTCHA unsolved is rejected with the configured error; (4) submit solved goes through (wrong password gives "password incorrect", not a CAPTCHA error). Use Google/hCaptcha/Cloudflare test keys, but **real v3 keys** for rows marked v3-real (the v3 test key issues one token per page load and returns no score).
+
+| Form (context) | Role | Where |
+|---|---|---|
+| wp_login | logged out | /wp-login.php |
+| wp_lostpassword | logged out | /wp-login.php?action=lostpassword |
+| comment | logged out + subscriber | any post |
+| wp_login via core Login/Logout block | logged out | page with the block |
+| widget_login (CAPTCHA Login block / widget) | logged out | alone AND on a page with another protected form (v3-real) |
+| bp_register | logged out | /register/ (registration open) |
+| bp_group_create | member | /groups/create/ |
+| bbpress_topic / bbpress_reply | member | a forum / a topic |
+| woo_login / woo_register / woo_lostpassword | logged out | My Account (WooCommerce active) |
+| woo_checkout_guest / woo_checkout_login | logged out / customer | checkout, classic and block |
+| cf7, wpforms, gravityforms, ninjaforms, forminator, elementorpro, divi | logged out | a page with each form (plugin active) |
+| edd_*, memberpress_*, um_* | logged out | each plugin's forms (plugin active) |
+
+Last full walk: 2026-09-17 on 2.2.1 - core, BuddyPress and bbPress rows PASS for v2/v3/hCaptcha/Turnstile; WooCommerce, form builders, EDD, MemberPress, Ultimate Member and ALTCHA not walked (not installed / no HTTPS on the sandbox). Note: BuddyPress group creation shows no error notice on the details step for any validation error (its own "required fields" included), on BuddyX and Twenty Twenty-Five - the block itself works.
 
 ## E — Extensions / addons / premium features (if applicable)
 

@@ -142,11 +142,15 @@ This guide covers CAPTCHA protection for:
 
 ### Skip CAPTCHA for Logged-In Users
 
-Don't show CAPTCHA for replies from logged-in users:
+Hide and skip CAPTCHA for replies from logged-in users:
 
 ```php
 // Add to your theme's functions.php
-add_filter( 'wbc_bbpress_reply_skip_logged_in', '__return_true' );
+function my_skip_bbpress_reply_for_logged_in( $should, $context, $service_id ) {
+    return 'bbpress_reply' === $context && is_user_logged_in() ? false : $should;
+}
+add_filter( 'wbc_should_render_captcha', 'my_skip_bbpress_reply_for_logged_in', 10, 3 );
+add_filter( 'wbc_should_verify_captcha', 'my_skip_bbpress_reply_for_logged_in', 10, 3 );
 ```
 
 **Recommendation:** Enable this for better user experience. Logged-in users are already verified through registration.
@@ -155,19 +159,7 @@ add_filter( 'wbc_bbpress_reply_skip_logged_in', '__return_true' );
 
 ### CAPTCHA Position
 
-Customize where CAPTCHA appears:
-
-```php
-// Move CAPTCHA on new topic form
-add_filter( 'wbc_bbpress_topic_captcha_position', function() {
-    return 'before_submit'; // Options: 'before_submit', 'after_content'
-});
-
-// Move CAPTCHA on reply form
-add_filter( 'wbc_bbpress_reply_captcha_position', function() {
-    return 'before_submit';
-});
-```
+CAPTCHA position on the topic and reply forms follows bbPress's own template hooks and cannot be moved by a filter.
 
 ---
 
@@ -176,33 +168,31 @@ add_filter( 'wbc_bbpress_reply_captcha_position', function() {
 Customize error messages for bbPress forms:
 
 ```php
-// Custom new topic error
-add_filter( 'wbc_bbpress_topic_error_message', function( $message ) {
-    return 'Please verify you are human before posting to the forum.';
-});
-
-// Custom reply error
-add_filter( 'wbc_bbpress_reply_error_message', function( $message ) {
-    return 'Please complete the security check to post your reply.';
-});
+add_filter( 'wbc_captcha_error_message', function( $message, $context ) {
+    $messages = array(
+        'bbpress_topic' => 'Please verify you are human before posting to the forum.',
+        'bbpress_reply' => 'Please complete the security check to post your reply.',
+    );
+    return $messages[ $context ] ?? $message;
+}, 10, 2 );
 ```
+
+The filter receives `( $message, $context, $service_id, $error_type )` and covers every form the plugin protects. To change the message for all forms without code, use the fields on the **Advanced** tab.
 
 ---
 
-### Different CAPTCHA for Topics vs Replies
+### Different reCAPTCHA v3 Threshold for Topics vs Replies
 
-Use stricter CAPTCHA for new topics:
+Use a stricter score threshold for new topics than for replies:
 
 ```php
-// Stricter for topics (reCAPTCHA v3 only)
-add_filter( 'wbc_bbpress_topic_captcha_threshold', function( $threshold ) {
-    return 0.7; // More strict
-});
-
-// Normal for replies
-add_filter( 'wbc_bbpress_reply_captcha_threshold', function( $threshold ) {
-    return 0.5; // Standard
-});
+add_filter( 'wbc_recaptcha_v3_score_threshold_value', function( $threshold, $context ) {
+    $thresholds = array(
+        'bbpress_topic' => 0.7, // More strict
+        'bbpress_reply' => 0.5, // Standard
+    );
+    return $thresholds[ $context ] ?? $threshold;
+}, 10, 2 );
 ```
 
 ---
@@ -337,11 +327,7 @@ add_filter( 'wbc_bbpress_reply_captcha_threshold', function( $threshold ) {
 - Skip CAPTCHA on replies for logged-in users
 - Only guests and new topics require CAPTCHA
 
-**Implementation:**
-```php
-// Skip replies for logged-in users
-add_filter( 'wbc_bbpress_reply_skip_logged_in', '__return_true' );
-```
+**Implementation:** see [Skip CAPTCHA for Logged-In Users](#skip-captcha-for-logged-in-users) above.
 
 ---
 

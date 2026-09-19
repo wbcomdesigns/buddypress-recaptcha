@@ -68,12 +68,14 @@ Protects MemberPress forms:
 
 ### Skip Login CAPTCHA for Members
 
-Don't show CAPTCHA to already-logged-in users:
+To hide and skip CAPTCHA for already-logged-in users on the MemberPress login form:
 
 ```php
-// This is default behavior - no code needed
-// To show CAPTCHA even for logged-in users:
-add_filter( 'wbc_memberpress_show_login_for_logged_in', '__return_true' );
+function my_skip_memberpress_login_for_logged_in( $should, $context, $service_id ) {
+    return 'memberpress_login' === $context && is_user_logged_in() ? false : $should;
+}
+add_filter( 'wbc_should_render_captcha', 'my_skip_memberpress_login_for_logged_in', 10, 3 );
+add_filter( 'wbc_should_verify_captcha', 'my_skip_memberpress_login_for_logged_in', 10, 3 );
 ```
 
 ---
@@ -81,30 +83,26 @@ add_filter( 'wbc_memberpress_show_login_for_logged_in', '__return_true' );
 ### Custom Error Messages
 
 ```php
-// Registration error
-add_filter( 'wbc_memberpress_register_error_message', function( $message ) {
-    return 'Please verify you are human to join our membership.';
-});
-
-// Login error
-add_filter( 'wbc_memberpress_login_error_message', function( $message ) {
-    return 'Please complete the security check to log in.';
-});
+add_filter( 'wbc_captcha_error_message', function( $message, $context ) {
+    $messages = array(
+        'memberpress_register' => 'Please verify you are human to join our membership.',
+        'memberpress_login'    => 'Please complete the security check to log in.',
+    );
+    return $messages[ $context ] ?? $message;
+}, 10, 2 );
 ```
+
+The filter receives `( $message, $context, $service_id, $error_type )` and covers every form the plugin protects. To change the message for all forms without code, use the fields on the **Advanced** tab.
 
 ---
 
-### Different CAPTCHA by Membership Level
+### Different reCAPTCHA v3 Threshold for Register vs. Login
 
-More strict for free trials:
+The threshold filter only receives the form context, not the membership level, so you can vary it between the register and login forms, not per membership plan:
 
 ```php
-add_filter( 'wbc_memberpress_captcha_threshold', function( $threshold, $membership_id ) {
-    // Free tier - stricter
-    if ( $membership_id == 123 ) {
-        return 0.7; // More strict (reCAPTCHA v3 only)
-    }
-    return $threshold;
+add_filter( 'wbc_recaptcha_v3_score_threshold_value', function( $threshold, $context ) {
+    return 'memberpress_register' === $context ? 0.7 : $threshold;
 }, 10, 2 );
 ```
 

@@ -265,6 +265,7 @@ module.exports = function (grunt) {
 					'!tests/**',
 					'!test/**',
 					'!spec/**',
+					'!bin/**',
 					'!build.sh',
 					'!gruntfile.js',
 					'!Gruntfile.js',

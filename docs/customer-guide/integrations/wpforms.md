@@ -85,39 +85,25 @@ One-click protection for **all WPForms** on your site including:
 
 ### Exclude Specific Forms
 
-Skip CAPTCHA on certain forms:
-
-```php
-// Add to theme's functions.php
-add_filter( 'wbc_wpforms_exclude_forms', function( $excluded ) {
-    $excluded[] = 123; // WPForms form ID
-    return $excluded;
-});
-```
-
-**Find Form ID:**
-- Go to **WPForms → All Forms**
-- ID shown in form list
+Excluding a single WPForms form by ID is not supported - the CAPTCHA toggle applies to the whole WPForms integration, not individual forms.
 
 ---
 
 ### Custom Error Message
 
 ```php
-add_filter( 'wbc_wpforms_error_message', function( $message ) {
-    return 'Please verify you are human before submitting.';
-});
+add_filter( 'wbc_captcha_error_message', function( $message, $context ) {
+    return 'wpforms' === $context ? 'Please verify you are human before submitting.' : $message;
+}, 10, 2 );
 ```
+
+The filter receives `( $message, $context, $service_id, $error_type )` and covers every form the plugin protects. To change the message for all forms without code, use the fields on the **Advanced** tab.
 
 ---
 
 ### CAPTCHA Position
 
-```php
-add_filter( 'wbc_wpforms_captcha_position', function() {
-    return 'before_submit'; // or 'after_form'
-});
-```
+The CAPTCHA position follows the integration's own form hook and cannot be moved by a filter.
 
 ---
 

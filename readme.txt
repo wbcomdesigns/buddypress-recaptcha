@@ -4,7 +4,7 @@ Donate link: https://wbcomdesigns.com/donate/
 Tags: captcha, recaptcha, spam protection, security, woocommerce
 Requires at least: 6.5
 Tested up to: 7.0
-Stable tag: 2.2.0
+Stable tag: 2.2.1
 Requires PHP: 8.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -217,6 +217,19 @@ Fixes lockouts introduced in 2.1.0. Login from a Login/Logout block, login widge
 Security update: comment, lost-password and login forms are now verified on sites without WooCommerce, where they previously did nothing. Recommended for every site.
 
 == Changelog ==
+
+= 2.2.1 - September 2026 =
+
+Admins can send password resets and reply to comments from the dashboard again, and you can choose whether logged-in members see the comment CAPTCHA.
+
+* New      - Added a "Comments: Skip for Logged-in Users" setting under Protection. New installs start with it on; sites that update keep showing the comment CAPTCHA to members until you change it.
+* Improve  - Admins and editors no longer see the CAPTCHA on comment forms, since they can approve any comment.
+* Fix      - Sending a password reset from Users or Edit User reported "0 password reset emails sent" when the Lost Password CAPTCHA was on. Admin screens show no CAPTCHA, so the reset was always rejected. The front-end Lost Password form stays protected.
+* Fix      - Replying to a comment from the Comments screen or the Dashboard failed with "Security verification failed" when the Comment Form CAPTCHA was on. Front-end comment forms stay protected.
+* Fix      - The "disable submit until the CAPTCHA is solved" option did nothing on the WordPress login, registration and lost password screens with reCAPTCHA v2 or hCaptcha. The button now stays disabled until the check is completed.
+* Fix      - With reCAPTCHA v3, logging in from the login widget or CAPTCHA Login block could fail with "Security verification failed" when Log In was clicked before the security check finished loading, and the login was sent twice. It now waits for the check and sends once.
+* Dev      - Added the wbc_captcha_error_message filter to change the CAPTCHA error text for any protected form, such as a different message on checkout than on comments.
+* Dev      - The wbc_should_render_captcha filter is now honoured by every provider, not only reCAPTCHA v3, so skipping a CAPTCHA with it and wbc_should_verify_captcha hides the widget and skips the check together.
 
 = 2.2.0 - August 2026 =
 

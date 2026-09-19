@@ -13,404 +13,149 @@ Complete reference of all hooks and filters available in Wbcom CAPTCHA Manager.
 
 ## Action Hooks
 
-### Rendering Actions
+### `wbc_register_captcha_services`
 
-#### `wbc_before_captcha_render`
-
-**Description:** Fires before CAPTCHA widget is rendered.
+**Description:** The primary extension point. Fires once while the service manager boots, so a third-party plugin can register a custom CAPTCHA provider alongside the 5 built-in ones.
 
 **Parameters:**
-- `string $context` - Form context (e.g., 'login', 'registration', 'checkout')
-- `array $args` - Additional arguments passed to render function
+- `WBC_Captcha_Service_Manager $manager` - The service manager instance
 
 **Example:**
 ```php
-add_action( 'wbc_before_captcha_render', function( $context, $args ) {
-    // Add custom HTML before CAPTCHA
-    if ( $context === 'checkout' ) {
-        echo '<div class="checkout-security-notice">';
-        echo '<p>Please verify you are human to complete your purchase.</p>';
-        echo '</div>';
-    }
-}, 10, 2 );
-```
-
----
-
-#### `wbc_after_captcha_render`
-
-**Description:** Fires after CAPTCHA widget is rendered.
-
-**Parameters:**
-- `string $context` - Form context
-- `array $args` - Additional arguments
-
-**Example:**
-```php
-add_action( 'wbc_after_captcha_render', function( $context, $args ) {
-    // Add privacy notice after CAPTCHA
-    echo '<p class="captcha-privacy-notice">';
-    echo 'Protected by reCAPTCHA. <a href="#">Privacy Policy</a>';
-    echo '</p>';
-}, 10, 2 );
-```
-
----
-
-#### `wbc_captcha_scripts_enqueued`
-
-**Description:** Fires after CAPTCHA scripts are enqueued.
-
-**Parameters:**
-- `string $service_id` - Active CAPTCHA service ID
-
-**Example:**
-```php
-add_action( 'wbc_captcha_scripts_enqueued', function( $service_id ) {
-    // Add custom JavaScript after CAPTCHA scripts
-    if ( $service_id === 'recaptcha_v3' ) {
-        wp_add_inline_script( 'recaptcha-v3', '
-            console.log("reCAPTCHA v3 loaded");
-        ' );
-    }
+add_action( 'wbc_register_captcha_services', function( $manager ) {
+    // $manager->register_service( new My_Custom_Captcha_Service() );
+    // The custom service must implement WBC_Captcha_Service_Interface.
 } );
-```
-
----
-
-### Validation Actions
-
-#### `wbc_before_captcha_validation`
-
-**Description:** Fires before CAPTCHA validation starts.
-
-**Parameters:**
-- `string $context` - Form context
-- `array $post_data` - Submitted form data
-
-**Example:**
-```php
-add_action( 'wbc_before_captcha_validation', function( $context, $post_data ) {
-    // Log validation attempts
-    error_log( "CAPTCHA validation starting for: {$context}" );
-
-    // Track analytics
-    if ( function_exists( 'track_event' ) ) {
-        track_event( 'captcha_validation_start', array( 'context' => $context ) );
-    }
-}, 10, 2 );
-```
-
----
-
-#### `wbc_after_captcha_validation`
-
-**Description:** Fires after CAPTCHA validation completes.
-
-**Parameters:**
-- `array $result` - Validation result (`success` and `message`)
-- `string $context` - Form context
-- `array $post_data` - Submitted form data
-
-**Example:**
-```php
-add_action( 'wbc_after_captcha_validation', function( $result, $context, $post_data ) {
-    // Log failed attempts
-    if ( ! $result['success'] ) {
-        error_log( "CAPTCHA failed for {$context}: {$result['message']}" );
-
-        // Track failed attempts by IP
-        $ip = $_SERVER['REMOTE_ADDR'];
-        $attempts = get_transient( "captcha_fails_{$ip}" ) ?: 0;
-        set_transient( "captcha_fails_{$ip}", $attempts + 1, HOUR_IN_SECONDS );
-    }
-}, 10, 3 );
-```
-
----
-
-#### `wbc_captcha_validation_failed`
-
-**Description:** Fires when CAPTCHA validation fails.
-
-**Parameters:**
-- `string $context` - Form context
-- `string $error_message` - Error message
-- `string $service_id` - CAPTCHA service that failed
-
-**Example:**
-```php
-add_action( 'wbc_captcha_validation_failed', function( $context, $error_message, $service_id ) {
-    // Send alert for suspicious activity
-    $ip = $_SERVER['REMOTE_ADDR'];
-    $attempts = get_transient( "captcha_fails_{$ip}" ) ?: 0;
-
-    if ( $attempts > 5 ) {
-        // Alert admin or block IP
-        wp_mail(
-            get_option( 'admin_email' ),
-            'Multiple CAPTCHA Failures',
-            "IP {$ip} has failed CAPTCHA {$attempts} times"
-        );
-    }
-}, 10, 3 );
-```
-
----
-
-#### `wbc_captcha_validation_success`
-
-**Description:** Fires when CAPTCHA validation succeeds.
-
-**Parameters:**
-- `string $context` - Form context
-- `string $service_id` - CAPTCHA service used
-
-**Example:**
-```php
-add_action( 'wbc_captcha_validation_success', function( $context, $service_id ) {
-    // Clear failed attempts on success
-    $ip = $_SERVER['REMOTE_ADDR'];
-    delete_transient( "captcha_fails_{$ip}" );
-
-    // Track successful validations
-    if ( function_exists( 'track_event' ) ) {
-        track_event( 'captcha_success', array(
-            'context' => $context,
-            'service' => $service_id,
-        ) );
-    }
-}, 10, 2 );
 ```
 
 ---
 
 ## Filter Hooks
 
-### Rendering Filters
+### Rendering & Verification Filters
 
-#### `wbc_captcha_html`
+#### `wbc_should_render_captcha`
 
-**Description:** Filters the CAPTCHA widget HTML.
+**Since:** 2.2.1 (applied for all 5 providers; before that only reCAPTCHA v3 consulted it)
+
+**Description:** Return `false` to hide the CAPTCHA widget for a specific context/request.
 
 **Parameters:**
-- `string $html` - CAPTCHA HTML output
-- `string $context` - Form context
-- `string $service_id` - Active service ID
+- `bool $should_render` - Whether to render the widget
+- `string $context` - Form context, for example `wp_login`, `comment`, `bp_register`, `woo_checkout_guest`
+- `string $service_id` - Active provider: `recaptcha-v2`, `recaptcha-v3`, `hcaptcha`, `turnstile`, `altcha`
 
 **Example:**
 ```php
-add_filter( 'wbc_captcha_html', function( $html, $context, $service_id ) {
-    // Add custom wrapper
-    $wrapper = '<div class="custom-captcha-wrapper" data-context="' . esc_attr( $context ) . '">';
-    $wrapper .= $html;
-    $wrapper .= '</div>';
+add_filter( 'wbc_should_render_captcha', function( $should_render, $context, $service_id ) {
+    if ( 'comment' === $context && current_user_can( 'manage_options' ) ) {
+        return false;
+    }
+    return $should_render;
+}, 10, 3 );
+```
 
-    return $wrapper;
+**Always pair this with `wbc_should_verify_captcha` using the same condition.** If you hide the widget without also skipping verification, the form still requires a response the visitor was never shown.
+
+---
+
+#### `wbc_should_verify_captcha`
+
+**Since:** 2.2.0 (honoured by all 5 providers; before that only reCAPTCHA v3 consulted it)
+
+**Description:** Return `false` to skip CAPTCHA verification for a specific context/request. This filter can add exemptions, but it cannot re-require a CAPTCHA for users the Protection tab's "Comments: Skip for Logged-in Users" toggle already exempts.
+
+**Parameters:**
+- `bool $should_verify` - Whether to verify the response
+- `string $context` - Form context
+- `string $service_id` - Active provider ID
+
+**Example (paired with the filter above):**
+```php
+add_filter( 'wbc_should_verify_captcha', function( $should_verify, $context, $service_id ) {
+    if ( 'comment' === $context && current_user_can( 'manage_options' ) ) {
+        return false;
+    }
+    return $should_verify;
 }, 10, 3 );
 ```
 
 ---
 
-#### `wbc_captcha_container_class`
-
-**Description:** Filters the CAPTCHA container CSS classes.
-
-**Parameters:**
-- `array $classes` - Array of CSS classes
-- `string $context` - Form context
-
-**Example:**
-```php
-add_filter( 'wbc_captcha_container_class', function( $classes, $context ) {
-    // Add context-specific class
-    $classes[] = 'captcha-' . $context;
-
-    // Add mobile class
-    if ( wp_is_mobile() ) {
-        $classes[] = 'captcha-mobile';
-    }
-
-    return $classes;
-}, 10, 2 );
-```
-
----
-
-#### `wbc_captcha_position`
-
-**Description:** Filters where CAPTCHA appears in form.
-
-**Parameters:**
-- `string $position` - Position ('before_submit', 'after_submit', 'custom')
-- `string $context` - Form context
-
-**Example:**
-```php
-add_filter( 'wbc_captcha_position', function( $position, $context ) {
-    // Place checkout CAPTCHA before payment
-    if ( $context === 'checkout' ) {
-        return 'before_payment';
-    }
-
-    return $position;
-}, 10, 2 );
-```
-
----
-
-### Validation Filters
-
-#### `wbc_skip_captcha`
-
-**Description:** Determines if CAPTCHA should be skipped.
-
-**Parameters:**
-- `bool $skip` - Whether to skip CAPTCHA
-- `string $context` - Form context
-- `int $user_id` - Current user ID (0 if not logged in)
-
-**Example:**
-```php
-add_filter( 'wbc_skip_captcha', function( $skip, $context, $user_id ) {
-    // Skip for administrators
-    if ( user_can( $user_id, 'manage_options' ) ) {
-        return true;
-    }
-
-    // Skip for trusted users (example: verified customers)
-    if ( $context === 'checkout' && $user_id > 0 ) {
-        $order_count = wc_get_customer_order_count( $user_id );
-        if ( $order_count > 5 ) {
-            return true; // Skip for repeat customers
-        }
-    }
-
-    return $skip;
-}, 10, 3 );
-```
-
----
-
-#### `wbc_captcha_validation_result`
-
-**Description:** Filters the CAPTCHA validation result.
-
-**Parameters:**
-- `array $result` - Validation result with 'success' and 'message'
-- `string $context` - Form context
-- `string $response` - CAPTCHA response token
-
-**Example:**
-```php
-add_filter( 'wbc_captcha_validation_result', function( $result, $context, $response ) {
-    // Add custom validation layer
-    if ( $result['success'] && $context === 'registration' ) {
-        // Check if email domain is blacklisted
-        $email = isset( $_POST['email'] ) ? sanitize_email( $_POST['email'] ) : '';
-        $domain = substr( strrchr( $email, '@' ), 1 );
-
-        $blacklist = array( 'tempmail.com', 'fakeemail.com' );
-        if ( in_array( $domain, $blacklist, true ) ) {
-            return array(
-                'success' => false,
-                'message' => 'Please use a valid email address.',
-            );
-        }
-    }
-
-    return $result;
-}, 10, 3 );
-```
-
----
+### Error Message Filter
 
 #### `wbc_captcha_error_message`
 
-**Description:** Filters the CAPTCHA error message.
+**Since:** 2.2.1
+
+**Description:** Filters the CAPTCHA error message shown to the visitor. It runs after the provider's message, the admin messages on the **Advanced** tab and the built-in default are resolved, so it can override any of them for one form. Every integration builds its error through `wbc_get_captcha_error_message()`, so this one filter covers all protected forms, including the WooCommerce checkout error and the tooltip on a disabled submit button.
 
 **Parameters:**
-- `string $message` - Error message
-- `string $context` - Form context
-- `string $service_id` - CAPTCHA service ID
+- `string $message` - The resolved error message
+- `string $context` - Form context, for example `wp_login`, `wp_register`, `wp_lostpassword`, `comment`, `woo_login`, `woo_register`, `woo_checkout_guest`, `woo_checkout_login`, `bp_register`, `bp_group_create`, `bbpress_topic`, `bbpress_reply`, `cf7`, `wpforms`, `gravityforms`, `ninjaforms`, `forminator`, `elementorpro`, `divi`, `edd_checkout`, `edd_login`, `edd_register`, `memberpress_login`, `memberpress_register`, `um_login`, `um_register`, `um_password`, `widget_login`
+- `string $service_id` - Active provider: `recaptcha-v2`, `recaptcha-v3`, `hcaptcha`, `turnstile`, `altcha`, or `''` when none is set up
+- `string $error_type` - `blank` (CAPTCHA not completed), `invalid` (verification failed) or `no_response` (provider unreachable)
 
 **Example:**
 ```php
-add_filter( 'wbc_captcha_error_message', function( $message, $context, $service_id ) {
-    // Customize messages by context
+add_filter( 'wbc_captcha_error_message', function( $message, $context, $service_id, $error_type ) {
     $messages = array(
-        'login'        => __( 'Please complete the security check to log in.', 'textdomain' ),
-        'registration' => __( 'Please verify you are human to create an account.', 'textdomain' ),
-        'checkout'     => __( 'Please complete verification to finalize your purchase.', 'textdomain' ),
-        'contact'      => __( 'Please verify you are human to send your message.', 'textdomain' ),
+        'wp_login'           => __( 'Please complete the security check to log in.', 'textdomain' ),
+        'wp_register'        => __( 'Please verify you are human to create an account.', 'textdomain' ),
+        'woo_checkout_guest' => __( 'Please complete verification to finalize your purchase.', 'textdomain' ),
+        'cf7'                => __( 'Please verify you are human to send your message.', 'textdomain' ),
     );
 
     return $messages[ $context ] ?? $message;
+}, 10, 4 );
+```
+
+---
+
+### Verification Result Filters
+
+#### `wbc_captcha_verified`
+
+**Description:** Overrides the verification result after the provider's API call, for reCAPTCHA v2, hCaptcha, Turnstile and ALTCHA.
+
+**Parameters:**
+- `bool $verified` - The result from the provider
+- `array $api_result` - The raw API response
+- `string $response` - The response token submitted by the visitor
+- `string $service_id` - Active provider ID
+
+**Note:** No `$context` is passed. reCAPTCHA v3 does **not** fire this filter - use `wbc_recaptcha_v3_verify` for v3.
+
+**Example:**
+```php
+add_filter( 'wbc_captcha_verified', function( $verified, $api_result, $response, $service_id ) {
+    return $verified;
+}, 10, 4 );
+```
+
+---
+
+#### `wbc_recaptcha_v3_verify`
+
+**Description:** reCAPTCHA v3's own verification filter (it operates on the score-bearing API result instead of a pass/fail response). This is v3's replacement for `wbc_captcha_verified`.
+
+**Parameters:**
+- `bool $verified` - The result from the score check
+- `array $result` - The raw API response (includes the `score`)
+- `string $context` - Form context
+
+**Example:**
+```php
+add_filter( 'wbc_recaptcha_v3_verify', function( $verified, $result, $context ) {
+    return $verified;
 }, 10, 3 );
 ```
 
 ---
 
-### Service Configuration Filters
+#### `wbc_recaptcha_v3_score_threshold_value`
 
-#### `wbc_active_captcha_service`
-
-**Description:** Filters which CAPTCHA service to use.
-
-**Parameters:**
-- `string $service_id` - Current service ID
-- `string $context` - Form context
-
-**Example:**
-```php
-add_filter( 'wbc_active_captcha_service', function( $service_id, $context ) {
-    // Use stricter service for checkout
-    if ( $context === 'checkout' ) {
-        return 'recaptcha_v2'; // Visible checkbox
-    }
-
-    // Use invisible for comments
-    if ( $context === 'comment' ) {
-        return 'turnstile';
-    }
-
-    return $service_id;
-}, 10, 2 );
-```
-
----
-
-#### `wbc_captcha_service_args`
-
-**Description:** Filters arguments passed to CAPTCHA service.
-
-**Parameters:**
-- `array $args` - Service arguments (theme, size, etc.)
-- `string $service_id` - Service ID
-- `string $context` - Form context
-
-**Example:**
-```php
-add_filter( 'wbc_captcha_service_args', function( $args, $service_id, $context ) {
-    // Use compact size on mobile
-    if ( wp_is_mobile() && $service_id === 'recaptcha_v2' ) {
-        $args['size'] = 'compact';
-    }
-
-    // Use dark theme for dark mode
-    if ( isset( $_COOKIE['dark_mode'] ) && $_COOKIE['dark_mode'] === '1' ) {
-        $args['theme'] = 'dark';
-    }
-
-    return $args;
-}, 10, 3 );
-```
-
----
-
-#### `wbc_recaptcha_v3_threshold`
-
-**Description:** Filters reCAPTCHA v3 score threshold.
+**Description:** Overrides the reCAPTCHA v3 score threshold per context.
 
 **Parameters:**
 - `float $threshold` - Score threshold (0.0 to 1.0)
@@ -418,14 +163,11 @@ add_filter( 'wbc_captcha_service_args', function( $args, $service_id, $context )
 
 **Example:**
 ```php
-add_filter( 'wbc_recaptcha_v3_threshold', function( $threshold, $context ) {
-    // Stricter thresholds by context
+add_filter( 'wbc_recaptcha_v3_score_threshold_value', function( $threshold, $context ) {
     $thresholds = array(
-        'registration' => 0.7, // More strict
-        'login'        => 0.6,
-        'checkout'     => 0.6,
-        'comment'      => 0.5, // More lenient
-        'contact'      => 0.5,
+        'wp_register' => 0.7, // More strict
+        'wp_login'    => 0.6,
+        'comment'     => 0.4, // More lenient
     );
 
     return $thresholds[ $context ] ?? $threshold;
@@ -434,211 +176,107 @@ add_filter( 'wbc_recaptcha_v3_threshold', function( $threshold, $context ) {
 
 ---
 
-### Settings Filters
+### Security Filters
 
-#### `wbc_default_captcha_service`
+#### `wbc_captcha_fail_closed`
 
-**Description:** Filters the default CAPTCHA service selection.
+**Since:** 2.1.0
+
+**Description:** Overrides the `wbc_captcha_fail_closed` option per request. When true, a missing/unconfigured provider or a `verify()` exception blocks the form instead of failing open.
 
 **Parameters:**
-- `string $service_id` - Default service ID
+- `bool $fail_closed`
+- `string $context`
 
 **Example:**
 ```php
-add_filter( 'wbc_default_captcha_service', function( $service_id ) {
-    // Default to Turnstile for new installations
-    return 'turnstile';
-} );
+add_filter( 'wbc_captcha_fail_closed', function( $fail_closed, $context ) {
+    if ( 'woo_checkout_guest' === $context ) {
+        return true;
+    }
+    return $fail_closed;
+}, 10, 2 );
 ```
 
 ---
 
-#### `wbc_captcha_enabled_forms`
+#### `wbc_captcha_strict_nonce`
 
-**Description:** Filters which forms have CAPTCHA enabled by default.
+**Since:** 2.1.0
+
+**Description:** Overrides the `wbc_captcha_strict_nonce` option per request - when true, the per-context nonce is required. Wired in reCAPTCHA v2, hCaptcha and Turnstile only; it has no effect when reCAPTCHA v3 or ALTCHA is the active service.
 
 **Parameters:**
-- `array $forms` - Array of form IDs
+- `bool $strict`
+- `string $context`
+- `string $service_id`
 
 **Example:**
 ```php
-add_filter( 'wbc_captcha_enabled_forms', function( $forms ) {
-    // Enable on specific forms by default
-    $forms[] = 'my_custom_form';
-    $forms[] = 'my_plugin_registration';
-
-    return $forms;
-} );
+add_filter( 'wbc_captcha_strict_nonce', function( $strict, $context, $service_id ) {
+    return true;
+}, 10, 3 );
 ```
 
 ---
 
 ## Common Use Cases
 
-### Use Case 1: Skip CAPTCHA for VIP Users
+### Use Case 1: Hide and Skip CAPTCHA for Trusted Users
 
 ```php
-add_filter( 'wbc_skip_captcha', function( $skip, $context, $user_id ) {
-    if ( $user_id > 0 ) {
-        // Check if user has VIP role
-        $user = get_userdata( $user_id );
-        if ( in_array( 'vip', $user->roles, true ) ) {
-            return true; // Skip CAPTCHA for VIP users
-        }
+function my_captcha_exemption( $value, $context, $service_id ) {
+    if ( current_user_can( 'manage_options' ) ) {
+        return false; // false = hide (should_render) / skip (should_verify)
     }
-    return $skip;
-}, 10, 3 );
+    return $value;
+}
+add_filter( 'wbc_should_render_captcha', 'my_captcha_exemption', 10, 3 );
+add_filter( 'wbc_should_verify_captcha', 'my_captcha_exemption', 10, 3 );
 ```
 
 ---
 
-### Use Case 2: Different Services for Different Forms
+### Use Case 2: Rate Limiting Based on Failed Attempts
 
 ```php
-add_filter( 'wbc_active_captcha_service', function( $service_id, $context ) {
-    $service_map = array(
-        'login'        => 'recaptcha_v2', // Visible security
-        'registration' => 'recaptcha_v2', // Visible security
-        'checkout'     => 'turnstile',    // Invisible, better UX
-        'contact'      => 'turnstile',    // Invisible
-        'comment'      => 'recaptcha_v3', // Invisible, less friction
-    );
+// Count failures via the post-API-call result (no $context available here).
+add_filter( 'wbc_captcha_verified', function( $verified, $api_result, $response, $service_id ) {
+    if ( ! $verified ) {
+        $ip = $_SERVER['REMOTE_ADDR'] ?? '';
+        $key = "captcha_fails_{$ip}";
+        $attempts = (int) get_transient( $key );
+        set_transient( $key, $attempts + 1, HOUR_IN_SECONDS );
+    }
+    return $verified;
+}, 10, 4 );
 
-    return $service_map[ $context ] ?? $service_id;
-}, 10, 2 );
-```
+// Block before verification runs once an IP is over the threshold.
+add_filter( 'wbc_should_verify_captcha', function( $should_verify, $context, $service_id ) {
+    $ip = $_SERVER['REMOTE_ADDR'] ?? '';
+    $attempts = (int) get_transient( "captcha_fails_{$ip}" );
 
----
-
-### Use Case 3: Rate Limiting Based on Failed Attempts
-
-```php
-add_action( 'wbc_captcha_validation_failed', function( $context, $error_message, $service_id ) {
-    $ip = $_SERVER['REMOTE_ADDR'];
-    $key = "captcha_fails_{$ip}";
-
-    $attempts = get_transient( $key ) ?: 0;
-    $attempts++;
-
-    // Store for 1 hour
-    set_transient( $key, $attempts, HOUR_IN_SECONDS );
-
-    // Block after 10 failures
     if ( $attempts >= 10 ) {
-        // Add to IP blacklist
-        $blacklist = get_option( 'captcha_ip_blacklist', array() );
-        if ( ! in_array( $ip, $blacklist, true ) ) {
-            $blacklist[] = $ip;
-            update_option( 'captcha_ip_blacklist', $blacklist );
-        }
-
-        // Alert admin
-        wp_mail(
-            get_option( 'admin_email' ),
-            'IP Blocked - Too Many CAPTCHA Failures',
-            "IP {$ip} has been blocked after {$attempts} failed CAPTCHA attempts."
-        );
-    }
-}, 10, 3 );
-
-// Check blacklist before rendering
-add_filter( 'wbc_skip_captcha', function( $skip, $context, $user_id ) {
-    $ip = $_SERVER['REMOTE_ADDR'];
-    $blacklist = get_option( 'captcha_ip_blacklist', array() );
-
-    if ( in_array( $ip, $blacklist, true ) ) {
-        // Block completely
         wp_die( 'Access denied. Too many failed CAPTCHA attempts.' );
     }
 
-    return $skip;
-}, 5, 3 ); // Priority 5 to run early
+    return $should_verify;
+}, 5, 3 );
 ```
 
 ---
 
-### Use Case 4: Analytics Tracking
+### Use Case 3: Custom Error Messages Per Context
 
 ```php
-// Track CAPTCHA performance
-add_action( 'wbc_after_captcha_validation', function( $result, $context, $post_data ) {
-    // Only track if analytics plugin exists
-    if ( ! function_exists( 'track_event' ) ) {
-        return;
-    }
+add_filter( 'wbc_captcha_error_message', function( $message, $context, $service_id, $error_type ) {
+    $messages = array(
+        'wp_login'    => __( 'Please complete the security check to log in.', 'textdomain' ),
+        'bp_register' => __( 'Please verify you are human to join our community.', 'textdomain' ),
+    );
 
-    track_event( 'captcha_validation', array(
-        'context'    => $context,
-        'success'    => $result['success'],
-        'user_agent' => $_SERVER['HTTP_USER_AGENT'] ?? '',
-        'mobile'     => wp_is_mobile(),
-    ) );
-}, 10, 3 );
-```
-
----
-
-### Use Case 5: Custom CAPTCHA Widget Styling
-
-```php
-add_filter( 'wbc_captcha_html', function( $html, $context, $service_id ) {
-    // Add custom styling wrapper
-    $output = '<div class="custom-captcha-wrapper">';
-    $output .= '<h4 class="captcha-title">' . __( 'Security Check', 'textdomain' ) . '</h4>';
-    $output .= '<div class="captcha-inner">';
-    $output .= $html;
-    $output .= '</div>';
-    $output .= '<p class="captcha-help">';
-    $output .= __( 'This helps us prevent automated spam.', 'textdomain' );
-    $output .= '</p>';
-    $output .= '</div>';
-
-    return $output;
-}, 10, 3 );
-
-// Add CSS for custom wrapper
-add_action( 'wp_head', function() {
-    ?>
-    <style>
-    .custom-captcha-wrapper {
-        padding: 20px;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        background: #f9f9f9;
-        margin: 20px 0;
-    }
-    .captcha-title {
-        margin: 0 0 15px;
-        font-size: 16px;
-        font-weight: 600;
-    }
-    .captcha-help {
-        margin: 10px 0 0;
-        font-size: 13px;
-        color: #666;
-    }
-    </style>
-    <?php
-} );
-```
-
----
-
-### Use Case 6: Conditional Service Selection Based on Traffic
-
-```php
-add_filter( 'wbc_active_captcha_service', function( $service_id, $context ) {
-    // Use stricter CAPTCHA during high traffic or attacks
-    $current_load = get_transient( 'server_load_high' );
-
-    if ( $current_load ) {
-        // Switch to visible reCAPTCHA during attacks
-        return 'recaptcha_v2';
-    }
-
-    // Normal operation - use invisible
-    return 'turnstile';
-}, 10, 2 );
+    return $messages[ $context ] ?? $message;
+}, 10, 4 );
 ```
 
 ---
@@ -648,47 +286,77 @@ add_filter( 'wbc_active_captcha_service', function( $service_id, $context ) {
 ### WordPress Core
 
 ```php
-// Skip CAPTCHA on login for specific users
-add_filter( 'wbc_wp_login_skip_captcha', function( $skip, $username ) {
-    // Skip for whitelisted usernames
-    $whitelist = array( 'admin', 'support' );
-    return in_array( $username, $whitelist, true );
-}, 10, 2 );
+// Skip CAPTCHA on wp-login.php for a specific username.
+function my_wp_login_exemption( $value, $context, $service_id ) {
+    if ( 'wp_login' !== $context ) {
+        return $value;
+    }
+    $whitelist = array( 'support' );
+    $username  = isset( $_POST['log'] ) ? sanitize_user( wp_unslash( $_POST['log'] ) ) : '';
+    return in_array( $username, $whitelist, true ) ? false : $value;
+}
+add_filter( 'wbc_should_render_captcha', 'my_wp_login_exemption', 10, 3 );
+add_filter( 'wbc_should_verify_captcha', 'my_wp_login_exemption', 10, 3 );
 ```
+
+For comments, use the built-in **Protection > WordPress Forms > Comments: Skip for Logged-in Users** toggle instead of a filter.
+
+---
 
 ### WooCommerce
 
 ```php
-// Skip checkout CAPTCHA for logged-in customers
-add_filter( 'wbc_woocommerce_checkout_skip_logged_in', '__return_true' );
+// Skip checkout CAPTCHA for logged-in customers (context: woo_checkout_login).
+function my_woo_checkout_login_exemption( $value, $context, $service_id ) {
+    return 'woo_checkout_login' === $context ? false : $value;
+}
+add_filter( 'wbc_should_render_captcha', 'my_woo_checkout_login_exemption', 10, 3 );
+add_filter( 'wbc_should_verify_captcha', 'my_woo_checkout_login_exemption', 10, 3 );
 
-// Custom error on checkout
-add_filter( 'wbc_woocommerce_checkout_error', function( $message ) {
-    return __( 'Please complete security verification to place your order.', 'textdomain' );
-} );
+// Custom error on checkout (guest and logged-in).
+add_filter( 'wbc_captcha_error_message', function( $message, $context ) {
+    return in_array( $context, array( 'woo_checkout_guest', 'woo_checkout_login' ), true )
+        ? __( 'Please complete security verification to place your order.', 'textdomain' )
+        : $message;
+}, 10, 2 );
 ```
+
+---
 
 ### BuddyPress
 
 ```php
-// Skip CAPTCHA for invited members
-add_filter( 'wbc_buddypress_registration_skip_invited', '__return_true' );
+// Skip CAPTCHA for invited members (context: bp_register).
+function my_bp_register_exemption( $value, $context, $service_id ) {
+    if ( 'bp_register' !== $context ) {
+        return $value;
+    }
+    return isset( $_GET['invite'] ) ? false : $value;
+}
+add_filter( 'wbc_should_render_captcha', 'my_bp_register_exemption', 10, 3 );
+add_filter( 'wbc_should_verify_captcha', 'my_bp_register_exemption', 10, 3 );
 
-// Custom registration error
-add_filter( 'wbc_buddypress_registration_error', function( $message ) {
-    return __( 'Please verify you are human to join our community.', 'textdomain' );
-} );
+// Custom registration error.
+add_filter( 'wbc_captcha_error_message', function( $message, $context ) {
+    return 'bp_register' === $context
+        ? __( 'Please verify you are human to join our community.', 'textdomain' )
+        : $message;
+}, 10, 2 );
 ```
+
+---
 
 ### Contact Form 7
 
+There is no filter to exclude a specific CF7 form ID - `wbc_should_render_captcha` / `wbc_should_verify_captcha` only receive the `cf7` context, not a form ID. To skip CAPTCHA on one form, disable it for the CF7 integration entirely on the Protection tab, or add the field to individual forms manually instead of using the integration's auto-injection.
+
 ```php
-// Exclude specific CF7 forms
-add_filter( 'wbc_cf7_exclude_forms', function( $excluded ) {
-    $excluded[] = 123; // Form ID
-    $excluded[] = 456; // Another form ID
-    return $excluded;
-} );
+// Custom error message for CF7.
+add_filter( 'wbc_captcha_error_message', function( $message, $context ) {
+    return 'cf7' === $context
+        ? __( 'Please verify you are human to send your message.', 'textdomain' )
+        : $message;
+}, 10, 2 );
 ```
 
 ---
@@ -698,50 +366,39 @@ add_filter( 'wbc_cf7_exclude_forms', function( $excluded ) {
 ### Enable Detailed Logging
 
 ```php
-add_action( 'wbc_before_captcha_validation', function( $context, $post_data ) {
+add_filter( 'wbc_should_verify_captcha', function( $should_verify, $context, $service_id ) {
     if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-        error_log( sprintf(
-            '[CAPTCHA] Validation start - Context: %s, IP: %s, User-Agent: %s',
-            $context,
-            $_SERVER['REMOTE_ADDR'] ?? 'unknown',
-            $_SERVER['HTTP_USER_AGENT'] ?? 'unknown'
-        ) );
+        error_log( sprintf( '[CAPTCHA] Verifying - Context: %s, Service: %s', $context, $service_id ) );
     }
-}, 10, 2 );
+    return $should_verify;
+}, 5, 3 );
 
-add_action( 'wbc_after_captcha_validation', function( $result, $context, $post_data ) {
+add_filter( 'wbc_captcha_verified', function( $verified, $api_result, $response, $service_id ) {
     if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-        error_log( sprintf(
-            '[CAPTCHA] Validation result - Context: %s, Success: %s, Message: %s',
-            $context,
-            $result['success'] ? 'YES' : 'NO',
-            $result['message']
-        ) );
+        error_log( sprintf( '[CAPTCHA] Result - Service: %s, Success: %s', $service_id, $verified ? 'YES' : 'NO' ) );
     }
-}, 10, 3 );
+    return $verified;
+}, 10, 4 );
 ```
+
+`wbc_captcha_verified` does not receive `$context`, and reCAPTCHA v3 does not fire it at all - hook `wbc_recaptcha_v3_verify` separately to log v3 results with `$context`.
 
 ---
 
 ## Hook Priority Guidelines
 
-**Rendering:**
-- Early (5): Override default behavior
+**Rendering/verification:**
+- Early (5): Blanket exemptions that should win over everything else
 - Normal (10): Standard customization
-- Late (15+): Final modifications
-
-**Validation:**
-- Early (5): Pre-validation checks
-- Normal (10): Standard validation
-- Late (15+): Post-validation actions
+- Late (15+): Final overrides
 
 **Example:**
 ```php
-// Run before default validation
-add_filter( 'wbc_captcha_validation_result', 'my_validation', 5, 3 );
+// Run before the default check
+add_filter( 'wbc_should_verify_captcha', 'my_early_exemption', 5, 3 );
 
-// Run after default validation
-add_action( 'wbc_after_captcha_validation', 'my_logging', 15, 3 );
+// Run after (e.g. to log the final decision)
+add_filter( 'wbc_should_verify_captcha', 'my_logging', 15, 3 );
 ```
 
 ---
