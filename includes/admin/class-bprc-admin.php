@@ -17,7 +17,7 @@
  *   - Settings-error group .... wbc_recaptcha_messages
  *   - Option keys ............. wbc_* (untouched)
  *   - EDD SL SDK .............. preset-key registration in the main file (untouched)
- * Only the admin chrome changed (card-panel shell instead of the wrapper).
+ * Only the admin chrome changed (card-panel layout instead of the wrapper).
  *
  * @package    Recaptcha_For_BuddyPress
  * @subpackage Recaptcha_For_BuddyPress/admin
@@ -316,7 +316,7 @@ class BPRC_Admin {
 	}
 
 	/**
-	 * Render the single admin page inside the card-panel shell.
+	 * Render the single admin page inside the card-panel layout.
 	 *
 	 * The save path is identical to the legacy admin: a tab's form posts
 	 * the bp_recaptcha_submit_fields_nonce field, we verify it and call
@@ -363,8 +363,8 @@ class BPRC_Admin {
 		);
 		$view      = isset( $view_map[ $active ] ) ? $view_map[ $active ] : 'settings-form';
 		$view_path = RFB_PLUGIN_PATH . 'includes/admin/views/' . $view . '.php';
-		$shell     = RFB_PLUGIN_PATH . 'includes/admin/views/shell.php';
+		$layout    = RFB_PLUGIN_PATH . 'includes/admin/views/layout.php';
 
-		include $shell;
+		include $layout;
 	}
 }

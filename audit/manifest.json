@@ -128,7 +128,7 @@
       ],
       "tabs_filter": "bprc_admin_tabs (includes/admin/class-bprc-admin.php:104)",
       "views": [
-        "includes/admin/views/shell.php",
+        "includes/admin/views/layout.php",
         "includes/admin/views/hub.php",
         "includes/admin/views/overview.php",
         "includes/admin/views/updates.php",
@@ -672,7 +672,7 @@
       "where": "includes/admin/class-bprc-admin.php",
       "added": "2.1.0",
       "prefix": "bprc",
-      "purpose": "Card-panel admin. Registers the shared WB Plugins hub + CAPTCHA submenu (manage_options), renders 6 tabs via includes/admin/views/{shell,hub,overview,updates,discover}.php, and processes the settings save by delegating to WBC_BuddyPress_Settings_Page::wbc_save() — same nonce field/action/option keys as the legacy admin (UX-only migration)."
+      "purpose": "Card-panel admin. Registers the shared WB Plugins hub + CAPTCHA submenu (manage_options), renders 6 tabs via includes/admin/views/{layout,hub,overview,updates,discover}.php, and processes the settings save by delegating to WBC_BuddyPress_Settings_Page::wbc_save() — same nonce field/action/option keys as the legacy admin (UX-only migration)."
     },
     {
       "key": "legacy-settings-page",

@@ -20,7 +20,7 @@ The migration introduced `includes/admin/class-bprc-admin.php` (`BPRC_Admin`, pr
 - **`includes/admin/class-bprc-admin.php:318`** — `nonce-no-cap`. **False positive (layered defense).**
   `render_page()` is the callback of a menu page registered at lines 118-140 with `$cap = 'manage_options'`. WordPress enforces that capability *before* `render_page()` is ever invoked, so by the time the in-page nonce save at line 318 runs, `current_user_can('manage_options')` is already guaranteed true. The nonce here is the second layer (CSRF) on top of the menu cap gate (authZ). This is the **same pattern, same option keys, same nonce field/action** as the legacy admin save it replaced — the migration is UX-only and did not weaken authorization.
 
-**Conclusion for new admin code: 0 real high-severity findings.** The card-panel views (`shell.php`, `hub.php`, `overview.php`, `updates.php`) produce no high-sev findings (the `WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound` notices Plugin Check emits on them are themselves false positives — every variable IS `bprc_`-prefixed).
+**Conclusion for new admin code: 0 real high-severity findings.** The card-panel views (`layout.php`, `hub.php`, `overview.php`, `updates.php`) produce no high-sev findings (the `WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound` notices Plugin Check emits on them are themselves false positives — every variable IS `bprc_`-prefixed).
 
 ## High-severity findings (15) — all `nonce-no-cap`, all false positives / pre-existing
 

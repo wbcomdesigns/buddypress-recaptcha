@@ -17,7 +17,7 @@ msgstr ""
 #. Plugin Name of the plugin
 #: recaptcha-for-buddypress.php
 #: includes/admin/class-bprc-admin.php:142
-#: includes/admin/views/shell.php:28
+#: includes/admin/views/layout.php:28
 msgid "Wbcom CAPTCHA Manager"
 msgstr "Gerenciador CAPTCHA Wbcom"
 
@@ -1661,7 +1661,7 @@ msgid "Everything you need to set up, troubleshoot, and get the most out of the 
 msgstr "Tudo o que você precisa para configurar, solucionar problemas e aproveitar ao máximo o plugin."
 
 #: includes/admin/views/overview.php:117
-#: includes/admin/views/shell.php:90
+#: includes/admin/views/layout.php:90
 msgid "Documentation"
 msgstr "Documentação"
 
@@ -1694,48 +1694,48 @@ msgstr "Enviar Feedback"
 msgid "Share your experience and suggestions to help us make the plugin even better."
 msgstr "Compartilhe sua experiência e sugestões para nos ajudar a melhorar ainda mais o plugin."
 
-#: includes/admin/views/shell.php:29
+#: includes/admin/views/layout.php:29
 msgid "Protect WordPress, BuddyPress, WooCommerce, bbPress, and 10+ form builders from spam and bots with reCAPTCHA, Turnstile, hCaptcha, or ALTCHA."
 msgstr "Proteja WordPress, BuddyPress, WooCommerce, bbPress e mais de 10 construtores de formulários contra spam e bots com reCAPTCHA, Turnstile, hCaptcha ou ALTCHA."
 
-#: includes/admin/views/shell.php:57
+#: includes/admin/views/layout.php:57
 msgid "CAPTCHA Manager"
 msgstr "CAPTCHA Manager"
 
-#: includes/admin/views/shell.php:58
+#: includes/admin/views/layout.php:58
 msgid "Plugin"
 msgstr "Plugin"
 
-#: includes/admin/views/shell.php:61
+#: includes/admin/views/layout.php:61
 msgid "CAPTCHA Manager navigation"
 msgstr "Navegação do CAPTCHA Manager"
 
-#: includes/admin/views/shell.php:65
+#: includes/admin/views/layout.php:65
 msgid "Settings"
 msgstr "Configurações"
 
-#: includes/admin/views/shell.php:66
+#: includes/admin/views/layout.php:66
 msgid "Account"
 msgstr "Conta"
 
-#: includes/admin/views/shell.php:87
+#: includes/admin/views/layout.php:87
 msgid "Resources"
 msgstr "Recursos"
 
-#: includes/admin/views/shell.php:92
-#: includes/admin/views/shell.php:98
+#: includes/admin/views/layout.php:92
+#: includes/admin/views/layout.php:98
 msgid "(opens in a new tab)"
 msgstr "(abre em uma nova aba)"
 
-#: includes/admin/views/shell.php:96
+#: includes/admin/views/layout.php:96
 msgid "Support"
 msgstr "Suporte"
 
-#: includes/admin/views/shell.php:124
+#: includes/admin/views/layout.php:124
 msgid "Save Selection"
 msgstr "Salvar Seleção"
 
-#: includes/admin/views/shell.php:125
+#: includes/admin/views/layout.php:125
 msgid "Save Changes"
 msgstr "Salvar Alterações"
 
