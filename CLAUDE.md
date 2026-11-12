@@ -44,6 +44,7 @@
 - **After a failed AJAX submit call `window.wbcCaptcha.refresh( root )`** (`public/js/wbc-captcha-refresh.js`). Scope it to the failing form, never the document.
 - **Defaults.** A missing `wbc_recaptcha_enable_on_*` key means off at runtime, so every settings-module `default` is `no`. New-install protection lives only in the activator and applies only on a fresh install; reactivation and upgrades never change protection.
 - **Not live-tested:** Gravity Forms and MemberPress (no local licence). Divi is covered by external PR #4, which must be rebased on the v3 nonce change before merge.
+- **Testing Turnstile locally:** Cloudflare's test keys need no account (sitekey `3x00000000000000000000FF` forces the checkbox; secrets `1x…AA` pass, `2x…AA` fail, `3x…AA` = spent token). Allow `challenges.cloudflare.com` via `WP_ACCESSIBLE_HOSTS` if the site blocks outbound HTTP. The widget iframe sits in a closed shadow root: click it through Playwright's frame list, not page coordinates.
 
 ## Key entry points
 
