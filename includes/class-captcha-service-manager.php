@@ -183,7 +183,7 @@ class WBC_Captcha_Service_Manager {
 	/**
 	 * Get active service
 	 *
-	 * @return WBC_Captcha_Service_Interface
+	 * @return WBC_Captcha_Service_Interface|null
 	 */
 	public function get_active_service() {
 		return $this->active_service;
@@ -211,6 +211,10 @@ class WBC_Captcha_Service_Manager {
 	 * @param array  $args    Additional arguments.
 	 */
 	public function render( $context, $args = array() ) {
+		if ( self::is_disabled_by_constant() ) {
+			return;
+		}
+
 		try {
 			// Check IP restriction.
 			$recaptcha_system_ip = get_option( 'wbc_recaptcha_ip_to_skip_captcha' );
@@ -257,6 +261,7 @@ class WBC_Captcha_Service_Manager {
 			if ( method_exists( $service, 'enqueue_scripts' ) ) {
 				$service->enqueue_scripts( $context );
 			}
+			wp_enqueue_script( 'wbc-captcha-refresh' );
 
 			// Render.
 			$service->render( $context, $args );
@@ -270,6 +275,36 @@ class WBC_Captcha_Service_Manager {
 	}
 
 	/**
+	 * Recovery switch: `define( 'WBC_CAPTCHA_DISABLE', true );` in wp-config.php
+	 * turns every CAPTCHA off (nothing renders, nothing is checked) so an owner
+	 * locked out by a wrong key or a provider outage can always log in.
+	 *
+	 * @return bool
+	 */
+	public static function is_disabled_by_constant() {
+		return defined( 'WBC_CAPTCHA_DISABLE' ) && WBC_CAPTCHA_DISABLE;
+	}
+
+	/**
+	 * Contexts whose CAPTCHA passed during this request.
+	 *
+	 * @var array<string,bool>
+	 */
+	private $verified_contexts = array();
+
+	/**
+	 * Whether any CAPTCHA was solved and verified during this request.
+	 *
+	 * Tokens are single-use, so a second check of the same submission (one form
+	 * that triggers two verification hooks) must not ask the provider again.
+	 *
+	 * @return bool
+	 */
+	public function has_verified_this_request() {
+		return ! empty( $this->verified_contexts );
+	}
+
+	/**
 	 * Verify captcha response
 	 *
 	 * @param string $context  The context identifier.
@@ -278,17 +313,20 @@ class WBC_Captcha_Service_Manager {
 	 * @return bool
 	 */
 	public function verify( $context, $response = null, $args = array() ) {
+		if ( self::is_disabled_by_constant() ) {
+			return true;
+		}
+
 		$service = $this->get_active_service();
 		if ( ! $service || ! $service->is_configured() ) {
-			// Surface a persistent admin notice so a missing key never silently
-			// disables protection without anyone noticing.
+			// maybe_render_misconfiguration_notice() tells the admin on every
+			// admin screen while this stays true.
 			$this->log_error( 'Captcha service not configured during verify', $context );
-			set_transient( 'wbc_captcha_not_configured', 1, HOUR_IN_SECONDS );
 
 			// Optional fail-closed mode: block the request when configuration is
 			// missing. Off by default for backwards compatibility.
 			//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
-			if ( apply_filters( 'wbc_captcha_fail_closed', (bool) get_option( 'wbc_captcha_fail_closed', false ), $context ) ) {
+			if ( $this->fail_closed( $context ) ) {
 				return false;
 			}
 			return true; // Don't block if not configured (legacy behavior).
@@ -312,9 +350,13 @@ class WBC_Captcha_Service_Manager {
 		// Wrap in try-catch for error handling.
 		try {
 			$result = $service->verify( $response, $args );
+			$reason = $service instanceof WBC_Captcha_Service_Base ? $service->pull_failure_reason() : '';
 
 			if ( ! $result ) {
 				$this->log_info( 'Captcha verification failed for context: ' . $context );
+				$this->record_rejection( $context, $service->get_service_id(), $reason ? $reason : ( '' === (string) $response ? 'missing-token' : 'rejected' ) );
+			} else {
+				$this->verified_contexts[ $context ] = true;
 			}
 
 			return $result;
@@ -325,13 +367,44 @@ class WBC_Captcha_Service_Manager {
 			// Optional fail-closed mode: block on unexpected exceptions when the
 			// admin opts into stricter verification.
 			//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
-			if ( apply_filters( 'wbc_captcha_fail_closed', (bool) get_option( 'wbc_captcha_fail_closed', false ), $context ) ) {
+			if ( $this->fail_closed( $context ) ) {
 				return false;
 			}
 
 			// Default: don't block on exceptions (legacy behavior).
 			return true;
 		}
+	}
+
+	/**
+	 * Transient holding the most recent rejected submissions for the Overview tab.
+	 */
+	const REJECTIONS_TRANSIENT = 'wbc_captcha_rejections';
+
+	/**
+	 * Remember a rejected submission so the owner can see why visitors fail.
+	 *
+	 * Keeps the newest 20 for a week. Stores no token, secret or IP.
+	 * ponytail: read-modify-write, two rejections in the same instant can drop one entry; fine for a diagnostic list.
+	 *
+	 * @param string $context Form context.
+	 * @param string $service Service id.
+	 * @param string $reason  Short reason code(s).
+	 * @return void
+	 */
+	private function record_rejection( $context, $service, $reason ) {
+		$log = get_transient( self::REJECTIONS_TRANSIENT );
+		$log = is_array( $log ) ? $log : array();
+		array_unshift(
+			$log,
+			array(
+				'time'    => time(),
+				'context' => sanitize_key( $context ),
+				'service' => sanitize_key( $service ),
+				'reason'  => substr( (string) $reason, 0, 120 ),
+			)
+		);
+		set_transient( self::REJECTIONS_TRANSIENT, array_slice( $log, 0, 20 ), WEEK_IN_SECONDS );
 	}
 
 	/**
@@ -345,11 +418,46 @@ class WBC_Captcha_Service_Manager {
 			return;
 		}
 
-		if ( ! get_transient( 'wbc_captcha_not_configured' ) ) {
+		$settings_url = admin_url( 'admin.php?page=buddypress-recaptcha&tab=rfw-general' );
+
+		if ( self::is_disabled_by_constant() ) {
+			echo '<div class="notice notice-warning wbc-captcha-config-notice"><p>';
+			echo esc_html(
+				sprintf(
+					/* translators: %s: plugin name */
+					__( '%s is switched off by WBC_CAPTCHA_DISABLE in wp-config.php. No form is protected until it is removed.', 'buddypress-recaptcha' ),
+					'Wbcom CAPTCHA Manager'
+				)
+			);
+			echo '</p></div>';
 			return;
 		}
 
-		$settings_url = admin_url( 'admin.php?page=buddypress-recaptcha&tab=rfw-general' );
+		$key_error = get_transient( 'wbc_captcha_key_error' );
+		if ( is_array( $key_error ) && ! empty( $key_error['service'] ) ) {
+			echo '<div class="notice notice-warning wbc-captcha-config-notice"><p>';
+			echo wp_kses(
+				sprintf(
+					/* translators: 1: plugin name, 2: CAPTCHA provider name, 3: provider error codes, 4: opening anchor tag, 5: closing anchor tag */
+					__( '%1$s: %2$s rejected this site\'s keys (%3$s). So nobody gets locked out, CAPTCHA checks are being let through until this is fixed. %4$sCheck the keys in Quick Setup%5$s.', 'buddypress-recaptcha' ),
+					'Wbcom CAPTCHA Manager',
+					esc_html( $key_error['service'] ),
+					esc_html( implode( ', ', (array) $key_error['codes'] ) ),
+					'<a href="' . esc_url( $settings_url ) . '">',
+					'</a>'
+				),
+				array( 'a' => array( 'href' => array() ) )
+			);
+			echo '</p></div>';
+			return;
+		}
+
+		// Live check, not a cached flag: the notice disappears the moment keys are saved.
+		$service = $this->get_active_service();
+		if ( $service && $service->is_configured() ) {
+			return;
+		}
+
 		// Use `notice-warning` (not `notice-error`) so the message survives
 		// over-broad third-party admin CSS rules like
 		//   `#wpwrap .notice.notice-error { display:none }`
@@ -478,6 +586,19 @@ class WBC_Captcha_Service_Manager {
 	}
 
 	/**
+	 * Whether a provider outage should block the submission. The Advanced tab
+	 * saves "yes"/"no", so the stored value is parsed, never cast ((bool) "no"
+	 * is true).
+	 *
+	 * @param string $context Form context.
+	 * @return bool
+	 */
+	private function fail_closed( $context ) {
+		$stored = filter_var( get_option( 'wbc_captcha_fail_closed', false ), FILTER_VALIDATE_BOOLEAN );
+		return (bool) apply_filters( 'wbc_captcha_fail_closed', $stored, $context );
+	}
+
+	/**
 	 * Check if current user IP is whitelisted
 	 *
 	 * @return bool
@@ -498,11 +619,9 @@ class WBC_Captcha_Service_Manager {
 			return false;
 		}
 
-		$entries = array_map( 'trim', explode( ',', $ip_list ) );
+		// One entry per line or comma-separated; both forms are accepted.
+		$entries = preg_split( '/[\s,]+/', (string) $ip_list, -1, PREG_SPLIT_NO_EMPTY );
 		foreach ( $entries as $entry ) {
-			if ( '' === $entry ) {
-				continue;
-			}
 			if ( wb_recaptcha_ip_matches_entry( $user_ip, $entry ) ) {
 				return true;
 			}

@@ -459,245 +459,6 @@ if ( ! class_exists( 'WBC_BuddyPress_Settings_Page' ) ) :
 		}
 
 		/**
-		 * Generate grouped checkbox HTML for protection settings.
-		 *
-		 * @param array $checkboxes Array of checkbox configurations.
-		 * @return string HTML for grouped checkboxes.
-		 */
-		private function wbc_protection_checkbox_group( $checkboxes ) {
-			$html = '<div class="wbc-protection-group">';
-
-			foreach ( $checkboxes as $checkbox ) {
-				$value   = get_option( $checkbox['id'], $checkbox['default'] );
-				$checked = ( 'yes' === $value ) ? 'checked="checked"' : '';
-
-				$html .= '<div class="wbc-protection-item">';
-				$html .= '<label for="' . esc_attr( $checkbox['id'] ) . '" class="wbc-protection-label">';
-				$html .= '<span class="wbc-protection-title-wrapper">';
-				$html .= '<span class="wbc-protection-title">' . esc_html( $checkbox['label'] ) . '</span>';
-				$html .= '<span class="wbc-tooltip">';
-				$html .= '<span class="wbc-tooltip-icon">?</span>';
-				$html .= '<span class="wbc-tooltip-text">' . esc_html( $checkbox['desc'] ) . '</span>';
-				$html .= '</span>';
-				$html .= '</span>';
-				$html .= '<div class="wbc-toggle-wrapper">';
-				$html .= '<input type="checkbox" name="' . esc_attr( $checkbox['id'] ) . '" id="' . esc_attr( $checkbox['id'] ) . '" value="1" ' . $checked . ' class="wbc-toggle-input">';
-				$html .= '<span class="wbc-toggle-slider"></span>';
-				$html .= '</div>';
-				$html .= '</label>';
-				$html .= '</div>';
-			}
-
-			$html .= '</div>';
-			return $html;
-		}
-
-		/**
-		 * Get service-specific key fields
-		 *
-		 * @param string $service   Service identifier.
-		 * @param bool   $is_active Whether this is the active service.
-		 * @return array Field configuration array.
-		 */
-		private function wbc_service_key_fields( $service, $is_active ) {
-			$fields = array();
-
-			// Wrapper for each service's fields.
-			$wrapper_class  = 'wbc-service-keys wbc-service-keys-' . $service;
-			$wrapper_class .= $is_active ? ' wbc-active' : ' wbc-hidden';
-
-			switch ( $service ) {
-				case 'recaptcha-v2':
-					$fields[] = array(
-						'type'    => 'custom',
-						'id'      => 'wbc_recaptcha_v2_wrapper_start',
-						'default' => '<div class="' . esc_attr( $wrapper_class ) . '">',
-					);
-
-					$fields[] = array(
-						'name'        => __( 'Google reCAPTCHA v2 - Site Key', 'buddypress-recaptcha' ),
-						'type'        => 'text',
-						'id'          => 'wbc_recaptcha_v2_site_key',
-						'desc'        => sprintf(
-							/* translators: %s: link to Google reCAPTCHA admin */
-							__( 'Get your keys from %s', 'buddypress-recaptcha' ),
-							'<a href="https://www.google.com/recaptcha/admin" target="_blank">Google reCAPTCHA Admin</a>'
-						),
-						'placeholder' => __( 'Enter your site key', 'buddypress-recaptcha' ),
-					);
-
-					$fields[] = array(
-						'name'        => __( 'Google reCAPTCHA v2 - Secret Key', 'buddypress-recaptcha' ),
-						'type'        => 'password',
-						'id'          => 'wbc_recaptcha_v2_secret_key',
-						'desc'        => __( 'Your private secret key (keep this confidential)', 'buddypress-recaptcha' ),
-						'placeholder' => __( 'Enter your secret key', 'buddypress-recaptcha' ),
-					);
-
-					$fields[] = array(
-						'type'    => 'custom',
-						'id'      => 'wbc_recaptcha_v2_wrapper_end',
-						'default' => '</div>',
-					);
-					break;
-
-				case 'recaptcha-v3':
-					$fields[] = array(
-						'type'    => 'custom',
-						'id'      => 'wbc_recaptcha_v3_wrapper_start',
-						'default' => '<div class="' . esc_attr( $wrapper_class ) . '">',
-					);
-
-					$fields[] = array(
-						'name'        => __( 'Google reCAPTCHA v3 - Site Key', 'buddypress-recaptcha' ),
-						'type'        => 'text',
-						'id'          => 'wbc_recaptcha_v3_site_key',
-						'desc'        => sprintf(
-							/* translators: %s: link to Google reCAPTCHA admin */
-							__( 'Get your keys from %s', 'buddypress-recaptcha' ),
-							'<a href="https://www.google.com/recaptcha/admin" target="_blank">Google reCAPTCHA Admin</a>'
-						),
-						'placeholder' => __( 'Enter your v3 site key', 'buddypress-recaptcha' ),
-					);
-
-					$fields[] = array(
-						'name'        => __( 'Google reCAPTCHA v3 - Secret Key', 'buddypress-recaptcha' ),
-						'type'        => 'password',
-						'id'          => 'wbc_recaptcha_v3_secret_key',
-						'desc'        => __( 'Your private secret key (keep this confidential)', 'buddypress-recaptcha' ),
-						'placeholder' => __( 'Enter your v3 secret key', 'buddypress-recaptcha' ),
-					);
-
-					$fields[] = array(
-						'name'              => __( 'Score Threshold', 'buddypress-recaptcha' ),
-						'type'              => 'number',
-						'id'                => 'wbc_recaptcha_v3_score_threshold',
-						'desc'              => __( 'Minimum score (0.0 to 1.0) to pass verification. Default: 0.5', 'buddypress-recaptcha' ),
-						'default'           => '0.5',
-						'custom_attributes' => array(
-							'min'  => '0',
-							'max'  => '1',
-							'step' => '0.1',
-						),
-					);
-
-					$fields[] = array(
-						'type'    => 'custom',
-						'id'      => 'wbc_recaptcha_v3_wrapper_end',
-						'default' => '</div>',
-					);
-					break;
-
-				case 'turnstile':
-					$fields[] = array(
-						'type'    => 'custom',
-						'id'      => 'wbc_turnstile_wrapper_start',
-						'default' => '<div class="' . esc_attr( $wrapper_class ) . '">',
-					);
-
-					$fields[] = array(
-						'name'        => __( 'Cloudflare Turnstile - Site Key', 'buddypress-recaptcha' ),
-						'type'        => 'text',
-						'id'          => 'wbc_turnstile_site_key',
-						'desc'        => sprintf(
-							/* translators: %s: link to Cloudflare dashboard */
-							__( 'Get your keys from %s', 'buddypress-recaptcha' ),
-							'<a href="https://dash.cloudflare.com/?to=/:account/turnstile" target="_blank">Cloudflare Dashboard</a>'
-						),
-						'placeholder' => __( 'Enter your Turnstile site key', 'buddypress-recaptcha' ),
-					);
-
-					$fields[] = array(
-						'name'        => __( 'Cloudflare Turnstile - Secret Key', 'buddypress-recaptcha' ),
-						'type'        => 'password',
-						'id'          => 'wbc_turnstile_secret_key',
-						'desc'        => __( 'Your private secret key (keep this confidential)', 'buddypress-recaptcha' ),
-						'placeholder' => __( 'Enter your Turnstile secret key', 'buddypress-recaptcha' ),
-					);
-
-					$fields[] = array(
-						'type'    => 'custom',
-						'id'      => 'wbc_turnstile_wrapper_end',
-						'default' => '</div>',
-					);
-					break;
-
-				case 'hcaptcha':
-					$fields[] = array(
-						'type'    => 'custom',
-						'id'      => 'wbc_hcaptcha_wrapper_start',
-						'default' => '<div class="' . esc_attr( $wrapper_class ) . '">',
-					);
-
-					$fields[] = array(
-						'name'        => __( 'hCaptcha - Site Key', 'buddypress-recaptcha' ),
-						'type'        => 'text',
-						'id'          => 'wbc_hcaptcha_site_key',
-						'desc'        => sprintf(
-							/* translators: %s: link to hCaptcha dashboard */
-							__( 'Get your keys from %s', 'buddypress-recaptcha' ),
-							'<a href="https://dashboard.hcaptcha.com/sites" target="_blank">hCaptcha Dashboard</a>'
-						),
-						'placeholder' => __( 'Enter your hCaptcha site key', 'buddypress-recaptcha' ),
-					);
-
-					$fields[] = array(
-						'name'        => __( 'hCaptcha - Secret Key', 'buddypress-recaptcha' ),
-						'type'        => 'password',
-						'id'          => 'wbc_hcaptcha_secret_key',
-						'desc'        => __( 'Your private secret key (keep this confidential)', 'buddypress-recaptcha' ),
-						'placeholder' => __( 'Enter your hCaptcha secret key', 'buddypress-recaptcha' ),
-					);
-
-					$fields[] = array(
-						'type'    => 'custom',
-						'id'      => 'wbc_hcaptcha_wrapper_end',
-						'default' => '</div>',
-					);
-					break;
-
-				case 'altcha':
-					$fields[] = array(
-						'type'    => 'custom',
-						'id'      => 'wbc_altcha_wrapper_start',
-						'default' => '<div class="' . esc_attr( $wrapper_class ) . '">',
-					);
-
-					$fields[] = array(
-						'name'        => __( 'ALTCHA - HMAC Secret Key', 'buddypress-recaptcha' ),
-						'type'        => 'text',
-						'id'          => 'wbc_altcha_hmac_key',
-						'desc'        => __( 'Generate a random secret key for challenge signing. ALTCHA is self-hosted and requires HTTPS.', 'buddypress-recaptcha' ) .
-										' <button type="button" class="button button-secondary wbc-generate-altcha-key" style="margin-left: 10px;">' .
-										__( 'Generate Random Key', 'buddypress-recaptcha' ) . '</button>',
-						'placeholder' => __( 'Your HMAC secret key (32+ characters)', 'buddypress-recaptcha' ),
-					);
-
-					$fields[] = array(
-						'name'    => __( 'Complexity Level', 'buddypress-recaptcha' ),
-						'type'    => 'select',
-						'id'      => 'wbc_altcha_complexity',
-						'options' => array(
-							'50000'  => __( 'Easy (50,000)', 'buddypress-recaptcha' ),
-							'100000' => __( 'Medium (100,000)', 'buddypress-recaptcha' ),
-							'200000' => __( 'Hard (200,000)', 'buddypress-recaptcha' ),
-						),
-						'default' => '100000',
-						'desc'    => __( 'Higher numbers mean harder challenges', 'buddypress-recaptcha' ),
-					);
-
-					$fields[] = array(
-						'type'    => 'custom',
-						'id'      => 'wbc_altcha_wrapper_end',
-						'default' => '</div>',
-					);
-					break;
-			}
-
-			return $fields;
-		}
-
-		/**
 		 * Get Protection settings (all forms in one organized place)
 		 *
 		 * @return array
@@ -817,8 +578,22 @@ if ( ! class_exists( 'WBC_BuddyPress_Settings_Page' ) ) :
 				'name'        => __( 'IP Whitelist', 'buddypress-recaptcha' ),
 				'type'        => 'textarea',
 				'id'          => 'wbc_recaptcha_ip_to_skip_captcha',
-				'desc'        => __( 'IP addresses that skip captcha (comma-separated)', 'buddypress-recaptcha' ),
-				'placeholder' => '192.168.1.1, 10.0.0.1',
+				'desc'        => __( 'IP addresses or ranges that skip the CAPTCHA, one per line.', 'buddypress-recaptcha' ),
+				'placeholder' => "192.168.1.1\n10.0.0.0/24",
+			);
+
+			$settings[] = array(
+				'name' => __( 'Block when the provider is down', 'buddypress-recaptcha' ),
+				'type' => 'checkbox',
+				'id'   => 'wbc_captcha_fail_closed',
+				'desc' => __( 'If the CAPTCHA provider cannot be reached, reject the submission instead of letting it through. Leave off so a provider outage never locks out your members.', 'buddypress-recaptcha' ),
+			);
+
+			$settings[] = array(
+				'name' => __( 'No-conflict mode', 'buddypress-recaptcha' ),
+				'type' => 'checkbox',
+				'id'   => 'wbc_recapcha_no_conflict',
+				'desc' => __( 'Remove CAPTCHA scripts loaded by other plugins or the theme, so only this plugin\'s CAPTCHA runs. Turn on if the widget fails to show or shows twice.', 'buddypress-recaptcha' ),
 			);
 
 			/*
@@ -891,61 +666,6 @@ if ( ! class_exists( 'WBC_BuddyPress_Settings_Page' ) ) :
 		}
 
 		/**
-		 * Get current site key based on active service
-		 */
-		private function wbc_current_site_key() {
-			$service = get_option( 'wbc_captcha_service', 'recaptcha-v2' );
-			$key_map = array(
-				'recaptcha-v2' => 'wbc_recaptcha_v2_site_key',
-				'recaptcha-v3' => 'wbc_recaptcha_v3_site_key',
-				'turnstile'    => 'wbc_turnstile_site_key',
-				'hcaptcha'     => 'wbc_hcaptcha_site_key',
-			);
-			return isset( $key_map[ $service ] ) ? get_option( $key_map[ $service ] ) : '';
-		}
-
-		/**
-		 * Get current secret key based on active service
-		 */
-		private function wbc_current_secret_key() {
-			$service = get_option( 'wbc_captcha_service', 'recaptcha-v2' );
-			$key_map = array(
-				'recaptcha-v2' => 'wbc_recaptcha_v2_secret_key',
-				'recaptcha-v3' => 'wbc_recaptcha_v3_secret_key',
-				'turnstile'    => 'wbc_turnstile_secret_key',
-				'hcaptcha'     => 'wbc_hcaptcha_secret_key',
-				'altcha'       => 'wbc_altcha_hmac_key',
-			);
-			return isset( $key_map[ $service ] ) ? get_option( $key_map[ $service ] ) : '';
-		}
-
-		/**
-		 * Get service signup links HTML
-		 */
-		private function wbc_service_signup_links() {
-			$links = array(
-				'recaptcha-v2' => array( 'Google reCAPTCHA', 'https://www.google.com/recaptcha/admin' ),
-				'recaptcha-v3' => array( 'Google reCAPTCHA', 'https://www.google.com/recaptcha/admin' ),
-				'turnstile'    => array( 'Cloudflare Turnstile', 'https://dash.cloudflare.com/sign-up' ),
-				'hcaptcha'     => array( 'hCaptcha', 'https://www.hcaptcha.com/signup-interstitial' ),
-			);
-
-			$html  = '<div style="margin-top: 10px;">';
-			$html .= __( 'Get your API keys: ', 'buddypress-recaptcha' );
-			foreach ( $links as $service => $data ) {
-				$html .= sprintf(
-					'<a href="%s" target="_blank" style="margin: 0 5px;">%s</a> | ',
-					esc_url( $data[1] ),
-					esc_html( $data[0] )
-				);
-			}
-			$html  = rtrim( $html, ' | ' );
-			$html .= '</div>';
-
-			return $html;
-		}
-
-		/**
 		 * Render service selector with radio buttons
 		 *
 		 * @param string $active_service Currently active service.
@@ -976,6 +696,16 @@ if ( ! class_exists( 'WBC_BuddyPress_Settings_Page' ) ) :
 					'badge' => __( 'Privacy First', 'buddypress-recaptcha' ),
 				),
 			);
+
+			// Providers registered by other plugins (wbc_register_captcha_services).
+			foreach ( wbc_captcha_service_manager()->get_services() as $service_id => $service ) {
+				if ( ! isset( $services[ $service_id ] ) ) {
+					$services[ $service_id ] = array(
+						'name' => $service->get_service_name(),
+						'desc' => '',
+					);
+				}
+			}
 
 			$html = '<div class="wbc-service-selector">';
 
@@ -1156,67 +886,6 @@ if ( ! class_exists( 'WBC_BuddyPress_Settings_Page' ) ) :
 			}
 
 			return $services;
-		}
-
-		/**
-		 * Get sections
-		 *
-		 * @return array
-		 */
-		public function wbc_sections() {
-			$sections = array(
-				'' => __( 'Service Configuration', 'buddypress-recaptcha' ),
-			);
-
-			// Add plugin-specific integration sections.
-			$sections['wordpress'] = 'WordPress';
-
-			if ( class_exists( 'WooCommerce' ) ) {
-				$sections['woocommerce'] = 'WooCommerce';
-			}
-
-			if ( class_exists( 'BuddyPress' ) ) {
-				$sections['buddypress'] = 'BuddyPress';
-			}
-
-			if ( class_exists( 'bbPress' ) ) {
-				$sections['bbpress'] = 'bbPress';
-			}
-
-			// No 'appearance' section: appearance now lives on the Advanced tab, which
-			// renders theme/size for whichever provider is active. The standalone
-			// wbc_appearance_settings() screen it used to point at was unreachable and
-			// has been removed.
-			$sections['advanced'] = __( 'Advanced', 'buddypress-recaptcha' );
-			//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
-			return apply_filters( 'wbc_recaptcha_settings_sections', $sections ); 
-		}
-
-		/**
-		 * Output sections
-		 */
-		public function wbc_output_sections() {
-			global $current_section;
-
-			$sections = $this->wbc_sections();
-
-			if ( empty( $sections ) || 1 === count( $sections ) ) {
-				return;
-			}
-
-			echo '<ul class="subsubsub">';
-
-			$array_keys = array_keys( $sections );
-
-			foreach ( $sections as $id => $label ) {
-				echo '<li>';
-				echo '<a href="' . esc_url( admin_url( 'admin.php?page=wbc-recaptcha-page&tab=' . $this->id . '&section=' . sanitize_title( $id ) ) ) . '" 
-					class="' . ( $current_section === $id ? 'current' : '' ) . '">' . esc_html( $label ) . '</a>';
-				echo ( end( $array_keys ) === $id ? '' : ' | ' );
-				echo '</li>';
-			}
-
-			echo '</ul><br class="clear" />';
 		}
 
 		/**
@@ -1615,13 +1284,6 @@ if ( ! class_exists( 'WBC_BuddyPress_Settings_Page' ) ) :
 					'default' => 'no',
 				),
 
-				array(
-					'name'    => __( 'Order Tracking', 'buddypress-recaptcha' ),
-					'type'    => 'checkbox',
-					'id'      => 'wbc_recapcha_enable_on_order_tracking',
-					'desc'    => __( 'Protect order tracking from automated queries', 'buddypress-recaptcha' ),
-					'default' => 'no',
-				),
 
 				array(
 					'type' => 'sectionend',
@@ -1899,6 +1561,9 @@ if ( ! class_exists( 'WBC_BuddyPress_Settings_Page' ) ) :
 			foreach ( $field_ids as $field_id ) {
 				if ( isset( $_POST[ $field_id ] ) ) {
 					$value = sanitize_text_field( wp_unslash( $_POST[ $field_id ] ) );
+					if ( 'wbc_captcha_service' === $field_id && ! wbc_captcha_service_manager()->get_service( $value ) ) {
+						continue;
+					}
 					update_option( $field_id, $value );
 				}
 			}

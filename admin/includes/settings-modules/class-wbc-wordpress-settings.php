@@ -62,7 +62,7 @@ class WBC_WordPress_Settings extends WBC_Settings_Module_Abstract {
 					'id'      => 'wbc_recaptcha_enable_on_wpregister',
 					'label'   => __( 'Registration Form', 'buddypress-recaptcha' ),
 					'desc'    => __( 'Prevent spam user registrations', 'buddypress-recaptcha' ),
-					'default' => 'yes',
+					'default' => 'no',
 				),
 				array(
 					'id'      => 'wbc_recaptcha_enable_on_wplostpassword',
@@ -74,7 +74,7 @@ class WBC_WordPress_Settings extends WBC_Settings_Module_Abstract {
 					'id'      => 'wbc_recaptcha_enable_on_comment',
 					'label'   => __( 'Comment Form', 'buddypress-recaptcha' ),
 					'desc'    => __( 'Stop comment spam', 'buddypress-recaptcha' ),
-					'default' => 'yes',
+					'default' => 'no',
 				),
 				array(
 					'id'      => 'wbc_recaptcha_skip_comment_for_logged_in',
@@ -87,7 +87,7 @@ class WBC_WordPress_Settings extends WBC_Settings_Module_Abstract {
 					'id'      => 'wbc_recaptcha_enable_on_widget_login',
 					'label'   => __( 'AJAX Login Widget', 'buddypress-recaptcha' ),
 					'desc'    => __( 'Protect AJAX login widget from brute-force attacks', 'buddypress-recaptcha' ),
-					'default' => 'yes',
+					'default' => 'no',
 				),
 			)
 		);

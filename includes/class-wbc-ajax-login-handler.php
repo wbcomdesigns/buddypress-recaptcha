@@ -49,7 +49,8 @@ class WBC_AJAX_Login_Handler {
 		$username    = isset( $_POST['username'] ) ? sanitize_user( wp_unslash( $_POST['username'] ) ) : '';
 		$password    = isset( $_POST['password'] ) ? wp_unslash( $_POST['password'] ) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Password must not be sanitized.
 		$remember    = isset( $_POST['remember'] ) && 'yes' === sanitize_text_field( wp_unslash( $_POST['remember'] ) );
-		$redirect_to = isset( $_POST['redirect_to'] ) ? esc_url_raw( wp_unslash( $_POST['redirect_to'] ) ) : home_url();
+		// Only same-site (or allowed_redirect_hosts) targets; anything else goes home.
+		$redirect_to = isset( $_POST['redirect_to'] ) ? wp_validate_redirect( esc_url_raw( wp_unslash( $_POST['redirect_to'] ) ), home_url() ) : home_url();
 
 		// Validate required fields.
 		if ( empty( $username ) || empty( $password ) ) {

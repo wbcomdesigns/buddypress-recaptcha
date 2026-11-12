@@ -54,7 +54,7 @@ class WBC_ElementorPro_Settings extends WBC_Settings_Module_Abstract {
 					'id'      => 'wbc_recaptcha_enable_on_elementorpro',
 					'label'   => __( 'Elementor Pro Forms', 'buddypress-recaptcha' ),
 					'desc'    => __( 'Protect all Elementor Pro forms from spam submissions', 'buddypress-recaptcha' ),
-					'default' => 'yes',
+					'default' => 'no',
 				),
 			)
 		);

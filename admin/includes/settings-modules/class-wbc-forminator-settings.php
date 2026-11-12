@@ -54,7 +54,7 @@ class WBC_Forminator_Settings extends WBC_Settings_Module_Abstract {
 					'id'      => 'wbc_recaptcha_enable_on_forminator',
 					'label'   => __( 'Forminator Forms', 'buddypress-recaptcha' ),
 					'desc'    => __( 'Protect all Forminator forms from spam submissions', 'buddypress-recaptcha' ),
-					'default' => 'yes',
+					'default' => 'no',
 				),
 			)
 		);

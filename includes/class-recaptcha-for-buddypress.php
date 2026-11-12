@@ -297,10 +297,8 @@ class Recaptcha_For_BuddyPress {
 		$plugin_public = new Recaptcha_For_BuddyPress_Public( $this->get_plugin_name(), $this->get_version() );
 
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
-		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 
 		// Load style, js language.
-		add_action( 'plugins_loaded', array( $plugin_public, 'woo_load_lang_for_woo_recaptcha' ) );
 		add_action( 'wp_enqueue_scripts', array( $plugin_public, 'woo_recaptcha_load_styles_and_js' ), 9999 );
 		add_action( 'login_enqueue_scripts', array( $plugin_public, 'woo_recaptcha_load_styles_and_js' ), 9999 );
 
@@ -339,14 +337,12 @@ class Recaptcha_For_BuddyPress {
 
 		$is_wp_login_recaptcha_enabled = get_option( 'wbc_recaptcha_enable_on_wplogin' );
 		if ( 'yes' === $is_wp_login_recaptcha_enabled ) {
-			// Server-side CAPTCHA validation for WordPress core login (/wp-login.php).
-			// This MUST be registered independently of WooCommerce, because
-			// wp_authenticate_user fires for every authentication path (wp-login.php submit
-			// via button/Enter/direct POST, the WooCommerce login form, and any form built
-			// with wp_login_form() that posts to wp-login.php), so attaching it here also
-			// keeps the WooCommerce login path validated.
+			// Login gate: every `log`-field login (wp-login.php, wp_login_form(), theme
+			// pop-ups) plus XML-RPC password logins. Priority 99 runs after core's own
+			// lookup so a failed CAPTCHA replaces "unknown user" / "wrong password".
+			// Registered independently of WooCommerce. See the method for details.
 			$wp_login_filter = new Woocommerce_Filter();
-			add_filter( 'wp_authenticate_user', array( $wp_login_filter, 'woo_wp_verify_login_captcha' ), 10, 2 );
+			add_filter( 'authenticate', array( $wp_login_filter, 'woo_wp_verify_login_captcha' ), 99, 3 );
 
 			/*
 			 * Render side for that same validator.
@@ -363,9 +359,9 @@ class Recaptcha_For_BuddyPress {
 			 */
 			add_filter( 'login_form_middle', array( $login, 'filter_login_form_middle' ), 10, 1 );
 
-			add_action( 'bppcp_after_login_form', array( $registration, 'woo_extra_wp_register_form' ) );
+			add_action( 'bppcp_after_login_form', array( $login, 'woo_extra_wp_login_form' ) );
 			add_action( 'bppcp_after_register_form', array( $registration, 'woo_extra_wp_register_form' ) );
-			add_action( 'bp_lock_after_login_form', array( $registration, 'woo_extra_wp_register_form' ) );
+			add_action( 'bp_lock_after_login_form', array( $login, 'woo_extra_wp_login_form' ) );
 			add_action( 'bp_lock_after_register_form', array( $registration, 'woo_extra_wp_register_form' ) );
 		}
 
@@ -403,6 +399,7 @@ class Recaptcha_For_BuddyPress {
 		add_action( 'plugins_loaded', array( $this, 'register_ultimatemember_hooks' ), 20 );
 
 		// Register AJAX Login Widget and Block.
+		add_action( 'init', array( $this, 'register_shared_scripts' ) );
 		add_action( 'widgets_init', array( $this, 'register_login_widget' ) );
 		add_action( 'init', array( $this, 'register_login_block' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_login_widget_assets' ) );
@@ -426,12 +423,6 @@ class Recaptcha_For_BuddyPress {
 
 		// WooCommerce - register hooks after plugins are loaded.
 		add_action( 'plugins_loaded', array( $this, 'register_woocommerce_hooks' ), 20 );
-
-		// IE X-UA-Compatible meta tag. Registered unconditionally; the callback
-		// self-gates to IE internally, so no bootstrap user-agent sniff is needed
-		// (sniffing here would poison full-page caches with UA-specific hooks).
-		add_action( 'wp_head', array( $plugin_public, 'woo_recaptcha_add_header_metadata_for_ie' ) );
-		add_action( 'login_head', array( $plugin_public, 'woo_recaptcha_add_header_metadata_for_ie' ) );
 
 		// Defer reCAPTCHA / Turnstile API scripts for ALL browsers. The script is
 		// render-blocking otherwise, hurting LCP/FCP and Core Web Vitals.
@@ -500,6 +491,7 @@ class Recaptcha_For_BuddyPress {
 		// Member registration hooks.
 		add_action( 'bp_before_registration_submit_buttons', array( $registration_bp, 'woo_extra_bp_register_form' ), 36 );
 		add_action( 'bp_signup_validate', array( $registration_bp, 'innovage_validate_user_registration' ) );
+		add_filter( 'bp_rest_signup_create_item_permissions_check', array( $registration_bp, 'validate_rest_signup_captcha' ), 10, 2 );
 
 		// Group creation hooks.
 		add_action( 'bp_after_group_details_creation_step', array( $registration_bp, 'render_bp_group_create_captcha' ), 10 );
@@ -525,7 +517,7 @@ class Recaptcha_For_BuddyPress {
 		add_filter( 'wpcf7_form_elements', array( $cf7_form, 'render_cf7_captcha' ), 10, 1 );
 
 		// Validate CAPTCHA on CF7 form submission.
-		add_filter( 'wpcf7_validate', array( $cf7_form, 'validate_cf7_captcha' ), 20, 2 );
+		add_filter( 'wpcf7_spam', array( $cf7_form, 'validate_cf7_captcha' ), 10, 2 );
 	}
 
 	/**
@@ -581,6 +573,14 @@ class Recaptcha_For_BuddyPress {
 		add_action( 'woocommerce_register_post', array( $woocommerce_register_post, 'woocomm_validate_signup_captcha' ), 10, 3 );
 		add_action( 'woocommerce_process_login_errors', array( $woocommerce_process_login_errors, 'woocomm_validate_login_captcha' ), 10, 3 );
 		add_action( 'woocommerce_after_checkout_validation', array( $woocommerce_after_checkout_validation, 'woocomm_validate_checkout_captcha' ), 10, 2 );
+		// Block checkout places orders through the Store API instead.
+		// woocommerce_blocks_loaded has normally fired by now (we run at plugins_loaded:20).
+		if ( did_action( 'woocommerce_blocks_loaded' ) ) {
+			$woocommerce_after_checkout_validation->register_store_api_data();
+		} else {
+			add_action( 'woocommerce_blocks_loaded', array( $woocommerce_after_checkout_validation, 'register_store_api_data' ) );
+		}
+		add_action( 'woocommerce_store_api_checkout_update_order_from_request', array( $woocommerce_after_checkout_validation, 'validate_store_api_checkout' ), 10, 2 );
 
 		// Note: the WP core login validator (wp_authenticate_user), the comment form
 		// CAPTCHA (display + verify), and the lost-password validator (lostpassword_post)
@@ -590,9 +590,6 @@ class Recaptcha_For_BuddyPress {
 		// on the second check.
 		$woocommerce_order = new Woocommerce_Order();
 
-		// WooCommerce Order hooks.
-		add_action( 'woocommerce_pay_order_before_submit', array( $woocommerce_order, 'woo_extra_checkout_fields_pay_order' ) );
-		add_action( 'woocommerce_before_pay_action', array( $woocommerce_order, 'woo_validate_pay_order_captcha' ) );
 		// Priority 999 ensures reCAPTCHA is added to checkout blocks last.
 		add_filter( 'render_block_woocommerce/checkout-payment-block', array( $woocommerce_order, 'woo_recaptcha_alter_checkout_payment_block' ), 999, 1 );
 		// Add CAPTCHA to WooCommerce product review forms.
@@ -637,7 +634,7 @@ class Recaptcha_For_BuddyPress {
 		$ninjaforms_form = new NinjaForms_Form();
 
 		// Render CAPTCHA in Ninja Forms (priority 999 to appear at the end).
-		add_action( 'ninja_forms_display_after_fields', array( $ninjaforms_form, 'render_ninjaforms_captcha' ), 999 );
+		add_filter( 'ninja_forms_display_after_fields', array( $ninjaforms_form, 'render_ninjaforms_captcha' ), 999, 2 );
 
 		// Validate CAPTCHA on Ninja Forms form submission.
 		add_filter( 'ninja_forms_submit_data', array( $ninjaforms_form, 'validate_ninjaforms_captcha' ), 10, 1 );
@@ -681,7 +678,7 @@ class Recaptcha_For_BuddyPress {
 		$elementorpro_form = new ElementorPro_Form();
 
 		// Render CAPTCHA in Elementor Pro forms (priority 10).
-		add_action( 'elementor_pro/forms/render/item', array( $elementorpro_form, 'render_elementorpro_captcha' ), 10, 3 );
+		add_filter( 'elementor/widget/render_content', array( $elementorpro_form, 'render_elementorpro_captcha' ), 10, 2 );
 
 		// Validate CAPTCHA on Elementor Pro form submission.
 		add_action( 'elementor_pro/forms/validation', array( $elementorpro_form, 'validate_elementorpro_captcha' ), 10, 2 );
@@ -727,11 +724,12 @@ class Recaptcha_For_BuddyPress {
 		// Render CAPTCHA in EDD forms.
 		add_action( 'edd_purchase_form_before_submit', array( $edd_form, 'render_edd_checkout_captcha' ), 10 );
 		add_action( 'edd_login_fields_after', array( $edd_form, 'render_edd_login_captcha' ), 10 );
-		add_action( 'edd_register_fields_after', array( $edd_form, 'render_edd_register_captcha' ), 10 );
+		// Standalone [edd_register] form. Registration inside checkout is covered by the checkout CAPTCHA.
+		add_action( 'edd_register_form_fields_before_submit', array( $edd_form, 'render_edd_register_captcha' ), 10 );
 
 		// Validate CAPTCHA on EDD form submissions.
 		add_action( 'edd_checkout_error_checks', array( $edd_form, 'validate_edd_checkout_captcha' ), 10, 2 );
-		add_action( 'edd_process_login_form', array( $edd_form, 'validate_edd_login_captcha' ), 10, 1 );
+		add_action( 'edd_user_login', array( $edd_form, 'validate_edd_login_captcha' ), 9, 1 );
 		add_action( 'edd_process_register_form', array( $edd_form, 'validate_edd_register_captcha' ), 10, 1 );
 	}
 
@@ -752,7 +750,8 @@ class Recaptcha_For_BuddyPress {
 
 		// Render CAPTCHA in MemberPress forms.
 		add_action( 'mepr-login-form-before-submit', array( $memberpress_form, 'render_memberpress_login_captcha' ), 10 );
-		add_action( 'mepr-signup-form-before-submit', array( $memberpress_form, 'render_memberpress_register_captcha' ), 10 );
+		// MemberPress's signup (checkout) form fires mepr-checkout-before-submit.
+		add_action( 'mepr-checkout-before-submit', array( $memberpress_form, 'render_memberpress_register_captcha' ), 10 );
 
 		// Validate CAPTCHA on MemberPress form submissions.
 		add_filter( 'mepr-validate-login', array( $memberpress_form, 'validate_memberpress_login_captcha' ), 10, 1 );
@@ -775,14 +774,11 @@ class Recaptcha_For_BuddyPress {
 		$um_form = new UltimateMember_Form();
 
 		// Render CAPTCHA in Ultimate Member forms (before submit button).
-		add_action( 'um_after_form_fields', array( $um_form, 'render_um_login_captcha' ), 10, 1 );
-		add_action( 'um_after_form_fields', array( $um_form, 'render_um_register_captcha' ), 10, 1 );
-		add_action( 'um_after_form_fields', array( $um_form, 'render_um_password_captcha' ), 10, 1 );
+		add_action( 'um_after_form_fields', array( $um_form, 'render_um_captcha' ), 10, 1 );
 
 		// Validate CAPTCHA on Ultimate Member form submissions.
-		add_action( 'um_submit_form_errors_hook', array( $um_form, 'validate_um_login_captcha' ), 10, 1 );
-		add_action( 'um_submit_form_errors_hook', array( $um_form, 'validate_um_register_captcha' ), 10, 1 );
-		add_action( 'um_submit_form_errors_hook', array( $um_form, 'validate_um_password_captcha' ), 10, 1 );
+		add_action( 'um_submit_form_errors_hook', array( $um_form, 'validate_um_captcha' ), 10, 2 );
+		add_action( 'um_reset_password_errors_hook', array( $um_form, 'validate_um_captcha' ), 10, 2 );
 	}
 
 	/**
@@ -805,6 +801,31 @@ class Recaptcha_For_BuddyPress {
 	}
 
 	/**
+	 * Register the script every CAPTCHA widget relies on to reset or re-render
+	 * itself after an AJAX submit or a form refresh. Enqueued by the service
+	 * manager whenever a widget renders.
+	 *
+	 * @since 2.2.3
+	 */
+	public function register_shared_scripts() {
+		wp_register_script(
+			'wbc-captcha-refresh',
+			plugin_dir_url( __DIR__ ) . 'public/js/wbc-captcha-refresh.js',
+			array(),
+			$this->version,
+			true
+		);
+		// Block checkout: sends the token with the Store API order request.
+		wp_register_script(
+			'wbc-checkout-block',
+			plugin_dir_url( __DIR__ ) . 'public/js/wbc-checkout-block.js',
+			array( 'wp-data', 'wbc-captcha-refresh' ),
+			$this->version,
+			true
+		);
+	}
+
+	/**
 	 * Enqueue login widget assets
 	 *
 	 * @since     2.0.0
@@ -823,25 +844,18 @@ class Recaptcha_For_BuddyPress {
 		wp_enqueue_script(
 			'wbc-ajax-login',
 			plugin_dir_url( __DIR__ ) . 'public/js/wbc-ajax-login.js',
-			array( 'jquery' ),
+			array( 'jquery', 'wbc-captcha-refresh' ),
 			$this->version,
 			true
 		);
-
-		// Get current CAPTCHA service. Must read the same option key the service
-		// manager writes ('wbc_captcha_service'), and the same service-id format it
-		// stores (e.g. 'recaptcha-v2'), so the JS can reset the correct widget after
-		// a failed AJAX login.
-		$service_id = get_option( 'wbc_captcha_service', 'recaptcha-v2' );
 
 		// Localize script.
 		wp_localize_script(
 			'wbc-ajax-login',
 			'wbcAjaxLogin',
 			array(
-				'ajaxurl'       => admin_url( 'admin-ajax.php' ),
-				'recaptchaType' => $service_id,
-				'errorMessage'  => __( 'An error occurred. Please try again.', 'buddypress-recaptcha' ),
+				'ajaxurl'      => admin_url( 'admin-ajax.php' ),
+				'errorMessage' => __( 'An error occurred. Please try again.', 'buddypress-recaptcha' ),
 			)
 		);
 	}

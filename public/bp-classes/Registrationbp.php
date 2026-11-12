@@ -27,6 +27,10 @@ class Registrationbp {
 	public function woo_extra_bp_register_form() {
 		// Use the service manager to render captcha.
 		if ( function_exists( 'wbc_captcha_service_manager' ) ) {
+			// BuddyPress prints each signup error through a `bp_{field}_errors` action
+			// it registers itself; fire ours so a rejected CAPTCHA says why instead of
+			// silently reloading the form.
+			do_action( 'bp_bp_register_captcha_errors' ); //phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 			wbc_captcha_service_manager()->render( 'bp_register' );
 			do_action( 'bp_accept_tos_errors' ); //phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 		}
@@ -47,6 +51,34 @@ class Registrationbp {
 			}
 		}
 		return true;
+	}
+
+	/**
+	 * Hold the BuddyPress REST signup endpoint to "Member Registration" protection.
+	 *
+	 * POST /buddypress/v1/signup is public and never runs bp_signup_validate, so it
+	 * created accounts with no CAPTCHA at all. Clients must send the provider's
+	 * token in the request under the provider's usual field name
+	 * (g-recaptcha-response, h-captcha-response, cf-turnstile-response, altcha).
+	 *
+	 * @param bool|WP_Error   $retval  Permission result so far.
+	 * @param WP_REST_Request $request Request.
+	 * @return true|WP_Error
+	 */
+	public function validate_rest_signup_captcha( $retval, $request ) {
+		if ( is_wp_error( $retval ) || ! $retval || ! function_exists( 'wbc_captcha_service_manager' ) ) {
+			return $retval;
+		}
+
+		$manager = wbc_captcha_service_manager();
+		$service = $manager->get_active_service();
+		$token   = $service ? (string) $request->get_param( $service->get_response_field_name() ) : '';
+
+		if ( ! $manager->verify( 'bp_register', sanitize_text_field( $token ) ) ) {
+			return new WP_Error( 'wbc_captcha_invalid', wbc_get_captcha_error_message( 'bp_register', 'invalid' ), array( 'status' => 403 ) );
+		}
+
+		return $retval;
 	}
 
 	/**

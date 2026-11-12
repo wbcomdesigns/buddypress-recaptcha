@@ -153,9 +153,6 @@ class WBC_Turnstile_Service extends WBC_Captcha_Service_Base {
 			return true; // If not configured, don't block.
 		}
 
-		// Verify nonce. Strict mode (opt-in) requires the nonce to be present;
-		// advisory mode (default) only validates when it is supplied — see
-		// `wbc_captcha_strict_nonce` option / filter.
 		$context = isset( $args['context'] ) ? $args['context'] : '';
 
 		// Skip only when render() would also have been skipped (IP allowlist / filter).
@@ -163,19 +160,8 @@ class WBC_Turnstile_Service extends WBC_Captcha_Service_Base {
 			return true;
 		}
 
-		if ( ! empty( $context ) ) {
-			$nonce_action = $this->get_nonce_action( $context );
-			//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
-			$strict_nonce = (bool) apply_filters( 'wbc_captcha_strict_nonce', (bool) get_option( 'wbc_captcha_strict_nonce', false ), $context, $this->get_service_id() );
-			if ( $strict_nonce ) {
-				if ( ! isset( $_POST[ $nonce_action ] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST[ $nonce_action ] ) ), $nonce_action ) ) {
-					return false;
-				}
-			} elseif ( isset( $_POST[ $nonce_action ] ) ) {
-				if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST[ $nonce_action ] ) ), $nonce_action ) ) {
-					return false;
-				}
-			}
+		if ( ! $this->nonce_check_passes( $context ) ) {
+			return false;
 		}
 
 		if ( empty( $response ) ) {

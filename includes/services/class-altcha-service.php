@@ -8,33 +8,6 @@
 
 defined( 'ABSPATH' ) || exit;
 
-// phpcs:disable Universal.Files.SeparateFunctionsFromOO.Mixed -- Helper function must be defined alongside service class.
-// Load ALTCHA verification library if standalone altcha-spam-protection plugin not active.
-if ( ! class_exists( 'AltchaPlugin' ) && ( ! function_exists( 'is_plugin_active' ) || ! is_plugin_active( 'altcha-spam-protection/altcha.php' ) ) ) {
-	/*
-	 * Load the bundled ALTCHA library.
-	 *
-	 * This was never required, so AltchaPlugin did not exist and the library's
-	 * `rest_api_init` callback never ran - which meant /altcha/v1/challenge 404'd and
-	 * the ALTCHA provider could not issue a proof-of-work challenge to its widget.
-	 * The library defines the class, self-instantiates, and registers the route.
-	 */
-	require_once plugin_dir_path( __DIR__ ) . 'lib/altcha/class-altcha-lib.php';
-
-	// Define a minimal wrapper for ALTCHA verification.
-	if ( ! function_exists( 'altcha_random_secret' ) ) {
-		/**
-		 * Generate a random secret for ALTCHA.
-		 *
-		 * @param int $length The length of the secret.
-		 * @return string The generated secret.
-		 */
-		function altcha_random_secret( $length = 64 ) {
-			return bin2hex( random_bytes( $length / 2 ) );
-		}
-	}
-}
-
 /**
  * ALTCHA implementation - Privacy-first, self-hosted proof-of-work captcha
  *
@@ -53,6 +26,48 @@ class WBC_Altcha_Service extends WBC_Captcha_Service_Base {
 			'verify_endpoint' => '', // Server-side verification handled differently.
 			'response_field'  => 'altcha',
 		);
+		add_action( 'rest_api_init', array( $this, 'register_challenge_route' ) );
+	}
+
+	/**
+	 * REST namespace and route the widget loads a fresh challenge from.
+	 */
+	const REST_NAMESPACE = 'wbc-captcha/v1';
+	const REST_ROUTE     = '/altcha-challenge';
+
+	/**
+	 * Serve challenges over REST instead of embedding one in the page.
+	 *
+	 * Each solution is single-use, so an embedded challenge breaks twice: a
+	 * retry after a failed AJAX submit re-solves the same challenge (rejected as
+	 * a replay), and a page cache hands one challenge to every visitor. The
+	 * widget fetches a new one each time it starts verifying.
+	 */
+	public function register_challenge_route() {
+		register_rest_route(
+			self::REST_NAMESPACE,
+			self::REST_ROUTE,
+			array(
+				'methods'             => WP_REST_Server::READABLE,
+				'callback'            => array( $this, 'rest_challenge' ),
+				'permission_callback' => '__return_true', // Public: visitors solve it before they log in.
+			)
+		);
+	}
+
+	/**
+	 * REST callback: one fresh signed challenge, never cached.
+	 *
+	 * @return WP_REST_Response|WP_Error
+	 */
+	public function rest_challenge() {
+		$challenge = $this->generate_challenge();
+		if ( ! $challenge ) {
+			return new WP_Error( 'wbc_altcha_not_configured', __( 'ALTCHA is not configured.', 'buddypress-recaptcha' ), array( 'status' => 503 ) );
+		}
+		$response = new WP_REST_Response( $challenge );
+		$response->header( 'Cache-Control', 'no-store, max-age=0' );
+		return $response;
 	}
 
 	/**
@@ -77,16 +92,26 @@ class WBC_Altcha_Service extends WBC_Captcha_Service_Base {
 	}
 
 	/**
-	 * Get the site key (HMAC key for ALTCHA)
+	 * ALTCHA has no public site key: its only key is the HMAC secret, which must
+	 * never reach the browser. Returning it here once printed it on every page.
 	 *
-	 * @return string
+	 * @return string Always empty.
 	 */
 	public function get_site_key() {
-		return trim( get_option( 'wbc_altcha_hmac_key', '' ) );
+		return '';
 	}
 
 	/**
-	 * Get the secret key (same as HMAC key for ALTCHA)
+	 * ALTCHA is configured when its HMAC secret is set.
+	 *
+	 * @return bool
+	 */
+	public function is_configured() {
+		return '' !== $this->get_secret_key();
+	}
+
+	/**
+	 * Get the HMAC secret used to sign and verify challenges (server side only)
 	 *
 	 * @return string
 	 */
@@ -120,7 +145,7 @@ class WBC_Altcha_Service extends WBC_Captcha_Service_Base {
 	 * @return void
 	 */
 	public function enqueue_scripts( $context = 'default' ) {
-		$hmac_key = $this->get_site_key();
+		$hmac_key = $this->get_secret_key();
 		if ( empty( $hmac_key ) ) {
 			return;
 		}
@@ -155,7 +180,55 @@ class WBC_Altcha_Service extends WBC_Captcha_Service_Base {
 	}
 
 	/**
-	 * Generate ALTCHA challenge
+	 * Default and bounds for the challenge difficulty (the largest number the
+	 * visitor's browser may have to try). The admin picks it as "Complexity Level".
+	 */
+	const DEFAULT_MAX_NUMBER = 100000;
+	const MIN_MAX_NUMBER     = 1000;
+	const MAX_MAX_NUMBER     = 1000000;
+
+	/**
+	 * How long a challenge stays solvable, in seconds. Every challenge expires,
+	 * so a solved token can never be used later than this.
+	 */
+	const DEFAULT_EXPIRES = 3600;
+	const MAX_EXPIRES     = DAY_IN_SECONDS;
+
+	/**
+	 * Challenge difficulty: the saved "Complexity Level", else the pre-2.2.3 key.
+	 *
+	 * @return int
+	 */
+	private function get_max_number() {
+		$value = get_option( 'wbc_altcha_complexity', '' );
+		if ( '' === $value || false === $value ) {
+			$value = get_option( 'wbc_altcha_max_number', self::DEFAULT_MAX_NUMBER );
+		}
+		$value = absint( $value );
+		if ( ! $value ) {
+			$value = self::DEFAULT_MAX_NUMBER;
+		}
+		return min( max( $value, self::MIN_MAX_NUMBER ), self::MAX_MAX_NUMBER );
+	}
+
+	/**
+	 * Challenge lifetime in seconds, always greater than zero.
+	 *
+	 * @return int
+	 */
+	private function get_expires() {
+		$value = absint( get_option( 'wbc_altcha_expires', self::DEFAULT_EXPIRES ) );
+		if ( ! $value ) {
+			$value = self::DEFAULT_EXPIRES;
+		}
+		return min( $value, self::MAX_EXPIRES );
+	}
+
+	/**
+	 * Generate an ALTCHA proof-of-work challenge signed with the site's HMAC key.
+	 *
+	 * The key never leaves the server: the browser gets only the challenge and
+	 * its signature.
 	 *
 	 * @return array|false Challenge data or false on failure
 	 */
@@ -165,84 +238,40 @@ class WBC_Altcha_Service extends WBC_Captcha_Service_Base {
 			return false;
 		}
 
-		// Use ALTCHA plugin if available.
-		if ( class_exists( 'AltchaPlugin' ) && isset( AltchaPlugin::$instance ) ) {
-			$complexity = intval( get_option( 'wbc_altcha_max_number', 100000 ) );
-			$expires    = intval( get_option( 'wbc_altcha_expires', 3600 ) );
-			return AltchaPlugin::$instance->generate_challenge( $hmac_key, $complexity, $expires );
-		}
-
-		// Self-hosted generation.
-		$salt       = bin2hex( random_bytes( 16 ) );
-		$max_number = intval( get_option( 'wbc_altcha_max_number', 100000 ) );
-		$expires    = intval( get_option( 'wbc_altcha_expires', 3600 ) );
-
-		// Add expiration to salt.
-		if ( $expires > 0 ) {
-			$salt = $salt . '?expires=' . ( time() + $expires );
-		}
-
-		// Generate random number.
-		$number    = wp_rand( 1, $max_number );
-		$challenge = hash( 'sha256', $salt . $number );
-		$signature = hash_hmac( 'sha256', $challenge, $hmac_key );
+		$max_number = $this->get_max_number();
+		$salt       = bin2hex( random_bytes( 12 ) ) . '?expires=' . ( time() + $this->get_expires() );
+		$number     = wp_rand( 1, $max_number );
+		$challenge  = hash( 'sha256', $salt . $number );
 
 		return array(
 			'algorithm' => 'SHA-256',
 			'challenge' => $challenge,
 			'maxnumber' => $max_number,
 			'salt'      => $salt,
-			'signature' => $signature,
+			'signature' => hash_hmac( 'sha256', $challenge, $hmac_key ),
 		);
 	}
 
 	/**
-	 * Check if HTTPS is required and available
+	 * Whether the visitor's browser can run ALTCHA.
+	 *
+	 * The widget needs the Web Crypto API, which browsers expose only in a secure
+	 * context: HTTPS, or a loopback host (localhost, 127.0.0.1, ::1, *.localhost).
+	 * A plain-HTTP .local / .test / staging host is NOT secure to the browser,
+	 * whatever WP_ENVIRONMENT_TYPE says, so the widget could never be solved there.
 	 *
 	 * @return bool
 	 */
 	private function is_secure_context() {
-		// Check if HTTPS is enabled.
 		if ( is_ssl() ) {
 			return true;
 		}
 
-		// Allow local development environments.
-		if ( defined( 'WP_ENVIRONMENT_TYPE' ) && 'local' === WP_ENVIRONMENT_TYPE ) {
-			return true;
-		}
+		$host = isset( $_SERVER['HTTP_HOST'] ) ? strtolower( sanitize_text_field( wp_unslash( $_SERVER['HTTP_HOST'] ) ) ) : '';
+		$host = preg_replace( '/:\d+$/', '', trim( $host, '[]' ) );
+		$host = trim( $host, '[]' );
 
-		// Allow localhost and 127.0.0.1.
-		$host = filter_input( INPUT_SERVER, 'HTTP_HOST', FILTER_SANITIZE_SPECIAL_CHARS );
-		if ( empty( $host ) ) {
-			return false;
-		}
-
-		if ( in_array( $host, array( 'localhost', '127.0.0.1', '::1' ), true ) ) {
-			return true;
-		}
-
-		// Allow .local domains (common in local dev).
-		if ( preg_match( '/\.local$/i', $host ) ) {
-			return true;
-		}
-
-		// Allow .test domains (Laravel Valet, etc.).
-		if ( preg_match( '/\.test$/i', $host ) ) {
-			return true;
-		}
-
-		// Allow .dev domains (though deprecated, some still use it).
-		if ( preg_match( '/\.dev$/i', $host ) ) {
-			return true;
-		}
-
-		// Check for WP_DEBUG mode as an override (optional, can be removed if too permissive).
-		if ( defined( 'WP_DEBUG' ) && WP_DEBUG && defined( 'WP_LOCAL_DEV' ) && WP_LOCAL_DEV ) {
-			return true;
-		}
-
-		return false;
+		return in_array( $host, array( 'localhost', '127.0.0.1', '::1' ), true ) || (bool) preg_match( '/\.localhost$/', $host );
 	}
 
 	/**
@@ -253,7 +282,7 @@ class WBC_Altcha_Service extends WBC_Captcha_Service_Base {
 	 * @return void
 	 */
 	public function render( $context, $args = array() ) {
-		$hmac_key = $this->get_site_key();
+		$hmac_key = $this->get_secret_key();
 		if ( empty( $hmac_key ) ) {
 			return;
 		}
@@ -275,11 +304,6 @@ class WBC_Altcha_Service extends WBC_Captcha_Service_Base {
 			return;
 		}
 
-		// Generate challenge.
-		$challenge = $this->generate_challenge();
-		if ( ! $challenge ) {
-			return;
-		}
 
 		// Get settings.
 		$auto_verify = get_option( 'wbc_altcha_auto_verify', 'off' );
@@ -297,7 +321,7 @@ class WBC_Altcha_Service extends WBC_Captcha_Service_Base {
 		<div class="wbc_captcha_field wbc_altcha_field input">
 			<altcha-widget
 				id="<?php echo esc_attr( $widget_id ); ?>"
-				challengejson='<?php echo wp_json_encode( $challenge ); ?>'
+				challengeurl="<?php echo esc_url( rest_url( self::REST_NAMESPACE . self::REST_ROUTE ) ); ?>"
 				<?php if ( 'off' !== $auto_verify ) : ?>
 				auto="<?php echo esc_attr( $auto_verify ); ?>"
 				<?php endif; ?>
@@ -331,86 +355,81 @@ class WBC_Altcha_Service extends WBC_Captcha_Service_Base {
 			return false; // ALTCHA requires HMAC key.
 		}
 
-		// Verify nonce if present.
-		$context = isset( $args['context'] ) ? $args['context'] : '';
-		if ( ! empty( $context ) ) {
-			$nonce_action = $this->get_nonce_action( $context );
-			if ( isset( $_POST[ $nonce_action ] ) ) {
-				if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST[ $nonce_action ] ) ), $nonce_action ) ) {
-					return false;
-				}
-			}
+		if ( ! $this->nonce_check_passes( isset( $args['context'] ) ? $args['context'] : '' ) ) {
+			return false;
 		}
 
 		if ( empty( $response ) ) {
 			return false;
 		}
 
-		// Use ALTCHA plugin if available.
-		if ( class_exists( 'AltchaPlugin' ) && isset( AltchaPlugin::$instance ) ) {
-			$verified = AltchaPlugin::$instance->verify( $response, $hmac_key );
-		} else {
-			// Self-hosted verification.
-			$verified = $this->verify_solution( $response, $hmac_key );
-		}
+		$verified = $this->verify_solution( $response, $hmac_key );
 		//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 		return apply_filters( 'wbc_captcha_verified', $verified, array(), $response, $this->get_service_id() );
 	}
 
 	/**
-	 * Verify solution manually (fallback if ALTCHA plugin not available)
+	 * Verify an ALTCHA solution payload.
+	 *
+	 * Accepts a payload only when it was signed with this site's key, solves its
+	 * challenge, has not expired, and has not been used before. Anything
+	 * malformed is rejected without touching undefined properties.
 	 *
 	 * @param string $payload  Base64 encoded payload.
 	 * @param string $hmac_key HMAC key.
 	 * @return bool
 	 */
 	private function verify_solution( $payload, $hmac_key ) {
-		// Validate base64 encoding.
-		if ( ! preg_match( '/^[A-Za-z0-9+\/=]+$/', $payload ) ) {
+		if ( ! is_string( $payload ) || strlen( $payload ) > 2048 || ! preg_match( '/^[A-Za-z0-9+\/=]+$/', $payload ) ) {
 			return false;
 		}
 
-		$decoded = base64_decode( $payload, true );
-		if ( false === $decoded ) {
+		$decoded = base64_decode( $payload, true ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_decode -- ALTCHA payloads are base64 JSON by spec.
+		$data    = false === $decoded ? null : json_decode( $decoded, true );
+		if ( ! is_array( $data ) ) {
 			return false;
 		}
 
-		$data = json_decode( $decoded );
-		if ( ! is_object( $data ) ) {
-			return false;
-		}
-
-		// Validate required properties exist.
-		if ( ! isset( $data->algorithm, $data->challenge, $data->salt, $data->signature, $data->number ) ) {
-			return false;
-		}
-
-		// Check expiration if present.
-		if ( is_string( $data->salt ) ) {
-			$salt_url = wp_parse_url( $data->salt );
-			if ( is_array( $salt_url ) && isset( $salt_url['query'] ) && ! empty( $salt_url['query'] ) ) {
-				parse_str( $salt_url['query'], $salt_params );
-				if ( ! empty( $salt_params['expires'] ) ) {
-					$expires = intval( $salt_params['expires'], 10 );
-					if ( $expires > 0 && $expires < time() ) {
-						return false;
-					}
-				}
+		foreach ( array( 'algorithm', 'challenge', 'salt', 'signature' ) as $key ) {
+			if ( ! isset( $data[ $key ] ) || ! is_string( $data[ $key ] ) ) {
+				return false;
 			}
 		}
+		if ( ! isset( $data['number'] ) || ! is_int( $data['number'] ) || $data['number'] < 0 ) {
+			return false;
+		}
+		if ( 'SHA-256' !== $data['algorithm'] ) {
+			return false;
+		}
 
-		// Verify algorithm.
-		$alg_ok = ( 'SHA-256' === $data->algorithm );
+		// The signature proves this server issued the challenge (the salt and its
+		// expiry are covered by the challenge hash below).
+		if ( ! hash_equals( hash_hmac( 'sha256', $data['challenge'], $hmac_key ), $data['signature'] ) ) {
+			return false;
+		}
+		if ( ! hash_equals( hash( 'sha256', $data['salt'] . $data['number'] ), $data['challenge'] ) ) {
+			return false;
+		}
 
-		// Verify challenge.
-		$calculated_challenge = hash( 'sha256', $data->salt . $data->number );
-		$challenge_ok         = ( $data->challenge === $calculated_challenge );
+		// Every challenge this plugin issues carries an expiry; one without it was
+		// not issued by us (or predates 2.2.3) and is refused.
+		$query = (string) wp_parse_url( $data['salt'], PHP_URL_QUERY );
+		parse_str( $query, $params );
+		$expires = isset( $params['expires'] ) ? absint( $params['expires'] ) : 0;
+		if ( ! $expires || $expires < time() ) {
+			$this->failure_reason = 'expired';
+			return false;
+		}
 
-		// Verify signature.
-		$calculated_signature = hash_hmac( 'sha256', $data->challenge, $hmac_key );
-		$signature_ok         = ( $data->signature === $calculated_signature );
+		// Single use: remember the signature until the challenge expires.
+		$used_key = 'wbc_altcha_used_' . substr( $data['signature'], 0, 40 );
+		if ( get_transient( $used_key ) ) {
+			$this->failure_reason = 'already-used';
+			return false;
+		}
+		set_transient( $used_key, 1, max( 60, $expires - time() ) );
 
-		return $alg_ok && $challenge_ok && $signature_ok;
+		return true;
 	}
 
 	/**

@@ -22,72 +22,6 @@
 class Woocommerce_Order {
 
 	/**
-	 * Function displays the woocommerce checkout pay order captcha.
-	 *
-	 * @return void
-	 */
-	public function woo_extra_checkout_fields_pay_order() {
-		// Use the service manager to render captcha for pay order context.
-		if ( function_exists( 'wbc_captcha_service_manager' ) ) {
-			wbc_captcha_service_manager()->render( 'woo_pay_order' );
-		}
-	}
-
-	/**
-	 * Validate pay order captcha
-	 *
-	 * @return void
-	 */
-	public function woo_validate_pay_order_captcha() {
-		// Check if captcha is enabled for pay order.
-		$is_enabled = get_option( 'wbc_recaptcha_enable_on_payfororder' );
-		if ( 'yes' !== $is_enabled ) {
-			return;
-		}
-
-		// Verify captcha.
-		if ( function_exists( 'wbc_verify_captcha' ) ) {
-			if ( ! wbc_verify_captcha( 'woo_pay_order' ) ) {
-				$error_msg = wbc_get_captcha_error_message( 'woo_pay_order', 'invalid' );
-				wc_add_notice( $error_msg, 'error' );
-			}
-		}
-	}
-
-	/**
-	 * Display order tracking form captcha
-	 *
-	 * @return void
-	 */
-	public function woo_display_order_tracking_captcha() {
-		// Use the service manager to render captcha.
-		if ( function_exists( 'wbc_captcha_service_manager' ) ) {
-			wbc_captcha_service_manager()->render( 'order_tracking' );
-		}
-	}
-
-	/**
-	 * Verify order tracking captcha
-	 *
-	 * @return void
-	 */
-	public function woo_verify_order_tracking_captcha() {
-		// Check if captcha is enabled for order tracking.
-		$is_enabled = get_option( 'wbc_recaptcha_enable_on_order_tracking' );
-		if ( 'yes' !== $is_enabled ) {
-			return;
-		}
-
-		// Verify captcha.
-		if ( function_exists( 'wbc_verify_captcha' ) ) {
-			if ( ! wbc_verify_captcha( 'order_tracking' ) ) {
-				$error_msg = wbc_get_captcha_error_message( 'order_tracking', 'invalid' );
-				wc_add_notice( $error_msg, 'error' );
-			}
-		}
-	}
-
-	/**
 	 * Display comment form captcha
 	 *
 	 * @param array $fields Comment form fields.
@@ -192,14 +126,21 @@ class Woocommerce_Order {
 			return $block_content;
 		}
 
-		// Render CAPTCHA using service manager.
-		ob_start();
-		if ( function_exists( 'wbc_captcha_service_manager' ) ) {
-			echo '<div class="wbc-checkout-captcha-wrapper" style="margin: 20px 0;">';
-			wbc_captcha_service_manager()->render( $context );
-			echo '</div>';
+		$manager = wbc_captcha_service_manager();
+		$service = $manager->get_active_service();
+		if ( ! $service ) {
+			return $block_content;
 		}
+
+		ob_start();
+		$manager->render( $context );
 		$captcha_html = ob_get_clean();
+		if ( '' === trim( $captcha_html ) ) {
+			return $block_content; // Not rendered (allowlisted IP, kill switch, no keys).
+		}
+
+		wp_enqueue_script( 'wbc-checkout-block' );
+		$captcha_html = '<div class="wbc-checkout-captcha-wrapper" style="margin: 20px 0;" data-wbc-field="' . esc_attr( $service->get_response_field_name() ) . '">' . $captcha_html . '</div>';
 
 		// Append CAPTCHA to the block content.
 		return $block_content . $captcha_html;

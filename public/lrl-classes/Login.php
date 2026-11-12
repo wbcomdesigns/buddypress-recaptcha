@@ -29,6 +29,35 @@ class WBC_Login {
 		if ( function_exists( 'wbc_captcha_service_manager' ) ) {
 			wbc_captcha_service_manager()->render( 'wp_login' );
 		}
+
+		// wp-admin's "session expired" popup loads this page in an iframe and
+		// sizes itself once, on load. Turnstile, reCAPTCHA and hCaptcha draw
+		// after load, pushing the Log In button out of the popup.
+		if ( ! empty( $GLOBALS['interim_login'] ) ) {
+			add_action( 'login_footer', array( $this, 'fit_interim_login_popup' ) );
+		}
+	}
+
+	/**
+	 * Resize the session-expired popup whenever the widget changes the page
+	 * height, the same way core sizes it on load (body height + 40px).
+	 */
+	public function fit_interim_login_popup() {
+		wp_print_inline_script_tag(
+			"( function () {
+				if ( window.parent === window || typeof ResizeObserver === 'undefined' ) {
+					return;
+				}
+				new ResizeObserver( function () {
+					try {
+						var box = window.parent.document.getElementById( 'wp-auth-check' );
+						if ( box ) {
+							box.style.maxHeight = ( document.body.scrollHeight + 40 ) + 'px';
+						}
+					} catch ( e ) {} // Different origin: leave core's sizing alone.
+				} ).observe( document.body );
+			}() );"
+		);
 	}
 
 	/**

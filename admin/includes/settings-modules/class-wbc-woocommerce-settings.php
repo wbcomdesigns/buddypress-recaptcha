@@ -60,7 +60,7 @@ class WBC_WooCommerce_Settings extends WBC_Settings_Module_Abstract {
 					'id'      => 'wbc_recaptcha_enable_on_signup',
 					'label'   => __( 'Customer Registration', 'buddypress-recaptcha' ),
 					'desc'    => __( 'Prevent fake customer accounts', 'buddypress-recaptcha' ),
-					'default' => 'yes',
+					'default' => 'no',
 				),
 				array(
 					'id'      => 'wbc_recaptcha_enable_on_lostpassword',
@@ -72,7 +72,7 @@ class WBC_WooCommerce_Settings extends WBC_Settings_Module_Abstract {
 					'id'      => 'wbc_recaptcha_enable_on_guestcheckout',
 					'label'   => __( 'Guest Checkout', 'buddypress-recaptcha' ),
 					'desc'    => __( 'Protect checkout from bots (not logged in)', 'buddypress-recaptcha' ),
-					'default' => 'yes',
+					'default' => 'no',
 				),
 				array(
 					'id'      => 'wbc_recaptcha_enable_on_logincheckout',

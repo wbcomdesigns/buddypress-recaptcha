@@ -156,9 +156,14 @@ abstract class WBC_Captcha_Service_Base implements WBC_Captcha_Service_Interface
 	 * @return mixed
 	 */
 	public function get_appearance_option( $name, $default = null ) {
-		$own = get_option( 'wbc_' . $this->get_service_id() . '_' . $name, '' );
-		if ( '' !== $own && false !== $own && null !== $own ) {
-			return $own;
+		// Service ids use hyphens (wbc_recaptcha-v2_theme); the 2.x option
+		// migration stored 1.x values under underscores (wbc_recaptcha_v2_theme).
+		$id = $this->get_service_id();
+		foreach ( array_unique( array( 'wbc_' . $id . '_' . $name, 'wbc_' . str_replace( '-', '_', $id ) . '_' . $name ) ) as $key ) {
+			$own = get_option( $key, '' );
+			if ( '' !== $own && false !== $own && null !== $own ) {
+				return $own;
+			}
 		}
 
 		$shared = get_option( 'wbc_recaptcha_' . $name, '' );
@@ -244,7 +249,7 @@ abstract class WBC_Captcha_Service_Base implements WBC_Captcha_Service_Interface
 				$handle,
 				$this->get_script_url(),
 				array( 'jquery' ),
-				RFB_PLUGIN_VERSION,
+				null, // Provider CDN scripts: no ?ver=, which Cloudflare's api.js rejects as an unknown parameter.
 				true
 			);
 		}
@@ -443,11 +448,77 @@ abstract class WBC_Captcha_Service_Base implements WBC_Captcha_Service_Interface
 	}
 
 	/**
-	 * Make HTTP request to verify captcha
+	 * Form nonce check, only in strict mode (opt-in: `wbc_captcha_strict_nonce`
+	 * option or filter).
 	 *
-	 * @param string $url     Verification URL.
-	 * @param array  $params  Request parameters.
-	 * @return array|false
+	 * By default the nonce is not checked: the CAPTCHA token is the bot check,
+	 * a bot can simply leave an optional nonce out, and a checked nonce only
+	 * rejects real visitors (pages cached longer than a day, logged-in members
+	 * on forms that submit over REST such as Contact Form 7).
+	 *
+	 * @param string $context The context identifier.
+	 * @return bool
+	 */
+	protected function nonce_check_passes( $context ) {
+		if ( '' === (string) $context ) {
+			return true;
+		}
+		//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
+		if ( ! apply_filters( 'wbc_captcha_strict_nonce', (bool) get_option( 'wbc_captcha_strict_nonce', false ), $context, $this->get_service_id() ) ) {
+			return true;
+		}
+		$action = $this->get_nonce_action( $context );
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- verified below.
+		$nonce = isset( $_POST[ $action ] ) ? sanitize_text_field( wp_unslash( $_POST[ $action ] ) ) : '';
+		if ( wp_verify_nonce( $nonce, $action ) ) {
+			return true;
+		}
+		$this->failure_reason = 'stale-form';
+		return false;
+	}
+
+	/**
+	 * Why the last verify() on this service failed, as a short code.
+	 *
+	 * @var string
+	 */
+	protected $failure_reason = '';
+
+	/**
+	 * Return the last failure reason and clear it, so one submission's reason
+	 * never leaks into the next check in the same request.
+	 *
+	 * @return string Empty when nothing recorded one.
+	 */
+	public function pull_failure_reason() {
+		$reason               = $this->failure_reason;
+		$this->failure_reason = '';
+		return $reason;
+	}
+
+	/**
+	 * Provider error codes that depend only on the site's secret, never on the
+	 * visitor's token. reCAPTCHA, hCaptcha and Turnstile all use these names.
+	 *
+	 * Deliberately NOT here: hCaptcha's sitekey-secret-mismatch / invalid-sitekey.
+	 * A token solved on another site produces those, so treating them as a key
+	 * problem would let any foreign token through.
+	 */
+	const KEY_ERROR_CODES = array( 'missing-input-secret', 'invalid-input-secret' );
+
+	/**
+	 * POST a token to the provider's siteverify endpoint.
+	 *
+	 * When the provider says the site's keys are wrong, nobody - the owner
+	 * included - could pass the CAPTCHA, so every protected form (wp-login among
+	 * them) would lock everyone out. Only the owner can cause that state, so the
+	 * check is waved through and an admin notice says what to fix. Visitors cannot
+	 * trigger it: the secret is sent by this server, not by them.
+	 *
+	 * @param string $url    Endpoint.
+	 * @param array  $params Request body.
+	 * @return array|false Decoded response, `array( 'success' => true, 'wbc_key_error' => true )`
+	 *                     for a key error, or false on a network/decoding failure.
 	 */
 	protected function make_verify_request( $url, $params ) {
 		$request = wp_remote_post(
@@ -459,15 +530,37 @@ abstract class WBC_Captcha_Service_Base implements WBC_Captcha_Service_Interface
 		);
 
 		if ( is_wp_error( $request ) ) {
+			$this->failure_reason = 'network-error';
 			return false;
 		}
 
-		$body = wp_remote_retrieve_body( $request );
-		if ( empty( $body ) ) {
+		$result = json_decode( (string) wp_remote_retrieve_body( $request ), true );
+		if ( ! is_array( $result ) ) {
+			$this->failure_reason = 'bad-response';
 			return false;
 		}
 
-		return json_decode( $body, true );
+		$codes = isset( $result['error-codes'] ) ? (array) $result['error-codes'] : array();
+		if ( empty( $result['success'] ) && array_intersect( $codes, self::KEY_ERROR_CODES ) ) {
+			set_transient(
+				'wbc_captcha_key_error',
+				array(
+					'service' => $this->get_service_name(),
+					'codes'   => array_values( array_intersect( $codes, self::KEY_ERROR_CODES ) ),
+				),
+				DAY_IN_SECONDS
+			);
+			return array(
+				'success'       => true,
+				'wbc_key_error' => true,
+			);
+		}
+
+		if ( empty( $result['success'] ) ) {
+			$this->failure_reason = $codes ? implode( ',', array_map( 'sanitize_key', $codes ) ) : 'rejected';
+		}
+
+		return $result;
 	}
 
 	/**

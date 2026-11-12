@@ -36,9 +36,11 @@ class WBC_Settings_Migration {
 			return $results;
 		}
 
-		// Detect active service based on existing settings.
-		$active_service = self::detect_active_service();
-		if ( $active_service ) {
+		// Detect the provider only when none is chosen. This runs after
+		// WBC_Option_Migration has renamed the 1.x keys, and overwriting a
+		// stored choice switched 1.x reCAPTCHA v3 sites to v2.
+		if ( '' === (string) get_option( 'wbc_captcha_service', '' ) ) {
+			$active_service = self::detect_active_service();
 			update_option( 'wbc_captcha_service', $active_service );
 			$results['migrated'][] = 'Active service set to: ' . $active_service;
 		}
@@ -55,9 +57,6 @@ class WBC_Settings_Migration {
 		// Mark migration as completed.
 		update_option( 'wbc_settings_migration_v2_completed', 'yes' );
 
-		// Enable simplified settings by default.
-		update_option( 'wbc_use_simplified_settings', 'yes' );
-
 		$results['message'] = 'Settings migration completed successfully.';
 
 		return $results;
@@ -70,7 +69,7 @@ class WBC_Settings_Migration {
 	 */
 	private static function detect_active_service() {
 		// Check for existing version setting.
-		$version = get_option( 'wbc_recapcha_version' );
+		$version = get_option( 'wbc_recapcha_version', get_option( 'wbc_recaptcha_version' ) ); // 1.x key, or its 2.x rename.
 		if ( 'v3' === $version ) {
 			return 'recaptcha-v3';
 		} elseif ( 'v2' === $version ) {
@@ -85,15 +84,15 @@ class WBC_Settings_Migration {
 		}
 
 		// Check for v3 keys.
-		$v3_site_key   = get_option( 'wc_settings_tab_recapcha_site_key_v3' );
-		$v3_secret_key = get_option( 'wc_settings_tab_recapcha_secret_key_v3' );
+		$v3_site_key   = get_option( 'wc_settings_tab_recapcha_site_key_v3', get_option( 'wbc_recaptcha_v3_site_key' ) );
+		$v3_secret_key = get_option( 'wc_settings_tab_recapcha_secret_key_v3', get_option( 'wbc_recaptcha_v3_secret_key' ) );
 		if ( ! empty( $v3_site_key ) && ! empty( $v3_secret_key ) ) {
 			return 'recaptcha-v3';
 		}
 
 		// Check for v2 keys.
-		$v2_site_key   = get_option( 'wc_settings_tab_recapcha_site_key' );
-		$v2_secret_key = get_option( 'wc_settings_tab_recapcha_secret_key' );
+		$v2_site_key   = get_option( 'wc_settings_tab_recapcha_site_key', get_option( 'wbc_recaptcha_v2_site_key' ) );
+		$v2_secret_key = get_option( 'wc_settings_tab_recapcha_secret_key', get_option( 'wbc_recaptcha_v2_secret_key' ) );
 		if ( ! empty( $v2_site_key ) && ! empty( $v2_secret_key ) ) {
 			return 'recaptcha-v2';
 		}
@@ -132,7 +131,6 @@ class WBC_Settings_Migration {
 
 			// Other.
 			'wbc_recapcha_enable_on_comment'        => 'wbc_recapcha_enable_on_comment',
-			'wbc_recapcha_enable_on_order_tracking' => 'wbc_recapcha_enable_on_order_tracking',
 		);
 
 		foreach ( $integration_mappings as $old_key => $new_key ) {
@@ -265,21 +263,6 @@ class WBC_Settings_Migration {
 			update_option( 'wbc_recaptcha-v3_score_threshold', $score_threshold );
 			$results['migrated'][] = 'reCAPTCHA v3 score threshold';
 		}
-	}
-
-	/**
-	 * Rollback migration (for debugging/development).
-	 *
-	 * @return bool Success status.
-	 */
-	public static function rollback() {
-		// Remove migration flag.
-		delete_option( 'wbc_settings_migration_v2_completed' );
-
-		// Disable simplified settings.
-		update_option( 'wbc_use_simplified_settings', 'no' );
-
-		return true;
 	}
 
 	/**

@@ -23,51 +23,53 @@
 class NinjaForms_Form {
 
 	/**
-	 * Render CAPTCHA in Ninja Forms
+	 * Add the CAPTCHA after the form's fields.
 	 *
-	 * Adds CAPTCHA HTML after form fields before submit button.
+	 * ninja_forms_display_after_fields is a filter whose HTML Ninja Forms'
+	 * JavaScript renders inside the form (echoing here printed it outside).
 	 *
-	 * @return void
+	 * @param string $html    HTML other plugins added.
+	 * @param int    $form_id Form ID.
+	 * @return string
 	 */
-	public function render_ninjaforms_captcha() {
-		// Check if CAPTCHA is enabled for Ninja Forms.
-		$is_enabled = get_option( 'wbc_recaptcha_enable_on_ninjaforms' );
-		if ( 'yes' !== $is_enabled ) {
-			return;
+	public function render_ninjaforms_captcha( $html = '', $form_id = 0 ) {
+		$manager = wbc_captcha_service_manager();
+		$service = $manager->get_active_service();
+		if ( ! $service ) {
+			return $html;
 		}
 
-		// Render CAPTCHA using service manager.
-		if ( function_exists( 'wbc_captcha_service_manager' ) ) {
-			wbc_captcha_service_manager()->render( 'ninjaforms' );
+		ob_start();
+		$manager->render( 'ninjaforms' );
+		$captcha = ob_get_clean();
+		if ( '' === trim( $captcha ) ) {
+			return $html;
 		}
+
+		return $html . '<div class="wbc-nf-captcha" data-wbc-field="' . esc_attr( $service->get_response_field_name() ) . '">' . $captcha . '</div>';
 	}
 
 	/**
-	 * Validate CAPTCHA for Ninja Forms submissions
+	 * Verify the token wbc-captcha-refresh.js adds to the submission's extra
+	 * data (Ninja Forms posts only its own fields). On failure, answer in Ninja
+	 * Forms' own response shape so the form shows the error.
 	 *
-	 * Validates the CAPTCHA response during form processing.
-	 *
-	 * @param array $form_data Form submission data.
-	 * @return array Modified form data with errors if validation fails.
+	 * @param array $form_data Submission data.
+	 * @return array
 	 */
 	public function validate_ninjaforms_captcha( $form_data ) {
-		// Check if CAPTCHA is enabled for Ninja Forms.
-		$is_enabled = get_option( 'wbc_recaptcha_enable_on_ninjaforms' );
-		if ( 'yes' !== $is_enabled ) {
+		$token = isset( $form_data['extra']['wbc_captcha'] ) ? sanitize_text_field( (string) $form_data['extra']['wbc_captcha'] ) : '';
+
+		if ( wbc_captcha_service_manager()->verify( 'ninjaforms', $token ) ) {
 			return $form_data;
 		}
 
-		// Verify CAPTCHA using service manager.
-		if ( function_exists( 'wbc_verify_captcha' ) ) {
-			if ( ! wbc_verify_captcha( 'ninjaforms' ) ) {
-				// Get error message.
-				$error_message = wbc_get_captcha_error_message( 'ninjaforms', 'invalid' );
-
-				// Add error to form data.
-				$form_data['errors']['form']['captcha'] = $error_message;
-			}
-		}
-
-		return $form_data;
+		wp_send_json(
+			array(
+				'data'   => array( 'form_id' => isset( $form_data['id'] ) ? $form_data['id'] : 0 ),
+				'errors' => array( 'form' => array( 'wbc_captcha' => wbc_get_captcha_error_message( 'ninjaforms', 'invalid' ) ) ),
+				'debug'  => array(),
+			)
+		);
 	}
 }

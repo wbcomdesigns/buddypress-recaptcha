@@ -54,13 +54,13 @@ class WBC_BuddyPress_Settings extends WBC_Settings_Module_Abstract {
 					'id'      => 'wbc_recaptcha_enable_on_buddypress',
 					'label'   => __( 'Member Registration', 'buddypress-recaptcha' ),
 					'desc'    => __( 'Protect community registration', 'buddypress-recaptcha' ),
-					'default' => 'yes',
+					'default' => 'no',
 				),
 				array(
 					'id'      => 'wbc_recaptcha_enable_on_bp_group_create',
 					'label'   => __( 'Group Creation', 'buddypress-recaptcha' ),
 					'desc'    => __( 'Protect group creation form from spam', 'buddypress-recaptcha' ),
-					'default' => 'yes',
+					'default' => 'no',
 				),
 			)
 		);

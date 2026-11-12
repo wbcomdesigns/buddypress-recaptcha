@@ -54,7 +54,7 @@ class WBC_GravityForms_Settings extends WBC_Settings_Module_Abstract {
 					'id'      => 'wbc_recaptcha_enable_on_gravityforms',
 					'label'   => __( 'Gravity Forms', 'buddypress-recaptcha' ),
 					'desc'    => __( 'Protect all Gravity Forms from spam submissions', 'buddypress-recaptcha' ),
-					'default' => 'yes',
+					'default' => 'no',
 				),
 			)
 		);

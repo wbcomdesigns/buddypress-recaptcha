@@ -218,7 +218,8 @@ class WBC_Recaptcha_V3_Service extends WBC_Captcha_Service_Base {
 		echo '<input type="hidden" name="' . esc_attr( $token_field_id ) . '" id="' . esc_attr( $token_field_id ) . '" value="" />';
 
 		// Add nonce for security.
-		wp_nonce_field( 'wbc_captcha_' . $context, 'wbc_captcha_nonce_' . $context );
+		$nonce_action = $this->get_nonce_action( $context );
+		echo '<input type="hidden" autocomplete="off" name="' . esc_attr( $nonce_action ) . '" value="' . esc_attr( wp_create_nonce( $nonce_action ) ) . '" />';
 
 		// Enqueue script if not already enqueued.
 		$this->enqueue_script();
@@ -243,16 +244,8 @@ class WBC_Recaptcha_V3_Service extends WBC_Captcha_Service_Base {
 			return true;
 		}
 
-		// Skip nonce verification if not in POST context or nonce not set.
-		// Nonce is optional as many forms don't use our custom nonce.
-		$nonce_field  = 'wbc_captcha_nonce_' . $context;
-		$nonce_action = 'wbc_captcha_' . $context;
-
-		if ( isset( $_POST[ $nonce_field ] ) ) {
-			// Only verify if nonce is present.
-			if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST[ $nonce_field ] ) ), $nonce_action ) ) {
-				return false;
-			}
+		if ( ! $this->nonce_check_passes( $context ) ) {
+			return false;
 		}
 
 		// Use provided response or get token from POST data.
@@ -263,7 +256,7 @@ class WBC_Recaptcha_V3_Service extends WBC_Captcha_Service_Base {
 		} else {
 			// Get token from POST data.
 			$token_field_id = 'wbc_recaptcha_' . $context . '_token';
-			$token          = isset( $_POST[ $token_field_id ] ) ? sanitize_text_field( wp_unslash( $_POST[ $token_field_id ] ) ) : '';
+			$token          = isset( $_POST[ $token_field_id ] ) ? sanitize_text_field( wp_unslash( $_POST[ $token_field_id ] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Missing -- pre-auth CAPTCHA token; the form nonce is checked by nonce_check_passes().
 
 			if ( empty( $token ) ) {
 				// Try legacy field names for backward compatibility.
@@ -280,8 +273,9 @@ class WBC_Recaptcha_V3_Service extends WBC_Captcha_Service_Base {
 				);
 
 				foreach ( $legacy_fields as $field ) {
+					// phpcs:ignore WordPress.Security.NonceVerification.Missing -- pre-auth CAPTCHA token.
 					if ( isset( $_POST[ $field ] ) && ! empty( $_POST[ $field ] ) ) {
-						$token = sanitize_text_field( wp_unslash( $_POST[ $field ] ) );
+						$token = sanitize_text_field( wp_unslash( $_POST[ $field ] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Missing
 						break;
 					}
 				}
@@ -292,35 +286,22 @@ class WBC_Recaptcha_V3_Service extends WBC_Captcha_Service_Base {
 			return false;
 		}
 
-		// Verify with Google.
-		$secret_key = $this->get_secret_key();
-		$remote_ip  = isset( $_SERVER['REMOTE_ADDR'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) : '';
-
-		$response = wp_remote_post(
+		$result = $this->make_verify_request(
 			'https://www.google.com/recaptcha/api/siteverify',
 			array(
-				'timeout' => 10,
-				'body'    => array(
-					'secret'   => $secret_key,
-					'response' => $token,
-					'remoteip' => $remote_ip,
-				),
+				'secret'   => $this->get_secret_key(),
+				'response' => $token,
+				'remoteip' => $this->get_user_ip(),
 			)
 		);
 
-		if ( is_wp_error( $response ) ) {
+		if ( ! is_array( $result ) || empty( $result['success'] ) ) {
 			return false;
 		}
 
-		$response_body = wp_remote_retrieve_body( $response );
-		if ( empty( $response_body ) ) {
-			return false;
-		}
-
-		$result = json_decode( $response_body, true );
-
-		if ( ! isset( $result['success'] ) || ! $result['success'] ) {
-			return false;
+		// Wrong keys on the site's side: never lock everyone out (see make_verify_request()).
+		if ( ! empty( $result['wbc_key_error'] ) ) {
+			return true;
 		}
 
 		// Check score threshold.
@@ -328,12 +309,14 @@ class WBC_Recaptcha_V3_Service extends WBC_Captcha_Service_Base {
 		$score           = isset( $result['score'] ) ? floatval( $result['score'] ) : 0;
 
 		if ( $score < $score_threshold ) {
+			$this->failure_reason = 'low-score';
 			return false;
 		}
 
 		// Check action if configured.
 		$expected_action = $this->get_action_for_context( $context );
-		if ( ! empty( $expected_action ) && isset( $result['action'] ) && $result['action'] !== $expected_action ) {
+		if ( ! empty( $expected_action ) && ( ! isset( $result['action'] ) || $result['action'] !== $expected_action ) ) {
+			$this->failure_reason = 'action-mismatch';
 			return false;
 		}
 
@@ -362,7 +345,6 @@ class WBC_Recaptcha_V3_Service extends WBC_Captcha_Service_Base {
 			'bbpress_topic'      => get_option( 'wbc_recapcha_bbpress_topic_action_v3', 'bbPress_topic' ),
 			'bbpress_reply'      => get_option( 'wbc_recapcha_bbpress_reply_action_v3', 'bbPress_reply' ),
 			'comment_form'       => 'comment',
-			'order_tracking'     => 'order_tracking',
 		);
 
 		return isset( $action_map[ $context ] ) ? $action_map[ $context ] : $context;
@@ -379,6 +361,9 @@ class WBC_Recaptcha_V3_Service extends WBC_Captcha_Service_Base {
 		// (Advanced tab -> reCAPTCHA v3 score threshold). A single global value
 		// applies to every context unless a legacy per-context override exists.
 		$global = get_option( 'wbc_recaptcha_v3_score_threshold', '' );
+		if ( '' === $global || false === $global ) {
+			$global = get_option( 'wbc_recaptcha_v3_score', '' ); // Where the 2.x migration put the 1.x score.
+		}
 
 		// Legacy per-context overrides (pre-2.1 typo-spelled keys). Kept only as a
 		// fallback so older installs that set these keep their tuned values.
@@ -414,7 +399,10 @@ class WBC_Recaptcha_V3_Service extends WBC_Captcha_Service_Base {
 		 * @param string $context   The verification context.
 		 */
 		//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
-		return (float) apply_filters( 'wbc_recaptcha_v3_score_threshold_value', floatval( $threshold ), $context );
+		// A score is 0.0 - 1.0: a stray "1.5" would block everyone, "abc" (0.0) nobody.
+		$threshold = is_numeric( $threshold ) ? min( max( (float) $threshold, 0.0 ), 1.0 ) : 0.5;
+
+		return (float) apply_filters( 'wbc_recaptcha_v3_score_threshold_value', $threshold, $context );
 	}
 
 	/**
@@ -594,7 +582,7 @@ class WBC_Recaptcha_V3_Service extends WBC_Captcha_Service_Base {
 			'wbc-recaptcha-v3',
 			'https://www.google.com/recaptcha/api.js?render=' . esc_attr( $site_key ),
 			array(),
-			'3.0',
+			null, // No ?ver= on Google's script.
 			true
 		);
 	}

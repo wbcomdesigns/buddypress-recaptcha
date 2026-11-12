@@ -15,10 +15,10 @@
  * Plugin Name:       Wbcom CAPTCHA Manager
  * Plugin URI:        https://wbcomdesigns.com/downloads/buddypress-recaptcha/
  * Description:       Complete CAPTCHA solution with support for reCAPTCHA v2, v3, Cloudflare Turnstile, hCaptcha, and ALTCHA. Protect WordPress, WooCommerce, BuddyPress, bbPress, and popular form builders from spam and bots with a modular, easy-to-manage interface.
- * Version:           2.2.2
+ * Version:           2.2.3
  * Requires at least: 6.5
- * Tested up to:      7.0
- * Requires PHP:      8.0
+ * Tested up to:      7.1
+ * Requires PHP:      8.1
  * Author:            Wbcom Designs
  * Author URI:        https://wbcomdesigns.com/
  * License:           GPL-2.0+
@@ -38,7 +38,7 @@ if ( ! defined( 'WPINC' ) ) {
  * Rename this for your plugin and update it as you release new versions.
  */
 if ( ! defined( 'RFB_PLUGIN_VERSION' ) ) {
-	define( 'RFB_PLUGIN_VERSION', '2.2.2' );
+	define( 'RFB_PLUGIN_VERSION', '2.2.3' );
 }
 
 if ( ! defined( 'RFB_PLUGIN_FILE' ) ) {
@@ -62,7 +62,7 @@ if ( ! defined( 'RFB_PLUGIN_PATH' ) ) {
  * This action is documented in includes/class- recaptcha-for-buddypress-activator.php
  */
 //phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound	
-function activate_recaptcha_for_woocommerce() {
+function activate_wbc_captcha_manager() {
 	require_once plugin_dir_path( __FILE__ ) . 'includes/class-recaptcha-for-buddypress-activator.php';
 	Recaptcha_For_BuddyPress_Activator::activate();
 }
@@ -72,13 +72,13 @@ function activate_recaptcha_for_woocommerce() {
  * This action is documented in includes/class- recaptcha-for-buddypress-deactivator.php
  */
 //phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound	
-function deactivate_recaptcha_for_woocommerce() {
+function deactivate_wbc_captcha_manager() {
 	require_once plugin_dir_path( __FILE__ ) . 'includes/class-recaptcha-for-buddypress-deactivator.php';
 	Recaptcha_For_BuddyPress_Deactivator::deactivate();
 }
 
-register_activation_hook( __FILE__, 'activate_recaptcha_for_woocommerce' );
-register_deactivation_hook( __FILE__, 'deactivate_recaptcha_for_woocommerce' );
+register_activation_hook( __FILE__, 'activate_wbc_captcha_manager' );
+register_deactivation_hook( __FILE__, 'deactivate_wbc_captcha_manager' );
 
 /**
  * The core plugin class that is used to define internationalization,
@@ -140,24 +140,34 @@ if ( file_exists( $rfb_sdk_path )
 }
 
 // Activate the preset key against the store once per site so update downloads
-// are authorised. Admin-only; retries on the next admin load until the store
-// confirms the activation.
+// are authorised. Two guards keep a slow or failing store out of every admin
+// request (wb-listora pattern). First, `buddypress_recaptcha_preset_activated`
+// is set once the store answers at all: a licence "no" (invalid, expired,
+// disabled) does not change on retry, so any answer is final. Second,
+// `buddypress_recaptcha_preset_activate_lock`, a 12-hour site transient set
+// before the request, means a network failure costs one try per 12 hours, not
+// one per admin page and Heartbeat tick.
+// AJAX, REST and cron skip it; no person is waiting there.
 add_action(
 	'admin_init',
 	function () {
+		if ( wp_doing_ajax() || wp_doing_cron() || ( defined( 'REST_REQUEST' ) && REST_REQUEST ) ) {
+			return;
+		}
+
 		$preset_key = 'd23187723b1423b54ef206a3588a1845';
 		$option     = 'buddypress-recaptcha_license_key';
 		$activated  = 'buddypress_recaptcha_preset_activated';
+		$lock       = 'buddypress_recaptcha_preset_activate_lock';
 
-		// Already activated for this domain — skip.
-		if ( get_option( $activated ) ) {
+		if ( get_option( $activated ) || get_site_transient( $lock ) ) {
 			return;
 		}
 
 		// Store the key so the SDK can find it.
 		update_option( $option, $preset_key, false );
+		set_site_transient( $lock, 1, 12 * HOUR_IN_SECONDS );
 
-		// Activate with the EDD store.
 		$response = wp_remote_post(
 			'https://wbcomdesigns.com',
 			array(
@@ -171,12 +181,13 @@ add_action(
 			)
 		);
 
-		if ( ! is_wp_error( $response ) ) {
-			$body = json_decode( wp_remote_retrieve_body( $response ), true );
-			if ( 'valid' === ( $body['license'] ?? '' ) ) {
-				update_option( $activated, 1, false );
-			}
+		$body = is_wp_error( $response ) ? null : json_decode( wp_remote_retrieve_body( $response ), true );
+		if ( ! is_array( $body ) || empty( $body['license'] ) ) {
+			return; // No usable answer: the lock stays, so the next try is 12 hours away.
 		}
+
+		delete_site_transient( $lock );
+		update_option( $activated, 1, false );
 	}
 );
 
@@ -211,11 +222,11 @@ add_action( 'activated_plugin', 'wb_recaptcha_activation_redirect_settings' );
  * @since    1.0.0
  */
 //phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound	
-function run_recaptcha_for_woocommerce() {
+function run_wbc_captcha_manager() {
 	$plugin = new Recaptcha_For_BuddyPress();
 	$plugin->run();
 }
-run_recaptcha_for_woocommerce();
+run_wbc_captcha_manager();
 
 /**
  * Get the user's IP address.

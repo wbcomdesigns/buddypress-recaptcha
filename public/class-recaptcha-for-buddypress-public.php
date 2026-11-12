@@ -76,45 +76,6 @@ class Recaptcha_For_BuddyPress_Public {
 	}
 
 	/**
-	 * Register the JavaScript for the public-facing side of the site.
-	 *
-	 * @since    1.0.0
-	 */
-	public function enqueue_scripts() {
-		// Get service manager.
-		if ( ! function_exists( 'wbc_captcha_service_manager' ) ) {
-			return;
-		}
-
-		$service_manager = wbc_captcha_service_manager();
-		if ( ! $service_manager ) {
-			return;
-		}
-
-		$active_service = $service_manager->get_active_service();
-		if ( ! $active_service || ! $active_service->is_configured() ) {
-			return;
-		}
-
-		// Get site key for localization.
-		$site_key = $active_service->get_site_key();
-
-		// Enqueue public script.
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/recaptcha-for-buddypress-public.js', array( 'jquery' ), $this->version, false );
-
-		// Localize script with necessary data.
-		wp_localize_script(
-			$this->plugin_name,
-			'bpRecaptcha',
-			array(
-				'ajax_url'   => admin_url( 'admin-ajax.php' ),
-				'site_key'   => $site_key,
-				'service_id' => $active_service->get_service_id(),
-			)
-		);
-	}
-
-	/**
 	 * Load captcha scripts and styles dynamically
 	 *
 	 * @since    1.0.0
@@ -215,15 +176,6 @@ class Recaptcha_For_BuddyPress_Public {
 	}
 
 	/**
-	 * Add header metadata for IE compatibility
-	 */
-	public function woo_recaptcha_add_header_metadata_for_ie() {
-		if ( $this->woo_recaptcha_check_is_ie_browser() ) {
-			echo '<meta http-equiv="X-UA-Compatible" content="IE=edge" />';
-		}
-	}
-
-	/**
 	 * Add defer attribute to recaptcha scripts
 	 *
 	 * @param  string $url Script URL.
@@ -234,30 +186,5 @@ class Recaptcha_For_BuddyPress_Public {
 			return str_replace( ' src', ' defer src', $url );
 		}
 		return $url;
-	}
-
-	/**
-	 * Check if browser is Internet Explorer
-	 *
-	 * @return bool
-	 */
-	public function woo_recaptcha_check_is_ie_browser() {
-		if ( ! isset( $_SERVER['HTTP_USER_AGENT'] ) ) {
-			return false;
-		}
-		$user_agent = sanitize_text_field( wp_unslash( $_SERVER['HTTP_USER_AGENT'] ) );
-		return preg_match( '~MSIE|Internet Explorer~i', $user_agent ) || preg_match( '~Trident/7.0(.*)?; rv:11.0~', $user_agent );
-	}
-
-	/**
-	 * Load language files
-	 *
-	 * Note: Since WordPress 6.7, translations are loaded just-in-time.
-	 * The load_plugin_textdomain() call has been removed to comply with
-	 * Plugin Check requirements.
-	 */
-	public function woo_load_lang_for_woo_recaptcha() {
-		// Intentionally left empty.
-		// WordPress 6.7+ handles translation loading automatically.
 	}
 }

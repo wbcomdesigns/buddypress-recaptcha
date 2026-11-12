@@ -30,12 +30,15 @@ class Woocommerce_Register_Post {
 	 * @return void
 	 */
 	public function woocomm_validate_signup_captcha( $username, $email, $validation_errors ) {
-		// Use verification helper.
-		if ( function_exists( 'wbc_verify_captcha' ) ) {
-			if ( ! wbc_verify_captcha( 'woo_register' ) ) {
-				$error_msg = wbc_get_captcha_error_message( 'woo_register', 'invalid' );
-				$validation_errors->add( 'captcha', $error_msg );
-			}
+		// "Create an account" at checkout (classic or block) is covered by the
+		// checkout toggle. No registration widget is shown there, so checking
+		// it here would fail every such order.
+		if ( did_action( 'woocommerce_checkout_process' ) || did_action( 'woocommerce_store_api_checkout_update_order_from_request' ) ) {
+			return;
+		}
+
+		if ( ! wbc_verify_captcha( 'woo_register' ) ) {
+			$validation_errors->add( 'captcha', wbc_get_captcha_error_message( 'woo_register', 'invalid' ) );
 		}
 	}
 }

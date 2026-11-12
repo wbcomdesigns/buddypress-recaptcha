@@ -3,9 +3,9 @@ Contributors: wbcomdesigns, vapvarun
 Donate link: https://wbcomdesigns.com/donate/
 Tags: captcha, recaptcha, spam protection, security, woocommerce
 Requires at least: 6.5
-Tested up to: 7.0
-Stable tag: 2.2.2
-Requires PHP: 8.0
+Tested up to: 7.1
+Stable tag: 2.2.3
+Requires PHP: 8.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: buddypress-recaptcha
@@ -28,11 +28,11 @@ Four of the five providers need free API keys from the provider. ALTCHA does not
 * Cloudflare Turnstile.
 * hCaptcha.
 * ALTCHA: self-hosted proof-of-work, no third-party account and no API keys. The HMAC key is generated for you.
-* Switch providers from one dropdown; every protected form follows.
+* Switch providers with one setting; every protected form follows.
 
 **Protects 14 integrations**
-* WordPress core: login, registration, lost password, and comments.
-* WooCommerce: customer login, registration, lost password, product reviews, guest checkout, login at checkout, order tracking, and pay for order.
+* WordPress core: login, registration, lost password, and comments. Password logins over XML-RPC are blocked while login protection is on; application passwords keep working.
+* WooCommerce: customer login, registration, lost password, product reviews, and checkout for guests and logged-in customers, on both the block checkout and the classic checkout.
 * BuddyPress: member registration and group creation.
 * bbPress: new topics and replies.
 * Form builders: Contact Form 7, WPForms, Gravity Forms, Ninja Forms, Forminator, Elementor Pro Forms, and Divi Builder contact forms.
@@ -149,7 +149,7 @@ ALTCHA needs no keys and no account. It is self-hosted and generates its own HMA
 = Requirements =
 
 * WordPress 6.5 or higher
-* PHP 8.0 or higher
+* PHP 8.1 or higher
 * API keys from your chosen provider (not required for ALTCHA)
 
 == Frequently Asked Questions ==
@@ -164,7 +164,7 @@ reCAPTCHA v2 is the familiar checkbox and the safest default. reCAPTCHA v3 is in
 
 = Can I use more than one service at a time? =
 
-No. One service is active site-wide, on every protected form. Switching services is a single dropdown change and does not reset your per-form toggles.
+No. One service is active site-wide, on every protected form. Switching services is a single setting change and does not reset your per-form toggles.
 
 = Does ALTCHA really need no API keys? =
 
@@ -174,6 +174,10 @@ Correct. ALTCHA is self-hosted proof-of-work. It generates its own HMAC key when
 
 By default the plugin fails open: if the provider's API cannot be reached, the submission is allowed through, so an outage at Google or Cloudflare cannot lock your users out. If you would rather block submissions than risk letting spam through, enable fail-closed mode on the Advanced tab.
 
+= My keys are wrong and I cannot log in. What now? =
+
+You should not get locked out: when the provider reports that your site key or secret key is invalid, the plugin lets the submission through and shows an admin notice asking you to fix the keys. If you still need to switch everything off, add `define( 'WBC_CAPTCHA_DISABLE', true );` to wp-config.php, log in, fix the keys, then remove the line.
+
 = Can I skip the CAPTCHA for my own IP? =
 
 Yes. Add trusted addresses to the IP whitelist on the Advanced tab. It accepts single IPs, ranges, and CIDR notation.
@@ -181,6 +185,10 @@ Yes. Add trusted addresses to the IP whitelist on the Advanced tab. It accepts s
 = Real users are being blocked by reCAPTCHA v3. What do I do? =
 
 Lower the score threshold on the Advanced tab. reCAPTCHA v3 scores each request from 0.0 (likely bot) to 1.0 (likely human), and anything below your threshold is rejected. If legitimate users fail, your threshold is too strict.
+
+= A visitor says the CAPTCHA keeps failing. How do I find out why? =
+
+Open CAPTCHA Manager > Overview and look at Recent Rejections. It lists the last 20 blocked submissions with the form, the provider and the reason the provider gave, with a plain-language explanation for the common ones (widget not completed, answer expired or reused, wrong key pair, server could not reach the provider). Tokens, keys and IP addresses are never stored.
 
 = The CAPTCHA is not appearing on my form. Why? =
 
@@ -208,6 +216,10 @@ Yes. A POT file is included, along with a WPML configuration file.
 
 == Upgrade Notice ==
 
+= 2.2.3 =
+
+Security release. Closes CAPTCHA bypasses on login, checkout and several form plugins, and fixes forms that blocked real visitors. Requires PHP 8.1.
+
 = 2.2.0 =
 
 Fixes lockouts introduced in 2.1.0. Login from a Login/Logout block, login widget or theme login form works again, and reCAPTCHA v3 now issues tokens on every protected form. Update immediately if you run 2.1.0.
@@ -217,6 +229,40 @@ Fixes lockouts introduced in 2.1.0. Login from a Login/Logout block, login widge
 Security update: comment, lost-password and login forms are now verified on sites without WooCommerce, where they previously did nothing. Recommended for every site.
 
 == Changelog ==
+
+= 2.2.3 - November 2026 =
+
+Security and reliability release. Closes several ways to submit protected forms without solving the CAPTCHA and fixes integrations that blocked real visitors. Update recommended for every site.
+
+* New      - WooCommerce block checkout is now protected; orders placed through the Store API are verified before they are created.
+* New      - Fail-closed and no-conflict switches on the Advanced tab.
+* New      - Add define( 'WBC_CAPTCHA_DISABLE', true ) to wp-config.php to switch every CAPTCHA off if you are ever locked out.
+* New      - CAPTCHA providers registered by other plugins appear in the provider picker.
+* New      - The Overview tab lists the last 20 rejected submissions with the form, provider and reason, so you can see why a visitor could not log in or submit.
+* Improve  - New installs protect every login, sign-up and password-reset form, including the login widget and block.
+* Improve  - When the provider reports an invalid site or secret key, submissions go through and an admin notice asks you to fix the keys, so a key mistake never locks everyone out.
+* Improve  - The widget resets itself after a failed AJAX submit, so the second attempt works without reloading the page.
+* Improve  - The IP whitelist accepts one address or range per line, as well as comma-separated.
+* Fix      - Contact Form 7, Ninja Forms, Ultimate Member and Easy Digital Downloads login accepted submissions without a solved CAPTCHA.
+* Fix      - WPForms forms with ALTCHA could not be submitted.
+* Fix      - Elementor Pro forms lost their field values when CAPTCHA was enabled.
+* Fix      - Easy Digital Downloads checkout rejected buyers who had solved the CAPTCHA.
+* Fix      - Gravity Forms multi-page forms are verified once, on the final submit; MemberPress login could show an error page.
+* Fix      - The optional nonce check rejected real visitors whose page was served from a cache.
+* Fix      - The Protection tab showed some forms as protected when they were not.
+* Fix      - Sites upgraded from 1.x now keep their provider, score threshold and widget theme.
+* Fix      - BuddyPress sign-up now shows the CAPTCHA error instead of failing silently.
+* Fix      - Cloudflare Turnstile no longer logs a script warning about an unknown "ver" parameter.
+* Fix      - The "session expired" login popup in wp-admin grows to fit the CAPTCHA, so the Log In button is no longer cut off.
+* Fix      - A slow or unreachable licence server no longer delays every admin page; activation is tried at most once every 12 hours.
+* Security - The ALTCHA signing key is no longer sent to the browser, and each ALTCHA solution can be used only once; every widget loads a fresh challenge, so retries and cached pages keep working.
+* Security - Login is checked inside WordPress authentication, so custom login handlers cannot skip it, and BuddyPress REST sign-up is verified; XML-RPC password logins are blocked while login protection is on.
+* Security - reCAPTCHA v3 tokens must match the form's action and the score threshold.
+* Security - Login redirects only go to addresses on this site.
+* Dev      - Requires PHP 8.1 or higher.
+* Dev      - Plugin activation and loader functions renamed from the old WooCommerce names to activate_wbc_captcha_manager(), deactivate_wbc_captcha_manager() and run_wbc_captcha_manager().
+* Dev      - Removed the empty language hook, the Internet Explorer meta tag and unused settings helpers.
+* Compat   - Tested with WordPress 7.1.
 
 = 2.2.2 - September 2026 =
 

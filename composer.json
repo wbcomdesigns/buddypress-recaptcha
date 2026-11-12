@@ -22,7 +22,7 @@
     },
     "scripts": {
         "lint": "@php ./vendor/bin/parallel-lint --exclude .git --exclude vendor --exclude node_modules .",
-        "phpstan": "@php ./vendor/bin/phpstan analyse --level=5 --memory-limit=1G -c phpstan.neon"
+        "phpstan": "@php ./vendor/bin/phpstan analyse --level=5 --memory-limit=2G -c phpstan.neon"
     },
     "config": {
         "allow-plugins": {

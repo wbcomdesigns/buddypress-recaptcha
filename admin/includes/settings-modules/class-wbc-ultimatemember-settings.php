@@ -54,19 +54,19 @@ class WBC_UltimateMember_Settings extends WBC_Settings_Module_Abstract {
 					'id'      => 'wbc_recaptcha_enable_on_um_login',
 					'label'   => __( 'Login Form', 'buddypress-recaptcha' ),
 					'desc'    => __( 'Protect Ultimate Member login form from brute force attacks', 'buddypress-recaptcha' ),
-					'default' => 'yes',
+					'default' => 'no',
 				),
 				array(
 					'id'      => 'wbc_recaptcha_enable_on_um_register',
 					'label'   => __( 'Registration Form', 'buddypress-recaptcha' ),
 					'desc'    => __( 'Protect Ultimate Member registration form from spam accounts', 'buddypress-recaptcha' ),
-					'default' => 'yes',
+					'default' => 'no',
 				),
 				array(
 					'id'      => 'wbc_recaptcha_enable_on_um_password',
 					'label'   => __( 'Password Reset Form', 'buddypress-recaptcha' ),
 					'desc'    => __( 'Protect Ultimate Member password reset form from abuse', 'buddypress-recaptcha' ),
-					'default' => 'yes',
+					'default' => 'no',
 				),
 			)
 		);

@@ -390,6 +390,8 @@ Customize widget appearance:
 
 ### Problem: All Submissions Failing
 
+Start at **CAPTCHA Manager > Overview > Recent Rejections**: each blocked submission shows the reason Cloudflare gave (for example `invalid-input-response` for a site key and secret key from different widgets, or `timeout-or-duplicate` for an expired or reused answer).
+
 **Possible Causes:**
 
 1. **Wrong Secret Key:**
