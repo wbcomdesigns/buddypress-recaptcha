@@ -140,9 +140,11 @@ class Woocommerce_After_Checkout_Validation {
 		$context    = $this->checkout_context();
 
 		if ( ! wbc_captcha_service_manager()->verify( $context, $token ) ) {
+			// The Store API returns this as JSON and the checkout renders it as text,
+			// so it is stripped to plain text; HTML-escaping would show entities.
 			throw new \Automattic\WooCommerce\StoreApi\Exceptions\RouteException(
 				'wbc_captcha_invalid',
-				wp_strip_all_tags( wbc_get_captcha_error_message( $context, 'invalid' ) ),
+				wp_strip_all_tags( wbc_get_captcha_error_message( $context, 'invalid' ) ), // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
 				400
 			);
 		}
