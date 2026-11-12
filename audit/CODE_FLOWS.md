@@ -203,7 +203,7 @@ WBC_BuddyPress_Settings_Page (settings save handler)
 User clicks Activate → register_activation_hook fires
         │
         ▼
-activate_recaptcha_for_woocommerce()                  ← recaptcha-for-buddypress.php:65
+activate_wbc_captcha_manager()                  ← recaptcha-for-buddypress.php:65
         │
         └──▶ Recaptcha_For_BuddyPress_Activator::activate()
                   └─ flush_rewrite_rules() etc.

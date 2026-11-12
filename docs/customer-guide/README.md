@@ -166,6 +166,7 @@ CAPTCHA services are loaded only on pages with forms, and the impact is minimal.
 - Check for JavaScript errors in browser console
 
 **Q: CAPTCHA validation fails even when completed correctly**
+- Open **CAPTCHA Manager > Overview > Recent Rejections**. It lists the last 20 blocked submissions (kept 7 days) with the form, provider and the reason code, plus a plain-language explanation for common codes such as `missing-token`, `timeout-or-duplicate`, `invalid-input-response` and `network-error`. No token, key or IP address is stored.
 - Verify your API keys are correct (Site Key and Secret Key)
 - Check that your domain is allowed in the CAPTCHA service dashboard
 - Ensure your server can connect to the CAPTCHA service API

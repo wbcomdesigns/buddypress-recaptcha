@@ -350,9 +350,11 @@ class WBC_Captcha_Service_Manager {
 		// Wrap in try-catch for error handling.
 		try {
 			$result = $service->verify( $response, $args );
+			$reason = $service instanceof WBC_Captcha_Service_Base ? $service->pull_failure_reason() : '';
 
 			if ( ! $result ) {
 				$this->log_info( 'Captcha verification failed for context: ' . $context );
+				$this->record_rejection( $context, $service->get_service_id(), $reason ? $reason : ( '' === (string) $response ? 'missing-token' : 'rejected' ) );
 			} else {
 				$this->verified_contexts[ $context ] = true;
 			}
@@ -372,6 +374,37 @@ class WBC_Captcha_Service_Manager {
 			// Default: don't block on exceptions (legacy behavior).
 			return true;
 		}
+	}
+
+	/**
+	 * Transient holding the most recent rejected submissions for the Overview tab.
+	 */
+	const REJECTIONS_TRANSIENT = 'wbc_captcha_rejections';
+
+	/**
+	 * Remember a rejected submission so the owner can see why visitors fail.
+	 *
+	 * Keeps the newest 20 for a week. Stores no token, secret or IP.
+	 * ponytail: read-modify-write, two rejections in the same instant can drop one entry; fine for a diagnostic list.
+	 *
+	 * @param string $context Form context.
+	 * @param string $service Service id.
+	 * @param string $reason  Short reason code(s).
+	 * @return void
+	 */
+	private function record_rejection( $context, $service, $reason ) {
+		$log = get_transient( self::REJECTIONS_TRANSIENT );
+		$log = is_array( $log ) ? $log : array();
+		array_unshift(
+			$log,
+			array(
+				'time'    => time(),
+				'context' => sanitize_key( $context ),
+				'service' => sanitize_key( $service ),
+				'reason'  => substr( (string) $reason, 0, 120 ),
+			)
+		);
+		set_transient( self::REJECTIONS_TRANSIENT, array_slice( $log, 0, 20 ), WEEK_IN_SECONDS );
 	}
 
 	/**

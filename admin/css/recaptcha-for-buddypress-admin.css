@@ -952,3 +952,69 @@ h1.wbcom-plugin-heading {
 .wbc-advanced-info strong {
   color: var(--bprc-admin-accent);
 }
+
+/* Recent rejections (Overview tab) */
+.bprc-log {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.bprc-log th,
+.bprc-log td {
+  padding: 8px 10px;
+  text-align: start;
+  vertical-align: top;
+  border-bottom: 1px solid var(--bprc-admin-border);
+  color: var(--bprc-admin-text);
+}
+
+.bprc-log th {
+  color: var(--bprc-admin-text-3);
+  font-weight: 600;
+}
+
+.bprc-log td:last-child code {
+  overflow-wrap: anywhere;
+}
+
+.bprc-log-hint {
+  display: block;
+  margin-block-start: 4px;
+  color: var(--bprc-admin-text-3);
+}
+
+.bprc-log-empty {
+  margin: 0;
+  color: var(--bprc-admin-text-3);
+}
+
+@media (max-width: 640px) {
+  .bprc-log thead {
+    display: none;
+  }
+
+  .bprc-log,
+  .bprc-log tbody,
+  .bprc-log tr,
+  .bprc-log td {
+    display: block;
+    width: 100%;
+  }
+
+  .bprc-log tr {
+    padding-block: 8px;
+    border-bottom: 1px solid var(--bprc-admin-border);
+  }
+
+  .bprc-log td {
+    padding: 2px 0;
+    border: 0;
+  }
+
+  .bprc-log td::before {
+    content: attr(data-label) ": ";
+    font-weight: 600;
+    color: var(--bprc-admin-text-3);
+  }
+}

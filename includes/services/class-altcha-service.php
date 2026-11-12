@@ -417,12 +417,14 @@ class WBC_Altcha_Service extends WBC_Captcha_Service_Base {
 		parse_str( $query, $params );
 		$expires = isset( $params['expires'] ) ? absint( $params['expires'] ) : 0;
 		if ( ! $expires || $expires < time() ) {
+			$this->failure_reason = 'expired';
 			return false;
 		}
 
 		// Single use: remember the signature until the challenge expires.
 		$used_key = 'wbc_altcha_used_' . substr( $data['signature'], 0, 40 );
 		if ( get_transient( $used_key ) ) {
+			$this->failure_reason = 'already-used';
 			return false;
 		}
 		set_transient( $used_key, 1, max( 60, $expires - time() ) );

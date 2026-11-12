@@ -186,6 +186,10 @@ Yes. Add trusted addresses to the IP whitelist on the Advanced tab. It accepts s
 
 Lower the score threshold on the Advanced tab. reCAPTCHA v3 scores each request from 0.0 (likely bot) to 1.0 (likely human), and anything below your threshold is rejected. If legitimate users fail, your threshold is too strict.
 
+= A visitor says the CAPTCHA keeps failing. How do I find out why? =
+
+Open CAPTCHA Manager > Overview and look at Recent Rejections. It lists the last 20 blocked submissions with the form, the provider and the reason the provider gave, with a plain-language explanation for the common ones (widget not completed, answer expired or reused, wrong key pair, server could not reach the provider). Tokens, keys and IP addresses are never stored.
+
 = The CAPTCHA is not appearing on my form. Why? =
 
 Check three things in order: your API keys are saved, the toggle for that specific form is on in the Protection tab, and you are viewing the form logged out. Also confirm the integration's plugin is active - the Contact Form 7 toggle only exists when Contact Form 7 is.
@@ -234,6 +238,7 @@ Security and reliability release. Closes several ways to submit protected forms 
 * New      - Fail-closed and no-conflict switches on the Advanced tab.
 * New      - Add define( 'WBC_CAPTCHA_DISABLE', true ) to wp-config.php to switch every CAPTCHA off if you are ever locked out.
 * New      - CAPTCHA providers registered by other plugins appear in the provider picker.
+* New      - The Overview tab lists the last 20 rejected submissions with the form, provider and reason, so you can see why a visitor could not log in or submit.
 * Improve  - New installs protect every login, sign-up and password-reset form, including the login widget and block.
 * Improve  - When the provider reports an invalid site or secret key, submissions go through and an admin notice asks you to fix the keys, so a key mistake never locks everyone out.
 * Improve  - The widget resets itself after a failed AJAX submit, so the second attempt works without reloading the page.
@@ -247,11 +252,15 @@ Security and reliability release. Closes several ways to submit protected forms 
 * Fix      - The Protection tab showed some forms as protected when they were not.
 * Fix      - Sites upgraded from 1.x now keep their provider, score threshold and widget theme.
 * Fix      - BuddyPress sign-up now shows the CAPTCHA error instead of failing silently.
+* Fix      - Cloudflare Turnstile no longer logs a script warning about an unknown "ver" parameter.
+* Fix      - The "session expired" login popup in wp-admin grows to fit the CAPTCHA, so the Log In button is no longer cut off.
+* Fix      - A slow or unreachable licence server no longer delays every admin page; activation is tried at most once every 12 hours.
 * Security - The ALTCHA signing key is no longer sent to the browser, and each ALTCHA solution can be used only once; every widget loads a fresh challenge, so retries and cached pages keep working.
 * Security - Login is checked inside WordPress authentication, so custom login handlers cannot skip it, and BuddyPress REST sign-up is verified; XML-RPC password logins are blocked while login protection is on.
 * Security - reCAPTCHA v3 tokens must match the form's action and the score threshold.
 * Security - Login redirects only go to addresses on this site.
 * Dev      - Requires PHP 8.1 or higher.
+* Dev      - Plugin activation and loader functions renamed from the old WooCommerce names to activate_wbc_captcha_manager(), deactivate_wbc_captcha_manager() and run_wbc_captcha_manager().
 * Dev      - Removed the empty language hook, the Internet Explorer meta tag and unused settings helpers.
 
 = 2.2.2 - September 2026 =

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Wbcom CAPTCHA Manager 2.1.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/buddypress-recaptcha\n"
-"POT-Creation-Date: 2026-11-12T09:18:22+00:00\n"
+"POT-Creation-Date: 2026-11-12T10:11:27+00:00\n"
 "PO-Revision-Date: 2026-07-16T11:32:28+00:00\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -1346,7 +1346,7 @@ msgstr "Protéger tous les WPForms contre les envois indésirables"
 msgid "Overview"
 msgstr "Aperçu"
 
-#: includes/admin/class-bprc-admin.php:72 includes/admin/views/overview.php:99
+#: includes/admin/class-bprc-admin.php:72 includes/admin/views/overview.php:120
 msgid "Quick Setup"
 msgstr "Configuration rapide"
 
@@ -1358,7 +1358,7 @@ msgstr "Protection"
 msgid "Advanced"
 msgstr "Avancé"
 
-#: includes/admin/class-bprc-admin.php:90 includes/admin/views/overview.php:85
+#: includes/admin/class-bprc-admin.php:90 includes/admin/views/overview.php:106
 msgid "Updates"
 msgstr "Mises à jour"
 
@@ -1597,7 +1597,7 @@ msgstr "Compte"
 msgid "Resources"
 msgstr "Ressources"
 
-#: includes/admin/views/layout.php:90 includes/admin/views/overview.php:117
+#: includes/admin/views/layout.php:90 includes/admin/views/overview.php:186
 msgid "Documentation"
 msgstr "Documentation"
 
@@ -1621,81 +1621,151 @@ msgstr "Enregistrer les modifications"
 msgid "Not selected"
 msgstr "Non sélectionné"
 
-#. translators: %s: URL to the Quick Setup tab.
+#: includes/admin/views/overview.php:51
+msgid "No CAPTCHA answer was sent. The visitor did not complete the check, or a script blocker or optimizer stopped the widget."
+msgstr "Aucune réponse CAPTCHA n’a été envoyée. Le visiteur n’a pas terminé la vérification, ou un bloqueur de scripts ou un optimiseur a arrêté le widget."
+
+#. translators: %s: option name.
+#: includes/admin/views/overview.php:54
+#, php-format
+msgid "The form security token had expired, usually because the page was cached. Strict form checking (%s) is on: exclude the page from caching or turn it off."
+msgstr "Le jeton de sécurité du formulaire avait expiré, généralement parce que la page était en cache. La vérification stricte du formulaire (%s) est activée : excluez la page du cache ou désactivez-la."
+
+#: includes/admin/views/overview.php:57
+msgid "This server could not reach the CAPTCHA provider."
+msgstr "Ce serveur n’a pas pu joindre le fournisseur CAPTCHA."
+
 #: includes/admin/views/overview.php:58
+msgid "The CAPTCHA provider sent an unreadable answer."
+msgstr "Le fournisseur CAPTCHA a envoyé une réponse illisible."
+
+#: includes/admin/views/overview.php:59
+msgid "The answer expired or was already used. The visitor took too long or the form was sent twice."
+msgstr "La réponse avait expiré ou avait déjà été utilisée. Le visiteur a mis trop de temps ou le formulaire a été envoyé deux fois."
+
+#: includes/admin/views/overview.php:60
+msgid "The answer was not valid for these keys, often a site key and secret key from different widgets."
+msgstr "La réponse n’était pas valide pour ces clés, souvent parce que la clé du site et la clé secrète proviennent de widgets différents."
+
+#: includes/admin/views/overview.php:61
+msgid "reCAPTCHA v3 scored the visitor below your threshold."
+msgstr "reCAPTCHA v3 a attribué au visiteur un score inférieur à votre seuil."
+
+#: includes/admin/views/overview.php:62
+msgid "The reCAPTCHA v3 action did not match the form."
+msgstr "L’action reCAPTCHA v3 ne correspondait pas au formulaire."
+
+#: includes/admin/views/overview.php:63
+msgid "The ALTCHA challenge expired before the form was sent."
+msgstr "Le défi ALTCHA a expiré avant l’envoi du formulaire."
+
+#: includes/admin/views/overview.php:64
+msgid "The ALTCHA answer was already used."
+msgstr "La réponse ALTCHA avait déjà été utilisée."
+
+#. translators: %s: URL to the Quick Setup tab.
+#: includes/admin/views/overview.php:79
 #, php-format
 msgid "Your active CAPTCHA service is missing its API keys. <a href=\"%s\">Finish setup</a> so spam protection actually runs."
 msgstr "Ton service CAPTCHA actif ne dispose pas de ses clés API. <a href=\"%s\">Termine la configuration</a> pour que la protection contre les messages indésirables fonctionne réellement."
 
-#: includes/admin/views/overview.php:69
+#: includes/admin/views/overview.php:90
 msgid "Your CAPTCHA service is configured and ready to protect your forms."
 msgstr "Ton service CAPTCHA est configuré et prêt à protéger tes formulaires."
 
-#: includes/admin/views/overview.php:75
+#: includes/admin/views/overview.php:96
 msgid "Active Service"
 msgstr "Service actif"
 
-#: includes/admin/views/overview.php:79
+#: includes/admin/views/overview.php:100
 msgid "Keys Status"
 msgstr "État des clés"
 
-#: includes/admin/views/overview.php:81
+#: includes/admin/views/overview.php:102
 msgid "Configured"
 msgstr "Configuré"
 
-#: includes/admin/views/overview.php:81
+#: includes/admin/views/overview.php:102
 msgid "Incomplete"
 msgstr "Incomplet"
 
-#: includes/admin/views/overview.php:86
+#: includes/admin/views/overview.php:107
 msgid "Automatic"
 msgstr "Automatique"
 
-#: includes/admin/views/overview.php:92
+#: includes/admin/views/overview.php:113
 msgid "Get Started"
 msgstr "Commencer"
 
-#: includes/admin/views/overview.php:93
+#: includes/admin/views/overview.php:114
 msgid "Choose a CAPTCHA service, add your keys, then turn on protection for the forms you want to guard."
 msgstr "Choisis un service CAPTCHA, ajoute tes clés, puis active la protection pour les formulaires que tu veux protéger."
 
-#: includes/admin/views/overview.php:103
+#: includes/admin/views/overview.php:124
 msgid "Choose Forms to Protect"
 msgstr "Choisir les formulaires à protéger"
 
-#: includes/admin/views/overview.php:111
+#: includes/admin/views/overview.php:132
+msgid "Recent Rejections"
+msgstr "Rejets récents"
+
+#: includes/admin/views/overview.php:133
+msgid "The last 20 submissions the CAPTCHA blocked, kept for 7 days. Use this when a visitor reports they cannot log in or submit a form."
+msgstr "Les 20 dernières soumissions bloquées par le CAPTCHA, conservées 7 jours. Utilisez-les lorsqu’un visiteur signale qu’il ne peut pas se connecter ou envoyer un formulaire."
+
+#: includes/admin/views/overview.php:137
+msgid "No rejected submissions in the last 7 days."
+msgstr "Aucune soumission rejetée au cours des 7 derniers jours."
+
+#: includes/admin/views/overview.php:142 includes/admin/views/overview.php:161
+msgid "Time"
+msgstr "Heure"
+
+#: includes/admin/views/overview.php:143 includes/admin/views/overview.php:162
+msgid "Form"
+msgstr "Formulaire"
+
+#: includes/admin/views/overview.php:144 includes/admin/views/overview.php:163
+msgid "Service"
+msgstr "Service"
+
+#: includes/admin/views/overview.php:145 includes/admin/views/overview.php:164
+msgid "Reason"
+msgstr "Motif"
+
+#: includes/admin/views/overview.php:180
 msgid "Help &amp; Support"
 msgstr "Aide et support"
 
-#: includes/admin/views/overview.php:112
+#: includes/admin/views/overview.php:181
 msgid "Everything you need to set up, troubleshoot, and get the most out of the plugin."
 msgstr "Tout ce dont tu as besoin pour configurer, dépanner et tirer le meilleur parti du plugin."
 
-#: includes/admin/views/overview.php:118
+#: includes/admin/views/overview.php:187
 msgid "Step-by-step setup guides and best practices for every supported CAPTCHA service."
 msgstr "Guides de configuration étape par étape et meilleures pratiques pour chaque service CAPTCHA pris en charge."
 
-#: includes/admin/views/overview.php:119
+#: includes/admin/views/overview.php:188
 msgid "Read Documentation"
 msgstr "Lire la documentation"
 
-#: includes/admin/views/overview.php:122
+#: includes/admin/views/overview.php:191
 msgid "Support Center"
 msgstr "Centre de support"
 
-#: includes/admin/views/overview.php:123
+#: includes/admin/views/overview.php:192
 msgid "Get expert help with setup, configuration, and troubleshooting from our team."
 msgstr "Obtiens de l'aide d'experts pour la configuration, la mise en place et la résolution des problèmes de notre équipe."
 
-#: includes/admin/views/overview.php:124
+#: includes/admin/views/overview.php:193
 msgid "Get Support"
 msgstr "Obtenir du support"
 
-#: includes/admin/views/overview.php:127 includes/admin/views/overview.php:129
+#: includes/admin/views/overview.php:196 includes/admin/views/overview.php:198
 msgid "Send Feedback"
 msgstr "Envoyer des commentaires"
 
-#: includes/admin/views/overview.php:128
+#: includes/admin/views/overview.php:197
 msgid "Share your experience and suggestions to help us make the plugin even better."
 msgstr "Partage ton expérience et tes suggestions pour nous aider à rendre le plugin encore meilleur."
 
@@ -1750,25 +1820,25 @@ msgid "Security check"
 msgstr "Vérification de sécurité"
 
 #. translators: %s: plugin name
-#: includes/class-captcha-service-manager.php:395
+#: includes/class-captcha-service-manager.php:428
 #, php-format
 msgid "%s is switched off by WBC_CAPTCHA_DISABLE in wp-config.php. No form is protected until it is removed."
 msgstr "%s est désactivé par WBC_CAPTCHA_DISABLE dans wp-config.php. Aucun formulaire n’est protégé tant que cette ligne n’est pas retirée."
 
 #. translators: 1: plugin name, 2: CAPTCHA provider name, 3: provider error codes, 4: opening anchor tag, 5: closing anchor tag
-#: includes/class-captcha-service-manager.php:409
+#: includes/class-captcha-service-manager.php:442
 #, php-format
 msgid "%1$s: %2$s rejected this site's keys (%3$s). So nobody gets locked out, CAPTCHA checks are being let through until this is fixed. %4$sCheck the keys in Quick Setup%5$s."
 msgstr "%1$s : %2$s a refusé les clés de ce site (%3$s). Pour que personne ne soit bloqué, les vérifications CAPTCHA sont laissées passer jusqu’à la correction. %4$sVérifier les clés dans la configuration rapide%5$s."
 
 #. translators: %1$s: opening anchor tag, %2$s: closing anchor tag
-#: includes/class-captcha-service-manager.php:437
+#: includes/class-captcha-service-manager.php:470
 #, php-format
 msgid "Wbcom CAPTCHA Manager is enabled but the active service is not configured. Forms are currently unprotected — %1$sopen settings%2$s and add your API keys."
 msgstr "Wbcom CAPTCHA Manager est activé mais le service actif n'est pas configuré. Les formulaires sont actuellement non protégés — %1$souvre les paramètres%2$s et ajoute tes clés API."
 
 #. translators: %s: Settings page URL
-#: includes/class-captcha-service-manager.php:506
+#: includes/class-captcha-service-manager.php:539
 #, php-format
 msgid "Captcha service is not properly configured. Please %1$sconfigure your captcha settings%2$s."
 msgstr "Le service Captcha n'est pas correctement configuré. S'il te plaît, %1$sconfigure tes paramètres captcha%2$s."

@@ -249,7 +249,7 @@ abstract class WBC_Captcha_Service_Base implements WBC_Captcha_Service_Interface
 				$handle,
 				$this->get_script_url(),
 				array( 'jquery' ),
-				RFB_PLUGIN_VERSION,
+				null, // Provider CDN scripts: no ?ver=, which Cloudflare's api.js rejects as an unknown parameter.
 				true
 			);
 		}
@@ -470,7 +470,30 @@ abstract class WBC_Captcha_Service_Base implements WBC_Captcha_Service_Interface
 		$action = $this->get_nonce_action( $context );
 		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- verified below.
 		$nonce = isset( $_POST[ $action ] ) ? sanitize_text_field( wp_unslash( $_POST[ $action ] ) ) : '';
-		return (bool) wp_verify_nonce( $nonce, $action );
+		if ( wp_verify_nonce( $nonce, $action ) ) {
+			return true;
+		}
+		$this->failure_reason = 'stale-form';
+		return false;
+	}
+
+	/**
+	 * Why the last verify() on this service failed, as a short code.
+	 *
+	 * @var string
+	 */
+	protected $failure_reason = '';
+
+	/**
+	 * Return the last failure reason and clear it, so one submission's reason
+	 * never leaks into the next check in the same request.
+	 *
+	 * @return string Empty when nothing recorded one.
+	 */
+	public function pull_failure_reason() {
+		$reason               = $this->failure_reason;
+		$this->failure_reason = '';
+		return $reason;
 	}
 
 	/**
@@ -507,11 +530,13 @@ abstract class WBC_Captcha_Service_Base implements WBC_Captcha_Service_Interface
 		);
 
 		if ( is_wp_error( $request ) ) {
+			$this->failure_reason = 'network-error';
 			return false;
 		}
 
 		$result = json_decode( (string) wp_remote_retrieve_body( $request ), true );
 		if ( ! is_array( $result ) ) {
+			$this->failure_reason = 'bad-response';
 			return false;
 		}
 
@@ -529,6 +554,10 @@ abstract class WBC_Captcha_Service_Base implements WBC_Captcha_Service_Interface
 				'success'       => true,
 				'wbc_key_error' => true,
 			);
+		}
+
+		if ( empty( $result['success'] ) ) {
+			$this->failure_reason = $codes ? implode( ',', array_map( 'sanitize_key', $codes ) ) : 'rejected';
 		}
 
 		return $result;

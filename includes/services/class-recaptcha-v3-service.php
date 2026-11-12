@@ -309,12 +309,14 @@ class WBC_Recaptcha_V3_Service extends WBC_Captcha_Service_Base {
 		$score           = isset( $result['score'] ) ? floatval( $result['score'] ) : 0;
 
 		if ( $score < $score_threshold ) {
+			$this->failure_reason = 'low-score';
 			return false;
 		}
 
 		// Check action if configured.
 		$expected_action = $this->get_action_for_context( $context );
 		if ( ! empty( $expected_action ) && ( ! isset( $result['action'] ) || $result['action'] !== $expected_action ) ) {
+			$this->failure_reason = 'action-mismatch';
 			return false;
 		}
 
@@ -580,7 +582,7 @@ class WBC_Recaptcha_V3_Service extends WBC_Captcha_Service_Base {
 			'wbc-recaptcha-v3',
 			'https://www.google.com/recaptcha/api.js?render=' . esc_attr( $site_key ),
 			array(),
-			'3.0',
+			null, // No ?ver= on Google's script.
 			true
 		);
 	}

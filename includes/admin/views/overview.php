@@ -3,7 +3,7 @@
  * Overview tab — status snapshot + help resources.
  *
  * Read-only dashboard. Reads the same wbc_* options the settings tabs
- * write; it never persists anything itself.
+ * write, plus the recent-rejections transient; it never persists anything itself.
  *
  * @package Recaptcha_For_BuddyPress
  * @since   2.1.0
@@ -42,6 +42,27 @@ if ( isset( $bprc_key_map[ $bprc_service ] ) ) {
 		}
 	}
 }
+
+$bprc_rejections = get_transient( WBC_Captcha_Service_Manager::REJECTIONS_TRANSIENT );
+$bprc_rejections = is_array( $bprc_rejections ) ? $bprc_rejections : array();
+
+// Plain-language hints for the reason codes owners ask about most.
+$bprc_reason_hints = array(
+	'missing-token'          => __( 'No CAPTCHA answer was sent. The visitor did not complete the check, or a script blocker or optimizer stopped the widget.', 'buddypress-recaptcha' ),
+	'stale-form'             => sprintf(
+		/* translators: %s: option name. */
+		__( 'The form security token had expired, usually because the page was cached. Strict form checking (%s) is on: exclude the page from caching or turn it off.', 'buddypress-recaptcha' ),
+		'wbc_captcha_strict_nonce'
+	),
+	'network-error'          => __( 'This server could not reach the CAPTCHA provider.', 'buddypress-recaptcha' ),
+	'bad-response'           => __( 'The CAPTCHA provider sent an unreadable answer.', 'buddypress-recaptcha' ),
+	'timeout-or-duplicate'   => __( 'The answer expired or was already used. The visitor took too long or the form was sent twice.', 'buddypress-recaptcha' ),
+	'invalid-input-response' => __( 'The answer was not valid for these keys, often a site key and secret key from different widgets.', 'buddypress-recaptcha' ),
+	'low-score'              => __( 'reCAPTCHA v3 scored the visitor below your threshold.', 'buddypress-recaptcha' ),
+	'action-mismatch'        => __( 'The reCAPTCHA v3 action did not match the form.', 'buddypress-recaptcha' ),
+	'expired'                => __( 'The ALTCHA challenge expired before the form was sent.', 'buddypress-recaptcha' ),
+	'already-used'           => __( 'The ALTCHA answer was already used.', 'buddypress-recaptcha' ),
+);
 
 $bprc_setup_url   = admin_url( 'admin.php?page=' . BPRC_Admin::MENU_SLUG . '&tab=rfw-general' );
 $bprc_protect_url = admin_url( 'admin.php?page=' . BPRC_Admin::MENU_SLUG . '&tab=protection' );
@@ -103,6 +124,54 @@ $bprc_protect_url = admin_url( 'admin.php?page=' . BPRC_Admin::MENU_SLUG . '&tab
 				<?php esc_html_e( 'Choose Forms to Protect', 'buddypress-recaptcha' ); ?>
 			</a>
 		</div>
+	</div>
+</div>
+
+<div class="bprc-card">
+	<div class="bprc-card__head">
+		<p class="bprc-card__title"><?php esc_html_e( 'Recent Rejections', 'buddypress-recaptcha' ); ?></p>
+		<p class="bprc-card__desc"><?php esc_html_e( 'The last 20 submissions the CAPTCHA blocked, kept for 7 days. Use this when a visitor reports they cannot log in or submit a form.', 'buddypress-recaptcha' ); ?></p>
+	</div>
+	<div class="bprc-card__body">
+		<?php if ( empty( $bprc_rejections ) ) : ?>
+			<p class="bprc-log-empty"><?php esc_html_e( 'No rejected submissions in the last 7 days.', 'buddypress-recaptcha' ); ?></p>
+		<?php else : ?>
+			<table class="bprc-log">
+				<thead>
+					<tr>
+						<th scope="col"><?php esc_html_e( 'Time', 'buddypress-recaptcha' ); ?></th>
+						<th scope="col"><?php esc_html_e( 'Form', 'buddypress-recaptcha' ); ?></th>
+						<th scope="col"><?php esc_html_e( 'Service', 'buddypress-recaptcha' ); ?></th>
+						<th scope="col"><?php esc_html_e( 'Reason', 'buddypress-recaptcha' ); ?></th>
+					</tr>
+				</thead>
+				<tbody>
+					<?php foreach ( $bprc_rejections as $bprc_row ) : ?>
+						<?php
+						$bprc_reason = isset( $bprc_row['reason'] ) ? (string) $bprc_row['reason'] : '';
+						$bprc_svc    = isset( $bprc_row['service'] ) ? (string) $bprc_row['service'] : '';
+						$bprc_hints  = array();
+						foreach ( explode( ',', $bprc_reason ) as $bprc_code ) {
+							if ( isset( $bprc_reason_hints[ $bprc_code ] ) ) {
+								$bprc_hints[] = $bprc_reason_hints[ $bprc_code ];
+							}
+						}
+						?>
+						<tr>
+							<td data-label="<?php esc_attr_e( 'Time', 'buddypress-recaptcha' ); ?>"><?php echo esc_html( wp_date( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), (int) $bprc_row['time'] ) ); ?></td>
+							<td data-label="<?php esc_attr_e( 'Form', 'buddypress-recaptcha' ); ?>"><code><?php echo esc_html( $bprc_row['context'] ); ?></code></td>
+							<td data-label="<?php esc_attr_e( 'Service', 'buddypress-recaptcha' ); ?>"><?php echo esc_html( isset( $bprc_service_names[ $bprc_svc ] ) ? $bprc_service_names[ $bprc_svc ] : $bprc_svc ); ?></td>
+							<td data-label="<?php esc_attr_e( 'Reason', 'buddypress-recaptcha' ); ?>">
+								<code><?php echo esc_html( $bprc_reason ); ?></code>
+								<?php if ( $bprc_hints ) : ?>
+									<span class="bprc-log-hint"><?php echo esc_html( implode( ' ', $bprc_hints ) ); ?></span>
+								<?php endif; ?>
+							</td>
+						</tr>
+					<?php endforeach; ?>
+				</tbody>
+			</table>
+		<?php endif; ?>
 	</div>
 </div>
 
