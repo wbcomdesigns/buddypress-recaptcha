@@ -137,6 +137,17 @@
 	window.wbcCaptcha = window.wbcCaptcha || {};
 	window.wbcCaptcha.refresh = refresh;
 
+	// ALTCHA's checkbox has no name. jQuery Validate (WPForms and others) looks
+	// checkboxes up by name and throws on an unnamed one, which breaks the
+	// form's AJAX submit. Name it once the widget has drawn it.
+	function nameAltchaCheckboxes() {
+		document.querySelectorAll( 'altcha-widget input[type="checkbox"]:not([name])' ).forEach( function ( box ) {
+			box.setAttribute( 'name', 'wbc_altcha_checkbox' );
+		} );
+	}
+	window.addEventListener( 'load', nameAltchaCheckboxes );
+	document.addEventListener( 'statechange', nameAltchaCheckboxes, true );
+
 	// Form plugins that submit over AJAX and report failure with a DOM event.
 	// Each event's target is (or is inside) the form that failed.
 	function closestForm( target ) {
@@ -158,11 +169,12 @@
 	if ( window.jQuery ) {
 		var $ = window.jQuery;
 
-		$( document ).on( 'wpformsAjaxSubmitFailed wpformsAjaxSubmitActionRequired', 'form', function () {
+		$( document ).on( 'wpformsAjaxSubmitFailed wpformsAjaxSubmitError wpformsAjaxSubmitActionRequired', 'form', function () {
 			refresh( this );
 		} );
-		$( document ).on( 'forminator:form:submit:failed', function ( event, form ) {
-			refresh( form || closestForm( event.target ) );
+		// Triggered on the form itself; the second argument is the FormData.
+		$( document ).on( 'forminator:form:submit:failed', function ( event ) {
+			refresh( closestForm( event.target ) );
 		} );
 		$( document ).on( 'error', '.elementor-form', function () {
 			refresh( this );
