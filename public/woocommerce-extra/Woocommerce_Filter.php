@@ -80,39 +80,6 @@ class Woocommerce_Filter {
 	}
 
 	/**
-	 * Display order tracking captcha
-	 *
-	 * @return void
-	 */
-	public function woo_display_order_tracking_captcha() {
-		// Use the service manager to render captcha.
-		if ( function_exists( 'wbc_captcha_service_manager' ) ) {
-			wbc_captcha_service_manager()->render( 'order_tracking' );
-		}
-	}
-
-	/**
-	 * Verify order tracking captcha
-	 *
-	 * @return void
-	 */
-	public function woo_verify_order_tracking_captcha() {
-		// Check if captcha is enabled for order tracking.
-		$is_enabled = get_option( 'wbc_recaptcha_enable_on_order_tracking' );
-		if ( 'yes' !== $is_enabled ) {
-			return;
-		}
-
-		// Verify captcha.
-		if ( function_exists( 'wbc_verify_captcha' ) ) {
-			if ( ! wbc_verify_captcha( 'order_tracking' ) ) {
-				$error_msg = wbc_get_captcha_error_message( 'order_tracking', 'invalid' );
-				wc_add_notice( $error_msg, 'error' );
-			}
-		}
-	}
-
-	/**
 	 * Verify comment captcha
 	 *
 	 * @param array $commentdata Comment data.

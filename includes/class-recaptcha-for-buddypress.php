@@ -580,6 +580,14 @@ class Recaptcha_For_BuddyPress {
 		add_action( 'woocommerce_register_post', array( $woocommerce_register_post, 'woocomm_validate_signup_captcha' ), 10, 3 );
 		add_action( 'woocommerce_process_login_errors', array( $woocommerce_process_login_errors, 'woocomm_validate_login_captcha' ), 10, 3 );
 		add_action( 'woocommerce_after_checkout_validation', array( $woocommerce_after_checkout_validation, 'woocomm_validate_checkout_captcha' ), 10, 2 );
+		// Block checkout places orders through the Store API instead.
+		// woocommerce_blocks_loaded has normally fired by now (we run at plugins_loaded:20).
+		if ( did_action( 'woocommerce_blocks_loaded' ) ) {
+			$woocommerce_after_checkout_validation->register_store_api_data();
+		} else {
+			add_action( 'woocommerce_blocks_loaded', array( $woocommerce_after_checkout_validation, 'register_store_api_data' ) );
+		}
+		add_action( 'woocommerce_store_api_checkout_update_order_from_request', array( $woocommerce_after_checkout_validation, 'validate_store_api_checkout' ), 10, 2 );
 
 		// Note: the WP core login validator (wp_authenticate_user), the comment form
 		// CAPTCHA (display + verify), and the lost-password validator (lostpassword_post)
@@ -589,9 +597,6 @@ class Recaptcha_For_BuddyPress {
 		// on the second check.
 		$woocommerce_order = new Woocommerce_Order();
 
-		// WooCommerce Order hooks.
-		add_action( 'woocommerce_pay_order_before_submit', array( $woocommerce_order, 'woo_extra_checkout_fields_pay_order' ) );
-		add_action( 'woocommerce_before_pay_action', array( $woocommerce_order, 'woo_validate_pay_order_captcha' ) );
 		// Priority 999 ensures reCAPTCHA is added to checkout blocks last.
 		add_filter( 'render_block_woocommerce/checkout-payment-block', array( $woocommerce_order, 'woo_recaptcha_alter_checkout_payment_block' ), 999, 1 );
 		// Add CAPTCHA to WooCommerce product review forms.
@@ -815,6 +820,14 @@ class Recaptcha_For_BuddyPress {
 			'wbc-captcha-refresh',
 			plugin_dir_url( __DIR__ ) . 'public/js/wbc-captcha-refresh.js',
 			array(),
+			$this->version,
+			true
+		);
+		// Block checkout: sends the token with the Store API order request.
+		wp_register_script(
+			'wbc-checkout-block',
+			plugin_dir_url( __DIR__ ) . 'public/js/wbc-checkout-block.js',
+			array( 'wp-data', 'wbc-captcha-refresh' ),
 			$this->version,
 			true
 		);
