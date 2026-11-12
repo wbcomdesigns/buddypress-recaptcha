@@ -134,7 +134,6 @@ class WBC_Settings_Migration {
 
 			// Other.
 			'wbc_recapcha_enable_on_comment'        => 'wbc_recapcha_enable_on_comment',
-			'wbc_recapcha_enable_on_order_tracking' => 'wbc_recapcha_enable_on_order_tracking',
 		);
 
 		foreach ( $integration_mappings as $old_key => $new_key ) {

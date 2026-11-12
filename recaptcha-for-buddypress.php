@@ -18,7 +18,7 @@
  * Version:           2.2.2
  * Requires at least: 6.5
  * Tested up to:      7.0
- * Requires PHP:      8.0
+ * Requires PHP:      8.1
  * Author:            Wbcom Designs
  * Author URI:        https://wbcomdesigns.com/
  * License:           GPL-2.0+

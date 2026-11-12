@@ -98,7 +98,6 @@ function wbc_get_option_name_mapping() {
 		'wbc_recapcha_enable_on_bbpress_topic'       => 'wbc_recaptcha_enable_on_bbpress_topic',
 		'wbc_recapcha_enable_on_bbpress_reply'       => 'wbc_recaptcha_enable_on_bbpress_reply',
 		'wbc_recapcha_enable_on_comment'             => 'wbc_recaptcha_enable_on_comment',
-		'wbc_recapcha_enable_on_order_tracking'      => 'wbc_recaptcha_enable_on_order_tracking',
 
 		// Key options.
 		'wc_settings_tab_recapcha_site_key'          => 'wc_settings_tab_recaptcha_site_key',

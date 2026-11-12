@@ -326,7 +326,7 @@ class WBC_Captcha_Service_Manager {
 			// Optional fail-closed mode: block the request when configuration is
 			// missing. Off by default for backwards compatibility.
 			//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
-			if ( apply_filters( 'wbc_captcha_fail_closed', (bool) get_option( 'wbc_captcha_fail_closed', false ), $context ) ) {
+			if ( $this->fail_closed( $context ) ) {
 				return false;
 			}
 			return true; // Don't block if not configured (legacy behavior).
@@ -365,7 +365,7 @@ class WBC_Captcha_Service_Manager {
 			// Optional fail-closed mode: block on unexpected exceptions when the
 			// admin opts into stricter verification.
 			//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
-			if ( apply_filters( 'wbc_captcha_fail_closed', (bool) get_option( 'wbc_captcha_fail_closed', false ), $context ) ) {
+			if ( $this->fail_closed( $context ) ) {
 				return false;
 			}
 
@@ -543,6 +543,19 @@ class WBC_Captcha_Service_Manager {
 	public function is_configured() {
 		$service = $this->get_active_service();
 		return $service ? $service->is_configured() : false;
+	}
+
+	/**
+	 * Whether a provider outage should block the submission. The Advanced tab
+	 * saves "yes"/"no", so the stored value is parsed, never cast ((bool) "no"
+	 * is true).
+	 *
+	 * @param string $context Form context.
+	 * @return bool
+	 */
+	private function fail_closed( $context ) {
+		$stored = filter_var( get_option( 'wbc_captcha_fail_closed', false ), FILTER_VALIDATE_BOOLEAN );
+		return (bool) apply_filters( 'wbc_captcha_fail_closed', $stored, $context );
 	}
 
 	/**

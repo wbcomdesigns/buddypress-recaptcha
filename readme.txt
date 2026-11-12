@@ -5,7 +5,7 @@ Tags: captcha, recaptcha, spam protection, security, woocommerce
 Requires at least: 6.5
 Tested up to: 7.0
 Stable tag: 2.2.2
-Requires PHP: 8.0
+Requires PHP: 8.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: buddypress-recaptcha
@@ -28,11 +28,11 @@ Four of the five providers need free API keys from the provider. ALTCHA does not
 * Cloudflare Turnstile.
 * hCaptcha.
 * ALTCHA: self-hosted proof-of-work, no third-party account and no API keys. The HMAC key is generated for you.
-* Switch providers from one dropdown; every protected form follows.
+* Switch providers with one setting; every protected form follows.
 
 **Protects 14 integrations**
-* WordPress core: login, registration, lost password, and comments.
-* WooCommerce: customer login, registration, lost password, product reviews, guest checkout, login at checkout, order tracking, and pay for order.
+* WordPress core: login, registration, lost password, and comments. Password logins over XML-RPC are blocked while login protection is on; application passwords keep working.
+* WooCommerce: customer login, registration, lost password, product reviews, and checkout for guests and logged-in customers, on both the block checkout and the classic checkout.
 * BuddyPress: member registration and group creation.
 * bbPress: new topics and replies.
 * Form builders: Contact Form 7, WPForms, Gravity Forms, Ninja Forms, Forminator, Elementor Pro Forms, and Divi Builder contact forms.
@@ -149,7 +149,7 @@ ALTCHA needs no keys and no account. It is self-hosted and generates its own HMA
 = Requirements =
 
 * WordPress 6.5 or higher
-* PHP 8.0 or higher
+* PHP 8.1 or higher
 * API keys from your chosen provider (not required for ALTCHA)
 
 == Frequently Asked Questions ==
@@ -164,7 +164,7 @@ reCAPTCHA v2 is the familiar checkbox and the safest default. reCAPTCHA v3 is in
 
 = Can I use more than one service at a time? =
 
-No. One service is active site-wide, on every protected form. Switching services is a single dropdown change and does not reset your per-form toggles.
+No. One service is active site-wide, on every protected form. Switching services is a single setting change and does not reset your per-form toggles.
 
 = Does ALTCHA really need no API keys? =
 
@@ -173,6 +173,10 @@ Correct. ALTCHA is self-hosted proof-of-work. It generates its own HMAC key when
 = What happens if the CAPTCHA provider goes down? =
 
 By default the plugin fails open: if the provider's API cannot be reached, the submission is allowed through, so an outage at Google or Cloudflare cannot lock your users out. If you would rather block submissions than risk letting spam through, enable fail-closed mode on the Advanced tab.
+
+= My keys are wrong and I cannot log in. What now? =
+
+You should not get locked out: when the provider reports that your site key or secret key is invalid, the plugin lets the submission through and shows an admin notice asking you to fix the keys. If you still need to switch everything off, add `define( 'WBC_CAPTCHA_DISABLE', true );` to wp-config.php, log in, fix the keys, then remove the line.
 
 = Can I skip the CAPTCHA for my own IP? =
 

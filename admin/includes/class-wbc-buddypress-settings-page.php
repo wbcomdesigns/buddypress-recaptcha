@@ -817,8 +817,22 @@ if ( ! class_exists( 'WBC_BuddyPress_Settings_Page' ) ) :
 				'name'        => __( 'IP Whitelist', 'buddypress-recaptcha' ),
 				'type'        => 'textarea',
 				'id'          => 'wbc_recaptcha_ip_to_skip_captcha',
-				'desc'        => __( 'IP addresses that skip captcha (comma-separated)', 'buddypress-recaptcha' ),
-				'placeholder' => '192.168.1.1, 10.0.0.1',
+				'desc'        => __( 'IP addresses or ranges that skip the CAPTCHA, one per line.', 'buddypress-recaptcha' ),
+				'placeholder' => "192.168.1.1\n10.0.0.0/24",
+			);
+
+			$settings[] = array(
+				'name' => __( 'Block when the provider is down', 'buddypress-recaptcha' ),
+				'type' => 'checkbox',
+				'id'   => 'wbc_captcha_fail_closed',
+				'desc' => __( 'If the CAPTCHA provider cannot be reached, reject the submission instead of letting it through. Leave off so a provider outage never locks out your members.', 'buddypress-recaptcha' ),
+			);
+
+			$settings[] = array(
+				'name' => __( 'No-conflict mode', 'buddypress-recaptcha' ),
+				'type' => 'checkbox',
+				'id'   => 'wbc_recapcha_no_conflict',
+				'desc' => __( 'Remove CAPTCHA scripts loaded by other plugins or the theme, so only this plugin\'s CAPTCHA runs. Turn on if the widget fails to show or shows twice.', 'buddypress-recaptcha' ),
 			);
 
 			/*
@@ -976,6 +990,16 @@ if ( ! class_exists( 'WBC_BuddyPress_Settings_Page' ) ) :
 					'badge' => __( 'Privacy First', 'buddypress-recaptcha' ),
 				),
 			);
+
+			// Providers registered by other plugins (wbc_register_captcha_services).
+			foreach ( wbc_captcha_service_manager()->get_services() as $service_id => $service ) {
+				if ( ! isset( $services[ $service_id ] ) ) {
+					$services[ $service_id ] = array(
+						'name' => $service->get_service_name(),
+						'desc' => '',
+					);
+				}
+			}
 
 			$html = '<div class="wbc-service-selector">';
 
@@ -1615,13 +1639,6 @@ if ( ! class_exists( 'WBC_BuddyPress_Settings_Page' ) ) :
 					'default' => 'no',
 				),
 
-				array(
-					'name'    => __( 'Order Tracking', 'buddypress-recaptcha' ),
-					'type'    => 'checkbox',
-					'id'      => 'wbc_recapcha_enable_on_order_tracking',
-					'desc'    => __( 'Protect order tracking from automated queries', 'buddypress-recaptcha' ),
-					'default' => 'no',
-				),
 
 				array(
 					'type' => 'sectionend',
@@ -1899,6 +1916,9 @@ if ( ! class_exists( 'WBC_BuddyPress_Settings_Page' ) ) :
 			foreach ( $field_ids as $field_id ) {
 				if ( isset( $_POST[ $field_id ] ) ) {
 					$value = sanitize_text_field( wp_unslash( $_POST[ $field_id ] ) );
+					if ( 'wbc_captcha_service' === $field_id && ! wbc_captcha_service_manager()->get_service( $value ) ) {
+						continue;
+					}
 					update_option( $field_id, $value );
 				}
 			}

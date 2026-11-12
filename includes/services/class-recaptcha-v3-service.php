@@ -342,7 +342,6 @@ class WBC_Recaptcha_V3_Service extends WBC_Captcha_Service_Base {
 			'bbpress_topic'      => get_option( 'wbc_recapcha_bbpress_topic_action_v3', 'bbPress_topic' ),
 			'bbpress_reply'      => get_option( 'wbc_recapcha_bbpress_reply_action_v3', 'bbPress_reply' ),
 			'comment_form'       => 'comment',
-			'order_tracking'     => 'order_tracking',
 		);
 
 		return isset( $action_map[ $context ] ) ? $action_map[ $context ] : $context;
