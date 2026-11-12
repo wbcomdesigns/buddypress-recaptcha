@@ -43,23 +43,21 @@ class WBC_Login {
 	 * height, the same way core sizes it on load (body height + 40px).
 	 */
 	public function fit_interim_login_popup() {
-		?>
-		<script>
-		( function () {
-			if ( window.parent === window || typeof ResizeObserver === 'undefined' ) {
-				return;
-			}
-			new ResizeObserver( function () {
-				try {
-					var box = window.parent.document.getElementById( 'wp-auth-check' );
-					if ( box ) {
-						box.style.maxHeight = ( document.body.scrollHeight + 40 ) + 'px';
-					}
-				} catch ( e ) {} // Different origin: leave core's sizing alone.
-			} ).observe( document.body );
-		}() );
-		</script>
-		<?php
+		wp_print_inline_script_tag(
+			"( function () {
+				if ( window.parent === window || typeof ResizeObserver === 'undefined' ) {
+					return;
+				}
+				new ResizeObserver( function () {
+					try {
+						var box = window.parent.document.getElementById( 'wp-auth-check' );
+						if ( box ) {
+							box.style.maxHeight = ( document.body.scrollHeight + 40 ) + 'px';
+						}
+					} catch ( e ) {} // Different origin: leave core's sizing alone.
+				} ).observe( document.body );
+			}() );"
+		);
 	}
 
 	/**
