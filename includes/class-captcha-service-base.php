@@ -156,9 +156,14 @@ abstract class WBC_Captcha_Service_Base implements WBC_Captcha_Service_Interface
 	 * @return mixed
 	 */
 	public function get_appearance_option( $name, $default = null ) {
-		$own = get_option( 'wbc_' . $this->get_service_id() . '_' . $name, '' );
-		if ( '' !== $own && false !== $own && null !== $own ) {
-			return $own;
+		// Service ids use hyphens (wbc_recaptcha-v2_theme); the 2.x option
+		// migration stored 1.x values under underscores (wbc_recaptcha_v2_theme).
+		$id = $this->get_service_id();
+		foreach ( array_unique( array( 'wbc_' . $id . '_' . $name, 'wbc_' . str_replace( '-', '_', $id ) . '_' . $name ) ) as $key ) {
+			$own = get_option( $key, '' );
+			if ( '' !== $own && false !== $own && null !== $own ) {
+				return $own;
+			}
 		}
 
 		$shared = get_option( 'wbc_recaptcha_' . $name, '' );

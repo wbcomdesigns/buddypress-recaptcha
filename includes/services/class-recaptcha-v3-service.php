@@ -359,6 +359,9 @@ class WBC_Recaptcha_V3_Service extends WBC_Captcha_Service_Base {
 		// (Advanced tab -> reCAPTCHA v3 score threshold). A single global value
 		// applies to every context unless a legacy per-context override exists.
 		$global = get_option( 'wbc_recaptcha_v3_score_threshold', '' );
+		if ( '' === $global || false === $global ) {
+			$global = get_option( 'wbc_recaptcha_v3_score', '' ); // Where the 2.x migration put the 1.x score.
+		}
 
 		// Legacy per-context overrides (pre-2.1 typo-spelled keys). Kept only as a
 		// fallback so older installs that set these keep their tuned values.
