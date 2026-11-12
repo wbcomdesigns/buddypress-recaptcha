@@ -48,16 +48,18 @@ class Recaptcha_For_BuddyPress_Activator { // phpcs:ignore WordPress.NamingConve
 			}
 		}
 
-		// Initialize default protection options if they don't exist.
+		// New-install protection: every login, sign-up, password-reset and checkout
+		// form is on. Only the logged-in checkout stays off (the shopper already
+		// proved themselves at login).
 		$defaults = array(
 			// WordPress Core Forms.
 			'wbc_recaptcha_enable_on_wplogin'              => 'yes',
 			'wbc_recaptcha_enable_on_wpregister'           => 'yes',
 			'wbc_recaptcha_enable_on_wplostpassword'       => 'yes',
 			// WooCommerce Forms.
-			'wbc_recaptcha_enable_on_login'                => 'no',
+			'wbc_recaptcha_enable_on_login'                => 'yes',
 			'wbc_recaptcha_enable_on_signup'               => 'yes',
-			'wbc_recaptcha_enable_on_lostpassword'         => 'no',
+			'wbc_recaptcha_enable_on_lostpassword'         => 'yes',
 			'wbc_recaptcha_enable_on_guestcheckout'        => 'yes',
 			'wbc_recaptcha_enable_on_logincheckout'        => 'no',
 			// BuddyPress/BuddyBoss Forms.
@@ -78,31 +80,30 @@ class Recaptcha_For_BuddyPress_Activator { // phpcs:ignore WordPress.NamingConve
 			'wbc_recaptcha_enable_on_divi'                 => 'yes',
 			// Easy Digital Downloads.
 			'wbc_recaptcha_enable_on_edd_checkout'         => 'yes',
-			'wbc_recaptcha_enable_on_edd_login'            => 'no',
+			'wbc_recaptcha_enable_on_edd_login'            => 'yes',
 			'wbc_recaptcha_enable_on_edd_register'         => 'yes',
 			// MemberPress.
-			'wbc_recaptcha_enable_on_memberpress_login'    => 'no',
+			'wbc_recaptcha_enable_on_memberpress_login'    => 'yes',
 			'wbc_recaptcha_enable_on_memberpress_register' => 'yes',
 			// Ultimate Member.
-			'wbc_recaptcha_enable_on_um_login'             => 'no',
+			'wbc_recaptcha_enable_on_um_login'             => 'yes',
 			'wbc_recaptcha_enable_on_um_register'          => 'yes',
-			'wbc_recaptcha_enable_on_um_password'          => 'no',
+			'wbc_recaptcha_enable_on_um_password'          => 'yes',
 			// Widgets.
-			'wbc_recaptcha_enable_on_widget_login'         => 'no',
+			'wbc_recaptcha_enable_on_widget_login'         => 'yes',
 		);
 
-		foreach ( $defaults as $option_name => $default_value ) {
-			// Only set if the option doesn't exist (to avoid overwriting user settings).
-			if ( false === get_option( $option_name ) ) {
-				add_option( $option_name, $default_value );
-			}
+		// Existing sites keep exactly what they had: a missing key already means
+		// "off", so a reactivation must not switch on forms the owner never chose.
+		if ( ! $is_fresh_install ) {
+			return;
 		}
 
-		// New installs let logged-in members comment without a CAPTCHA. Existing sites
-		// are left without the option, which keeps challenging members as they always
-		// have, so an update or a reactivation never quietly lowers protection.
-		if ( $is_fresh_install ) {
-			add_option( 'wbc_recaptcha_skip_comment_for_logged_in', 'yes' );
+		foreach ( $defaults as $option_name => $default_value ) {
+			add_option( $option_name, $default_value );
 		}
+
+		// New installs let logged-in members comment without a CAPTCHA.
+		add_option( 'wbc_recaptcha_skip_comment_for_logged_in', 'yes' );
 	}
 }

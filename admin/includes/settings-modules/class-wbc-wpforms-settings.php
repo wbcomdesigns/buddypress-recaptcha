@@ -54,7 +54,7 @@ class WBC_WPForms_Settings extends WBC_Settings_Module_Abstract {
 					'id'      => 'wbc_recaptcha_enable_on_wpforms',
 					'label'   => __( 'WPForms', 'buddypress-recaptcha' ),
 					'desc'    => __( 'Protect all WPForms from spam submissions', 'buddypress-recaptcha' ),
-					'default' => 'yes',
+					'default' => 'no',
 				),
 			)
 		);

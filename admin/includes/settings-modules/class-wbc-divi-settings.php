@@ -55,7 +55,7 @@ class WBC_Divi_Settings extends WBC_Settings_Module_Abstract {
 					'id'      => 'wbc_recaptcha_enable_on_divi',
 					'label'   => __( 'Divi Contact Forms', 'buddypress-recaptcha' ),
 					'desc'    => __( 'Protect Divi Builder contact forms from spam submissions', 'buddypress-recaptcha' ),
-					'default' => 'yes',
+					'default' => 'no',
 				),
 			)
 		);

@@ -58,13 +58,13 @@ class WBC_bbPress_Settings extends WBC_Settings_Module_Abstract {
 					'id'      => 'wbc_recaptcha_enable_on_bbpress_topic',
 					'label'   => __( 'New Topics', 'buddypress-recaptcha' ),
 					'desc'    => __( 'Prevent spam topics', 'buddypress-recaptcha' ),
-					'default' => 'yes',
+					'default' => 'no',
 				),
 				array(
 					'id'      => 'wbc_recaptcha_enable_on_bbpress_reply',
 					'label'   => __( 'Topic Replies', 'buddypress-recaptcha' ),
 					'desc'    => __( 'Stop spam replies', 'buddypress-recaptcha' ),
-					'default' => 'yes',
+					'default' => 'no',
 				),
 			)
 		);

@@ -54,7 +54,7 @@ class WBC_NinjaForms_Settings extends WBC_Settings_Module_Abstract {
 					'id'      => 'wbc_recaptcha_enable_on_ninjaforms',
 					'label'   => __( 'Ninja Forms', 'buddypress-recaptcha' ),
 					'desc'    => __( 'Protect all Ninja Forms from spam submissions', 'buddypress-recaptcha' ),
-					'default' => 'yes',
+					'default' => 'no',
 				),
 			)
 		);

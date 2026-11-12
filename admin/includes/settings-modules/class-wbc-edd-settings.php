@@ -54,19 +54,19 @@ class WBC_EDD_Settings extends WBC_Settings_Module_Abstract {
 					'id'      => 'wbc_recaptcha_enable_on_edd_checkout',
 					'label'   => __( 'Checkout Form', 'buddypress-recaptcha' ),
 					'desc'    => __( 'Protect checkout form from spam registrations', 'buddypress-recaptcha' ),
-					'default' => 'yes',
+					'default' => 'no',
 				),
 				array(
 					'id'      => 'wbc_recaptcha_enable_on_edd_login',
 					'label'   => __( 'Login Form', 'buddypress-recaptcha' ),
 					'desc'    => __( 'Protect login form from brute force attacks', 'buddypress-recaptcha' ),
-					'default' => 'yes',
+					'default' => 'no',
 				),
 				array(
 					'id'      => 'wbc_recaptcha_enable_on_edd_register',
 					'label'   => __( 'Registration Form', 'buddypress-recaptcha' ),
 					'desc'    => __( 'Protect registration form from spam accounts', 'buddypress-recaptcha' ),
-					'default' => 'yes',
+					'default' => 'no',
 				),
 			)
 		);
