@@ -786,7 +786,9 @@ if ( ! class_exists( 'WBC_Settings_Renderer' ) ) :
 				} else {
 					$option_name  = $option['id'];
 					$setting_name = '';
-					$raw_value    = isset( $_POST[ $option['id'] ] ) ? sanitize_text_field( wp_unslash( $_POST[ $option['id'] ] ) ) : null;
+					// Textareas keep their line breaks (one IP per line, multi-line messages).
+					$sanitizer    = 'textarea' === $option['type'] ? 'sanitize_textarea_field' : 'sanitize_text_field';
+					$raw_value    = isset( $_POST[ $option['id'] ] ) ? $sanitizer( wp_unslash( $_POST[ $option['id'] ] ) ) : null;
 				}
 
 				// Format the value based on option type.

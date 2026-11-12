@@ -443,11 +443,24 @@ abstract class WBC_Captcha_Service_Base implements WBC_Captcha_Service_Interface
 	}
 
 	/**
-	 * Make HTTP request to verify captcha
+	 * Provider error codes that mean the site's own keys are wrong, never that the
+	 * visitor failed. reCAPTCHA, hCaptcha and Turnstile all use these names.
+	 */
+	const KEY_ERROR_CODES = array( 'missing-input-secret', 'invalid-input-secret', 'sitekey-secret-mismatch', 'invalid-sitekey' );
+
+	/**
+	 * POST a token to the provider's siteverify endpoint.
 	 *
-	 * @param string $url     Verification URL.
-	 * @param array  $params  Request parameters.
-	 * @return array|false
+	 * When the provider says the site's keys are wrong, nobody - the owner
+	 * included - could pass the CAPTCHA, so every protected form (wp-login among
+	 * them) would lock everyone out. Only the owner can cause that state, so the
+	 * check is waved through and an admin notice says what to fix. Visitors cannot
+	 * trigger it: the secret is sent by this server, not by them.
+	 *
+	 * @param string $url    Endpoint.
+	 * @param array  $params Request body.
+	 * @return array|false Decoded response, `array( 'success' => true, 'wbc_key_error' => true )`
+	 *                     for a key error, or false on a network/decoding failure.
 	 */
 	protected function make_verify_request( $url, $params ) {
 		$request = wp_remote_post(
@@ -462,12 +475,28 @@ abstract class WBC_Captcha_Service_Base implements WBC_Captcha_Service_Interface
 			return false;
 		}
 
-		$body = wp_remote_retrieve_body( $request );
-		if ( empty( $body ) ) {
+		$result = json_decode( (string) wp_remote_retrieve_body( $request ), true );
+		if ( ! is_array( $result ) ) {
 			return false;
 		}
 
-		return json_decode( $body, true );
+		$codes = isset( $result['error-codes'] ) ? (array) $result['error-codes'] : array();
+		if ( empty( $result['success'] ) && array_intersect( $codes, self::KEY_ERROR_CODES ) ) {
+			set_transient(
+				'wbc_captcha_key_error',
+				array(
+					'service' => $this->get_service_name(),
+					'codes'   => array_values( array_intersect( $codes, self::KEY_ERROR_CODES ) ),
+				),
+				DAY_IN_SECONDS
+			);
+			return array(
+				'success'       => true,
+				'wbc_key_error' => true,
+			);
+		}
+
+		return $result;
 	}
 
 	/**

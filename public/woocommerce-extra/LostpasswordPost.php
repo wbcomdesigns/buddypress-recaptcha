@@ -38,13 +38,15 @@ class LostpasswordPost {
 			return $validation_errors;
 		}
 
-		// lostpassword_post fires for BOTH the WordPress core lost-password form
-		// and the WooCommerce one. Pick the context by the nonce field the form
-		// rendered, so the correct enable-flag is honoured and the single-use
-		// CAPTCHA token is verified exactly once. WooCommerce renders
-		// 'woo-lostpassword-nonce'; WP core renders 'wp-lostpassword-nonce'.
-		// phpcs:ignore WordPress.Security.NonceVerification.Missing -- nonce is verified inside the service verify() for the chosen context.
-		$context = isset( $_POST['woo-lostpassword-nonce'] ) ? 'woo_lostpassword' : 'wp_lostpassword';
+		// lostpassword_post fires for both the WordPress and the WooCommerce
+		// lost-password forms. Pick the context by which handler is running, never
+		// by a field the visitor sends: WooCommerce processes its form on
+		// `wp_loaded` (WC_Form_Handler::process_lost_password, after checking its
+		// own nonce); everything else is the WordPress form. Each form is then held
+		// to its own toggle, and the WooCommerce form is no longer checked against
+		// the WordPress toggle it never rendered a CAPTCHA for.
+		$is_woo_form = doing_action( 'wp_loaded' ) && class_exists( 'WC_Form_Handler' ) && isset( $_POST['wc_reset_password'] ); // phpcs:ignore WordPress.Security.NonceVerification.Missing -- WooCommerce verified its nonce before calling retrieve_password().
+		$context     = $is_woo_form ? 'woo_lostpassword' : 'wp_lostpassword';
 
 		// verify() returns true when the chosen context is not enabled, so this is
 		// a no-op unless the matching "Lost Password Form" toggle is on.

@@ -197,30 +197,6 @@ if ( ! function_exists( 'wb_recaptcha_restriction_recaptcha_by_ip' ) ) {
 	 */
 	//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound
 	function wb_recaptcha_restriction_recaptcha_by_ip() {
-		if ( function_exists( 'wbc_captcha_service_manager' ) ) {
-			return wbc_captcha_service_manager()->is_ip_whitelisted();
-		}
-
-		// Fallback.
-		$ip_list = get_option( 'wbc_recaptcha_ip_to_skip_captcha' );
-		if ( empty( $ip_list ) ) {
-			return false;
-		}
-
-		$user_ip = isset( $_SERVER['REMOTE_ADDR'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) : '';
-		if ( empty( $user_ip ) ) {
-			return false;
-		}
-
-		$entries = array_map( 'trim', explode( ',', $ip_list ) );
-		foreach ( $entries as $entry ) {
-			if ( '' === $entry ) {
-				continue;
-			}
-			if ( wb_recaptcha_ip_matches_entry( $user_ip, $entry ) ) {
-				return true;
-			}
-		}
-		return false;
+		return wbc_captcha_service_manager()->is_ip_whitelisted();
 	}
 }

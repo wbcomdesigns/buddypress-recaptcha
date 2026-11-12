@@ -76,45 +76,6 @@ class Recaptcha_For_BuddyPress_Public {
 	}
 
 	/**
-	 * Register the JavaScript for the public-facing side of the site.
-	 *
-	 * @since    1.0.0
-	 */
-	public function enqueue_scripts() {
-		// Get service manager.
-		if ( ! function_exists( 'wbc_captcha_service_manager' ) ) {
-			return;
-		}
-
-		$service_manager = wbc_captcha_service_manager();
-		if ( ! $service_manager ) {
-			return;
-		}
-
-		$active_service = $service_manager->get_active_service();
-		if ( ! $active_service || ! $active_service->is_configured() ) {
-			return;
-		}
-
-		// Get site key for localization.
-		$site_key = $active_service->get_site_key();
-
-		// Enqueue public script.
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/recaptcha-for-buddypress-public.js', array( 'jquery' ), $this->version, false );
-
-		// Localize script with necessary data.
-		wp_localize_script(
-			$this->plugin_name,
-			'bpRecaptcha',
-			array(
-				'ajax_url'   => admin_url( 'admin-ajax.php' ),
-				'site_key'   => $site_key,
-				'service_id' => $active_service->get_service_id(),
-			)
-		);
-	}
-
-	/**
 	 * Load captcha scripts and styles dynamically
 	 *
 	 * @since    1.0.0

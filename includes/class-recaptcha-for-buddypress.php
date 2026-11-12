@@ -297,7 +297,6 @@ class Recaptcha_For_BuddyPress {
 		$plugin_public = new Recaptcha_For_BuddyPress_Public( $this->get_plugin_name(), $this->get_version() );
 
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
-		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 
 		// Load style, js language.
 		add_action( 'plugins_loaded', array( $plugin_public, 'woo_load_lang_for_woo_recaptcha' ) );
@@ -339,14 +338,12 @@ class Recaptcha_For_BuddyPress {
 
 		$is_wp_login_recaptcha_enabled = get_option( 'wbc_recaptcha_enable_on_wplogin' );
 		if ( 'yes' === $is_wp_login_recaptcha_enabled ) {
-			// Server-side CAPTCHA validation for WordPress core login (/wp-login.php).
-			// This MUST be registered independently of WooCommerce, because
-			// wp_authenticate_user fires for every authentication path (wp-login.php submit
-			// via button/Enter/direct POST, the WooCommerce login form, and any form built
-			// with wp_login_form() that posts to wp-login.php), so attaching it here also
-			// keeps the WooCommerce login path validated.
+			// Login gate: every `log`-field login (wp-login.php, wp_login_form(), theme
+			// pop-ups) plus XML-RPC password logins. Priority 99 runs after core's own
+			// lookup so a failed CAPTCHA replaces "unknown user" / "wrong password".
+			// Registered independently of WooCommerce. See the method for details.
 			$wp_login_filter = new Woocommerce_Filter();
-			add_filter( 'wp_authenticate_user', array( $wp_login_filter, 'woo_wp_verify_login_captcha' ), 10, 2 );
+			add_filter( 'authenticate', array( $wp_login_filter, 'woo_wp_verify_login_captcha' ), 99, 3 );
 
 			/*
 			 * Render side for that same validator.
@@ -363,9 +360,9 @@ class Recaptcha_For_BuddyPress {
 			 */
 			add_filter( 'login_form_middle', array( $login, 'filter_login_form_middle' ), 10, 1 );
 
-			add_action( 'bppcp_after_login_form', array( $registration, 'woo_extra_wp_register_form' ) );
+			add_action( 'bppcp_after_login_form', array( $login, 'woo_extra_wp_login_form' ) );
 			add_action( 'bppcp_after_register_form', array( $registration, 'woo_extra_wp_register_form' ) );
-			add_action( 'bp_lock_after_login_form', array( $registration, 'woo_extra_wp_register_form' ) );
+			add_action( 'bp_lock_after_login_form', array( $login, 'woo_extra_wp_login_form' ) );
 			add_action( 'bp_lock_after_register_form', array( $registration, 'woo_extra_wp_register_form' ) );
 		}
 
@@ -403,6 +400,7 @@ class Recaptcha_For_BuddyPress {
 		add_action( 'plugins_loaded', array( $this, 'register_ultimatemember_hooks' ), 20 );
 
 		// Register AJAX Login Widget and Block.
+		add_action( 'init', array( $this, 'register_shared_scripts' ) );
 		add_action( 'widgets_init', array( $this, 'register_login_widget' ) );
 		add_action( 'init', array( $this, 'register_login_block' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_login_widget_assets' ) );
@@ -500,6 +498,7 @@ class Recaptcha_For_BuddyPress {
 		// Member registration hooks.
 		add_action( 'bp_before_registration_submit_buttons', array( $registration_bp, 'woo_extra_bp_register_form' ), 36 );
 		add_action( 'bp_signup_validate', array( $registration_bp, 'innovage_validate_user_registration' ) );
+		add_filter( 'bp_rest_signup_create_item_permissions_check', array( $registration_bp, 'validate_rest_signup_captcha' ), 10, 2 );
 
 		// Group creation hooks.
 		add_action( 'bp_after_group_details_creation_step', array( $registration_bp, 'render_bp_group_create_captcha' ), 10 );
@@ -805,6 +804,23 @@ class Recaptcha_For_BuddyPress {
 	}
 
 	/**
+	 * Register the script every CAPTCHA widget relies on to reset or re-render
+	 * itself after an AJAX submit or a form refresh. Enqueued by the service
+	 * manager whenever a widget renders.
+	 *
+	 * @since 2.2.3
+	 */
+	public function register_shared_scripts() {
+		wp_register_script(
+			'wbc-captcha-refresh',
+			plugin_dir_url( __DIR__ ) . 'public/js/wbc-captcha-refresh.js',
+			array(),
+			$this->version,
+			true
+		);
+	}
+
+	/**
 	 * Enqueue login widget assets
 	 *
 	 * @since     2.0.0
@@ -823,25 +839,18 @@ class Recaptcha_For_BuddyPress {
 		wp_enqueue_script(
 			'wbc-ajax-login',
 			plugin_dir_url( __DIR__ ) . 'public/js/wbc-ajax-login.js',
-			array( 'jquery' ),
+			array( 'jquery', 'wbc-captcha-refresh' ),
 			$this->version,
 			true
 		);
-
-		// Get current CAPTCHA service. Must read the same option key the service
-		// manager writes ('wbc_captcha_service'), and the same service-id format it
-		// stores (e.g. 'recaptcha-v2'), so the JS can reset the correct widget after
-		// a failed AJAX login.
-		$service_id = get_option( 'wbc_captcha_service', 'recaptcha-v2' );
 
 		// Localize script.
 		wp_localize_script(
 			'wbc-ajax-login',
 			'wbcAjaxLogin',
 			array(
-				'ajaxurl'       => admin_url( 'admin-ajax.php' ),
-				'recaptchaType' => $service_id,
-				'errorMessage'  => __( 'An error occurred. Please try again.', 'buddypress-recaptcha' ),
+				'ajaxurl'      => admin_url( 'admin-ajax.php' ),
+				'errorMessage' => __( 'An error occurred. Please try again.', 'buddypress-recaptcha' ),
 			)
 		);
 	}

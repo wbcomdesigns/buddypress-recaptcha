@@ -292,35 +292,22 @@ class WBC_Recaptcha_V3_Service extends WBC_Captcha_Service_Base {
 			return false;
 		}
 
-		// Verify with Google.
-		$secret_key = $this->get_secret_key();
-		$remote_ip  = isset( $_SERVER['REMOTE_ADDR'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) : '';
-
-		$response = wp_remote_post(
+		$result = $this->make_verify_request(
 			'https://www.google.com/recaptcha/api/siteverify',
 			array(
-				'timeout' => 10,
-				'body'    => array(
-					'secret'   => $secret_key,
-					'response' => $token,
-					'remoteip' => $remote_ip,
-				),
+				'secret'   => $this->get_secret_key(),
+				'response' => $token,
+				'remoteip' => $this->get_user_ip(),
 			)
 		);
 
-		if ( is_wp_error( $response ) ) {
+		if ( ! is_array( $result ) || empty( $result['success'] ) ) {
 			return false;
 		}
 
-		$response_body = wp_remote_retrieve_body( $response );
-		if ( empty( $response_body ) ) {
-			return false;
-		}
-
-		$result = json_decode( $response_body, true );
-
-		if ( ! isset( $result['success'] ) || ! $result['success'] ) {
-			return false;
+		// Wrong keys on the site's side: never lock everyone out (see make_verify_request()).
+		if ( ! empty( $result['wbc_key_error'] ) ) {
+			return true;
 		}
 
 		// Check score threshold.
@@ -333,7 +320,7 @@ class WBC_Recaptcha_V3_Service extends WBC_Captcha_Service_Base {
 
 		// Check action if configured.
 		$expected_action = $this->get_action_for_context( $context );
-		if ( ! empty( $expected_action ) && isset( $result['action'] ) && $result['action'] !== $expected_action ) {
+		if ( ! empty( $expected_action ) && ( ! isset( $result['action'] ) || $result['action'] !== $expected_action ) ) {
 			return false;
 		}
 
@@ -414,7 +401,10 @@ class WBC_Recaptcha_V3_Service extends WBC_Captcha_Service_Base {
 		 * @param string $context   The verification context.
 		 */
 		//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
-		return (float) apply_filters( 'wbc_recaptcha_v3_score_threshold_value', floatval( $threshold ), $context );
+		// A score is 0.0 - 1.0: a stray "1.5" would block everyone, "abc" (0.0) nobody.
+		$threshold = is_numeric( $threshold ) ? min( max( (float) $threshold, 0.0 ), 1.0 ) : 0.5;
+
+		return (float) apply_filters( 'wbc_recaptcha_v3_score_threshold_value', $threshold, $context );
 	}
 
 	/**

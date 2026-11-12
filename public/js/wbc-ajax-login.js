@@ -9,35 +9,14 @@
 	'use strict';
 
 	/**
-	 * Reset the active CAPTCHA provider's widget so a fresh challenge is shown
-	 * after a failed AJAX login attempt. Each provider exposes a different
-	 * global, so we dispatch on wbcAjaxLogin.recaptchaType.
+	 * Give the login form a fresh CAPTCHA after a failed attempt. Only the widget
+	 * inside this form is reset, never another form's CAPTCHA on the same page.
+	 *
+	 * @param {jQuery} $form The login form.
 	 */
-	function resetActiveCaptcha() {
-		var type = ( window.wbcAjaxLogin && wbcAjaxLogin.recaptchaType ) || '';
-
-		if ( type === 'recaptcha-v2' && typeof grecaptcha !== 'undefined' ) {
-			try {
-				grecaptcha.reset();
-			} catch ( e ) {
-				// Provider not yet ready; safe to ignore.
-			}
-			return;
-		}
-		if ( type === 'hcaptcha' && typeof hcaptcha !== 'undefined' ) {
-			try {
-				hcaptcha.reset();
-			} catch ( e ) {
-				// Provider not yet ready; safe to ignore.
-			}
-			return;
-		}
-		if ( type === 'turnstile' && typeof turnstile !== 'undefined' ) {
-			try {
-				turnstile.reset();
-			} catch ( e ) {
-				// Provider not yet ready; safe to ignore.
-			}
+	function resetFormCaptcha( $form ) {
+		if ( window.wbcCaptcha && typeof window.wbcCaptcha.refresh === 'function' ) {
+			window.wbcCaptcha.refresh( $form );
 		}
 	}
 
@@ -110,8 +89,7 @@
 							$buttonText.show();
 							$buttonLoader.hide();
 
-							// Reset CAPTCHA widget for whichever provider is active.
-							resetActiveCaptcha();
+							resetFormCaptcha( $form );
 						}
 					},
 					error: function( xhr, status, error ) {
@@ -125,8 +103,7 @@
 						$buttonText.show();
 						$buttonLoader.hide();
 
-						// Reset CAPTCHA widget for whichever provider is active.
-						resetActiveCaptcha();
+						resetFormCaptcha( $form );
 					}
 				});
 			} );

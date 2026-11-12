@@ -351,6 +351,9 @@ class BPRC_Admin {
 				: '';
 			if ( isset( $_POST[ self::NONCE_FIELD ] ) && wp_verify_nonce( $nonce, self::NONCE_ACTION ) ) {
 				$settings->wbc_save( $active );
+				// New keys or provider: forget the old "keys rejected" state; the
+				// next real check sets it again if still true.
+				delete_transient( 'wbc_captcha_key_error' );
 			}
 		}
 
