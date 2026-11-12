@@ -56,32 +56,31 @@ class CF7_Form {
 	}
 
 	/**
-	 * Validate CAPTCHA for Contact Form 7 submissions
+	 * Treat a failed CAPTCHA as spam, the way CF7's own reCAPTCHA integration
+	 * does. (wpcf7_validate passes an array of tags, so invalidating it never
+	 * stopped the mail.)
 	 *
-	 * Validates the CAPTCHA response and adds errors to CF7 validation result.
-	 *
-	 * @param WPCF7_Validation $result The validation result object.
-	 * @param WPCF7_FormTag    $tag    The form tag being validated.
-	 * @return WPCF7_Validation Modified validation result.
+	 * @param bool                 $spam       Whether CF7 already flagged it.
+	 * @param WPCF7_Submission|null $submission The submission.
+	 * @return bool
 	 */
-	public function validate_cf7_captcha( $result, $tag ) {
-		// Check if CAPTCHA is enabled for CF7.
-		$is_enabled = get_option( 'wbc_recaptcha_enable_on_cf7' );
-		if ( 'yes' !== $is_enabled ) {
-			return $result;
+	public function validate_cf7_captcha( $spam, $submission = null ) {
+		if ( $spam ) {
+			return $spam;
 		}
 
-		// Verify CAPTCHA using service manager.
-		if ( function_exists( 'wbc_verify_captcha' ) ) {
-			if ( ! wbc_verify_captcha( 'cf7' ) ) {
-				// Get error message.
-				$error_message = wbc_get_captcha_error_message( 'cf7', 'invalid' );
-
-				// Add error to validation result.
-				$result->invalidate( $tag, $error_message );
+		if ( ! wbc_verify_captcha( 'cf7' ) ) {
+			if ( $submission && method_exists( $submission, 'add_spam_log' ) ) {
+				$submission->add_spam_log(
+					array(
+						'agent'  => 'wbc-captcha',
+						'reason' => wbc_get_captcha_error_message( 'cf7', 'invalid' ),
+					)
+				);
 			}
+			return true;
 		}
 
-		return $result;
+		return false;
 	}
 }

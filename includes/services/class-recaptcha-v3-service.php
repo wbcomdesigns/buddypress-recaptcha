@@ -218,7 +218,8 @@ class WBC_Recaptcha_V3_Service extends WBC_Captcha_Service_Base {
 		echo '<input type="hidden" name="' . esc_attr( $token_field_id ) . '" id="' . esc_attr( $token_field_id ) . '" value="" />';
 
 		// Add nonce for security.
-		wp_nonce_field( 'wbc_captcha_' . $context, 'wbc_captcha_nonce_' . $context );
+		$nonce_action = $this->get_nonce_action( $context );
+		echo '<input type="hidden" autocomplete="off" name="' . esc_attr( $nonce_action ) . '" value="' . esc_attr( wp_create_nonce( $nonce_action ) ) . '" />';
 
 		// Enqueue script if not already enqueued.
 		$this->enqueue_script();
@@ -243,16 +244,8 @@ class WBC_Recaptcha_V3_Service extends WBC_Captcha_Service_Base {
 			return true;
 		}
 
-		// Skip nonce verification if not in POST context or nonce not set.
-		// Nonce is optional as many forms don't use our custom nonce.
-		$nonce_field  = 'wbc_captcha_nonce_' . $context;
-		$nonce_action = 'wbc_captcha_' . $context;
-
-		if ( isset( $_POST[ $nonce_field ] ) ) {
-			// Only verify if nonce is present.
-			if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST[ $nonce_field ] ) ), $nonce_action ) ) {
-				return false;
-			}
+		if ( ! $this->nonce_check_passes( $context ) ) {
+			return false;
 		}
 
 		// Use provided response or get token from POST data.

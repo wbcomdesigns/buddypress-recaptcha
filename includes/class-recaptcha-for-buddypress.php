@@ -524,7 +524,7 @@ class Recaptcha_For_BuddyPress {
 		add_filter( 'wpcf7_form_elements', array( $cf7_form, 'render_cf7_captcha' ), 10, 1 );
 
 		// Validate CAPTCHA on CF7 form submission.
-		add_filter( 'wpcf7_validate', array( $cf7_form, 'validate_cf7_captcha' ), 20, 2 );
+		add_filter( 'wpcf7_spam', array( $cf7_form, 'validate_cf7_captcha' ), 10, 2 );
 	}
 
 	/**

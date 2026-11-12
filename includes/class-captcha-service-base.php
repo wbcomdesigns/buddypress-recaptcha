@@ -443,6 +443,32 @@ abstract class WBC_Captcha_Service_Base implements WBC_Captcha_Service_Interface
 	}
 
 	/**
+	 * Form nonce check, only in strict mode (opt-in: `wbc_captcha_strict_nonce`
+	 * option or filter).
+	 *
+	 * By default the nonce is not checked: the CAPTCHA token is the bot check,
+	 * a bot can simply leave an optional nonce out, and a checked nonce only
+	 * rejects real visitors (pages cached longer than a day, logged-in members
+	 * on forms that submit over REST such as Contact Form 7).
+	 *
+	 * @param string $context The context identifier.
+	 * @return bool
+	 */
+	protected function nonce_check_passes( $context ) {
+		if ( '' === (string) $context ) {
+			return true;
+		}
+		//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
+		if ( ! apply_filters( 'wbc_captcha_strict_nonce', (bool) get_option( 'wbc_captcha_strict_nonce', false ), $context, $this->get_service_id() ) ) {
+			return true;
+		}
+		$action = $this->get_nonce_action( $context );
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- verified below.
+		$nonce = isset( $_POST[ $action ] ) ? sanitize_text_field( wp_unslash( $_POST[ $action ] ) ) : '';
+		return (bool) wp_verify_nonce( $nonce, $action );
+	}
+
+	/**
 	 * Provider error codes that depend only on the site's secret, never on the
 	 * visitor's token. reCAPTCHA, hCaptcha and Turnstile all use these names.
 	 *
