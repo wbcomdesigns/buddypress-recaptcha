@@ -641,7 +641,7 @@ class Recaptcha_For_BuddyPress {
 		$ninjaforms_form = new NinjaForms_Form();
 
 		// Render CAPTCHA in Ninja Forms (priority 999 to appear at the end).
-		add_action( 'ninja_forms_display_after_fields', array( $ninjaforms_form, 'render_ninjaforms_captcha' ), 999 );
+		add_filter( 'ninja_forms_display_after_fields', array( $ninjaforms_form, 'render_ninjaforms_captcha' ), 999, 2 );
 
 		// Validate CAPTCHA on Ninja Forms form submission.
 		add_filter( 'ninja_forms_submit_data', array( $ninjaforms_form, 'validate_ninjaforms_captcha' ), 10, 1 );

@@ -19,14 +19,15 @@
 ( function () {
 	'use strict';
 
+	// Accepts an element, a jQuery object or a selector; anything else means
+	// the whole document.
 	function toElement( root ) {
-		if ( ! root ) {
-			return document;
+		if ( root && root.jquery ) {
+			root = root.get( 0 );
+		} else if ( 'string' === typeof root ) {
+			root = document.querySelector( root );
 		}
-		if ( root.jquery ) {
-			return root.get( 0 ) || document;
-		}
-		return root;
+		return root && typeof root.querySelectorAll === 'function' ? root : document;
 	}
 
 	function callbackFor( el ) {
@@ -171,6 +172,34 @@
 		} );
 		$( document.body ).on( 'updated_checkout checkout_error', function () {
 			refresh( document.querySelector( 'form.checkout' ) || document );
+		} );
+
+		// Ninja Forms draws the form (and our widget) in JavaScript after page
+		// load and posts only its own fields, so: render the widget once the
+		// form is ready, send the token as submission extra data, and reset the
+		// widget when the server answers with errors.
+		$( document ).on( 'nfFormReady', function ( event, layoutView ) {
+			if ( ! window.nfRadio || ! layoutView || ! layoutView.model ) {
+				return;
+			}
+			var el = toElement( layoutView.$el || layoutView.el );
+			var channel = window.nfRadio.channel( 'form-' + layoutView.model.get( 'id' ) );
+
+			refresh( el );
+			channel.on( 'before:submit', function () {
+				var box = el.querySelector( '.wbc-nf-captcha' );
+				if ( ! box ) {
+					return;
+				}
+				var name = box.getAttribute( 'data-wbc-field' );
+				var field = box.querySelector( 'input[name="' + name + '"], textarea[name="' + name + '"]' );
+				channel.request( 'add:extra', 'wbc_captcha', field ? field.value : '' );
+			} );
+			channel.on( 'submit:response', function ( response ) {
+				if ( response && response.errors && Object.keys( response.errors ).length ) {
+					refresh( el );
+				}
+			} );
 		} );
 	}
 }() );
