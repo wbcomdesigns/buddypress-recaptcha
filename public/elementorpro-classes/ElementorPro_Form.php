@@ -23,34 +23,33 @@
 class ElementorPro_Form {
 
 	/**
-	 * Render CAPTCHA in Elementor Pro forms
+	 * Put the CAPTCHA just before the form's submit button.
 	 *
-	 * Adds CAPTCHA HTML after form fields.
+	 * Runs on elementor/widget/render_content. (It used to be added on the
+	 * per-field filter, which printed it before the last field and returned
+	 * nothing from a filter.)
 	 *
-	 * @param array  $item       Form item.
-	 * @param int    $item_index Item index.
-	 * @param object $form       Form object.
-	 * @return void
+	 * @param string                 $content Widget HTML.
+	 * @param \Elementor\Widget_Base $widget  The widget.
+	 * @return string
 	 */
-	public function render_elementorpro_captcha( $item, $item_index, $form ) {
-		// Check if CAPTCHA is enabled for Elementor Pro.
-		$is_enabled = get_option( 'wbc_recaptcha_enable_on_elementorpro' );
-		if ( 'yes' !== $is_enabled ) {
-			return;
+	public function render_elementorpro_captcha( $content, $widget ) {
+		if ( ! is_object( $widget ) || ! method_exists( $widget, 'get_name' ) || 'form' !== $widget->get_name() ) {
+			return $content;
 		}
 
-		// Only render once per form (on the last field).
-		$fields = $form->get_settings( 'form_fields' );
-		if ( count( $fields ) - 1 !== $item_index ) {
-			return;
+		ob_start();
+		wbc_captcha_service_manager()->render( 'elementorpro' );
+		$captcha = trim( ob_get_clean() );
+		if ( '' === $captcha ) {
+			return $content;
 		}
 
-		// Render CAPTCHA using service manager.
-		if ( function_exists( 'wbc_captcha_service_manager' ) ) {
-			echo '<div class="elementor-field-group elementor-column elementor-field-type-captcha elementor-col-100">';
-			wbc_captcha_service_manager()->render( 'elementorpro' );
-			echo '</div>';
-		}
+		$captcha = '<div class="elementor-field-group elementor-column elementor-field-type-captcha elementor-col-100">' . $captcha . '</div>';
+		$marker  = '<div class="elementor-field-group elementor-column elementor-field-type-submit';
+		$pos     = strpos( $content, $marker );
+
+		return false === $pos ? $content : substr_replace( $content, $captcha, $pos, 0 );
 	}
 
 	/**
