@@ -87,8 +87,13 @@ class MemberPress_Form {
 				// Get error message.
 				$error_message = wbc_get_captcha_error_message( 'memberpress_login', 'invalid' );
 
-				// Add error to WP_Error object.
-				$errors->add( 'invalid_captcha', $error_message );
+				// MemberPress passes an array of messages; tolerate a WP_Error too.
+				if ( $errors instanceof WP_Error ) {
+					$errors->add( 'invalid_captcha', $error_message );
+				} else {
+					$errors   = (array) $errors;
+					$errors[] = $error_message;
+				}
 			}
 		}
 

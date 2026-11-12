@@ -38,19 +38,16 @@ class GravityForms_Form {
 			return $form_string;
 		}
 
-		// Get CAPTCHA HTML from service manager.
-		if ( function_exists( 'wbc_captcha_service_manager' ) ) {
-			ob_start();
-			wbc_captcha_service_manager()->render( 'gravityforms' );
-			$captcha_html = ob_get_clean();
+		ob_start();
+		wbc_captcha_service_manager()->render( 'gravityforms' );
+		$captcha_html = ob_get_clean();
 
-			// Inject CAPTCHA before the submit button.
-			// Gravity Forms uses gform_footer for the submit button area.
-			$form_string = str_replace(
-				'<div class=\'gform_footer',
-				$captcha_html . '<div class=\'gform_footer',
-				$form_string
-			);
+		// Before the LAST footer: the submit footer of a single-page form, or
+		// the last page's footer of a multi-page form (gform_page_footer).
+		// Matches GF 2.4 and 2.5+ markup (quote style, gform_footer / gform-footer).
+		if ( preg_match_all( '~<div\s+class=([\'"])[^\'"]*\bgform[_-](?:page[_-])?footer\b~i', $form_string, $m, PREG_OFFSET_CAPTURE ) ) {
+			$last        = end( $m[0] );
+			$form_string = substr_replace( $form_string, $captcha_html, $last[1], 0 );
 		}
 
 		return $form_string;
@@ -73,6 +70,14 @@ class GravityForms_Form {
 
 		// Skip if already failed validation.
 		if ( ! $validation_result['is_valid'] ) {
+			return $validation_result;
+		}
+
+		// Multi-page forms validate on every page step; the widget is only on
+		// the last page, so verify only on the final submit (target page 0).
+		$form_id     = isset( $validation_result['form']['id'] ) ? (int) $validation_result['form']['id'] : 0;
+		$target_page = isset( $_POST[ 'gform_target_page_number_' . $form_id ] ) ? absint( $_POST[ 'gform_target_page_number_' . $form_id ] ) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Gravity Forms handles its own nonce.
+		if ( 0 !== $target_page ) {
 			return $validation_result;
 		}
 

@@ -757,7 +757,8 @@ class Recaptcha_For_BuddyPress {
 
 		// Render CAPTCHA in MemberPress forms.
 		add_action( 'mepr-login-form-before-submit', array( $memberpress_form, 'render_memberpress_login_captcha' ), 10 );
-		add_action( 'mepr-signup-form-before-submit', array( $memberpress_form, 'render_memberpress_register_captcha' ), 10 );
+		// MemberPress's signup (checkout) form fires mepr-checkout-before-submit.
+		add_action( 'mepr-checkout-before-submit', array( $memberpress_form, 'render_memberpress_register_captcha' ), 10 );
 
 		// Validate CAPTCHA on MemberPress form submissions.
 		add_filter( 'mepr-validate-login', array( $memberpress_form, 'validate_memberpress_login_captcha' ), 10, 1 );
