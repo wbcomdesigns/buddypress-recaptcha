@@ -256,7 +256,7 @@ class WBC_Recaptcha_V3_Service extends WBC_Captcha_Service_Base {
 		} else {
 			// Get token from POST data.
 			$token_field_id = 'wbc_recaptcha_' . $context . '_token';
-			$token          = isset( $_POST[ $token_field_id ] ) ? sanitize_text_field( wp_unslash( $_POST[ $token_field_id ] ) ) : '';
+			$token          = isset( $_POST[ $token_field_id ] ) ? sanitize_text_field( wp_unslash( $_POST[ $token_field_id ] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Missing -- pre-auth CAPTCHA token; the form nonce is checked by nonce_check_passes().
 
 			if ( empty( $token ) ) {
 				// Try legacy field names for backward compatibility.
@@ -273,8 +273,9 @@ class WBC_Recaptcha_V3_Service extends WBC_Captcha_Service_Base {
 				);
 
 				foreach ( $legacy_fields as $field ) {
+					// phpcs:ignore WordPress.Security.NonceVerification.Missing -- pre-auth CAPTCHA token.
 					if ( isset( $_POST[ $field ] ) && ! empty( $_POST[ $field ] ) ) {
-						$token = sanitize_text_field( wp_unslash( $_POST[ $field ] ) );
+						$token = sanitize_text_field( wp_unslash( $_POST[ $field ] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Missing
 						break;
 					}
 				}
