@@ -18,23 +18,7 @@ class WBC_Settings_Integration {
 	 */
 	public static function init() {
 		// Add hooks for settings updates.
-		add_action( 'update_option_wbc_captcha_service', array( __CLASS__, 'on_service_change' ), 10, 3 );
 		add_action( 'admin_init', array( __CLASS__, 'maybe_migrate_settings' ) );
-	}
-
-	/**
-	 * Handle service change
-	 *
-	 * @param mixed  $old_value Old option value.
-	 * @param mixed  $new_value New option value.
-	 * @param string $option    Option name.
-	 */
-	public static function on_service_change( $old_value, $new_value, $option ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.FoundAfterLastUsed
-		// Clear any cached service instance.
-		if ( function_exists( 'wbc_captcha_service_manager' ) && wbc_captcha_service_manager() ) {
-			// Force reinitialization on next request.
-			update_option( 'wbc_captcha_service_reinit', true );
-		}
 	}
 
 	/**

@@ -299,7 +299,6 @@ class Recaptcha_For_BuddyPress {
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 
 		// Load style, js language.
-		add_action( 'plugins_loaded', array( $plugin_public, 'woo_load_lang_for_woo_recaptcha' ) );
 		add_action( 'wp_enqueue_scripts', array( $plugin_public, 'woo_recaptcha_load_styles_and_js' ), 9999 );
 		add_action( 'login_enqueue_scripts', array( $plugin_public, 'woo_recaptcha_load_styles_and_js' ), 9999 );
 
@@ -424,12 +423,6 @@ class Recaptcha_For_BuddyPress {
 
 		// WooCommerce - register hooks after plugins are loaded.
 		add_action( 'plugins_loaded', array( $this, 'register_woocommerce_hooks' ), 20 );
-
-		// IE X-UA-Compatible meta tag. Registered unconditionally; the callback
-		// self-gates to IE internally, so no bootstrap user-agent sniff is needed
-		// (sniffing here would poison full-page caches with UA-specific hooks).
-		add_action( 'wp_head', array( $plugin_public, 'woo_recaptcha_add_header_metadata_for_ie' ) );
-		add_action( 'login_head', array( $plugin_public, 'woo_recaptcha_add_header_metadata_for_ie' ) );
 
 		// Defer reCAPTCHA / Turnstile API scripts for ALL browsers. The script is
 		// render-blocking otherwise, hurting LCP/FCP and Core Web Vitals.

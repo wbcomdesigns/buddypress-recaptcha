@@ -176,15 +176,6 @@ class Recaptcha_For_BuddyPress_Public {
 	}
 
 	/**
-	 * Add header metadata for IE compatibility
-	 */
-	public function woo_recaptcha_add_header_metadata_for_ie() {
-		if ( $this->woo_recaptcha_check_is_ie_browser() ) {
-			echo '<meta http-equiv="X-UA-Compatible" content="IE=edge" />';
-		}
-	}
-
-	/**
 	 * Add defer attribute to recaptcha scripts
 	 *
 	 * @param  string $url Script URL.
@@ -195,30 +186,5 @@ class Recaptcha_For_BuddyPress_Public {
 			return str_replace( ' src', ' defer src', $url );
 		}
 		return $url;
-	}
-
-	/**
-	 * Check if browser is Internet Explorer
-	 *
-	 * @return bool
-	 */
-	public function woo_recaptcha_check_is_ie_browser() {
-		if ( ! isset( $_SERVER['HTTP_USER_AGENT'] ) ) {
-			return false;
-		}
-		$user_agent = sanitize_text_field( wp_unslash( $_SERVER['HTTP_USER_AGENT'] ) );
-		return preg_match( '~MSIE|Internet Explorer~i', $user_agent ) || preg_match( '~Trident/7.0(.*)?; rv:11.0~', $user_agent );
-	}
-
-	/**
-	 * Load language files
-	 *
-	 * Note: Since WordPress 6.7, translations are loaded just-in-time.
-	 * The load_plugin_textdomain() call has been removed to comply with
-	 * Plugin Check requirements.
-	 */
-	public function woo_load_lang_for_woo_recaptcha() {
-		// Intentionally left empty.
-		// WordPress 6.7+ handles translation loading automatically.
 	}
 }

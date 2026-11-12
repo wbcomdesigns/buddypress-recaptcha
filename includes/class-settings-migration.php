@@ -57,9 +57,6 @@ class WBC_Settings_Migration {
 		// Mark migration as completed.
 		update_option( 'wbc_settings_migration_v2_completed', 'yes' );
 
-		// Enable simplified settings by default.
-		update_option( 'wbc_use_simplified_settings', 'yes' );
-
 		$results['message'] = 'Settings migration completed successfully.';
 
 		return $results;
@@ -266,21 +263,6 @@ class WBC_Settings_Migration {
 			update_option( 'wbc_recaptcha-v3_score_threshold', $score_threshold );
 			$results['migrated'][] = 'reCAPTCHA v3 score threshold';
 		}
-	}
-
-	/**
-	 * Rollback migration (for debugging/development).
-	 *
-	 * @return bool Success status.
-	 */
-	public static function rollback() {
-		// Remove migration flag.
-		delete_option( 'wbc_settings_migration_v2_completed' );
-
-		// Disable simplified settings.
-		update_option( 'wbc_use_simplified_settings', 'no' );
-
-		return true;
 	}
 
 	/**

@@ -149,7 +149,6 @@ function wbc_migrate_option_names() {
 	// Mark migration as complete.
 	if ( ! empty( $migrated ) ) {
 		update_option( 'wbc_option_names_migrated', true );
-		update_option( 'wbc_option_names_migration_log', $migrated );
 	}
 
 	return $migrated;
