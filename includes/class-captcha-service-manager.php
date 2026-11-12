@@ -389,7 +389,13 @@ class WBC_Captcha_Service_Manager {
 
 		if ( self::is_disabled_by_constant() ) {
 			echo '<div class="notice notice-warning wbc-captcha-config-notice"><p>';
-			echo esc_html__( 'Wbcom CAPTCHA Manager is switched off by WBC_CAPTCHA_DISABLE in wp-config.php. No form is protected until it is removed.', 'buddypress-recaptcha' );
+			echo esc_html(
+				sprintf(
+					/* translators: %s: plugin name */
+					__( '%s is switched off by WBC_CAPTCHA_DISABLE in wp-config.php. No form is protected until it is removed.', 'buddypress-recaptcha' ),
+					'Wbcom CAPTCHA Manager'
+				)
+			);
 			echo '</p></div>';
 			return;
 		}
@@ -399,8 +405,9 @@ class WBC_Captcha_Service_Manager {
 			echo '<div class="notice notice-warning wbc-captcha-config-notice"><p>';
 			echo wp_kses(
 				sprintf(
-					/* translators: 1: CAPTCHA provider name, 2: provider error codes, 3: opening anchor tag, 4: closing anchor tag */
-					__( 'Wbcom CAPTCHA Manager: %1$s rejected this site\'s keys (%2$s). So nobody gets locked out, CAPTCHA checks are being let through until this is fixed. %3$sCheck the keys in Quick Setup%4$s.', 'buddypress-recaptcha' ),
+					/* translators: 1: plugin name, 2: CAPTCHA provider name, 3: provider error codes, 4: opening anchor tag, 5: closing anchor tag */
+					__( '%1$s: %2$s rejected this site\'s keys (%3$s). So nobody gets locked out, CAPTCHA checks are being let through until this is fixed. %4$sCheck the keys in Quick Setup%5$s.', 'buddypress-recaptcha' ),
+					'Wbcom CAPTCHA Manager',
 					esc_html( $key_error['service'] ),
 					esc_html( implode( ', ', (array) $key_error['codes'] ) ),
 					'<a href="' . esc_url( $settings_url ) . '">',

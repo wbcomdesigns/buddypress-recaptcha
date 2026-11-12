@@ -4,7 +4,7 @@ Donate link: https://wbcomdesigns.com/donate/
 Tags: captcha, recaptcha, spam protection, security, woocommerce
 Requires at least: 6.5
 Tested up to: 7.0
-Stable tag: 2.2.2
+Stable tag: 2.2.3
 Requires PHP: 8.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -212,6 +212,10 @@ Yes. A POT file is included, along with a WPML configuration file.
 
 == Upgrade Notice ==
 
+= 2.2.3 =
+
+Security release. Closes CAPTCHA bypasses on login, checkout and several form plugins, and fixes forms that blocked real visitors. Requires PHP 8.1.
+
 = 2.2.0 =
 
 Fixes lockouts introduced in 2.1.0. Login from a Login/Logout block, login widget or theme login form works again, and reCAPTCHA v3 now issues tokens on every protected form. Update immediately if you run 2.1.0.
@@ -221,6 +225,34 @@ Fixes lockouts introduced in 2.1.0. Login from a Login/Logout block, login widge
 Security update: comment, lost-password and login forms are now verified on sites without WooCommerce, where they previously did nothing. Recommended for every site.
 
 == Changelog ==
+
+= 2.2.3 - November 2026 =
+
+Security and reliability release. Closes several ways to submit protected forms without solving the CAPTCHA and fixes integrations that blocked real visitors. Update recommended for every site.
+
+* New      - WooCommerce block checkout is now protected; orders placed through the Store API are verified before they are created.
+* New      - Fail-closed and no-conflict switches on the Advanced tab.
+* New      - Add define( 'WBC_CAPTCHA_DISABLE', true ) to wp-config.php to switch every CAPTCHA off if you are ever locked out.
+* New      - CAPTCHA providers registered by other plugins appear in the provider picker.
+* Improve  - New installs protect every login, sign-up and password-reset form, including the login widget and block.
+* Improve  - When the provider reports an invalid site or secret key, submissions go through and an admin notice asks you to fix the keys, so a key mistake never locks everyone out.
+* Improve  - The widget resets itself after a failed AJAX submit, so the second attempt works without reloading the page.
+* Improve  - The IP whitelist accepts one address or range per line, as well as comma-separated.
+* Fix      - Contact Form 7, Ninja Forms, Ultimate Member and Easy Digital Downloads login accepted submissions without a solved CAPTCHA.
+* Fix      - WPForms forms with ALTCHA could not be submitted.
+* Fix      - Elementor Pro forms lost their field values when CAPTCHA was enabled.
+* Fix      - Easy Digital Downloads checkout rejected buyers who had solved the CAPTCHA.
+* Fix      - Gravity Forms multi-page forms are verified once, on the final submit; MemberPress login could show an error page.
+* Fix      - The optional nonce check rejected real visitors whose page was served from a cache.
+* Fix      - The Protection tab showed some forms as protected when they were not.
+* Fix      - Sites upgraded from 1.x now keep their provider, score threshold and widget theme.
+* Fix      - BuddyPress sign-up now shows the CAPTCHA error instead of failing silently.
+* Security - The ALTCHA signing key is no longer sent to the browser, and each ALTCHA solution can be used only once.
+* Security - Login is checked inside WordPress authentication, so custom login handlers cannot skip it, and BuddyPress REST sign-up is verified; XML-RPC password logins are blocked while login protection is on.
+* Security - reCAPTCHA v3 tokens must match the form's action and the score threshold.
+* Security - Login redirects only go to addresses on this site.
+* Dev      - Requires PHP 8.1 or higher.
+* Dev      - Removed the empty language hook, the Internet Explorer meta tag and unused settings helpers.
 
 = 2.2.2 - September 2026 =
 
