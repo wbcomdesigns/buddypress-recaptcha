@@ -780,14 +780,11 @@ class Recaptcha_For_BuddyPress {
 		$um_form = new UltimateMember_Form();
 
 		// Render CAPTCHA in Ultimate Member forms (before submit button).
-		add_action( 'um_after_form_fields', array( $um_form, 'render_um_login_captcha' ), 10, 1 );
-		add_action( 'um_after_form_fields', array( $um_form, 'render_um_register_captcha' ), 10, 1 );
-		add_action( 'um_after_form_fields', array( $um_form, 'render_um_password_captcha' ), 10, 1 );
+		add_action( 'um_after_form_fields', array( $um_form, 'render_um_captcha' ), 10, 1 );
 
 		// Validate CAPTCHA on Ultimate Member form submissions.
-		add_action( 'um_submit_form_errors_hook', array( $um_form, 'validate_um_login_captcha' ), 10, 1 );
-		add_action( 'um_submit_form_errors_hook', array( $um_form, 'validate_um_register_captcha' ), 10, 1 );
-		add_action( 'um_submit_form_errors_hook', array( $um_form, 'validate_um_password_captcha' ), 10, 1 );
+		add_action( 'um_submit_form_errors_hook', array( $um_form, 'validate_um_captcha' ), 10, 2 );
+		add_action( 'um_reset_password_errors_hook', array( $um_form, 'validate_um_captcha' ), 10, 2 );
 	}
 
 	/**

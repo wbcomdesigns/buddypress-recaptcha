@@ -23,182 +23,65 @@
 class UltimateMember_Form {
 
 	/**
-	 * Render CAPTCHA in Ultimate Member login form
+	 * Map a UM form mode to its CAPTCHA context.
 	 *
-	 * Adds CAPTCHA HTML to the login form.
-	 *
-	 * @param array $args Form arguments.
-	 * @return void
+	 * @param string $mode UM form mode.
+	 * @return string Context, or '' for forms we do not protect.
 	 */
-	public function render_um_login_captcha( $args ) {
-		// Check if this is a login form.
-		if ( ! isset( $args['mode'] ) || 'login' !== $args['mode'] ) {
-			return;
-		}
-
-		// Check if CAPTCHA is enabled for UM login.
-		$is_enabled = get_option( 'wbc_recaptcha_enable_on_um_login' );
-		if ( 'yes' !== $is_enabled ) {
-			return;
-		}
-
-		// Render CAPTCHA using service manager.
-		if ( function_exists( 'wbc_captcha_service_manager' ) ) {
-			echo '<div class="um-field um-field-captcha">';
-			wbc_captcha_service_manager()->render( 'um_login' );
-			echo '</div>';
-		}
+	private function context_for( $mode ) {
+		$contexts = array(
+			'login'    => 'um_login',
+			'register' => 'um_register',
+			'password' => 'um_password',
+		);
+		return isset( $contexts[ $mode ] ) ? $contexts[ $mode ] : '';
 	}
 
 	/**
-	 * Render CAPTCHA in Ultimate Member registration form
+	 * Render the CAPTCHA after the fields of a UM login, registration or
+	 * password-reset form.
 	 *
-	 * Adds CAPTCHA HTML to the registration form.
+	 * UM prints field errors only next to a field with the same key, and there
+	 * is no "captcha" field, so the error is printed here (UM's login form
+	 * already lists general errors at the top).
 	 *
-	 * @param array $args Form arguments.
-	 * @return void
+	 * @param array $args Form arguments, including 'mode'.
 	 */
-	public function render_um_register_captcha( $args ) {
-		// Check if this is a registration form.
-		if ( ! isset( $args['mode'] ) || 'register' !== $args['mode'] ) {
+	public function render_um_captcha( $args ) {
+		$mode    = isset( $args['mode'] ) ? $args['mode'] : '';
+		$context = $this->context_for( $mode );
+		if ( '' === $context ) {
 			return;
 		}
 
-		// Check if CAPTCHA is enabled for UM registration.
-		$is_enabled = get_option( 'wbc_recaptcha_enable_on_um_register' );
-		if ( 'yes' !== $is_enabled ) {
-			return;
+		echo '<div class="um-field um-field-captcha">';
+		wbc_captcha_service_manager()->render( $context );
+		if ( 'login' !== $mode && UM()->form()->has_error( 'captcha' ) ) {
+			echo '<div class="um-field-error" role="alert">' . esc_html( wp_strip_all_tags( UM()->form()->errors['captcha'] ) ) . '</div>';
 		}
-
-		// Render CAPTCHA using service manager.
-		if ( function_exists( 'wbc_captcha_service_manager' ) ) {
-			echo '<div class="um-field um-field-captcha">';
-			wbc_captcha_service_manager()->render( 'um_register' );
-			echo '</div>';
-		}
+		echo '</div>';
 	}
 
 	/**
-	 * Render CAPTCHA in Ultimate Member password reset form
+	 * Validate the UM login, registration and password-reset forms.
 	 *
-	 * Adds CAPTCHA HTML to the password reset form.
+	 * UM passes ( $post_form, $form_data ) and the form's mode lives in
+	 * $form_data, so reading it from the first argument never matched and no
+	 * UM form was ever checked. Password reset fires its own hook
+	 * (um_reset_password_errors_hook) and has no form mode there.
 	 *
-	 * @param array $args Form arguments.
-	 * @return void
+	 * @param array $post_form Submitted fields.
+	 * @param array $form_data Form settings, including 'mode'.
 	 */
-	public function render_um_password_captcha( $args ) {
-		// Check if this is a password reset form.
-		if ( ! isset( $args['mode'] ) || 'password' !== $args['mode'] ) {
+	public function validate_um_captcha( $post_form, $form_data = array() ) {
+		$mode    = doing_action( 'um_reset_password_errors_hook' ) ? 'password' : ( isset( $form_data['mode'] ) ? $form_data['mode'] : '' );
+		$context = $this->context_for( $mode );
+		if ( '' === $context ) {
 			return;
 		}
 
-		// Check if CAPTCHA is enabled for UM password reset.
-		$is_enabled = get_option( 'wbc_recaptcha_enable_on_um_password' );
-		if ( 'yes' !== $is_enabled ) {
-			return;
-		}
-
-		// Render CAPTCHA using service manager.
-		if ( function_exists( 'wbc_captcha_service_manager' ) ) {
-			echo '<div class="um-field um-field-captcha">';
-			wbc_captcha_service_manager()->render( 'um_password' );
-			echo '</div>';
-		}
-	}
-
-	/**
-	 * Validate CAPTCHA for Ultimate Member login
-	 *
-	 * Validates the CAPTCHA response during login.
-	 *
-	 * @param array $args Form arguments.
-	 * @return void
-	 */
-	public function validate_um_login_captcha( $args ) {
-		// Check if this is a login form.
-		if ( ! isset( $args['mode'] ) || 'login' !== $args['mode'] ) {
-			return;
-		}
-
-		// Check if CAPTCHA is enabled for UM login.
-		$is_enabled = get_option( 'wbc_recaptcha_enable_on_um_login' );
-		if ( 'yes' !== $is_enabled ) {
-			return;
-		}
-
-		// Verify CAPTCHA using service manager.
-		if ( function_exists( 'wbc_verify_captcha' ) ) {
-			if ( ! wbc_verify_captcha( 'um_login' ) ) {
-				// Get error message.
-				$error_message = wbc_get_captcha_error_message( 'um_login', 'invalid' );
-
-				// Add error to Ultimate Member's error handling.
-				UM()->form()->add_error( 'captcha', $error_message );
-			}
-		}
-	}
-
-	/**
-	 * Validate CAPTCHA for Ultimate Member registration
-	 *
-	 * Validates the CAPTCHA response during registration.
-	 *
-	 * @param array $args Form arguments.
-	 * @return void
-	 */
-	public function validate_um_register_captcha( $args ) {
-		// Check if this is a registration form.
-		if ( ! isset( $args['mode'] ) || 'register' !== $args['mode'] ) {
-			return;
-		}
-
-		// Check if CAPTCHA is enabled for UM registration.
-		$is_enabled = get_option( 'wbc_recaptcha_enable_on_um_register' );
-		if ( 'yes' !== $is_enabled ) {
-			return;
-		}
-
-		// Verify CAPTCHA using service manager.
-		if ( function_exists( 'wbc_verify_captcha' ) ) {
-			if ( ! wbc_verify_captcha( 'um_register' ) ) {
-				// Get error message.
-				$error_message = wbc_get_captcha_error_message( 'um_register', 'invalid' );
-
-				// Add error to Ultimate Member's error handling.
-				UM()->form()->add_error( 'captcha', $error_message );
-			}
-		}
-	}
-
-	/**
-	 * Validate CAPTCHA for Ultimate Member password reset
-	 *
-	 * Validates the CAPTCHA response during password reset.
-	 *
-	 * @param array $args Form arguments.
-	 * @return void
-	 */
-	public function validate_um_password_captcha( $args ) {
-		// Check if this is a password reset form.
-		if ( ! isset( $args['mode'] ) || 'password' !== $args['mode'] ) {
-			return;
-		}
-
-		// Check if CAPTCHA is enabled for UM password reset.
-		$is_enabled = get_option( 'wbc_recaptcha_enable_on_um_password' );
-		if ( 'yes' !== $is_enabled ) {
-			return;
-		}
-
-		// Verify CAPTCHA using service manager.
-		if ( function_exists( 'wbc_verify_captcha' ) ) {
-			if ( ! wbc_verify_captcha( 'um_password' ) ) {
-				// Get error message.
-				$error_message = wbc_get_captcha_error_message( 'um_password', 'invalid' );
-
-				// Add error to Ultimate Member's error handling.
-				UM()->form()->add_error( 'captcha', $error_message );
-			}
+		if ( ! wbc_verify_captcha( $context ) ) {
+			UM()->form()->add_error( 'captcha', wbc_get_captcha_error_message( $context, 'invalid' ) );
 		}
 	}
 }
