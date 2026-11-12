@@ -26,6 +26,48 @@ class WBC_Altcha_Service extends WBC_Captcha_Service_Base {
 			'verify_endpoint' => '', // Server-side verification handled differently.
 			'response_field'  => 'altcha',
 		);
+		add_action( 'rest_api_init', array( $this, 'register_challenge_route' ) );
+	}
+
+	/**
+	 * REST namespace and route the widget loads a fresh challenge from.
+	 */
+	const REST_NAMESPACE = 'wbc-captcha/v1';
+	const REST_ROUTE     = '/altcha-challenge';
+
+	/**
+	 * Serve challenges over REST instead of embedding one in the page.
+	 *
+	 * Each solution is single-use, so an embedded challenge breaks twice: a
+	 * retry after a failed AJAX submit re-solves the same challenge (rejected as
+	 * a replay), and a page cache hands one challenge to every visitor. The
+	 * widget fetches a new one each time it starts verifying.
+	 */
+	public function register_challenge_route() {
+		register_rest_route(
+			self::REST_NAMESPACE,
+			self::REST_ROUTE,
+			array(
+				'methods'             => WP_REST_Server::READABLE,
+				'callback'            => array( $this, 'rest_challenge' ),
+				'permission_callback' => '__return_true', // Public: visitors solve it before they log in.
+			)
+		);
+	}
+
+	/**
+	 * REST callback: one fresh signed challenge, never cached.
+	 *
+	 * @return WP_REST_Response|WP_Error
+	 */
+	public function rest_challenge() {
+		$challenge = $this->generate_challenge();
+		if ( ! $challenge ) {
+			return new WP_Error( 'wbc_altcha_not_configured', __( 'ALTCHA is not configured.', 'buddypress-recaptcha' ), array( 'status' => 503 ) );
+		}
+		$response = new WP_REST_Response( $challenge );
+		$response->header( 'Cache-Control', 'no-store, max-age=0' );
+		return $response;
 	}
 
 	/**
@@ -262,11 +304,6 @@ class WBC_Altcha_Service extends WBC_Captcha_Service_Base {
 			return;
 		}
 
-		// Generate challenge.
-		$challenge = $this->generate_challenge();
-		if ( ! $challenge ) {
-			return;
-		}
 
 		// Get settings.
 		$auto_verify = get_option( 'wbc_altcha_auto_verify', 'off' );
@@ -284,7 +321,7 @@ class WBC_Altcha_Service extends WBC_Captcha_Service_Base {
 		<div class="wbc_captcha_field wbc_altcha_field input">
 			<altcha-widget
 				id="<?php echo esc_attr( $widget_id ); ?>"
-				challengejson='<?php echo wp_json_encode( $challenge ); ?>'
+				challengeurl="<?php echo esc_url( rest_url( self::REST_NAMESPACE . self::REST_ROUTE ) ); ?>"
 				<?php if ( 'off' !== $auto_verify ) : ?>
 				auto="<?php echo esc_attr( $auto_verify ); ?>"
 				<?php endif; ?>

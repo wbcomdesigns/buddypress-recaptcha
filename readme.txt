@@ -247,7 +247,7 @@ Security and reliability release. Closes several ways to submit protected forms 
 * Fix      - The Protection tab showed some forms as protected when they were not.
 * Fix      - Sites upgraded from 1.x now keep their provider, score threshold and widget theme.
 * Fix      - BuddyPress sign-up now shows the CAPTCHA error instead of failing silently.
-* Security - The ALTCHA signing key is no longer sent to the browser, and each ALTCHA solution can be used only once.
+* Security - The ALTCHA signing key is no longer sent to the browser, and each ALTCHA solution can be used only once; every widget loads a fresh challenge, so retries and cached pages keep working.
 * Security - Login is checked inside WordPress authentication, so custom login handlers cannot skip it, and BuddyPress REST sign-up is verified; XML-RPC password logins are blocked while login protection is on.
 * Security - reCAPTCHA v3 tokens must match the form's action and the score threshold.
 * Security - Login redirects only go to addresses on this site.

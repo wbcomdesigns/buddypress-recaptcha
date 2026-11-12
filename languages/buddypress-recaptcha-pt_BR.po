@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Wbcom CAPTCHA Manager 2.1.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/buddypress-recaptcha\n"
-"POT-Creation-Date: 2026-11-12T09:09:42+00:00\n"
+"POT-Creation-Date: 2026-11-12T09:18:22+00:00\n"
 "PO-Revision-Date: 2026-07-16T11:32:28+00:00\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -1843,23 +1843,28 @@ msgstr "Perdeu sua senha?"
 msgid "Register"
 msgstr "Registrar"
 
-#: includes/services/class-altcha-service.php:49
+#: includes/services/class-altcha-service.php:66
+#, fuzzy
+msgid "ALTCHA is not configured."
+msgstr "Configuração do ALTCHA"
+
+#: includes/services/class-altcha-service.php:91
 msgid "ALTCHA (Self-Hosted)"
 msgstr "ALTCHA (Auto-hospedado)"
 
-#: includes/services/class-altcha-service.php:255
+#: includes/services/class-altcha-service.php:297
 msgid "ALTCHA requires HTTPS or localhost:"
 msgstr "ALTCHA requer HTTPS ou localhost:"
 
-#: includes/services/class-altcha-service.php:256
+#: includes/services/class-altcha-service.php:298
 msgid "ALTCHA uses Web Crypto API which requires a secure context (HTTPS). For local development, use localhost or .local/.test domains."
 msgstr "ALTCHA usa a API Web Crypto que requer um contexto seguro (HTTPS). Para desenvolvimento local, use localhost ou domínios .local/.test."
 
-#: includes/services/class-altcha-service.php:257
+#: includes/services/class-altcha-service.php:299
 msgid "Your current host:"
 msgstr "Seu host atual:"
 
-#: includes/services/class-altcha-service.php:258
+#: includes/services/class-altcha-service.php:300
 msgid "For production: Enable HTTPS. For local testing: Use localhost, 127.0.0.1, or .local domains."
 msgstr "Para produção: Ativar HTTPS. Para teste local: Use localhost, 127.0.0.1 ou domínios .local."
 

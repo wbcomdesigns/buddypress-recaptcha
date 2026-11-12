@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-11-12T09:09:42+00:00\n"
+"POT-Creation-Date: 2026-11-12T09:18:22+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: buddypress-recaptcha\n"
@@ -1853,23 +1853,27 @@ msgstr ""
 msgid "Register"
 msgstr ""
 
-#: includes/services/class-altcha-service.php:49
+#: includes/services/class-altcha-service.php:66
+msgid "ALTCHA is not configured."
+msgstr ""
+
+#: includes/services/class-altcha-service.php:91
 msgid "ALTCHA (Self-Hosted)"
 msgstr ""
 
-#: includes/services/class-altcha-service.php:255
+#: includes/services/class-altcha-service.php:297
 msgid "ALTCHA requires HTTPS or localhost:"
 msgstr ""
 
-#: includes/services/class-altcha-service.php:256
+#: includes/services/class-altcha-service.php:298
 msgid "ALTCHA uses Web Crypto API which requires a secure context (HTTPS). For local development, use localhost or .local/.test domains."
 msgstr ""
 
-#: includes/services/class-altcha-service.php:257
+#: includes/services/class-altcha-service.php:299
 msgid "Your current host:"
 msgstr ""
 
-#: includes/services/class-altcha-service.php:258
+#: includes/services/class-altcha-service.php:300
 msgid "For production: Enable HTTPS. For local testing: Use localhost, 127.0.0.1, or .local domains."
 msgstr ""
 
