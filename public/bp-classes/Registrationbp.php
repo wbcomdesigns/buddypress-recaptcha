@@ -61,7 +61,7 @@ class Registrationbp {
 	 * token in the request under the provider's usual field name
 	 * (g-recaptcha-response, h-captcha-response, cf-turnstile-response, altcha).
 	 *
-	 * @param true|WP_Error   $retval  Permission result so far.
+	 * @param bool|WP_Error   $retval  Permission result so far.
 	 * @param WP_REST_Request $request Request.
 	 * @return true|WP_Error
 	 */

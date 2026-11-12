@@ -31,36 +31,6 @@ parameters:
 			path: admin/includes/class-settings-renderer.php
 
 		-
-			message: "#^If condition is always true\\.$#"
-			count: 1
-			path: admin/includes/class-wbc-buddypress-settings-page.php
-
-		-
-			message: "#^Method WBC_BuddyPress_Settings_Page\\:\\:wbc_current_secret_key\\(\\) is unused\\.$#"
-			count: 1
-			path: admin/includes/class-wbc-buddypress-settings-page.php
-
-		-
-			message: "#^Method WBC_BuddyPress_Settings_Page\\:\\:wbc_current_site_key\\(\\) is unused\\.$#"
-			count: 1
-			path: admin/includes/class-wbc-buddypress-settings-page.php
-
-		-
-			message: "#^Method WBC_BuddyPress_Settings_Page\\:\\:wbc_protection_checkbox_group\\(\\) is unused\\.$#"
-			count: 1
-			path: admin/includes/class-wbc-buddypress-settings-page.php
-
-		-
-			message: "#^Method WBC_BuddyPress_Settings_Page\\:\\:wbc_service_key_fields\\(\\) is unused\\.$#"
-			count: 1
-			path: admin/includes/class-wbc-buddypress-settings-page.php
-
-		-
-			message: "#^Method WBC_BuddyPress_Settings_Page\\:\\:wbc_service_signup_links\\(\\) is unused\\.$#"
-			count: 1
-			path: admin/includes/class-wbc-buddypress-settings-page.php
-
-		-
 			message: "#^Right side of && is always true\\.$#"
 			count: 1
 			path: includes/admin/views/layout.php
@@ -69,16 +39,6 @@ parameters:
 			message: "#^Negated boolean expression is always false\\.$#"
 			count: 1
 			path: includes/captcha-verification-helper.php
-
-		-
-			message: "#^Negated boolean expression is always false\\.$#"
-			count: 2
-			path: includes/class-captcha-service-manager.php
-
-		-
-			message: "#^Ternary operator condition is always true\\.$#"
-			count: 4
-			path: includes/class-captcha-service-manager.php
 
 		-
 			message: "#^Action callback returns WP_Error but should not return anything\\.$#"
@@ -101,21 +61,6 @@ parameters:
 			path: includes/class-recaptcha-for-buddypress.php
 
 		-
-			message: "#^If condition is always true\\.$#"
-			count: 1
-			path: includes/class-settings-integration.php
-
-		-
-			message: "#^Right side of && is always true\\.$#"
-			count: 1
-			path: includes/class-settings-integration.php
-
-		-
-			message: "#^Negated boolean expression is always false\\.$#"
-			count: 1
-			path: includes/services/class-recaptcha-v3-service.php
-
-		-
 			message: "#^Ternary operator condition is always true\\.$#"
 			count: 1
 			path: includes/services/class-recaptcha-v3-service.php
@@ -127,7 +72,7 @@ parameters:
 
 		-
 			message: "#^Negated boolean expression is always false\\.$#"
-			count: 4
+			count: 1
 			path: public/class-recaptcha-for-buddypress-public.php
 
 		-

@@ -183,7 +183,7 @@ class WBC_Captcha_Service_Manager {
 	/**
 	 * Get active service
 	 *
-	 * @return WBC_Captcha_Service_Interface
+	 * @return WBC_Captcha_Service_Interface|null
 	 */
 	public function get_active_service() {
 		return $this->active_service;

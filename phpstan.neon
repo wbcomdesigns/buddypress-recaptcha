@@ -32,9 +32,6 @@ parameters:
             - dist (?)
             - assets (?)
             - languages (?)
-            # Vendored third-party library. We take the class + REST route only, and do
-            # not maintain its internals, so its findings are not ours to act on.
-            - includes/lib/altcha
     scanFiles:
         - vendor/gin0115/buddypress-stubs/buddypress-stubs.php
         - vendor/php-stubs/woocommerce-stubs/woocommerce-stubs.php
@@ -48,5 +45,8 @@ parameters:
         - '#Function UM not found\.#'
         - '#Function wpforms not found\.#'
         - '#(invalid return type|invalid type|unknown class) WPCF7_#'
+        - '#Elementor\\Widget_Base#'
+        # The WooCommerce stubs do not ship the Store API exception classes.
+        - '#Automattic\\WooCommerce\\StoreApi\\Exceptions\\RouteException#'
         # Constants defined in the main plugin file at runtime.
         - '#Constant RFB_PLUGIN_(URL|PATH) not found\.#'
