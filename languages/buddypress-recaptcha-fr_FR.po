@@ -1844,9 +1844,8 @@ msgid "Register"
 msgstr "S'enregistrer"
 
 #: includes/services/class-altcha-service.php:66
-#, fuzzy
 msgid "ALTCHA is not configured."
-msgstr "Configuration d'ALTCHA"
+msgstr "ALTCHA n’est pas configuré."
 
 #: includes/services/class-altcha-service.php:91
 msgid "ALTCHA (Self-Hosted)"
