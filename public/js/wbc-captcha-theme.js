@@ -10,7 +10,8 @@
  * (`data-bx-mode="dark"` on <html>, or the BuddyX dark body class), so PHP
  * cannot know it at render time. This runs before the provider script gets to
  * the element and flips the attribute, so the widget renders dark on a dark page
- * instead of punching a white hole through it.
+ * instead of punching a white hole through it, and redraws it when the visitor
+ * toggles the mode on an open page.
  *
  * Deliberately does NOT consult prefers-color-scheme: the widget follows the
  * site's dark mode, not the visitor's operating system.
@@ -33,29 +34,45 @@
 		);
 	}
 
-	function applyTheme( el ) {
-		if ( ! el || el.getAttribute( 'data-wbc-theme-set' ) ) {
+	// A widget that already holds a solved response; redrawing would make the
+	// visitor solve it again, so it keeps its look until the next page load.
+	function isSolved( el ) {
+		var field = el.querySelector( '[name="g-recaptcha-response"], [name="h-captcha-response"]' );
+		return !! ( field && field.value );
+	}
+
+	function applyTheme( el, want ) {
+		if ( ! el.hasAttribute( 'data-wbc-theme-auto' ) ) {
+			// Never override an explicit dark choice the site owner made in the settings.
+			if ( 'dark' === el.getAttribute( 'data-theme' ) ) {
+				return;
+			}
+			el.setAttribute( 'data-wbc-theme-auto', '1' );
+		}
+
+		if ( want === el.getAttribute( 'data-theme' ) ) {
 			return;
 		}
 
-		// Never override an explicit choice the site owner made in the settings.
-		var existing = el.getAttribute( 'data-theme' );
-		if ( 'dark' === existing ) {
+		// Not drawn yet: the provider reads the new value when it draws.
+		var drawn = !! el.querySelector( 'iframe, textarea, input' );
+		if ( drawn && isSolved( el ) ) {
 			return;
 		}
 
-		el.setAttribute( 'data-theme', 'dark' );
-		el.setAttribute( 'data-wbc-theme-set', '1' );
+		el.setAttribute( 'data-theme', want );
+
+		// Already drawn (the visitor toggled the mode): redraw so it follows.
+		if ( drawn && window.wbcCaptcha && 'function' === typeof window.wbcCaptcha.rerender ) {
+			window.wbcCaptcha.rerender( el );
+		}
 	}
 
 	function sweep() {
-		if ( ! isDark() ) {
-			return;
-		}
-
+		var want  = isDark() ? 'dark' : 'light';
 		var nodes = document.querySelectorAll( SELECTOR );
 		for ( var i = 0; i < nodes.length; i++ ) {
-			applyTheme( nodes[ i ] );
+			applyTheme( nodes[ i ], want );
 		}
 	}
 

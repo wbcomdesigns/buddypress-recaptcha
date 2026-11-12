@@ -168,6 +168,8 @@ hCaptcha offers two visual themes:
 - **Light Theme** (default) - White background
 - **Dark Theme** - Dark background
 
+**On a theme with a light/dark switch** (BuddyX, BuddyX Pro, Reign): with any setting except Dark, the widget follows the site's mode and changes with it when a visitor flips the switch. Dark keeps it dark in both modes.
+
 Choose the one that matches your site design.
 
 ---

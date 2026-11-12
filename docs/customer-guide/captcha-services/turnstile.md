@@ -184,11 +184,13 @@ Paste your keys:
 
 Turnstile themes (for the rare cases when widget is visible):
 
-- **Auto** (default) - Matches user's system (light/dark mode)
+- **Auto** (default) - Matches your site's light/dark mode
 - **Light** - Light theme
 - **Dark** - Dark theme
 
 **Recommendation:** Keep **Auto** for best experience.
+
+**On a theme with a light/dark switch** (BuddyX, BuddyX Pro, Reign): with any setting except Dark, the widget follows the site's mode and changes with it when a visitor flips the switch. Dark keeps it dark in both modes.
 
 ---
 
@@ -334,9 +336,9 @@ Change how Turnstile behaves:
 Match your site design:
 
 **Auto** (Recommended)
-- Automatically matches user's system theme
-- Light mode users see light theme
-- Dark mode users see dark theme
+- Follows your site's light/dark mode switch
+- Light mode shows the light widget
+- Dark mode shows the dark widget
 
 **Light**
 - Always shows light theme

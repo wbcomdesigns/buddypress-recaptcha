@@ -50,3 +50,20 @@ input[disabled] {
   color: #767676 !important;
   opacity: .4 !important;
 }
+/*--------------------------------------------------------------
+## ALTCHA - follow the theme
+ALTCHA draws in the page, so it takes the theme's form colours
+(BuddyX / BuddyX Pro tokens, then Reign's, then ALTCHA's default).
+Dark mode is the site's explicit toggle only, never
+prefers-color-scheme; color-scheme darkens its native checkbox.
+--------------------------------------------------------------*/
+altcha-widget {
+  --altcha-color-border: var(--bx-color-input-border, var(--reign-form-border-color, #a0a0a0));
+  --altcha-color-border-focus: var(--bx-color-input-focus-border, var(--reign-form-focus-border-color, currentColor));
+  --altcha-color-active: var(--bx-color-accent, var(--reign-accent-color, #0078d4));
+}
+
+[data-bx-mode="dark"] altcha-widget,
+.buddyx-dark-theme altcha-widget {
+  color-scheme: dark;
+}

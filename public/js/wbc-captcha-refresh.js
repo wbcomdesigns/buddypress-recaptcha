@@ -134,8 +134,32 @@
 		refreshRecaptchaV3( scope );
 	}
 
+	// Redraw one already-rendered widget so a changed data-theme takes effect
+	// (the providers only read it when they draw). Used by wbc-captcha-theme.js
+	// when the site's light/dark mode is toggled.
+	function rerender( el ) {
+		try {
+			if ( el.classList.contains( 'cf-turnstile' ) && window.turnstile ) {
+				window.turnstile.remove( el );
+				window.turnstile.render( el, params( el ) );
+			} else if ( el.classList.contains( 'h-captcha' ) && window.hcaptcha ) {
+				var frame = el.querySelector( 'iframe[data-hcaptcha-widget-id]' );
+				if ( frame ) {
+					window.hcaptcha.remove( frame.getAttribute( 'data-hcaptcha-widget-id' ) );
+				}
+				window.hcaptcha.render( el, params( el ) );
+			} else if ( el.classList.contains( 'g-recaptcha' ) && window.grecaptcha && typeof window.grecaptcha.render === 'function' ) {
+				// reCAPTCHA cannot draw into the same element twice; swap in an empty copy.
+				var fresh = el.cloneNode( false );
+				el.parentNode.replaceChild( fresh, el );
+				window.grecaptcha.render( fresh, params( fresh ) );
+			}
+		} catch ( e ) {}
+	}
+
 	window.wbcCaptcha = window.wbcCaptcha || {};
 	window.wbcCaptcha.refresh = refresh;
+	window.wbcCaptcha.rerender = rerender;
 
 	// ALTCHA's checkbox has no name. jQuery Validate (WPForms and others) looks
 	// checkboxes up by name and throws on an unnamed one, which breaks the
