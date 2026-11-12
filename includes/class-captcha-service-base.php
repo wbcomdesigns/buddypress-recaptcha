@@ -443,10 +443,14 @@ abstract class WBC_Captcha_Service_Base implements WBC_Captcha_Service_Interface
 	}
 
 	/**
-	 * Provider error codes that mean the site's own keys are wrong, never that the
-	 * visitor failed. reCAPTCHA, hCaptcha and Turnstile all use these names.
+	 * Provider error codes that depend only on the site's secret, never on the
+	 * visitor's token. reCAPTCHA, hCaptcha and Turnstile all use these names.
+	 *
+	 * Deliberately NOT here: hCaptcha's sitekey-secret-mismatch / invalid-sitekey.
+	 * A token solved on another site produces those, so treating them as a key
+	 * problem would let any foreign token through.
 	 */
-	const KEY_ERROR_CODES = array( 'missing-input-secret', 'invalid-input-secret', 'sitekey-secret-mismatch', 'invalid-sitekey' );
+	const KEY_ERROR_CODES = array( 'missing-input-secret', 'invalid-input-secret' );
 
 	/**
 	 * POST a token to the provider's siteverify endpoint.
