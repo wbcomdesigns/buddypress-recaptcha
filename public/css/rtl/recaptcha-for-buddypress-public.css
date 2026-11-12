@@ -36,34 +36,38 @@ input[disabled] {
   margin: auto;
 }
 
-.wbcom-disable {
-  color: #a7aaad !important;
-  background: #f6f7f7 !important;
-  border-color: #dcdcde !important;
-  box-shadow: none !important;
-  text-shadow: none !important;
-  cursor: default;
-}
-
 /* css for disable create account button with buddyboss on registeration page */
 .register-page .signup-form #signup_submit:disabled {
-  color: #767676 !important;
+  color: var(--bx-color-fg-muted, var(--reign-site-alternate-text-color, #767676)) !important;
   opacity: .4 !important;
 }
 /*--------------------------------------------------------------
 ## ALTCHA - follow the theme
 ALTCHA draws in the page, so it takes the theme's form colours
-(BuddyX / BuddyX Pro tokens, then Reign's, then ALTCHA's default).
+(BuddyX / BuddyX Pro tokens, then Reign's, then the theme.json
+palette, then ALTCHA's default).
 Dark mode is the site's explicit toggle only, never
 prefers-color-scheme; color-scheme darkens its native checkbox.
 --------------------------------------------------------------*/
 altcha-widget {
   --altcha-color-border: var(--bx-color-input-border, var(--reign-form-border-color, #a0a0a0));
   --altcha-color-border-focus: var(--bx-color-input-focus-border, var(--reign-form-focus-border-color, currentColor));
-  --altcha-color-active: var(--bx-color-accent, var(--reign-accent-color, #0078d4));
+  --altcha-color-active: var(--bx-color-accent, var(--reign-accent-color, var(--wp--preset--color--primary, #0078d4)));
+  --altcha-color-error-text: var(--reign-color-error-text, color-mix(in srgb, var(--bx-color-error, #f23939) 70%, currentColor));
 }
 
 [data-bx-mode="dark"] altcha-widget,
 .buddyx-dark-theme altcha-widget {
   color-scheme: dark;
+}
+
+/* ALTCHA "requires HTTPS" notice: warning hue from the theme, surface mixed
+   from it so it reads in light and dark mode alike. */
+.wbc-altcha-warning {
+  --wbc-warning: var(--bx-color-warning, var(--reign-color-warning, #dba617));
+  padding: 10px;
+  background: color-mix(in srgb, var(--wbc-warning) 14%, transparent);
+  border: 1px solid var(--wbc-warning);
+  border-radius: 4px;
+  color: var(--reign-color-warning-text, color-mix(in srgb, var(--wbc-warning) 45%, currentColor));
 }

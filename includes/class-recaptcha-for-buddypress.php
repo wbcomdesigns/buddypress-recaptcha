@@ -300,6 +300,8 @@ class Recaptcha_For_BuddyPress {
 
 		// Load style, js language.
 		add_action( 'wp_enqueue_scripts', array( $plugin_public, 'woo_recaptcha_load_styles_and_js' ), 9999 );
+		// The widget styles (ALTCHA colours, the HTTPS notice) apply on wp-login.php too.
+		add_action( 'login_enqueue_scripts', array( $plugin_public, 'enqueue_styles' ) );
 		add_action( 'login_enqueue_scripts', array( $plugin_public, 'woo_recaptcha_load_styles_and_js' ), 9999 );
 
 		// Login, registration and lost password.
