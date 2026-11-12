@@ -98,49 +98,34 @@ class EDD_Form {
 	 * @return void
 	 */
 	public function validate_edd_checkout_captcha( $valid_data, $post_data ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.FoundAfterLastUsed
-		// Check if CAPTCHA is enabled for EDD checkout.
-		$is_enabled = get_option( 'wbc_recaptcha_enable_on_edd_checkout' );
-		if ( 'yes' !== $is_enabled ) {
+		// EDD runs these checks twice per purchase: an AJAX pre-check (edd_ajax,
+		// never creates the order) and then the real form post. Tokens are
+		// single-use, so verify only on the real post that places the order.
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing -- EDD verified its nonce.
+		if ( ! empty( $_POST['edd_ajax'] ) ) {
 			return;
 		}
 
-		// Verify CAPTCHA using service manager.
-		if ( function_exists( 'wbc_verify_captcha' ) ) {
-			if ( ! wbc_verify_captcha( 'edd_checkout' ) ) {
-				// Get error message.
-				$error_message = wbc_get_captcha_error_message( 'edd_checkout', 'invalid' );
-
-				// Add error to EDD's error handling.
-				edd_set_error( 'invalid_captcha', $error_message );
-			}
+		if ( ! wbc_verify_captcha( 'edd_checkout' ) ) {
+			edd_set_error( 'invalid_captcha', wbc_get_captcha_error_message( 'edd_checkout', 'invalid' ) );
 		}
 	}
 
 	/**
-	 * Validate CAPTCHA for EDD login
+	 * Validate the EDD login form.
 	 *
-	 * Validates the CAPTCHA response during login.
+	 * Runs on edd_user_login before EDD's own handler (priority 10), which
+	 * signs the user in without checking edd_get_errors() first, so on failure
+	 * that handler is removed for this request and the form shows the error.
 	 *
-	 * @param array $data Login data.
-	 * @return void
+	 * @param array $data Posted login form data.
 	 */
 	public function validate_edd_login_captcha( $data ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found
-		// Check if CAPTCHA is enabled for EDD login.
-		$is_enabled = get_option( 'wbc_recaptcha_enable_on_edd_login' );
-		if ( 'yes' !== $is_enabled ) {
+		if ( wbc_verify_captcha( 'edd_login' ) ) {
 			return;
 		}
-
-		// Verify CAPTCHA using service manager.
-		if ( function_exists( 'wbc_verify_captcha' ) ) {
-			if ( ! wbc_verify_captcha( 'edd_login' ) ) {
-				// Get error message.
-				$error_message = wbc_get_captcha_error_message( 'edd_login', 'invalid' );
-
-				// Add error to EDD's error handling.
-				edd_set_error( 'invalid_captcha', $error_message );
-			}
-		}
+		edd_set_error( 'invalid_captcha', wbc_get_captcha_error_message( 'edd_login', 'invalid' ) );
+		remove_action( 'edd_user_login', 'edd_process_login_form' );
 	}
 
 	/**
