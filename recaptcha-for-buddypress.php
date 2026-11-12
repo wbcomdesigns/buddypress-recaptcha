@@ -17,7 +17,7 @@
  * Description:       Complete CAPTCHA solution with support for reCAPTCHA v2, v3, Cloudflare Turnstile, hCaptcha, and ALTCHA. Protect WordPress, WooCommerce, BuddyPress, bbPress, and popular form builders from spam and bots with a modular, easy-to-manage interface.
  * Version:           2.2.3
  * Requires at least: 6.5
- * Tested up to:      7.0
+ * Tested up to:      7.1
  * Requires PHP:      8.1
  * Author:            Wbcom Designs
  * Author URI:        https://wbcomdesigns.com/

@@ -3,7 +3,7 @@ Contributors: wbcomdesigns, vapvarun
 Donate link: https://wbcomdesigns.com/donate/
 Tags: captcha, recaptcha, spam protection, security, woocommerce
 Requires at least: 6.5
-Tested up to: 7.0
+Tested up to: 7.1
 Stable tag: 2.2.3
 Requires PHP: 8.1
 License: GPLv2 or later
@@ -262,6 +262,7 @@ Security and reliability release. Closes several ways to submit protected forms 
 * Dev      - Requires PHP 8.1 or higher.
 * Dev      - Plugin activation and loader functions renamed from the old WooCommerce names to activate_wbc_captcha_manager(), deactivate_wbc_captcha_manager() and run_wbc_captcha_manager().
 * Dev      - Removed the empty language hook, the Internet Explorer meta tag and unused settings helpers.
+* Compat   - Tested with WordPress 7.1.
 
 = 2.2.2 - September 2026 =
 
