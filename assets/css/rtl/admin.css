@@ -19,7 +19,10 @@
    Design Tokens
    ═══════════════════════════════════════════════════════════ */
 
-.bprc-admin {
+/* The toast host and confirm backdrop are appended to <body>, outside .bprc-admin, so they carry the tokens too. */
+.bprc-admin,
+.bprc-toast-host,
+.bprc-confirm-backdrop {
 	--bprc-admin-accent: #2563eb;
 	--bprc-admin-accent-hover: #1d4ed8;
 	--bprc-admin-accent-light: #eff6ff;
@@ -48,6 +51,8 @@
 	--bprc-admin-radius-sm: 6px;
 	--bprc-admin-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
 	--bprc-admin-shadow-hover: 0 4px 6px rgba(0, 0, 0, 0.07), 0 2px 4px rgba(0, 0, 0, 0.04);
+	--bprc-admin-shadow-modal: 0 20px 40px rgba(0, 0, 0, 0.2);
+	--bprc-admin-overlay: rgba(15, 23, 42, 0.5);
 
 	--bprc-admin-gap-sm: 8px;
 	--bprc-admin-gap-md: 16px;
@@ -414,7 +419,7 @@
 .bprc-btn-primary,
 .bprc-admin a.bprc-btn-primary {
 	background: var(--bprc-admin-accent);
-	color: #fff;
+	color: var(--bprc-admin-white);
 	border-color: var(--bprc-admin-accent);
 }
 
@@ -424,7 +429,7 @@
 .bprc-admin a.bprc-btn-primary:focus {
 	background: var(--bprc-admin-accent-hover);
 	border-color: var(--bprc-admin-accent-hover);
-	color: #fff;
+	color: var(--bprc-admin-white);
 }
 
 .bprc-btn-secondary,
@@ -441,6 +446,22 @@
 	background: var(--bprc-admin-surface-1);
 	color: var(--bprc-admin-text);
 	border-color: var(--bprc-admin-border-strong);
+}
+
+.bprc-btn-danger,
+.bprc-admin a.bprc-btn-danger {
+	background: var(--bprc-admin-danger);
+	color: var(--bprc-admin-white);
+	border-color: var(--bprc-admin-danger);
+}
+
+.bprc-btn-danger:hover,
+.bprc-btn-danger:focus,
+.bprc-admin a.bprc-btn-danger:hover,
+.bprc-admin a.bprc-btn-danger:focus {
+	background: var(--bprc-admin-danger-dark);
+	border-color: var(--bprc-admin-danger-dark);
+	color: var(--bprc-admin-white);
 }
 
 .bprc-btn:focus-visible {
@@ -638,7 +659,7 @@
 
 .bprc-toast {
 	background: var(--bprc-admin-text);
-	color: #fff;
+	color: var(--bprc-admin-white);
 	padding: 12px 16px;
 	border-radius: var(--bprc-admin-radius-sm);
 	font-size: 13px;
@@ -668,7 +689,7 @@
 .bprc-confirm-backdrop {
 	position: fixed;
 	inset: 0;
-	background: rgba(15, 23, 42, 0.5);
+	background: var(--bprc-admin-overlay);
 	z-index: 100001;
 	display: flex;
 	align-items: center;
@@ -679,7 +700,7 @@
 .bprc-confirm {
 	background: var(--bprc-admin-white);
 	border-radius: var(--bprc-admin-radius);
-	box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+	box-shadow: var(--bprc-admin-shadow-modal);
 	max-width: 420px;
 	width: 100%;
 	padding: 24px;
