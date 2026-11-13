@@ -53,6 +53,26 @@ class ElementorPro_Form {
 	}
 
 	/**
+	 * Keep protected Form widgets out of Elementor's element cache.
+	 *
+	 * The cache serves the stored widget HTML on later page loads without
+	 * running the widget, so the provider script is never enqueued (the
+	 * widget is inert and every submit fails) and a provider switch keeps the
+	 * old markup. A dynamic widget is rendered fresh on every load.
+	 *
+	 * @param bool                    $is_dynamic Whether Elementor treats the element as dynamic.
+	 * @param array                   $raw_data   Element data.
+	 * @param \Elementor\Element_Base $element    The element.
+	 * @return bool
+	 */
+	public function keep_form_out_of_element_cache( $is_dynamic, $raw_data, $element ) {
+		if ( $is_dynamic || ! is_object( $element ) || ! method_exists( $element, 'get_name' ) || 'form' !== $element->get_name() ) {
+			return $is_dynamic;
+		}
+		return 'yes' === get_option( 'wbc_recaptcha_enable_on_elementorpro' );
+	}
+
+	/**
 	 * Validate CAPTCHA for Elementor Pro submissions
 	 *
 	 * Validates the CAPTCHA response during form processing.

@@ -682,6 +682,7 @@ class Recaptcha_For_BuddyPress {
 
 		// Render CAPTCHA in Elementor Pro forms (priority 10).
 		add_filter( 'elementor/widget/render_content', array( $elementorpro_form, 'render_elementorpro_captcha' ), 10, 2 );
+		add_filter( 'elementor/element/is_dynamic_content', array( $elementorpro_form, 'keep_form_out_of_element_cache' ), 10, 3 );
 
 		// Validate CAPTCHA on Elementor Pro form submission.
 		add_action( 'elementor_pro/forms/validation', array( $elementorpro_form, 'validate_elementorpro_captcha' ), 10, 2 );
