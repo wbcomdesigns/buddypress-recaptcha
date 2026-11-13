@@ -9,7 +9,9 @@
    Colour tokens.
    Each one follows the active theme, in this order:
    BuddyX / BuddyX Pro (--bx-color-*), then Reign (--reign-*), then the
-   theme.json palette (--wp--preset--color--*), then a neutral literal.
+   theme.json palette (--wp--preset--color--*: primary, or contrast for
+   themes such as Twenty Twenty-Five that have no primary), then a
+   neutral literal.
    The theme tokens already switch with the site's light/dark mode, so
    the widget matches the page in both without a palette of its own.
    =========================================================== */
@@ -22,12 +24,12 @@
 	--wbc-input-border: var(--bx-color-input-border, var(--reign-form-border-color, #ddd));
 	--wbc-input-fg: var(--bx-color-input-fg, var(--reign-form-text-color, var(--wp--preset--color--contrast, #333)));
 	--wbc-input-placeholder: var(--bx-color-input-placeholder, var(--reign-form-placeholder-color, #757575));
-	--wbc-focus: var(--bx-color-input-focus-border, var(--reign-form-focus-border-color, var(--wp--preset--color--primary, #007cba)));
-	--wbc-button-bg: var(--bx-color-button-bg, var(--reign-site-button-bg-color, var(--wp--preset--color--primary, #007cba)));
+	--wbc-focus: var(--bx-color-input-focus-border, var(--reign-form-focus-border-color, var(--wp--preset--color--primary, var(--wp--preset--color--contrast, #007cba))));
+	--wbc-button-bg: var(--bx-color-button-bg, var(--reign-site-button-bg-color, var(--wp--preset--color--primary, var(--wp--preset--color--contrast, #007cba))));
 	--wbc-button-bg-hover: var(--bx-color-button-bg-hover, var(--reign-site-button-bg-hover-color, color-mix(in srgb, var(--wbc-button-bg) 85%, #000)));
 	--wbc-button-fg: var(--bx-color-button-fg, var(--reign-site-button-text-color, var(--wp--preset--color--base, #fff)));
 	--wbc-button-fg-hover: var(--bx-color-button-fg-hover, var(--reign-site-button-text-hover-color, var(--wbc-button-fg)));
-	--wbc-link: var(--bx-color-link, var(--reign-site-link-color, var(--wp--preset--color--primary, #007cba)));
+	--wbc-link: var(--bx-color-link, var(--reign-site-link-color, var(--wp--preset--color--primary, var(--wp--preset--color--contrast, #007cba))));
 	--wbc-link-hover: var(--bx-color-link-hover, var(--reign-site-link-hover-color, var(--wbc-link)));
 	/*
 	 * Status: only the hue comes from the theme. The surface is mixed from
