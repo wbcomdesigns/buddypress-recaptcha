@@ -359,18 +359,18 @@ class WBC_Recaptcha_V3_Service extends WBC_Captcha_Service_Base {
 	private function get_score_threshold( $context ) {
 		// Primary source: the global threshold the admin UI actually saves
 		// (Advanced tab -> reCAPTCHA v3 score threshold). A single global value
-		// applies to every context unless a legacy per-context override exists.
+		// applies to every context unless a 1.x per-form override exists.
 		$global = get_option( 'wbc_recaptcha_v3_score_threshold', '' );
 		if ( '' === $global || false === $global ) {
 			$global = get_option( 'wbc_recaptcha_v3_score', '' ); // Where the 2.x migration put the 1.x score.
 		}
 
-		// Legacy per-context overrides (pre-2.1 typo-spelled keys). Kept only as a
-		// fallback so older installs that set these keep their tuned values.
+		// 1.x per-form overrides, under the exact keys 1.x saved, so upgraded
+		// sites keep their tuned values.
 		$legacy_map = array(
-			'wp_login'           => 'wbc_recapcha_login_score_threshold_v3',
+			'wp_login'           => 'wbc_recapcha_wp_login_score_threshold_v3',
 			'wp_register'        => 'wbc_recapcha_wp_register_score_threshold_v3',
-			'wp_lostpassword'    => 'wbc_recapcha_wp_lostpassword_score_threshold_v3',
+			'wp_lostpassword'    => 'wbc_recapcha_wp_lost_password_score_threshold_v3',
 			'woo_login'          => 'wbc_recapcha_login_score_threshold_v3',
 			'woo_register'       => 'wbc_recapcha_signup_score_threshold_v3',
 			'woo_lostpassword'   => 'wbc_recapcha_lostpassword_score_threshold_v3',
@@ -383,11 +383,13 @@ class WBC_Recaptcha_V3_Service extends WBC_Captcha_Service_Base {
 
 		$legacy = isset( $legacy_map[ $context ] ) ? get_option( $legacy_map[ $context ], '' ) : '';
 
-		// Prefer the global admin value; fall back to a legacy override; then 0.5.
-		if ( '' !== $global ) {
-			$threshold = $global;
-		} elseif ( '' !== $legacy ) {
+		// A per-form value the owner tuned in 1.x wins; then the global admin
+		// value; then 0.5. The global field shows 0.5 by default, so letting it
+		// win would reset every tuned form the first time any tab is saved.
+		if ( '' !== $legacy && false !== $legacy ) {
 			$threshold = $legacy;
+		} elseif ( '' !== $global && false !== $global ) {
+			$threshold = $global;
 		} else {
 			$threshold = '0.5';
 		}

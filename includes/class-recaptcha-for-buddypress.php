@@ -245,6 +245,7 @@ class Recaptcha_For_BuddyPress {
 
 		// Run option migration.
 		$this->loader->add_action( 'plugins_loaded', $this, 'run_option_migration' );
+		add_action( 'update_option_wbc_recaptcha_v3_score_threshold', array( 'WBC_Option_Migration', 'forget_1x_thresholds' ), 10, 2 );
 	}
 
 	/**
