@@ -23,7 +23,7 @@
 ## Quick reference
 
 - **Main file**: `recaptcha-for-buddypress.php`
-- **Version**: `2.2.3`
+- **Version**: `2.2.4`
 - **Requires PHP**: `8.1` (CI lints 8.1 through 8.5)
 - **Class prefixes**: `WBC_*`, `Recaptcha_For_BuddyPress*`, `BPRC_*` (no PSR-4 namespace)
 - **Requires at least**: `6.3` — set by `blocks/login-widget/block.json` `apiVersion 3`. This is the real code-justified floor; do not raise it without a code reason. (History: a truthful 5.9 was set 2026-06-04, then overwritten with an unjustified 6.9; corrected to 6.3 on 2026-07-16.)
@@ -36,7 +36,7 @@
 
 - **Tokens are single-use.** Verify each submission exactly once. If a plugin runs its own AJAX pre-check before the real submit (EDD checkout, `edd_ajax`), skip the pre-check, never verify twice. `verified_contexts` in the manager dedupes within one request only.
 - **Hook the integration's own validation, not a render or after-save hook.** CF7 uses `wpcf7_spam`; Ninja Forms reads the token from `$form_data['extra']['wbc_captcha']` (sent by `wbc-captcha-refresh.js` on `before:submit`); Elementor Pro renders through `elementor/widget/render_content`; WP login runs on `authenticate` priority 99, which also covers XML-RPC (password logins blocked, application passwords pass, filter `wbc_allow_xmlrpc_password_login`).
-- **WooCommerce block checkout** posts through the Store API: the token travels as extension data under namespace `wbc-captcha` (`public/js/wbc-checkout-block.js`) and is verified on `woocommerce_store_api_checkout_update_order_from_request`, POST only. Express-pay skip is limited to gateways in `wbc_captcha_express_gateways` and can be turned off with `wbc_captcha_skip_express_checkout`.
+- **WooCommerce block checkout** posts through the Store API: the token travels as extension data under namespace `wbc-captcha` (`public/js/wbc-checkout-block.js`) and is verified on `woocommerce_store_api_checkout_update_order_from_request`, POST only. Express-pay skip is limited to gateways in `wbc_captcha_express_gateways` and can be turned off with `wbc_captcha_skip_express_checkout`. The classic checkout skips only inside a real express request (`doing_action( "wc_ajax_" . endpoint )`, endpoints from `wbc_captcha_express_endpoints`); a posted payment-request type alone never skips. Store API pay-for-order is skipped only on the real `/wc/store/checkout/{id}` route, never on a body `id`.
 - **Fail open only on owner mistakes.** `KEY_ERROR_CODES` (`missing-input-secret`, `invalid-input-secret`) let the submission through and show an admin notice; every visitor-side or token-dependent code fails closed. Do not add hCaptcha `sitekey-secret-mismatch` / `invalid-sitekey`: a forged token can trigger them. `WBC_CAPTCHA_DISABLE` in wp-config is the lockout escape hatch.
 - **ALTCHA challenges come from REST, never the page.** The widget uses `challengeurl` → `wbc-captcha/v1/altcha-challenge` (`Cache-Control: no-store`). Solutions are single-use (signature kept in a transient until expiry), so an embedded `challengejson` makes every retry and every cached-page visitor after the first fail as a replay. The HMAC key never leaves the server.
 - **Every rejection is logged for the owner.** A service sets `$this->failure_reason` (short code) before returning false; the manager pulls it after `verify()` and keeps the newest 20 in the `wbc_captcha_rejections` transient (7 days, shown on Overview). Never store the token, secret or IP. New failure paths set a code; unknown ones fall back to `rejected` / `missing-token`.

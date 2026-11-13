@@ -4,7 +4,7 @@ Donate link: https://wbcomdesigns.com/donate/
 Tags: captcha, recaptcha, spam protection, security, woocommerce
 Requires at least: 6.5
 Tested up to: 7.1
-Stable tag: 2.2.3
+Stable tag: 2.2.4
 Requires PHP: 8.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -216,6 +216,10 @@ Yes. A POT file is included, along with a WPML configuration file.
 
 == Upgrade Notice ==
 
+= 2.2.4 =
+
+Security release. Closes a classic WooCommerce checkout CAPTCHA bypass and restores protection that sites upgraded from 1.x had lost.
+
 = 2.2.3 =
 
 Security release. Closes CAPTCHA bypasses on login, checkout and several form plugins, and fixes forms that blocked real visitors. Requires PHP 8.1.
@@ -229,6 +233,24 @@ Fixes lockouts introduced in 2.1.0. Login from a Login/Logout block, login widge
 Security update: comment, lost-password and login forms are now verified on sites without WooCommerce, where they previously did nothing. Recommended for every site.
 
 == Changelog ==
+
+= 2.2.4 - November 2026 =
+
+Closes a classic checkout bypass and makes the fail-closed, no-conflict and IP whitelist settings do what they say.
+
+* Improve  - The login widget, login block and every CAPTCHA message follow the light and dark mode of Reign, BuddyX and BuddyX Pro, and use the colour palette of block themes such as Twenty Twenty-Five.
+* Improve  - The Overview tab warns you when the provider rejects this site's keys.
+* Fix      - Sites upgraded from 1.x kept BuddyPress sign-up unprotected, and lost their per-form reCAPTCHA v3 score thresholds and reCAPTCHA v2 widget theme.
+* Fix      - With fail-closed off, a provider outage no longer blocks visitors who solved the CAPTCHA.
+* Fix      - The IP whitelist now skips the CAPTCHA on every protected form.
+* Fix      - The no-conflict option now removes CAPTCHA scripts loaded by other plugins for every provider, without removing this plugin's own scripts.
+* Fix      - Elementor Pro forms lost their CAPTCHA when Elementor's element cache was on.
+* Fix      - Easy Digital Downloads checkout did not show the CAPTCHA after switching between payment gateways.
+* Fix      - The login widget and block refused visitors whose page was served from a cache; the form nonce is now checked only when the strict nonce option is on.
+* Fix      - Login form fields no longer overflow the form on themes such as Twenty Twenty-Five.
+* Fix      - Removed the "Pay for Order" setting, which had no effect.
+* Security - The classic WooCommerce checkout could be submitted without a solved CAPTCHA; only real express payment requests (Stripe and WooPayments) skip it now, and the filters wbc_captcha_express_gateways and wbc_captcha_express_endpoints let you add others.
+* Security - Only the real Store API pay-for-order route skips the block checkout CAPTCHA.
 
 = 2.2.3 - November 2026 =
 
