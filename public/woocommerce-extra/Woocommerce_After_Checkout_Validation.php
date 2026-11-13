@@ -152,7 +152,10 @@ class Woocommerce_After_Checkout_Validation {
 
 		// Pay-for-order (POST /checkout/{id}) pays an order that already exists;
 		// that page shows no widget, so checking it would fail every payment.
-		if ( $request->get_param( 'id' ) ) {
+		// Only the route's own placeholder counts: get_param() also reads the
+		// body, where anyone could add an "id" to a normal checkout.
+		$url_params = $request->get_url_params();
+		if ( ! empty( $url_params['id'] ) && preg_match( '#^/wc/store(/v\d+)?/checkout/\d+$#', (string) $request->get_route() ) ) {
 			return;
 		}
 
