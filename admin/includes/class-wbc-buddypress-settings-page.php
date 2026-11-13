@@ -1277,15 +1277,6 @@ if ( ! class_exists( 'WBC_BuddyPress_Settings_Page' ) ) :
 				),
 
 				array(
-					'name'    => __( 'Pay for Order', 'buddypress-recaptcha' ),
-					'type'    => 'checkbox',
-					'id'      => 'wbc_recapcha_enable_on_payfororder',
-					'desc'    => __( 'Secure payment forms for existing orders', 'buddypress-recaptcha' ),
-					'default' => 'no',
-				),
-
-
-				array(
 					'type' => 'sectionend',
 					'id'   => 'wbc_woo_forms_integration',
 				),

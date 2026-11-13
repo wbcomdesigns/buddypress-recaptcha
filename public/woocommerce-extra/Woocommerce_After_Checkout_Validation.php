@@ -54,6 +54,29 @@ class Woocommerce_After_Checkout_Validation {
 	}
 
 	/**
+	 * Gateways that really offer express buttons. Only these may claim an
+	 * express order; anyone can add the flag to a request.
+	 *
+	 * @return array
+	 */
+	private function express_gateways() {
+		//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
+		return (array) apply_filters( 'wbc_captcha_express_gateways', array( 'stripe', 'woocommerce_payments' ) );
+	}
+
+	/**
+	 * The wc-ajax handlers express buttons place their orders through. Checked
+	 * with doing_action(), so the skip holds only while WooCommerce is really
+	 * running that handler, never because a request says so.
+	 *
+	 * @return array
+	 */
+	private function express_endpoints() {
+		//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
+		return (array) apply_filters( 'wbc_captcha_express_endpoints', array( 'wc_stripe_create_order', 'wcpay_create_order' ) );
+	}
+
+	/**
 	 * Classic checkout.
 	 *
 	 * @param array    $fields            Checkout fields.
@@ -62,15 +85,20 @@ class Woocommerce_After_Checkout_Validation {
 	 */
 	public function woocomm_validate_checkout_captcha( $fields, $validation_errors ) {
 		// WooCommerce checked the checkout nonce before this hook runs.
+		// Express buttons place the order from inside their own wc-ajax handler
+		// (e.g. wc_ajax_wc_stripe_create_order). WooCommerce processes a posted
+		// checkout whatever ?wc-ajax= says, so the endpoint name and the type
+		// field are client input; only a handler that is really running counts.
 		// phpcs:disable WordPress.Security.NonceVerification
-		// Express buttons post to their own wc-ajax endpoint (e.g.
-		// wc_stripe_create_order), never to the normal ?wc-ajax=checkout, so a
-		// payment_request_type field added to a normal checkout is ignored.
-		$endpoint = isset( $_GET['wc-ajax'] ) ? sanitize_key( wp_unslash( $_GET['wc-ajax'] ) ) : '';
-		$type     = isset( $_POST['payment_request_type'] ) ? sanitize_key( wp_unslash( $_POST['payment_request_type'] ) ) : '';
+		$type    = isset( $_POST['payment_request_type'] ) ? sanitize_key( wp_unslash( $_POST['payment_request_type'] ) ) : '';
+		$gateway = isset( $_POST['payment_method'] ) ? sanitize_key( wp_unslash( $_POST['payment_method'] ) ) : '';
 		// phpcs:enable WordPress.Security.NonceVerification
-		if ( '' !== $endpoint && 'checkout' !== $endpoint && $this->is_express_payment( $type ) ) {
-			return $validation_errors;
+		if ( $this->is_express_payment( $type ) && in_array( $gateway, $this->express_gateways(), true ) ) {
+			foreach ( $this->express_endpoints() as $endpoint ) {
+				if ( doing_action( 'wc_ajax_' . $endpoint ) ) {
+					return $validation_errors;
+				}
+			}
 		}
 
 		$context = $this->checkout_context();
@@ -122,12 +150,16 @@ class Woocommerce_After_Checkout_Validation {
 			return;
 		}
 
-		// Only gateways that really have express buttons may claim an express
-		// order; anyone can add the flag to payment_data.
-		//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
-		$express_gateways = (array) apply_filters( 'wbc_captcha_express_gateways', array( 'stripe', 'woocommerce_payments' ) );
-		$gateway          = (string) $request->get_param( 'payment_method' );
-		foreach ( in_array( $gateway, $express_gateways, true ) ? (array) $request->get_param( 'payment_data' ) : array() as $item ) {
+		// Pay-for-order (POST /checkout/{id}) pays an order that already exists;
+		// that page shows no widget, so checking it would fail every payment.
+		if ( $request->get_param( 'id' ) ) {
+			return;
+		}
+
+		// Express orders: only gateways that really have express buttons, and
+		// those gateways still need their own payment token to charge.
+		$gateway = (string) $request->get_param( 'payment_method' );
+		foreach ( in_array( $gateway, $this->express_gateways(), true ) ? (array) $request->get_param( 'payment_data' ) : array() as $item ) {
 			if ( is_array( $item ) && isset( $item['key'], $item['value'] )
 				&& in_array( $item['key'], array( 'payment_request_type', 'express_payment_type' ), true )
 				&& $this->is_express_payment( sanitize_key( $item['value'] ) ) ) {
