@@ -45,8 +45,12 @@ if ( isset( $bprc_key_map[ $bprc_service ] ) ) {
 	}
 }
 
-$bprc_rejections = get_transient( WBC_Captcha_Service_Manager::REJECTIONS_TRANSIENT );
-$bprc_rejections = is_array( $bprc_rejections ) ? $bprc_rejections : array();
+$bprc_rejections = WBC_Captcha_Service_Manager::get_recent_rejections();
+
+// Name each form the way the Protection tab does, e.g. "WordPress Forms: Login Form".
+require_once RFB_PLUGIN_PATH . 'admin/includes/settings-modules/class-wbc-settings-module-loader.php';
+$bprc_form_labels = wbc_settings_module_loader()->get_protection_labels();
+$bprc_service_obj = WBC_Captcha_Service_Manager::get_instance()->get_active_service();
 
 // Plain-language hints for the reason codes owners ask about most.
 $bprc_reason_hints = array(
@@ -179,7 +183,16 @@ $bprc_protect_url = admin_url( 'admin.php?page=' . BPRC_Admin::MENU_SLUG . '&tab
 						?>
 						<tr>
 							<td data-label="<?php esc_attr_e( 'Time', 'buddypress-recaptcha' ); ?>"><?php echo esc_html( wp_date( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), (int) $bprc_row['time'] ) ); ?></td>
-							<td data-label="<?php esc_attr_e( 'Form', 'buddypress-recaptcha' ); ?>"><code><?php echo esc_html( $bprc_row['context'] ); ?></code></td>
+							<?php
+							$bprc_ctx_opt = $bprc_service_obj instanceof WBC_Captcha_Service_Base ? $bprc_service_obj->get_context_option( (string) $bprc_row['context'] ) : '';
+							?>
+							<td data-label="<?php esc_attr_e( 'Form', 'buddypress-recaptcha' ); ?>">
+								<?php if ( isset( $bprc_form_labels[ $bprc_ctx_opt ] ) ) : ?>
+									<?php echo esc_html( $bprc_form_labels[ $bprc_ctx_opt ] ); ?>
+								<?php else : ?>
+									<code><?php echo esc_html( $bprc_row['context'] ); ?></code>
+								<?php endif; ?>
+							</td>
 							<td data-label="<?php esc_attr_e( 'Service', 'buddypress-recaptcha' ); ?>"><?php echo esc_html( isset( $bprc_service_names[ $bprc_svc ] ) ? $bprc_service_names[ $bprc_svc ] : $bprc_svc ); ?></td>
 							<td data-label="<?php esc_attr_e( 'Reason', 'buddypress-recaptcha' ); ?>">
 								<code><?php echo esc_html( $bprc_reason ); ?></code>

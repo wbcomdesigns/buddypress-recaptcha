@@ -408,8 +408,7 @@ class WBC_Captcha_Service_Manager {
 	 * @return void
 	 */
 	private function record_rejection( $context, $service, $reason ) {
-		$log = get_transient( self::REJECTIONS_TRANSIENT );
-		$log = is_array( $log ) ? $log : array();
+		$log = self::get_recent_rejections();
 		array_unshift(
 			$log,
 			array(
@@ -420,6 +419,25 @@ class WBC_Captcha_Service_Manager {
 			)
 		);
 		set_transient( self::REJECTIONS_TRANSIENT, array_slice( $log, 0, 20 ), WEEK_IN_SECONDS );
+	}
+
+	/**
+	 * The stored rejections from the last 7 days, newest first. Every write renews the
+	 * transient's expiry, so each row's own time is checked here.
+	 *
+	 * @return array
+	 */
+	public static function get_recent_rejections() {
+		$log    = get_transient( self::REJECTIONS_TRANSIENT );
+		$cutoff = time() - WEEK_IN_SECONDS;
+		return array_values(
+			array_filter(
+				is_array( $log ) ? $log : array(),
+				static function ( $row ) use ( $cutoff ) {
+					return is_array( $row ) && isset( $row['time'] ) && (int) $row['time'] >= $cutoff;
+				}
+			)
+		);
 	}
 
 	/**

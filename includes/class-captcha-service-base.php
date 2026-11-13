@@ -181,14 +181,24 @@ abstract class WBC_Captcha_Service_Base implements WBC_Captcha_Service_Interface
 	 * @return bool
 	 */
 	public function is_enabled_for_context( $context ) {
-		$option_map  = $this->get_context_option_map();
-		$option_name = isset( $option_map[ $context ] ) ? $option_map[ $context ] : '';
+		$option_name = $this->get_context_option( $context );
 
 		if ( empty( $option_name ) ) {
 			return false;
 		}
 
 		return 'yes' === get_option( $option_name );
+	}
+
+	/**
+	 * The option that switches protection on for a form context, e.g. wp_login.
+	 *
+	 * @param string $context The context identifier.
+	 * @return string Option name, or '' for an unknown context.
+	 */
+	public function get_context_option( $context ) {
+		$option_map = $this->get_context_option_map();
+		return isset( $option_map[ $context ] ) ? $option_map[ $context ] : '';
 	}
 
 	/**
