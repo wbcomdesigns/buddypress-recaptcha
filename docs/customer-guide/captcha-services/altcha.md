@@ -235,6 +235,11 @@ Customize how ALTCHA looks:
    - ALTCHA requires JavaScript
    - Verify JS is enabled in browser
 
+4. **Site Not on HTTPS:**
+   - ALTCHA needs the browser's Web Crypto API, which works only on HTTPS or localhost
+   - A plain-HTTP address (including `.local` and `.test` development sites) shows a notice instead of the widget
+   - Turn on HTTPS for the site, or open it at `localhost`, `127.0.0.1` or a `*.localhost` address
+
 ---
 
 ### Problem: Challenge Takes Too Long

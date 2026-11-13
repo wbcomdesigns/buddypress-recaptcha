@@ -297,9 +297,9 @@ class WBC_Altcha_Service extends WBC_Captcha_Service_Base {
 			<div class="wbc_captcha_field wbc_altcha_field">
 				<div class="wbc-altcha-warning">
 					<strong><?php esc_html_e( 'ALTCHA requires HTTPS or localhost:', 'buddypress-recaptcha' ); ?></strong>
-					<p><?php esc_html_e( 'ALTCHA uses Web Crypto API which requires a secure context (HTTPS). For local development, use localhost or .local/.test domains.', 'buddypress-recaptcha' ); ?></p>
+					<p><?php esc_html_e( 'ALTCHA uses the browser\'s Web Crypto API, which works only on HTTPS or on localhost. A plain-HTTP address, including .local and .test sites, cannot solve the challenge.', 'buddypress-recaptcha' ); ?></p>
 					<p><strong><?php esc_html_e( 'Your current host:', 'buddypress-recaptcha' ); ?></strong> <?php echo esc_html( $current_host ); ?></p>
-					<p><?php esc_html_e( 'For production: Enable HTTPS. For local testing: Use localhost, 127.0.0.1, or .local domains.', 'buddypress-recaptcha' ); ?></p>
+					<p><?php esc_html_e( 'To fix it, turn on HTTPS for this site (Local, Valet and DevKinsta can enable it per site), or open the site at localhost, 127.0.0.1 or a *.localhost address.', 'buddypress-recaptcha' ); ?></p>
 				</div>
 			</div>
 			<?php

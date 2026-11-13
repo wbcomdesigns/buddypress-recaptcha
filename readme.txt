@@ -249,6 +249,7 @@ Closes a classic checkout bypass and makes the fail-closed, no-conflict and IP w
 * Fix      - The login widget and block refused visitors whose page was served from a cache; the form nonce is now checked only when the strict nonce option is on.
 * Fix      - Login form fields no longer overflow the form on themes such as Twenty Twenty-Five.
 * Fix      - Removed the "Pay for Order" setting, which had no effect.
+* Fix      - The ALTCHA notice on sites without HTTPS no longer suggests .local or .test addresses, which cannot run ALTCHA either.
 * Security - The classic WooCommerce checkout could be submitted without a solved CAPTCHA; only real express payment requests (Stripe and WooPayments) skip it now, and the filters wbc_captcha_express_gateways and wbc_captcha_express_endpoints let you add others.
 * Security - Only the real Store API pay-for-order route skips the block checkout CAPTCHA.
 * Security - A solved ALTCHA challenge can be used only once, even when the same answer is sent in several requests at the same moment.
