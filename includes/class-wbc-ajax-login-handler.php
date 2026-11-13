@@ -24,8 +24,13 @@ class WBC_AJAX_Login_Handler {
 	 * Handle AJAX login request.
 	 */
 	public function handle_ajax_login() {
-		// Verify nonce.
-		if ( ! isset( $_POST['wbc_login_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['wbc_login_nonce'] ) ), 'wbc_ajax_login_nonce' ) ) {
+		// A full-page cache freezes this nonce, so a visitor on a cached page
+		// would be refused after the nonce expires. The CAPTCHA and the password
+		// are the gate (wp-login.php has no nonce either); the nonce is enforced
+		// only in strict mode, like every other protected form.
+		//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
+		$strict = (bool) apply_filters( 'wbc_captcha_strict_nonce', (bool) get_option( 'wbc_captcha_strict_nonce', false ), 'widget_login', '' );
+		if ( $strict && ( ! isset( $_POST['wbc_login_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['wbc_login_nonce'] ) ), 'wbc_ajax_login_nonce' ) ) ) {
 			wp_send_json_error(
 				array(
 					'message' => __( 'Security check failed. Please refresh the page and try again.', 'buddypress-recaptcha' ),
