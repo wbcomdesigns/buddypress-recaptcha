@@ -251,6 +251,7 @@ Closes a classic checkout bypass and makes the fail-closed, no-conflict and IP w
 * Fix      - Removed the "Pay for Order" setting, which had no effect.
 * Security - The classic WooCommerce checkout could be submitted without a solved CAPTCHA; only real express payment requests (Stripe and WooPayments) skip it now, and the filters wbc_captcha_express_gateways and wbc_captcha_express_endpoints let you add others.
 * Security - Only the real Store API pay-for-order route skips the block checkout CAPTCHA.
+* Security - A solved ALTCHA challenge can be used only once, even when the same answer is sent in several requests at the same moment.
 
 = 2.2.3 - November 2026 =
 

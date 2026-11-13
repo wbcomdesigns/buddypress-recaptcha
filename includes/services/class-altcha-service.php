@@ -423,13 +423,21 @@ class WBC_Altcha_Service extends WBC_Captcha_Service_Base {
 			return false;
 		}
 
-		// Single use: remember the signature until the challenge expires.
+		// Single use: claim the signature until the challenge expires. The claim must be
+		// atomic, or parallel requests replaying one solution all pass a read-then-write
+		// check. With a persistent object cache, wp_cache_add() is an atomic "add if absent".
+		// Without one, set_transient() stores the value with add_option(), whose
+		// INSERT ... ON DUPLICATE KEY UPDATE affects 0 rows (returns false) for every
+		// request after the first, because the value written is always the same.
 		$used_key = 'wbc_altcha_used_' . substr( $data['signature'], 0, 40 );
-		if ( get_transient( $used_key ) ) {
+		$ttl      = max( 60, $expires - time() );
+		$claimed  = wp_using_ext_object_cache()
+			? wp_cache_add( $used_key, 1, 'wbc_altcha_used', $ttl )
+			: set_transient( $used_key, 1, $ttl );
+		if ( ! $claimed ) {
 			$this->failure_reason = 'already-used';
 			return false;
 		}
-		set_transient( $used_key, 1, max( 60, $expires - time() ) );
 
 		return true;
 	}
