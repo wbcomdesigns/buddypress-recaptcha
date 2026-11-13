@@ -121,6 +121,7 @@
 }
 
 .wbc-input {
+	box-sizing: border-box;
 	width: 100%;
 	padding: 10px 15px;
 	background: var(--wbc-input-bg);
