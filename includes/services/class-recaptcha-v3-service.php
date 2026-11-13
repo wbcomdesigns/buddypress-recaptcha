@@ -122,23 +122,7 @@ class WBC_Recaptcha_V3_Service extends WBC_Captcha_Service_Base {
 		return 'g-recaptcha-response';
 	}
 
-	/**
-	 * Get URLs that might conflict
-	 *
-	 * @return array
-	 */
-	protected function get_conflict_urls() {
-		return array( 'google.com/recaptcha', 'gstatic.com/recaptcha' );
-	}
 
-	/**
-	 * Get allowed script handles
-	 *
-	 * @return array
-	 */
-	protected function get_allowed_handles() {
-		return array( 'wbc-recaptcha-v3', 'wbc-woo-captcha-v3' );
-	}
 
 	/**
 	 * Initialize hooks
@@ -548,10 +532,7 @@ class WBC_Recaptcha_V3_Service extends WBC_Captcha_Service_Base {
 
 		$site_key = $this->get_site_key();
 
-		// Check for no-conflict mode.
-		if ( 'yes' === $this->get_no_conflict_setting() ) {
-			$this->dequeue_conflicting_scripts();
-		}
+		$this->handle_no_conflict_mode();
 
 		/*
 		 * A form can render after the footer scripts have already printed (some
@@ -793,39 +774,5 @@ class WBC_Recaptcha_V3_Service extends WBC_Captcha_Service_Base {
 		}
 
 		wp_add_inline_script( 'wbc-recaptcha-v3', $script );
-	}
-
-	/**
-	 * Dequeue conflicting reCAPTCHA scripts
-	 *
-	 * @return void
-	 */
-	private function dequeue_conflicting_scripts() {
-		global $wp_scripts;
-
-		if ( ! isset( $wp_scripts->queue ) ) {
-			return;
-		}
-
-		$urls            = array( 'google.com/recaptcha', 'gstatic.com/recaptcha' );
-		$allowed_handles = array( 'wbc-recaptcha-v3', 'wbc-woo-captcha-v3' );
-
-		foreach ( $wp_scripts->queue as $handle ) {
-			if ( in_array( $handle, $allowed_handles, true ) ) {
-				continue;
-			}
-
-			if ( ! isset( $wp_scripts->registered[ $handle ] ) ) {
-				continue;
-			}
-
-			foreach ( $urls as $url ) {
-				if ( false !== strpos( $wp_scripts->registered[ $handle ]->src, $url ) ) {
-					wp_dequeue_script( $handle );
-					wp_deregister_script( $handle );
-					break;
-				}
-			}
-		}
 	}
 }

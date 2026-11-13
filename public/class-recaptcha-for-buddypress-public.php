@@ -129,48 +129,9 @@ class Recaptcha_For_BuddyPress_Public {
 
 		// Load scripts if needed.
 		if ( $should_load ) {
-			// Handle no-conflict mode.
-			$this->handle_no_conflict_mode();
-
 			// Enqueue service-specific scripts.
 			if ( method_exists( $active_service, 'enqueue_scripts' ) ) {
 				$active_service->enqueue_scripts( 'global' );
-			}
-		}
-	}
-
-	/**
-	 * Handle no-conflict mode to prevent conflicts with other captcha plugins
-	 */
-	private function handle_no_conflict_mode() {
-		$no_conflict = get_option( 'wbc_recaptcha_no_conflict' );
-		if ( 'yes' !== $no_conflict ) {
-			return;
-		}
-
-		global $wp_scripts;
-		if ( ! isset( $wp_scripts->queue ) ) {
-			return;
-		}
-
-		$urls = array( 'google.com/recaptcha', 'gstatic.com/recaptcha', 'cloudflare.com/turnstile' );
-
-		foreach ( $wp_scripts->queue as $handle ) {
-			// Skip our own scripts.
-			if ( strpos( $handle, 'wbc-' ) === 0 || strpos( $handle, 'buddypress-recaptcha' ) !== false ) {
-				continue;
-			}
-
-			if ( ! isset( $wp_scripts->registered[ $handle ] ) ) {
-				continue;
-			}
-
-			foreach ( $urls as $url ) {
-				if ( false !== strpos( $wp_scripts->registered[ $handle ]->src, $url ) ) {
-					wp_dequeue_script( $handle );
-					wp_deregister_script( $handle );
-					break;
-				}
 			}
 		}
 	}

@@ -237,9 +237,7 @@ abstract class WBC_Captcha_Service_Base implements WBC_Captcha_Service_Interface
 	 * @return void
 	 */
 	public function enqueue_scripts( $context ) {
-		if ( $this->requires_no_conflict() ) {
-			$this->handle_no_conflict_mode();
-		}
+		$this->handle_no_conflict_mode();
 
 		wp_enqueue_script( 'jquery' );
 
@@ -258,23 +256,29 @@ abstract class WBC_Captcha_Service_Base implements WBC_Captcha_Service_Interface
 	}
 
 	/**
-	 * Handle no-conflict mode
+	 * No-conflict mode (Advanced tab): remove CAPTCHA scripts that a theme or
+	 * another plugin enqueued, so only this plugin's widget runs. One
+	 * implementation for every provider; the toggle saves
+	 * `wbc_recapcha_no_conflict`, read through wbc_get_no_conflict_option().
 	 */
 	protected function handle_no_conflict_mode() {
-		$no_conflict = $this->get_option( 'no_conflict', 'no' );
-		if ( 'yes' !== $no_conflict ) {
+		if ( ! function_exists( 'wbc_get_no_conflict_option' ) || 'yes' !== wbc_get_no_conflict_option() ) {
 			return;
 		}
 
 		global $wp_scripts;
-		$urls            = $this->get_conflict_urls();
-		$allowed_handles = $this->get_allowed_handles();
+		if ( ! isset( $wp_scripts->queue ) ) {
+			return;
+		}
 
 		foreach ( $wp_scripts->queue as $handle ) {
-			foreach ( $urls as $url ) {
-				if ( false !== strpos( $wp_scripts->registered[ $handle ]->src, $url ) && ! in_array( $handle, $allowed_handles, true ) ) {
+			// Our own provider and helper scripts all use the wbc- prefix.
+			if ( 0 === strpos( $handle, 'wbc-' ) || ! isset( $wp_scripts->registered[ $handle ] ) ) {
+				continue;
+			}
+			foreach ( $this->get_conflict_urls() as $url ) {
+				if ( false !== strpos( (string) $wp_scripts->registered[ $handle ]->src, $url ) ) {
 					wp_dequeue_script( $handle );
-					wp_deregister_script( $handle );
 					break;
 				}
 			}
@@ -282,21 +286,19 @@ abstract class WBC_Captcha_Service_Base implements WBC_Captcha_Service_Interface
 	}
 
 	/**
-	 * Get URLs that might conflict
+	 * Script URL fragments of every CAPTCHA provider a theme or plugin may load.
 	 *
 	 * @return array
 	 */
 	protected function get_conflict_urls() {
-		return array();
-	}
-
-	/**
-	 * Get allowed script handles
-	 *
-	 * @return array
-	 */
-	protected function get_allowed_handles() {
-		return array();
+		return array(
+			'google.com/recaptcha',
+			'gstatic.com/recaptcha',
+			'recaptcha.net/recaptcha',
+			'hcaptcha.com/1/api.js',
+			'challenges.cloudflare.com/turnstile',
+			'altcha',
+		);
 	}
 
 	/**

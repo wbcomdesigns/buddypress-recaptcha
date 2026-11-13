@@ -278,27 +278,7 @@ class WBC_Recaptcha_V2_Service extends WBC_Captcha_Service_Base {
 		);
 	}
 
-	/**
-	 * Get URLs that might conflict
-	 *
-	 * @return array
-	 */
-	protected function get_conflict_urls() {
-		return array( 'google.com/recaptcha', 'gstatic.com/recaptcha' );
-	}
 
-	/**
-	 * Get allowed script handles
-	 *
-	 * @return array
-	 */
-	protected function get_allowed_handles() {
-		return array(
-			'wbc-woo-captcha',
-			'wbc-bbpress-topic-captcha',
-			'wbc-bbpress-reply-captcha',
-		);
-	}
 
 	/**
 	 * Get theme for context

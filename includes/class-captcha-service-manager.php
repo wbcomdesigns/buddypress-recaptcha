@@ -336,6 +336,12 @@ class WBC_Captcha_Service_Manager {
 			return true; // Don't block if not enabled for this context.
 		}
 
+		// Allowlisted IPs skip verification for every provider, including ones
+		// registered by other plugins (render() already hides their widget).
+		if ( $this->is_ip_whitelisted() ) {
+			return true;
+		}
+
 		// Get response from POST if not provided.
 		if ( null === $response ) {
 			$field_name = $service->get_response_field_name();
@@ -351,6 +357,15 @@ class WBC_Captcha_Service_Manager {
 		try {
 			$result = $service->verify( $response, $args );
 			$reason = $service instanceof WBC_Captcha_Service_Base ? $service->pull_failure_reason() : '';
+
+			// The provider could not be reached or answered garbage: an outage,
+			// not a bad visitor. Let a submitted token through unless the owner
+			// chose "Block when the provider is down". An empty token never passes.
+			if ( ! $result && in_array( $reason, array( 'network-error', 'bad-response' ), true ) && '' !== (string) $response && ! $this->fail_closed( $context ) ) {
+				$this->log_error( 'Captcha provider unreachable (' . $reason . '); submission allowed because fail-closed is off', $context );
+				$this->verified_contexts[ $context ] = true;
+				return true;
+			}
 
 			if ( ! $result ) {
 				$this->log_info( 'Captcha verification failed for context: ' . $context );

@@ -150,6 +150,8 @@ class WBC_Altcha_Service extends WBC_Captcha_Service_Base {
 			return;
 		}
 
+		$this->handle_no_conflict_mode();
+
 		wp_enqueue_script(
 			$this->get_script_handle( $context ),
 			$this->get_script_url(),

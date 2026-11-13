@@ -34,6 +34,8 @@ $bprc_key_map    = array(
 	'altcha'       => array( 'wbc_altcha_hmac_key' ),
 );
 $bprc_configured = true;
+$bprc_key_error  = get_transient( 'wbc_captcha_key_error' );
+$bprc_key_error  = ( is_array( $bprc_key_error ) && ! empty( $bprc_key_error['service'] ) ) ? $bprc_key_error : null;
 if ( isset( $bprc_key_map[ $bprc_service ] ) ) {
 	foreach ( $bprc_key_map[ $bprc_service ] as $bprc_key_opt ) {
 		if ( '' === trim( (string) get_option( $bprc_key_opt, '' ) ) ) {
@@ -79,6 +81,24 @@ $bprc_protect_url = admin_url( 'admin.php?page=' . BPRC_Admin::MENU_SLUG . '&tab
 					__( 'Your active CAPTCHA service is missing its API keys. <a href="%s">Finish setup</a> so spam protection actually runs.', 'buddypress-recaptcha' ),
 					array( 'a' => array( 'href' => array() ) )
 				),
+				esc_url( $bprc_setup_url )
+			);
+			?>
+		</span>
+	</div>
+<?php elseif ( $bprc_key_error ) : ?>
+	<div class="bprc-notice bprc-notice--warn">
+		<span class="dashicons dashicons-warning" aria-hidden="true"></span>
+		<span>
+			<?php
+			printf(
+				wp_kses(
+					/* translators: 1: CAPTCHA provider name, 2: provider error codes, 3: URL to the Quick Setup tab. */
+					__( '%1$s rejected this site\'s keys (%2$s). So nobody gets locked out, CAPTCHA checks are being let through until this is fixed. <a href="%3$s">Check the keys in Quick Setup</a>.', 'buddypress-recaptcha' ),
+					array( 'a' => array( 'href' => array() ) )
+				),
+				esc_html( $bprc_key_error['service'] ),
+				esc_html( implode( ', ', (array) $bprc_key_error['codes'] ) ),
 				esc_url( $bprc_setup_url )
 			);
 			?>
