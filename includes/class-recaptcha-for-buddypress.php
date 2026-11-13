@@ -727,6 +727,7 @@ class Recaptcha_For_BuddyPress {
 
 		// Render CAPTCHA in EDD forms.
 		add_action( 'edd_purchase_form_before_submit', array( $edd_form, 'render_edd_checkout_captcha' ), 10 );
+		add_action( 'wp_enqueue_scripts', array( $edd_form, 'enqueue_checkout_assets' ), 20 );
 		add_action( 'edd_login_fields_after', array( $edd_form, 'render_edd_login_captcha' ), 10 );
 		// Standalone [edd_register] form. Registration inside checkout is covered by the checkout CAPTCHA.
 		add_action( 'edd_register_form_fields_before_submit', array( $edd_form, 'render_edd_register_captcha' ), 10 );

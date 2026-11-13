@@ -209,6 +209,11 @@
 		$( document.body ).on( 'updated_checkout checkout_error', function () {
 			refresh( document.querySelector( 'form.checkout' ) || document );
 		} );
+		// EDD with several gateways loads the purchase form over AJAX after a
+		// gateway is picked; draw the widget it contains.
+		$( document.body ).on( 'edd_gateway_loaded', function () {
+			refresh( document.getElementById( 'edd_purchase_form' ) || document );
+		} );
 
 		// Ninja Forms draws the form (and our widget) in JavaScript after page
 		// load and posts only its own fields, so: render the widget once the
