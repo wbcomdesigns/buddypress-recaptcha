@@ -252,6 +252,7 @@ Closes a classic checkout bypass and makes the fail-closed, no-conflict and IP w
 * Fix      - Admin save messages and confirmation dialogs showed without their colours, so the dialog was see-through and its main button looked like plain text.
 * Fix      - Recent Rejections on the Overview tab names each form as the Protection tab does, for example "WordPress Forms: Login Form", and drops entries older than 7 days.
 * Fix      - The ALTCHA notice on sites without HTTPS no longer suggests .local or .test addresses, which cannot run ALTCHA either.
+* Fix      - ALTCHA on a site without HTTPS no longer locks everyone out of protected forms; it stays off and the admin is told why until the site uses HTTPS or localhost.
 * Security - The classic WooCommerce checkout could be submitted without a solved CAPTCHA; only real express payment requests (Stripe and WooPayments) skip it now, and the filters wbc_captcha_express_gateways and wbc_captcha_express_endpoints let you add others.
 * Security - Only the real Store API pay-for-order route skips the block checkout CAPTCHA.
 * Security - A solved ALTCHA challenge can be used only once, even when the same answer is sent in several requests at the same moment.

@@ -491,6 +491,24 @@ class WBC_Captcha_Service_Manager {
 			return;
 		}
 
+		// A service that has its keys but cannot run on this site says why.
+		$reason = ( $service && method_exists( $service, 'get_inactive_reason' ) ) ? $service->get_inactive_reason() : '';
+		if ( '' !== $reason ) {
+			echo '<div class="notice notice-warning wbc-captcha-config-notice"><p>';
+			echo wp_kses(
+				sprintf(
+					/* translators: 1: reason the CAPTCHA service is inactive, 2: opening anchor tag, 3: closing anchor tag */
+					__( '%1$s %2$sOpen settings%3$s.', 'buddypress-recaptcha' ),
+					esc_html( $reason ),
+					'<a href="' . esc_url( $settings_url ) . '">',
+					'</a>'
+				),
+				array( 'a' => array( 'href' => array() ) )
+			);
+			echo '</p></div>';
+			return;
+		}
+
 		// Use `notice-warning` (not `notice-error`) so the message survives
 		// over-broad third-party admin CSS rules like
 		//   `#wpwrap .notice.notice-error { display:none }`

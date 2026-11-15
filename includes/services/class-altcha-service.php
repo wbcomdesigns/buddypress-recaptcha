@@ -102,12 +102,49 @@ class WBC_Altcha_Service extends WBC_Captcha_Service_Base {
 	}
 
 	/**
-	 * ALTCHA is configured when its HMAC secret is set.
+	 * ALTCHA is configured when its HMAC secret is set AND the site can run it.
+	 *
+	 * On a site whose address is plain HTTP no browser can solve the challenge,
+	 * so enforcing it would lock every visitor (and the owner) out of each
+	 * protected form. Treating the service as not configured there makes the
+	 * manager skip render and verify and show the admin why.
 	 *
 	 * @return bool
 	 */
 	public function is_configured() {
-		return '' !== $this->get_secret_key();
+		return '' !== $this->get_secret_key() && $this->site_supports_altcha();
+	}
+
+	/**
+	 * Whether this site's own address gives browsers a secure context.
+	 *
+	 * Keyed on the configured site URLs, which only the owner controls, never on
+	 * the request (scheme or Host header), so a visitor cannot switch the check
+	 * off on an HTTPS site by posting over http or sending a loopback Host.
+	 *
+	 * @return bool
+	 */
+	public function site_supports_altcha() {
+		if ( wp_is_using_https() ) {
+			return true;
+		}
+
+		$host = strtolower( trim( (string) wp_parse_url( home_url(), PHP_URL_HOST ), '[]' ) );
+
+		return in_array( $host, array( 'localhost', '127.0.0.1', '::1' ), true ) || (bool) preg_match( '/\.localhost$/', $host );
+	}
+
+	/**
+	 * Why the service is inactive although its secret is saved, or '' if it is not.
+	 *
+	 * @return string
+	 */
+	public function get_inactive_reason() {
+		if ( '' === $this->get_secret_key() || $this->site_supports_altcha() ) {
+			return '';
+		}
+
+		return __( 'ALTCHA is switched off because this site\'s address does not use HTTPS, and browsers can only solve ALTCHA on HTTPS or localhost. Forms are not protected by a CAPTCHA until the site uses HTTPS or you choose another service.', 'buddypress-recaptcha' );
 	}
 
 	/**
