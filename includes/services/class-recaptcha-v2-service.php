@@ -141,10 +141,10 @@ class WBC_Recaptcha_V2_Service extends WBC_Captcha_Service_Base {
 		// Render HTML.
 		?>
 		<input type="hidden" autocomplete="off" name="<?php echo esc_attr( $nonce_action ); ?>" value="<?php echo esc_attr( wp_create_nonce( $nonce_action ) ); ?>" />
-		<p class="wbc_recaptcha_field">
+		<div class="wbc_recaptcha_field">
 			<div name="<?php echo esc_attr( $div_name ); ?>" class="g-recaptcha" data-callback="<?php echo esc_attr( $callback ); ?>" data-sitekey="<?php echo esc_attr( $site_key ); ?>" data-theme="<?php echo esc_attr( $theme ); ?>" data-size="<?php echo esc_attr( $size ); ?>"></div>
 			<br/>
-		</p>
+		</div>
 		
 		<script type="text/javascript">
 		(function () {

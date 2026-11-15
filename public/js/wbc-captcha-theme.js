@@ -1,5 +1,5 @@
 /**
- * Make the CAPTCHA widget follow the site's dark mode.
+ * Make the CAPTCHA widget follow the site's dark mode and fit narrow forms.
  *
  * The provider widgets (reCAPTCHA, hCaptcha, Turnstile) render inside a
  * third-party iframe that no stylesheet of ours can reach. The only supported
@@ -68,20 +68,53 @@
 		}
 	}
 
+	// Width of the normal-size widget as drawn (304px, scaled to 0.89 by the
+	// service markup). Where that would run past the form (a phone, a sidebar,
+	// a themed login box) the widget gets the provider's own compact size.
+	var NORMAL_WIDTH = 271;
+
+	function fitWidth( el ) {
+		if ( el.hasAttribute( 'data-wbc-fit' ) || el.querySelector( 'iframe' ) ) {
+			return;
+		}
+		el.setAttribute( 'data-wbc-fit', '1' );
+
+		if ( 'normal' !== ( el.getAttribute( 'data-size' ) || 'normal' ) ) {
+			return;
+		}
+
+		// Clipped means past the form's edge or the screen's, not merely into the
+		// form's padding, which the normal widget may use.
+		var form  = el.closest( 'form' );
+		var limit = document.documentElement.clientWidth;
+		if ( form ) {
+			limit = Math.min( limit, form.getBoundingClientRect().right );
+		}
+		// The wrapper's left edge: hCaptcha's wrapper centres an inline-block
+		// widget that has no width until it draws.
+		var left = ( el.parentElement || el ).getBoundingClientRect().left;
+
+		if ( left + NORMAL_WIDTH > limit ) {
+			el.setAttribute( 'data-size', 'compact' );
+		}
+	}
+
 	function sweep() {
 		var want  = isDark() ? 'dark' : 'light';
 		var nodes = document.querySelectorAll( SELECTOR );
 		for ( var i = 0; i < nodes.length; i++ ) {
+			fitWidth( nodes[ i ] );
 			applyTheme( nodes[ i ], want );
 		}
 	}
 
 	// Catch widgets that are already in the markup, and any that arrive later
 	// (the AJAX login widget re-renders its captcha after a failed attempt).
+	// Run now for widgets already parsed (this loads in the footer, before the
+	// provider draws), and again once the whole document is in.
+	sweep();
 	if ( 'loading' === document.readyState ) {
 		document.addEventListener( 'DOMContentLoaded', sweep );
-	} else {
-		sweep();
 	}
 
 	if ( window.MutationObserver ) {
