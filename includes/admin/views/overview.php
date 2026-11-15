@@ -45,12 +45,15 @@ if ( isset( $bprc_key_map[ $bprc_service ] ) ) {
 	}
 }
 
+// A service with its keys saved can still be unable to run on this site (ALTCHA without HTTPS).
+$bprc_service_obj     = WBC_Captcha_Service_Manager::get_instance()->get_active_service();
+$bprc_inactive_reason = ( $bprc_configured && $bprc_service_obj && method_exists( $bprc_service_obj, 'get_inactive_reason' ) ) ? $bprc_service_obj->get_inactive_reason() : '';
+
 $bprc_rejections = WBC_Captcha_Service_Manager::get_recent_rejections();
 
 // Name each form the way the Protection tab does, e.g. "WordPress Forms: Login Form".
 require_once RFB_PLUGIN_PATH . 'admin/includes/settings-modules/class-wbc-settings-module-loader.php';
 $bprc_form_labels = wbc_settings_module_loader()->get_protection_labels();
-$bprc_service_obj = WBC_Captcha_Service_Manager::get_instance()->get_active_service();
 
 // Plain-language hints for the reason codes owners ask about most.
 $bprc_reason_hints = array(
@@ -108,6 +111,14 @@ $bprc_protect_url = admin_url( 'admin.php?page=' . BPRC_Admin::MENU_SLUG . '&tab
 			?>
 		</span>
 	</div>
+<?php elseif ( '' !== $bprc_inactive_reason ) : ?>
+	<div class="bprc-notice bprc-notice--warn">
+		<span class="dashicons dashicons-warning" aria-hidden="true"></span>
+		<span>
+			<?php echo esc_html( $bprc_inactive_reason ); ?>
+			<a href="<?php echo esc_url( $bprc_setup_url ); ?>"><?php esc_html_e( 'Open Quick Setup', 'buddypress-recaptcha' ); ?></a>
+		</span>
+	</div>
 <?php else : ?>
 	<div class="bprc-notice bprc-notice--success">
 		<span class="dashicons dashicons-yes-alt" aria-hidden="true"></span>
@@ -123,7 +134,15 @@ $bprc_protect_url = admin_url( 'admin.php?page=' . BPRC_Admin::MENU_SLUG . '&tab
 	<div class="bprc-stat">
 		<p class="bprc-stat__label"><?php esc_html_e( 'Keys Status', 'buddypress-recaptcha' ); ?></p>
 		<p class="bprc-stat__value" style="font-size:16px;">
-			<?php echo $bprc_configured ? esc_html__( 'Configured', 'buddypress-recaptcha' ) : esc_html__( 'Incomplete', 'buddypress-recaptcha' ); ?>
+			<?php
+			if ( ! $bprc_configured ) {
+				esc_html_e( 'Incomplete', 'buddypress-recaptcha' );
+			} elseif ( '' !== $bprc_inactive_reason ) {
+				esc_html_e( 'Inactive on this site', 'buddypress-recaptcha' );
+			} else {
+				esc_html_e( 'Configured', 'buddypress-recaptcha' );
+			}
+			?>
 		</p>
 	</div>
 	<div class="bprc-stat">

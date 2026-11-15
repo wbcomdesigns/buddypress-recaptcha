@@ -103,6 +103,14 @@ defined( 'ABSPATH' ) || exit;
 		<div class="bprc-settings-main">
 			<?php settings_errors( BPRC_Admin::ERROR_GROUP ); ?>
 
+			<?php
+			// Foreign notices are removed on these screens, which also drops our own
+			// "service cannot run" notice; Overview prints its own status card.
+			if ( 'rfw-welcome' !== $active ) {
+				wbc_captcha_service_manager()->maybe_render_misconfiguration_notice();
+			}
+			?>
+
 			<?php if ( $is_form && $settings ) : ?>
 				<?php
 				/*

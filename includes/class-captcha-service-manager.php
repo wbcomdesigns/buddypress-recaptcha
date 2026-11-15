@@ -186,6 +186,9 @@ class WBC_Captcha_Service_Manager {
 	 * @return WBC_Captcha_Service_Interface|null
 	 */
 	public function get_active_service() {
+		// Re-read the (autoloaded) option so a service saved earlier in this
+		// request, as on the Quick Setup save, is the one every caller sees.
+		$this->init_active_service();
 		return $this->active_service;
 	}
 
