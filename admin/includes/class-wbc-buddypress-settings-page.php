@@ -338,7 +338,7 @@ if ( ! class_exists( 'WBC_BuddyPress_Settings_Page' ) ) :
 					$html .= '</div>';
 					$html .= '<div class="wbcom-settings-section-options">';
 					$html .= '<div class="forminp forminp-text">';
-					$html .= '<input name="wbc_altcha_hmac_key" id="wbc_altcha_hmac_key" type="text" value="' . esc_attr( $hmac_key ) . '" class="" placeholder="' . esc_attr__( 'Your HMAC secret key (32+ characters)', 'buddypress-recaptcha' ) . '">';
+					$html .= '<input name="wbc_altcha_hmac_key" id="wbc_altcha_hmac_key" type="password" autocomplete="new-password" spellcheck="false" value="' . esc_attr( $hmac_key ) . '" class="" placeholder="' . esc_attr__( 'Your HMAC secret key (32+ characters)', 'buddypress-recaptcha' ) . '">';
 					$html .= '</div>';
 					$html .= '</div>';
 					$html .= '</div>';
@@ -417,7 +417,7 @@ if ( ! class_exists( 'WBC_BuddyPress_Settings_Page' ) ) :
 			$html .= '</div>';
 			$html .= '<div class="wbcom-settings-section-options">';
 			$html .= '<div class="forminp forminp-password">';
-			$html .= '<input name="' . esc_attr( $id ) . '" id="' . esc_attr( $id ) . '" type="text" value="' . esc_attr( $value ) . '" class="wbc-secret-key-input" placeholder="' . esc_attr( $placeholder ) . '">';
+			$html .= '<input name="' . esc_attr( $id ) . '" id="' . esc_attr( $id ) . '" type="password" autocomplete="new-password" spellcheck="false" value="' . esc_attr( $value ) . '" class="wbc-secret-key-input" placeholder="' . esc_attr( $placeholder ) . '">';
 			$html .= '</div>';
 			$html .= '</div>';
 			$html .= '</div>';
@@ -586,7 +586,7 @@ if ( ! class_exists( 'WBC_BuddyPress_Settings_Page' ) ) :
 				'name' => __( 'Block when the provider is down', 'buddypress-recaptcha' ),
 				'type' => 'checkbox',
 				'id'   => 'wbc_captcha_fail_closed',
-				'desc' => __( 'If the CAPTCHA provider cannot be reached, reject the submission instead of letting it through. Leave off so a provider outage never locks out your members.', 'buddypress-recaptcha' ),
+				'desc' => __( 'If the CAPTCHA provider cannot be reached, reject the submission instead of letting it through. Leave off so a provider outage never locks out your members. While the active service has no keys, or cannot run on this site, this also blocks every protected form, the WordPress login included: finish Quick Setup before turning it on.', 'buddypress-recaptcha' ),
 			);
 
 			$settings[] = array(
@@ -1497,6 +1497,26 @@ if ( ! class_exists( 'WBC_BuddyPress_Settings_Page' ) ) :
 					$validation_errors[] = sprintf(
 						/* translators: %s: Service name */
 						__( 'Both Site Key and Secret Key are required for %s. Please enter valid API keys or leave both fields empty.', 'buddypress-recaptcha' ),
+						$keys['name']
+					);
+				}
+			}
+
+			// Never clear both keys of the service that stays active: protection would
+			// stop silently (or, with "Block when the provider is down", lock everyone
+			// out). Selecting a service that has no keys yet is fine; the screen then
+			// says the keys are missing.
+			$posted_service = isset( $_POST['wbc_captcha_service'] ) ? sanitize_text_field( wp_unslash( $_POST['wbc_captcha_service'] ) ) : get_option( 'wbc_captcha_service', '' );
+			if ( isset( $api_key_pairs[ $posted_service ] ) ) {
+				$keys = $api_key_pairs[ $posted_service ];
+				if ( isset( $_POST[ $keys['site'] ], $_POST[ $keys['secret'] ] )
+					&& '' === trim( sanitize_text_field( wp_unslash( $_POST[ $keys['site'] ] ) ) )
+					&& '' === trim( sanitize_text_field( wp_unslash( $_POST[ $keys['secret'] ] ) ) )
+					&& '' !== trim( (string) get_option( $keys['site'], '' ) ) . trim( (string) get_option( $keys['secret'], '' ) )
+				) {
+					$validation_errors[] = sprintf(
+						/* translators: %s: Service name */
+						__( '%s is the active service, so its keys cannot be removed. Enter new keys, or choose another service first.', 'buddypress-recaptcha' ),
 						$keys['name']
 					);
 				}

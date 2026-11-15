@@ -216,42 +216,5 @@
 		}
 	}
 
-	/**
-	 * Additional helper: Validate API keys format
-	 */
-	function validateApiKeys(service, siteKey, secretKey) {
-		var patterns = {
-			'recaptcha_v2': {
-				site: /^[0-9a-zA-Z_-]{40}$/,
-				secret: /^[0-9a-zA-Z_-]{40}$/
-			},
-			'recaptcha_v3': {
-				site: /^[0-9a-zA-Z_-]{40}$/,
-				secret: /^[0-9a-zA-Z_-]{40}$/
-			},
-			'turnstile': {
-				site: /^[0-9a-zA-Z_.-]+$/,
-				secret: /^[0-9a-zA-Z_.-]+$/
-			},
-			'hcaptcha': {
-				site: /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i,
-				secret: /^0x[0-9a-fA-F]{40}$/
-			},
-			'altcha': {
-				secret: /^.{32,}$/ // At least 32 characters
-			}
-		};
-
-		if (patterns[service]) {
-			if (service === 'altcha') {
-				return patterns[service].secret.test(secretKey);
-			} else {
-				return patterns[service].site.test(siteKey) &&
-					   patterns[service].secret.test(secretKey);
-			}
-		}
-
-		return true; // Default to true if no pattern defined
-	}
 
 })(jQuery);

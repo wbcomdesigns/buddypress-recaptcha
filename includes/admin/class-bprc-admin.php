@@ -229,21 +229,9 @@ class BPRC_Admin {
 			'wbcAdminFields',
 			array(
 				'strings' => array(
-					/* translators: %s: CAPTCHA provider name, e.g. "Google reCAPTCHA v2". */
-					'siteKeyRequired'   => __( '%s Site Key is required', 'buddypress-recaptcha' ),
-					/* translators: %s: CAPTCHA provider name, e.g. "Google reCAPTCHA v2". */
-					'secretKeyRequired' => __( '%s Secret Key is required', 'buddypress-recaptcha' ),
-					'providerV2'        => __( 'Google reCAPTCHA v2', 'buddypress-recaptcha' ),
-					'providerV3'        => __( 'Google reCAPTCHA v3', 'buddypress-recaptcha' ),
-					'providerTurnstile' => 'Cloudflare Turnstile',
-					'fixErrors'         => __( 'Please fix the following errors:', 'buddypress-recaptcha' ),
-					'getKeysHere'       => __( 'Get your keys here', 'buddypress-recaptcha' ),
-					'keyGenerated'      => __( 'Key Generated!', 'buddypress-recaptcha' ),
-					'toggleVisibility'  => __( 'Toggle visibility', 'buddypress-recaptcha' ),
-					'hideSecretKey'     => __( 'Hide Secret Key', 'buddypress-recaptcha' ),
-					'showSecretKey'     => __( 'Show Secret Key', 'buddypress-recaptcha' ),
-					'copyToClipboard'   => __( 'Copy to Clipboard', 'buddypress-recaptcha' ),
-					'copied'            => __( 'Copied!', 'buddypress-recaptcha' ),
+					'keyGenerated'    => __( 'Key Generated!', 'buddypress-recaptcha' ),
+					'copyToClipboard' => __( 'Copy to Clipboard', 'buddypress-recaptcha' ),
+					'copied'          => __( 'Copied!', 'buddypress-recaptcha' ),
 				),
 			)
 		);
