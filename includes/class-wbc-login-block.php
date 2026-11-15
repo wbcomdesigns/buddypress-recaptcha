@@ -61,6 +61,9 @@ class WBC_Login_Block {
 	 * @return string Block HTML.
 	 */
 	public function render_block( $attributes ) {
+		wp_enqueue_style( 'wbc-ajax-login' );
+		wp_enqueue_script( 'wbc-ajax-login' );
+
 		// Convert attributes to widget instance format.
 		$instance = array(
 			'welcome_message'    => ! empty( $attributes['welcomeMessage'] ) ? $attributes['welcomeMessage'] : __( 'Welcome back, {username}!', 'buddypress-recaptcha' ),

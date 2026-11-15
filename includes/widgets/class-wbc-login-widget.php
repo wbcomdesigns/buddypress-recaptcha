@@ -40,6 +40,9 @@ class WBC_Login_Widget extends WP_Widget {
 	 * @param array $instance Saved values from database.
 	 */
 	public function widget( $args, $instance ) {
+		wp_enqueue_style( 'wbc-ajax-login' );
+		wp_enqueue_script( 'wbc-ajax-login' );
+
 		echo wp_kses_post( $args['before_widget'] );
 
 		if ( ! empty( $instance['title'] ) ) {

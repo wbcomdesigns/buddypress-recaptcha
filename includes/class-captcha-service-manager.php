@@ -260,7 +260,10 @@ class WBC_Captcha_Service_Manager {
 				return;
 			}
 
-			// Enqueue scripts.
+			// Enqueue scripts. The theme script goes first so it sets data-theme
+			// before the provider script draws the widget.
+			wp_enqueue_style( 'buddypress-recaptcha' );
+			wp_enqueue_script( 'wbc-captcha-theme' );
 			if ( method_exists( $service, 'enqueue_scripts' ) ) {
 				$service->enqueue_scripts( $context );
 			}

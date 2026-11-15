@@ -297,12 +297,8 @@ class Recaptcha_For_BuddyPress {
 
 		$plugin_public = new Recaptcha_For_BuddyPress_Public( $this->get_plugin_name(), $this->get_version() );
 
-		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
-
 		// Load style, js language.
 		add_action( 'wp_enqueue_scripts', array( $plugin_public, 'woo_recaptcha_load_styles_and_js' ), 9999 );
-		// The widget styles (ALTCHA colours, the HTTPS notice) apply on wp-login.php too.
-		add_action( 'login_enqueue_scripts', array( $plugin_public, 'enqueue_styles' ) );
 		add_action( 'login_enqueue_scripts', array( $plugin_public, 'woo_recaptcha_load_styles_and_js' ), 9999 );
 
 		// Login, registration and lost password.
@@ -405,7 +401,6 @@ class Recaptcha_For_BuddyPress {
 		add_action( 'init', array( $this, 'register_shared_scripts' ) );
 		add_action( 'widgets_init', array( $this, 'register_login_widget' ) );
 		add_action( 'init', array( $this, 'register_login_block' ) );
-		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_login_widget_assets' ) );
 		add_action( 'wp_ajax_wbc_ajax_login', array( $this, 'handle_ajax_login' ) );
 		add_action( 'wp_ajax_nopriv_wbc_ajax_login', array( $this, 'handle_ajax_login' ) );
 
@@ -806,9 +801,9 @@ class Recaptcha_For_BuddyPress {
 	}
 
 	/**
-	 * Register the script every CAPTCHA widget relies on to reset or re-render
-	 * itself after an AJAX submit or a form refresh. Enqueued by the service
-	 * manager whenever a widget renders.
+	 * Register the front-end assets. Each is enqueued only where it is used: the
+	 * CAPTCHA ones by the service manager when a widget renders, the AJAX login
+	 * ones by the login widget and block.
 	 *
 	 * @since 2.2.3
 	 */
@@ -828,33 +823,18 @@ class Recaptcha_For_BuddyPress {
 			$this->version,
 			true
 		);
-	}
 
-	/**
-	 * Enqueue login widget assets
-	 *
-	 * @since     2.0.0
-	 */
-	public function enqueue_login_widget_assets() {
-		// Enqueue CSS.
-		wp_enqueue_style(
-			'wbc-ajax-login',
-			plugin_dir_url( __DIR__ ) . 'public/css/wbc-ajax-login.css',
-			array(),
-			$this->version,
-			'all'
-		);
+		/*
+		 * Widget styles (disabled submit, ALTCHA colours, the HTTPS notice) and the
+		 * script that makes provider widgets follow the site's dark mode. Enqueued
+		 * by the service manager only where a CAPTCHA renders, never site-wide.
+		 */
+		wp_register_style( 'buddypress-recaptcha', plugin_dir_url( __DIR__ ) . 'public/css/recaptcha-for-buddypress-public.css', array(), $this->version );
+		wp_register_script( 'wbc-captcha-theme', plugin_dir_url( __DIR__ ) . 'public/js/wbc-captcha-theme.js', array(), $this->version, true );
 
-		// Enqueue JavaScript.
-		wp_enqueue_script(
-			'wbc-ajax-login',
-			plugin_dir_url( __DIR__ ) . 'public/js/wbc-ajax-login.js',
-			array( 'jquery', 'wbc-captcha-refresh' ),
-			$this->version,
-			true
-		);
-
-		// Localize script.
+		// AJAX login widget and block: enqueued by their own render.
+		wp_register_style( 'wbc-ajax-login', plugin_dir_url( __DIR__ ) . 'public/css/wbc-ajax-login.css', array(), $this->version );
+		wp_register_script( 'wbc-ajax-login', plugin_dir_url( __DIR__ ) . 'public/js/wbc-ajax-login.js', array( 'jquery', 'wbc-captcha-refresh' ), $this->version, true );
 		wp_localize_script(
 			'wbc-ajax-login',
 			'wbcAjaxLogin',

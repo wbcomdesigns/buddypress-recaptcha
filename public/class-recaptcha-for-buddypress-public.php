@@ -52,30 +52,6 @@ class Recaptcha_For_BuddyPress_Public {
 	}
 
 	/**
-	 * Register the stylesheets for the public-facing side of the site.
-	 *
-	 * @since    1.0.0
-	 */
-	public function enqueue_styles() {
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/recaptcha-for-buddypress-public.css', array(), $this->version, 'all' );
-
-		/*
-		 * Makes the provider widget follow the site's dark mode. The widget renders in a
-		 * third-party iframe that CSS cannot reach, so its colour scheme can only be set
-		 * through the data-theme attribute - and the site's dark mode is a client-side
-		 * toggle, so it has to be done in the browser. Loaded in the head, before the
-		 * provider script reaches the element.
-		 */
-		wp_enqueue_script(
-			'wbc-captcha-theme',
-			plugin_dir_url( __FILE__ ) . 'js/wbc-captcha-theme.js',
-			array(),
-			$this->version,
-			false
-		);
-	}
-
-	/**
 	 * Load captcha scripts and styles dynamically
 	 *
 	 * @since    1.0.0
