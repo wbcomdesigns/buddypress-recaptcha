@@ -150,6 +150,7 @@ ALTCHA needs no keys and no account. It is self-hosted and generates its own HMA
 
 * WordPress 6.5 or higher
 * PHP 8.1 or higher
+* BuddyPress 12.0 or higher, for the BuddyPress forms (optional)
 * API keys from your chosen provider (not required for ALTCHA)
 
 == Frequently Asked Questions ==
