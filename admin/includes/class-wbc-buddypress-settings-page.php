@@ -338,7 +338,7 @@ if ( ! class_exists( 'WBC_BuddyPress_Settings_Page' ) ) :
 					$html .= '</div>';
 					$html .= '<div class="wbcom-settings-section-options">';
 					$html .= '<div class="forminp forminp-text">';
-					$html .= '<input name="wbc_altcha_hmac_key" id="wbc_altcha_hmac_key" type="password" autocomplete="new-password" spellcheck="false" value="" class="" placeholder="' . esc_attr__( 'Saved. Leave blank to keep the current key.', 'buddypress-recaptcha' ) . '">';
+					$html .= '<input name="wbc_altcha_hmac_key" id="wbc_altcha_hmac_key" type="password" autocomplete="new-password" spellcheck="false" value="" placeholder="' . esc_attr__( 'Saved. Leave blank to keep the current key.', 'buddypress-recaptcha' ) . '">';
 					$html .= '</div>';
 					$html .= '</div>';
 					$html .= '</div>';
@@ -417,7 +417,7 @@ if ( ! class_exists( 'WBC_BuddyPress_Settings_Page' ) ) :
 			$html .= '</div>';
 			$html .= '<div class="wbcom-settings-section-options">';
 			$html .= '<div class="forminp forminp-password">';
-			$html .= '<input name="' . esc_attr( $id ) . '" id="' . esc_attr( $id ) . '" type="password" autocomplete="new-password" spellcheck="false" value="" class="wbc-secret-key-input" placeholder="' . ( '' !== (string) $value ? esc_attr__( 'Saved. Leave blank to keep the current key.', 'buddypress-recaptcha' ) : esc_attr( $placeholder ) ) . '">';
+			$html .= '<input name="' . esc_attr( $id ) . '" id="' . esc_attr( $id ) . '" type="password" autocomplete="new-password" spellcheck="false" value="" placeholder="' . ( '' !== (string) $value ? esc_attr__( 'Saved. Leave blank to keep the current key.', 'buddypress-recaptcha' ) : esc_attr( $placeholder ) ) . '">';
 			$html .= '</div>';
 			$html .= '</div>';
 			$html .= '</div>';
