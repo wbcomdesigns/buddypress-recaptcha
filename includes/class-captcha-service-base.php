@@ -216,6 +216,7 @@ abstract class WBC_Captcha_Service_Base implements WBC_Captcha_Service_Interface
 			'woo_lostpassword'     => 'wbc_recaptcha_enable_on_lostpassword',
 			'bp_register'          => 'wbc_recaptcha_enable_on_buddypress',  // Admin saves as 'buddypress' not 'signup_bp'.
 			'bp_group_create'      => 'wbc_recaptcha_enable_on_bp_group_create',
+			'contact_me'           => 'wbc_recaptcha_enable_on_contact_me',
 			'bbpress_topic'        => 'wbc_recaptcha_enable_on_bbpress_topic',
 			'bbpress_reply'        => 'wbc_recaptcha_enable_on_bbpress_reply',
 			'woo_checkout_guest'   => 'wbc_recaptcha_enable_on_guestcheckout',
@@ -368,6 +369,7 @@ abstract class WBC_Captcha_Service_Base implements WBC_Captcha_Service_Interface
 			'woo_lostpassword'     => '.woocommerce-ResetPassword',
 			'bp_register'          => '#signup_form',
 			'bp_group_create'      => '#create-group-form',
+			'contact_me'           => 'form.bcm-form',
 			'bbpress_topic'        => '#new-post',
 			'bbpress_reply'        => '#new-post',
 			'woo_checkout'         => 'form.checkout',
@@ -434,6 +436,7 @@ abstract class WBC_Captcha_Service_Base implements WBC_Captcha_Service_Interface
 			'woo_lostpassword'     => '.woocommerce-Button',
 			'bp_register'          => '#submit, #signup_submit',
 			'bp_group_create'      => '#group-creation-create',
+			'contact_me'           => 'form.bcm-form .bcm-submit',
 			'bbpress_topic'        => '#bbp_topic_submit',
 			'bbpress_reply'        => '#bbp_reply_submit',
 			'woo_checkout'         => '#place_order',

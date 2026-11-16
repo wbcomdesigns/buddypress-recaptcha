@@ -33,7 +33,7 @@ Four of the five providers need free API keys from the provider. ALTCHA does not
 **Protects 14 integrations**
 * WordPress core: login, registration, lost password, and comments. Password logins over XML-RPC are blocked while login protection is on; application passwords keep working.
 * WooCommerce: customer login, registration, lost password, product reviews, and checkout for guests and logged-in customers, on both the block checkout and the classic checkout.
-* BuddyPress: member registration and group creation.
+* BuddyPress: member registration, group creation, and the BuddyPress Contact Me form.
 * bbPress: new topics and replies.
 * Form builders: Contact Form 7, WPForms, Gravity Forms, Ninja Forms, Forminator, Elementor Pro Forms, and Divi Builder contact forms.
 * E-commerce and membership: Easy Digital Downloads (checkout, login, registration), MemberPress (login, registration), and Ultimate Member (login, registration, password reset).
@@ -238,6 +238,7 @@ Security update: comment, lost-password and login forms are now verified on site
 
 Closes a classic checkout bypass and makes the fail-closed, no-conflict and IP whitelist settings do what they say.
 
+* New      - Protect the BuddyPress Contact Me form for logged-out visitors with a new switch under Protection > BuddyPress Forms.
 * Improve  - The login widget, login block and every CAPTCHA message follow the light and dark mode of Reign, BuddyX and BuddyX Pro, and use the colour palette of block themes such as Twenty Twenty-Five.
 * Improve  - The Overview tab warns you when the provider rejects this site's keys.
 * Fix      - Sites upgraded from 1.x kept BuddyPress sign-up unprotected, and lost their per-form reCAPTCHA v3 score thresholds and reCAPTCHA v2 widget theme.
