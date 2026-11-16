@@ -10,7 +10,7 @@
     "minify": "grunt cssmin uglify",
     "makepot": "grunt makepot",
     "watch": "grunt watch",
-    "clean": "grunt clean:pre"
+    "clean": "grunt clean:maps"
   },
   "devDependencies": {
     "grunt": "^1.6.1",

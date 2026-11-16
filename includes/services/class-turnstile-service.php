@@ -126,7 +126,7 @@ class WBC_Turnstile_Service extends WBC_Captcha_Service_Base {
 			<br/>
 		</div>
 		
-		<script type="text/javascript">
+		<?php ob_start(); // Printed inline, beside the widget: form builders buffer this markup into their own (often AJAX-loaded) HTML. ?>
 		window.<?php echo esc_js( $callback ); ?> = function (token) {
 			if (!token) {
 				return;
@@ -136,8 +136,8 @@ class WBC_Turnstile_Service extends WBC_Captcha_Service_Base {
 				woo_<?php echo esc_js( str_replace( '-', '_', $context ) ); ?>_captcha_verified(token);
 			}
 		};
-		</script>
 		<?php
+		wp_print_inline_script_tag( ob_get_clean() );
 	}
 
 	/**

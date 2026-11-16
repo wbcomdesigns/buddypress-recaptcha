@@ -43,6 +43,7 @@
 	--bprc-admin-success-light: #dcfce7;
 	--bprc-admin-warn: #f59e0b;
 	--bprc-admin-warn-light: #fef9c3;
+	--bprc-admin-warn-text: #92400e;
 	--bprc-admin-danger: #dc2626;
 	--bprc-admin-danger-dark: #b91c1c;
 	--bprc-admin-danger-light: #fee2e2;
@@ -130,7 +131,7 @@
 	display: inline-block;
 	padding: 4px 10px;
 	background: var(--bprc-admin-accent);
-	color: #fff;
+	color: var(--bprc-admin-white);
 	border-radius: 999px;
 	font-size: 11px;
 	font-weight: 600;
@@ -180,12 +181,12 @@
 	height: 32px;
 	border-radius: var(--bprc-admin-radius-sm);
 	background: var(--bprc-admin-accent);
-	color: #fff;
+	color: var(--bprc-admin-white);
 	flex-shrink: 0;
 }
 
 .bprc-settings-brand-icon .dashicons {
-	color: #fff;
+	color: var(--bprc-admin-white);
 	width: 18px;
 	height: 18px;
 	font-size: 18px;
@@ -537,7 +538,7 @@
 .bprc-notice--warn {
 	background: var(--bprc-admin-warn-light);
 	border-color: rgba(245, 158, 11, 0.3);
-	color: #92400e;
+	color: var(--bprc-admin-warn-text);
 }
 
 .bprc-notice--success {

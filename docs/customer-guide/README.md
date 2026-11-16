@@ -207,7 +207,7 @@ ALTCHA and Cloudflare Turnstile are the most privacy-friendly options.
 
 - **Plugin Website:** [https://wbcomdesigns.com/](https://wbcomdesigns.com/)
 - **Documentation:** [https://wbcomdesigns.com/docs/](https://wbcomdesigns.com/docs/)
-- **Changelog:** [CHANGELOG.md](../../CHANGELOG.md)
+- **Changelog:** the `== Changelog ==` section of [readme.txt](../../readme.txt)
 
 ---
 

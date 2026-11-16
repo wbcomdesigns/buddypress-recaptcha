@@ -71,3 +71,24 @@ altcha-widget {
   border-radius: 4px;
   color: var(--reign-color-warning-text, color-mix(in srgb, var(--wbc-warning) 45%, currentColor));
 }
+
+/*--------------------------------------------------------------
+## Widget size
+The normal reCAPTCHA v2 and hCaptcha widgets are drawn at 89% so they sit
+inside typical form widths. Keyed on data-size, so a widget switched to
+compact (by the site setting or by wbc-captcha-theme.js on a narrow form)
+is never scaled.
+--------------------------------------------------------------*/
+.wbc_recaptcha_field .g-recaptcha[data-size="normal"],
+.wbc_hcaptcha_field .h-captcha[data-size="normal"] {
+  transform: scale(0.89);
+  transform-origin: 0 0;
+}
+
+.wbc_hcaptcha_field {
+  text-align: center;
+}
+
+.wbc_hcaptcha_field .h-captcha[data-size="normal"] {
+  display: inline-block;
+}

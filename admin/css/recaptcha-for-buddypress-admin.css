@@ -1,3 +1,11 @@
+:root {
+  /* Provider brand colours for the setup-guide boxes. Deliberately not mapped
+     onto --bprc-admin-accent: their job is to tell the vendors apart. */
+  --bprc-brand-cloudflare: #f48120;
+  --bprc-brand-hcaptcha: #7c3aed;
+  --bprc-brand-altcha: #10b981;
+}
+
 /*--------------------------------------------------------------
 >>> TABLE OF CONTENTS:
 ----------------------------------------------------------------
@@ -592,15 +600,15 @@ h1.wbcom-plugin-heading {
  * boxes look identical, which is the opposite of what they are for.
  */
 .wbc-guide-cloudflare {
-  border-left: 4px solid #f48120; /* Cloudflare orange */
+  border-left: 4px solid var(--bprc-brand-cloudflare);
 }
 
 .wbc-guide-hcaptcha {
-  border-left: 4px solid #7c3aed; /* hCaptcha purple */
+  border-left: 4px solid var(--bprc-brand-hcaptcha);
 }
 
 .wbc-guide-altcha {
-  border-left: 4px solid #10b981; /* ALTCHA green */
+  border-left: 4px solid var(--bprc-brand-altcha);
 }
 
 .wbc-guide-steps {
