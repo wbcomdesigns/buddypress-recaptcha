@@ -500,6 +500,12 @@ class WBC_Captcha_Service_Manager {
 		// A service that has its keys but cannot run on this site says why.
 		$reason = ( $service && method_exists( $service, 'get_inactive_reason' ) ) ? $service->get_inactive_reason() : '';
 		if ( '' !== $reason ) {
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only tab check.
+			$on_setup = isset( $_GET['page'], $_GET['tab'] ) && 'buddypress-recaptcha' === $_GET['page'] && 'rfw-general' === $_GET['tab'];
+			if ( $on_setup ) {
+				echo '<div class="notice notice-warning wbc-captcha-config-notice"><p>' . esc_html( $reason ) . '</p></div>';
+				return;
+			}
 			echo '<div class="notice notice-warning wbc-captcha-config-notice"><p>';
 			echo wp_kses(
 				sprintf(

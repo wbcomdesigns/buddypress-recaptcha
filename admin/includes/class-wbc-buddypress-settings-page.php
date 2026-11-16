@@ -334,11 +334,11 @@ if ( ! class_exists( 'WBC_BuddyPress_Settings_Page' ) ) :
 					$html .= '<div valign="top" class="">';
 					$html .= '<div scope="row" class="wbcom-settings-section-options-heading titledesc">';
 					$html .= '<label for="wbc_altcha_hmac_key">' . esc_html__( 'ALTCHA - HMAC Secret Key', 'buddypress-recaptcha' ) . '</label>';
-					$html .= '<p class="description">' . esc_html__( 'Generate a random secret key for challenge signing. ALTCHA is self-hosted and requires HTTPS.', 'buddypress-recaptcha' ) . ' <button type="button" class="button button-secondary wbc-generate-hmac-key" style="margin-left: 10px">' . esc_html__( 'Generate Random Key', 'buddypress-recaptcha' ) . '</button></p>';
+					$html .= '<p class="description">' . esc_html__( 'Generate a random secret key for challenge signing. ALTCHA is self-hosted and runs on HTTPS or localhost.', 'buddypress-recaptcha' ) . ' <button type="button" class="button button-secondary wbc-generate-hmac-key" style="margin-left: 10px">' . esc_html__( 'Generate Random Key', 'buddypress-recaptcha' ) . '</button></p>';
 					$html .= '</div>';
 					$html .= '<div class="wbcom-settings-section-options">';
 					$html .= '<div class="forminp forminp-text">';
-					$html .= '<input name="wbc_altcha_hmac_key" id="wbc_altcha_hmac_key" type="password" autocomplete="new-password" spellcheck="false" value="' . esc_attr( $hmac_key ) . '" class="" placeholder="' . esc_attr__( 'Your HMAC secret key (32+ characters)', 'buddypress-recaptcha' ) . '">';
+					$html .= '<input name="wbc_altcha_hmac_key" id="wbc_altcha_hmac_key" type="password" autocomplete="new-password" spellcheck="false" value="" class="" placeholder="' . esc_attr__( 'Saved. Leave blank to keep the current key.', 'buddypress-recaptcha' ) . '">';
 					$html .= '</div>';
 					$html .= '</div>';
 					$html .= '</div>';
@@ -417,7 +417,7 @@ if ( ! class_exists( 'WBC_BuddyPress_Settings_Page' ) ) :
 			$html .= '</div>';
 			$html .= '<div class="wbcom-settings-section-options">';
 			$html .= '<div class="forminp forminp-password">';
-			$html .= '<input name="' . esc_attr( $id ) . '" id="' . esc_attr( $id ) . '" type="password" autocomplete="new-password" spellcheck="false" value="' . esc_attr( $value ) . '" class="wbc-secret-key-input" placeholder="' . esc_attr( $placeholder ) . '">';
+			$html .= '<input name="' . esc_attr( $id ) . '" id="' . esc_attr( $id ) . '" type="password" autocomplete="new-password" spellcheck="false" value="" class="wbc-secret-key-input" placeholder="' . ( '' !== (string) $value ? esc_attr__( 'Saved. Leave blank to keep the current key.', 'buddypress-recaptcha' ) : esc_attr( $placeholder ) ) . '">';
 			$html .= '</div>';
 			$html .= '</div>';
 			$html .= '</div>';
@@ -854,7 +854,7 @@ if ( ! class_exists( 'WBC_BuddyPress_Settings_Page' ) ) :
 			$html .= '<li>' . esc_html__( 'Save the settings', 'buddypress-recaptcha' ) . '</li>';
 			$html .= '<li>' . esc_html__( 'ALTCHA will work immediately without external services', 'buddypress-recaptcha' ) . '</li>';
 			$html .= '</ol>';
-			$html .= '<p class="wbc-guide-warning">⚠️ ' . esc_html__( 'Important: ALTCHA requires HTTPS to function properly. Make sure your site uses SSL.', 'buddypress-recaptcha' ) . '</p>';
+			$html .= '<p class="wbc-guide-warning">⚠️ ' . esc_html__( 'Important: ALTCHA runs only on HTTPS (or localhost). Make sure your site uses SSL.', 'buddypress-recaptcha' ) . '</p>';
 			$html .= '</div>';
 			return $html;
 		}
@@ -1492,11 +1492,13 @@ if ( ! class_exists( 'WBC_BuddyPress_Settings_Page' ) ) :
 				$site_key   = isset( $_POST[ $keys['site'] ] ) ? sanitize_text_field( wp_unslash( $_POST[ $keys['site'] ] ) ) : '';
 				$secret_key = isset( $_POST[ $keys['secret'] ] ) ? sanitize_text_field( wp_unslash( $_POST[ $keys['secret'] ] ) ) : '';
 
-				// If either key is provided, both must be provided.
-				if ( ( ! empty( $site_key ) && empty( $secret_key ) ) || ( empty( $site_key ) && ! empty( $secret_key ) ) ) {
+				// A blank secret keeps the saved one (secrets are never printed back),
+				// so a site key needs either a new secret or a saved one.
+				$has_secret = '' !== $secret_key || '' !== (string) get_option( $keys['secret'], '' );
+				if ( ( '' !== $site_key && ! $has_secret ) || ( '' === $site_key && '' !== $secret_key ) ) {
 					$validation_errors[] = sprintf(
 						/* translators: %s: Service name */
-						__( 'Both Site Key and Secret Key are required for %s. Please enter valid API keys or leave both fields empty.', 'buddypress-recaptcha' ),
+						__( 'Enter both the Site Key and the Secret Key for %s. To remove its keys, clear the Site Key.', 'buddypress-recaptcha' ),
 						$keys['name']
 					);
 				}
@@ -1519,17 +1521,6 @@ if ( ! class_exists( 'WBC_BuddyPress_Settings_Page' ) ) :
 						__( '%s is the active service, so its keys cannot be removed. Enter new keys, or choose another service first.', 'buddypress-recaptcha' ),
 						$keys['name']
 					);
-				}
-			}
-
-			// Validate ALTCHA HMAC key if it's being submitted as empty.
-			if ( isset( $_POST['wbc_altcha_hmac_key'] ) ) {
-				$altcha_key         = sanitize_text_field( wp_unslash( $_POST['wbc_altcha_hmac_key'] ) );
-				$current_altcha_key = get_option( 'wbc_altcha_hmac_key', '' );
-
-				// Only validate if user is trying to clear an existing key.
-				if ( empty( $altcha_key ) && ! empty( $current_altcha_key ) ) {
-					$validation_errors[] = __( 'ALTCHA HMAC Key cannot be empty. Please enter a valid key or leave the field unchanged.', 'buddypress-recaptcha' );
 				}
 			}
 
@@ -1568,11 +1559,22 @@ if ( ! class_exists( 'WBC_BuddyPress_Settings_Page' ) ) :
 				'wbc_altcha_complexity',
 			);
 
+			// Secret field => the posted value of its site key ('keep' for ALTCHA, which has none).
+			$secret_ids = array( 'wbc_altcha_hmac_key' => 'keep' );
+			foreach ( $api_key_pairs as $keys ) {
+				$secret_ids[ $keys['secret'] ] = isset( $_POST[ $keys['site'] ] ) ? trim( sanitize_text_field( wp_unslash( $_POST[ $keys['site'] ] ) ) ) : 'keep';
+			}
+
 			// Save each field.
 			foreach ( $field_ids as $field_id ) {
 				if ( isset( $_POST[ $field_id ] ) ) {
 					$value = sanitize_text_field( wp_unslash( $_POST[ $field_id ] ) );
 					if ( 'wbc_captcha_service' === $field_id && ! wbc_captcha_service_manager()->get_service( $value ) ) {
+						continue;
+					}
+					// Secrets are never printed back into the form, so a blank one means "keep",
+					// unless the paired site key was cleared: that removes the service's keys.
+					if ( '' === $value && isset( $secret_ids[ $field_id ] ) && '' !== $secret_ids[ $field_id ] ) {
 						continue;
 					}
 					update_option( $field_id, $value );

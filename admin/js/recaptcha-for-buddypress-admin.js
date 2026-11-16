@@ -103,11 +103,9 @@
 			e.preventDefault();
 
 			// Generate a random 64-character hex string (32 bytes)
-			var key = '';
-			var chars = '0123456789abcdef';
-			for (var i = 0; i < 64; i++) {
-				key += chars.charAt(Math.floor(Math.random() * chars.length));
-			}
+			var bytes = new Uint8Array(32);
+			window.crypto.getRandomValues(bytes);
+			var key = Array.prototype.map.call(bytes, function(b) { return ('0' + b.toString(16)).slice(-2); }).join('');
 
 			// Set the generated key
 			$('#wbc_altcha_hmac_key').val(key);
@@ -150,9 +148,9 @@
 		}
 		
 		/**
-		 * Copy-to-clipboard button for every key field
+		 * Copy-to-clipboard button for every site key field (secrets are never printed back)
 		 */
-		$('input[type="text"][id*="site_key"], input[type="password"][id*="secret_key"]').each(function() {
+		$('input[type="text"][id*="site_key"]').each(function() {
 			var $input = $(this);
 
 			// Add copy button for all key fields

@@ -153,8 +153,13 @@ $bprc_protect_url = admin_url( 'admin.php?page=' . BPRC_Admin::MENU_SLUG . '&tab
 
 <div class="bprc-card">
 	<div class="bprc-card__head">
-		<p class="bprc-card__title"><?php esc_html_e( 'Get Started', 'buddypress-recaptcha' ); ?></p>
-		<p class="bprc-card__desc"><?php esc_html_e( 'Choose a CAPTCHA service, add your keys, then turn on protection for the forms you want to guard.', 'buddypress-recaptcha' ); ?></p>
+		<?php if ( $bprc_configured ) : ?>
+			<p class="bprc-card__title"><?php esc_html_e( 'Manage', 'buddypress-recaptcha' ); ?></p>
+			<p class="bprc-card__desc"><?php esc_html_e( 'Change the CAPTCHA service or its keys, or choose which forms are protected.', 'buddypress-recaptcha' ); ?></p>
+		<?php else : ?>
+			<p class="bprc-card__title"><?php esc_html_e( 'Get Started', 'buddypress-recaptcha' ); ?></p>
+			<p class="bprc-card__desc"><?php esc_html_e( 'Choose a CAPTCHA service, add your keys, then turn on protection for the forms you want to guard.', 'buddypress-recaptcha' ); ?></p>
+		<?php endif; ?>
 	</div>
 	<div class="bprc-card__body">
 		<div class="bprc-save-bar" style="padding-top:0;">

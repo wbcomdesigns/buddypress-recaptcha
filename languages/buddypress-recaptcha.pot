@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-11-15T19:00:49+00:00\n"
+"POT-Creation-Date: 2026-11-16T05:27:01+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: buddypress-recaptcha\n"
@@ -237,7 +237,7 @@ msgid "ALTCHA - HMAC Secret Key"
 msgstr ""
 
 #: admin/includes/class-wbc-buddypress-settings-page.php:337
-msgid "Generate a random secret key for challenge signing. ALTCHA is self-hosted and requires HTTPS."
+msgid "Generate a random secret key for challenge signing. ALTCHA is self-hosted and runs on HTTPS or localhost."
 msgstr ""
 
 #: admin/includes/class-wbc-buddypress-settings-page.php:337
@@ -245,7 +245,8 @@ msgid "Generate Random Key"
 msgstr ""
 
 #: admin/includes/class-wbc-buddypress-settings-page.php:341
-msgid "Your HMAC secret key (32+ characters)"
+#: admin/includes/class-wbc-buddypress-settings-page.php:420
+msgid "Saved. Leave blank to keep the current key."
 msgstr ""
 
 #: admin/includes/class-wbc-buddypress-settings-page.php:351
@@ -356,8 +357,8 @@ msgid "Remove CAPTCHA scripts loaded by other plugins or the theme, so only this
 msgstr ""
 
 #: admin/includes/class-wbc-buddypress-settings-page.php:613
-#: includes/services/class-hcaptcha-service.php:262
-#: includes/services/class-recaptcha-v2-service.php:366
+#: includes/services/class-hcaptcha-service.php:240
+#: includes/services/class-recaptcha-v2-service.php:358
 msgid "Please complete the security check."
 msgstr ""
 
@@ -587,7 +588,7 @@ msgid "ALTCHA will work immediately without external services"
 msgstr ""
 
 #: admin/includes/class-wbc-buddypress-settings-page.php:857
-msgid "Important: ALTCHA requires HTTPS to function properly. Make sure your site uses SSL."
+msgid "Important: ALTCHA runs only on HTTPS (or localhost). Make sure your site uses SSL."
 msgstr ""
 
 #: admin/includes/class-wbc-buddypress-settings-page.php:882
@@ -1079,26 +1080,22 @@ msgid "Vietnamese"
 msgstr ""
 
 #. translators: %s: Service name
-#: admin/includes/class-wbc-buddypress-settings-page.php:1499
+#: admin/includes/class-wbc-buddypress-settings-page.php:1501
 #, php-format
-msgid "Both Site Key and Secret Key are required for %s. Please enter valid API keys or leave both fields empty."
+msgid "Enter both the Site Key and the Secret Key for %s. To remove its keys, clear the Site Key."
 msgstr ""
 
 #. translators: %s: Service name
-#: admin/includes/class-wbc-buddypress-settings-page.php:1519
+#: admin/includes/class-wbc-buddypress-settings-page.php:1521
 #, php-format
 msgid "%s is the active service, so its keys cannot be removed. Enter new keys, or choose another service first."
 msgstr ""
 
-#: admin/includes/class-wbc-buddypress-settings-page.php:1532
-msgid "ALTCHA HMAC Key cannot be empty. Please enter a valid key or leave the field unchanged."
-msgstr ""
-
-#: admin/includes/class-wbc-buddypress-settings-page.php:1586
+#: admin/includes/class-wbc-buddypress-settings-page.php:1588
 msgid "Settings saved successfully."
 msgstr ""
 
-#: admin/includes/class-wbc-buddypress-settings-page.php:1612
+#: admin/includes/class-wbc-buddypress-settings-page.php:1614
 msgid "Protection settings saved successfully."
 msgstr ""
 
@@ -1352,7 +1349,7 @@ msgid "Overview"
 msgstr ""
 
 #: includes/admin/class-bprc-admin.php:72
-#: includes/admin/views/overview.php:163
+#: includes/admin/views/overview.php:168
 msgid "Quick Setup"
 msgstr ""
 
@@ -1574,7 +1571,7 @@ msgid "Resources"
 msgstr ""
 
 #: includes/admin/views/layout.php:90
-#: includes/admin/views/overview.php:238
+#: includes/admin/views/overview.php:243
 msgid "Documentation"
 msgstr ""
 
@@ -1685,84 +1682,92 @@ msgstr ""
 msgid "Automatic"
 msgstr ""
 
-#: includes/admin/views/overview.php:156
+#: includes/admin/views/overview.php:157
+msgid "Manage"
+msgstr ""
+
+#: includes/admin/views/overview.php:158
+msgid "Change the CAPTCHA service or its keys, or choose which forms are protected."
+msgstr ""
+
+#: includes/admin/views/overview.php:160
 msgid "Get Started"
 msgstr ""
 
-#: includes/admin/views/overview.php:157
+#: includes/admin/views/overview.php:161
 msgid "Choose a CAPTCHA service, add your keys, then turn on protection for the forms you want to guard."
 msgstr ""
 
-#: includes/admin/views/overview.php:167
+#: includes/admin/views/overview.php:172
 msgid "Choose Forms to Protect"
 msgstr ""
 
-#: includes/admin/views/overview.php:175
+#: includes/admin/views/overview.php:180
 msgid "Recent Rejections"
 msgstr ""
 
-#: includes/admin/views/overview.php:176
+#: includes/admin/views/overview.php:181
 msgid "The last 20 submissions the CAPTCHA blocked, kept for 7 days. Use this when a visitor reports they cannot log in or submit a form."
 msgstr ""
 
-#: includes/admin/views/overview.php:180
+#: includes/admin/views/overview.php:185
 msgid "No rejected submissions in the last 7 days."
 msgstr ""
 
-#: includes/admin/views/overview.php:185
-#: includes/admin/views/overview.php:204
+#: includes/admin/views/overview.php:190
+#: includes/admin/views/overview.php:209
 msgid "Time"
 msgstr ""
 
-#: includes/admin/views/overview.php:186
-#: includes/admin/views/overview.php:208
+#: includes/admin/views/overview.php:191
+#: includes/admin/views/overview.php:213
 msgid "Form"
 msgstr ""
 
-#: includes/admin/views/overview.php:187
-#: includes/admin/views/overview.php:215
+#: includes/admin/views/overview.php:192
+#: includes/admin/views/overview.php:220
 msgid "Service"
 msgstr ""
 
-#: includes/admin/views/overview.php:188
-#: includes/admin/views/overview.php:216
+#: includes/admin/views/overview.php:193
+#: includes/admin/views/overview.php:221
 msgid "Reason"
 msgstr ""
 
-#: includes/admin/views/overview.php:232
+#: includes/admin/views/overview.php:237
 msgid "Help &amp; Support"
 msgstr ""
 
-#: includes/admin/views/overview.php:233
+#: includes/admin/views/overview.php:238
 msgid "Everything you need to set up, troubleshoot, and get the most out of the plugin."
 msgstr ""
 
-#: includes/admin/views/overview.php:239
+#: includes/admin/views/overview.php:244
 msgid "Step-by-step setup guides and best practices for every supported CAPTCHA service."
 msgstr ""
 
-#: includes/admin/views/overview.php:240
+#: includes/admin/views/overview.php:245
 msgid "Read Documentation"
 msgstr ""
 
-#: includes/admin/views/overview.php:243
+#: includes/admin/views/overview.php:248
 msgid "Support Center"
 msgstr ""
 
-#: includes/admin/views/overview.php:244
+#: includes/admin/views/overview.php:249
 msgid "Get expert help with setup, configuration, and troubleshooting from our team."
 msgstr ""
 
-#: includes/admin/views/overview.php:245
+#: includes/admin/views/overview.php:250
 msgid "Get Support"
 msgstr ""
 
-#: includes/admin/views/overview.php:248
-#: includes/admin/views/overview.php:250
+#: includes/admin/views/overview.php:253
+#: includes/admin/views/overview.php:255
 msgid "Send Feedback"
 msgstr ""
 
-#: includes/admin/views/overview.php:249
+#: includes/admin/views/overview.php:254
 msgid "Share your experience and suggestions to help us make the plugin even better."
 msgstr ""
 
@@ -1829,19 +1834,19 @@ msgid "%1$s: %2$s rejected this site's keys (%3$s). So nobody gets locked out, C
 msgstr ""
 
 #. translators: 1: reason the CAPTCHA service is inactive, 2: opening anchor tag, 3: closing anchor tag
-#: includes/class-captcha-service-manager.php:507
+#: includes/class-captcha-service-manager.php:513
 #, php-format
 msgid "%1$s %2$sOpen settings%3$s."
 msgstr ""
 
 #. translators: %1$s: opening anchor tag, %2$s: closing anchor tag
-#: includes/class-captcha-service-manager.php:527
+#: includes/class-captcha-service-manager.php:533
 #, php-format
 msgid "Wbcom CAPTCHA Manager is enabled but the active service is not configured. Forms are currently unprotected — %1$sopen settings%2$s and add your API keys."
 msgstr ""
 
 #. translators: %s: Settings page URL
-#: includes/class-captcha-service-manager.php:596
+#: includes/class-captcha-service-manager.php:602
 #, php-format
 msgid "Captcha service is not properly configured. Please %1$sconfigure your captcha settings%2$s."
 msgstr ""
@@ -1945,31 +1950,31 @@ msgstr ""
 msgid "To fix it, turn on HTTPS for this site (Local, Valet and DevKinsta can enable it per site), or open the site at localhost, 127.0.0.1 or a *.localhost address."
 msgstr ""
 
-#: includes/services/class-recaptcha-v2-service.php:354
-#: includes/services/class-recaptcha-v2-service.php:357
+#: includes/services/class-recaptcha-v2-service.php:346
+#: includes/services/class-recaptcha-v2-service.php:349
 msgid "Please complete the security check to log in."
 msgstr ""
 
-#: includes/services/class-recaptcha-v2-service.php:355
-#: includes/services/class-recaptcha-v2-service.php:358
-#: includes/services/class-recaptcha-v2-service.php:360
+#: includes/services/class-recaptcha-v2-service.php:347
+#: includes/services/class-recaptcha-v2-service.php:350
+#: includes/services/class-recaptcha-v2-service.php:352
 msgid "Please complete the security check to register."
 msgstr ""
 
-#: includes/services/class-recaptcha-v2-service.php:356
-#: includes/services/class-recaptcha-v2-service.php:359
+#: includes/services/class-recaptcha-v2-service.php:348
+#: includes/services/class-recaptcha-v2-service.php:351
 msgid "Please complete the security check to reset your password."
 msgstr ""
 
-#: includes/services/class-recaptcha-v2-service.php:361
+#: includes/services/class-recaptcha-v2-service.php:353
 msgid "Please complete the security check to submit your topic."
 msgstr ""
 
-#: includes/services/class-recaptcha-v2-service.php:362
+#: includes/services/class-recaptcha-v2-service.php:354
 msgid "Please complete the security check to submit your reply."
 msgstr ""
 
-#: includes/services/class-recaptcha-v2-service.php:363
+#: includes/services/class-recaptcha-v2-service.php:355
 msgid "Please complete the security check to place your order."
 msgstr ""
 
