@@ -62,7 +62,7 @@ class ElementorPro_Form {
 	 *
 	 * @param bool                    $is_dynamic Whether Elementor treats the element as dynamic.
 	 * @param array                   $raw_data   Element data.
-	 * @param \Elementor\Element_Base $element    The element.
+	 * @param object                  $element    The element (\Elementor\Element_Base).
 	 * @return bool
 	 */
 	public function keep_form_out_of_element_cache( $is_dynamic, $raw_data, $element ) {

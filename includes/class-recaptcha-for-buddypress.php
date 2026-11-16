@@ -295,7 +295,7 @@ class Recaptcha_For_BuddyPress {
 	 */
 	private function define_public_hooks() {
 
-		$plugin_public = new Recaptcha_For_BuddyPress_Public( $this->get_plugin_name(), $this->get_version() );
+		$plugin_public = new Recaptcha_For_BuddyPress_Public();
 
 		// Load style, js language.
 		add_action( 'wp_enqueue_scripts', array( $plugin_public, 'woo_recaptcha_load_styles_and_js' ), 9999 );
