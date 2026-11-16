@@ -89,6 +89,14 @@ is never scaled.
   text-align: center;
 }
 
+/* Space below the widget, as the other form rows have. These wrappers used to
+   borrow it from the core "input" class, whose padding pushed them past narrow
+   forms. */
+.wbc_hcaptcha_field,
+.wbc_altcha_field {
+  margin-bottom: 16px;
+}
+
 .wbc_hcaptcha_field .h-captcha[data-size="normal"] {
   display: inline-block;
 }

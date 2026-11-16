@@ -139,7 +139,7 @@ class WBC_HCaptcha_Service extends WBC_Captcha_Service_Base {
 		// Render HTML.
 		?>
 		<input type="hidden" autocomplete="off" name="<?php echo esc_attr( $nonce_action ); ?>" value="<?php echo esc_attr( wp_create_nonce( $nonce_action ) ); ?>" />
-		<div class="wbc_captcha_field wbc_hcaptcha_field input">
+		<div class="wbc_captcha_field wbc_hcaptcha_field">
 			<div id="<?php echo esc_attr( $div_id ); ?>"
 				class="h-captcha"
 				data-sitekey="<?php echo esc_attr( $site_key ); ?>"
