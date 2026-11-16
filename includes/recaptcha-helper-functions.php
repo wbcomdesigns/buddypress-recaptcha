@@ -200,3 +200,46 @@ if ( ! function_exists( 'wb_recaptcha_restriction_recaptcha_by_ip' ) ) {
 		return wbc_captcha_service_manager()->is_ip_whitelisted();
 	}
 }
+
+if ( ! function_exists( 'wbc_display_timezone' ) ) {
+	/**
+	 * The one timezone times are shown in (Wbcom Time Standard). Filterable per member.
+	 *
+	 * @param int $user_id Member the time is shown to (0 = current visitor / site).
+	 * @return DateTimeZone
+	 */
+	function wbc_display_timezone( int $user_id = 0 ): DateTimeZone {
+		$timezone = apply_filters( 'wbc_recaptcha_display_timezone', wp_timezone(), $user_id );
+		return $timezone instanceof DateTimeZone ? $timezone : wp_timezone();
+	}
+}
+
+if ( ! function_exists( 'wbc_date_label' ) ) {
+	/**
+	 * The one formatter for every time shown: a Unix timestamp or stored UTC string, in wbc_display_timezone().
+	 *
+	 * @param string|int|null $utc      Unix timestamp or UTC string (a naive string is read as UTC).
+	 * @param string          $fallback Shown for an empty or unreadable value.
+	 * @param string|null     $format   PHP date format; default the site's date + time format.
+	 * @param int             $user_id  Member the time is shown to.
+	 * @return string
+	 */
+	function wbc_date_label( $utc, string $fallback = '', ?string $format = null, int $user_id = 0 ): string {
+		if ( is_int( $utc ) || ( is_string( $utc ) && ctype_digit( $utc ) ) ) {
+			$timestamp = (int) $utc;
+		} elseif ( is_string( $utc ) && '' !== trim( $utc ) && 0 !== strpos( $utc, '0000-00-00' ) ) {
+			try {
+				$timestamp = ( new DateTimeImmutable( $utc, new DateTimeZone( 'UTC' ) ) )->getTimestamp();
+			} catch ( Exception $e ) {
+				$timestamp = 0;
+			}
+		} else {
+			$timestamp = 0;
+		}
+		if ( $timestamp <= 0 ) {
+			return $fallback;
+		}
+		$format = $format ?? trim( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ) );
+		return (string) wp_date( $format, $timestamp, wbc_display_timezone( $user_id ) ); // time-ok: the one formatter.
+	}
+}

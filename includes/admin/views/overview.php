@@ -206,7 +206,7 @@ $bprc_protect_url = admin_url( 'admin.php?page=' . BPRC_Admin::MENU_SLUG . '&tab
 						}
 						?>
 						<tr>
-							<td data-label="<?php esc_attr_e( 'Time', 'buddypress-recaptcha' ); ?>"><?php echo esc_html( wp_date( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), (int) $bprc_row['time'] ) ); ?></td>
+							<td data-label="<?php esc_attr_e( 'Time', 'buddypress-recaptcha' ); ?>"><?php echo esc_html( wbc_date_label( (int) $bprc_row['time'], '-' ) ); ?></td>
 							<?php
 							$bprc_ctx_opt = $bprc_service_obj instanceof WBC_Captcha_Service_Base ? $bprc_service_obj->get_context_option( (string) $bprc_row['context'] ) : '';
 							?>
