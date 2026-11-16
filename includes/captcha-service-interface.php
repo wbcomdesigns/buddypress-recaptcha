@@ -110,12 +110,6 @@ interface WBC_Captcha_Service_Interface {
 	 */
 	public function get_response_field_name();
 
-	/**
-	 * Check if this service requires no-conflict mode
-	 *
-	 * @return bool
-	 */
-	public function requires_no_conflict();
 
 	/**
 	 * Get service-specific attributes for the captcha container

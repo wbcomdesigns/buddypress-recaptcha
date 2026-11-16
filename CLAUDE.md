@@ -67,33 +67,17 @@ public function get_site_key();             // reads wbc_<provider>_site_key
 public function get_secret_key();           // reads wbc_<provider>_secret_key
 public function get_script_url();           // provider api.js (?hl=lang for hCaptcha + reCAPTCHA v2 since 2.1.0)
 public function get_script_handle( $context );
-public function render( $context, $args );  // emits HTML + per-render <style> + <script>
+public function render( $context, $args );  // emits HTML + inline <script> (wp_print_inline_script_tag)
 public function verify( $response, $args ); // calls /siteverify, applies wbc_captcha_verified filter
 public function get_verify_endpoint();
 public function get_response_field_name();  // e.g., 'h-captcha-response'
-public function requires_no_conflict();     // dequeue conflicting scripts?
 ```
 
 Adding a new provider = create `includes/services/class-<id>-service.php` + register it in `WBC_Captcha_Service_Manager::register_default_services()` OR via the `wbc_register_captcha_services` action (3rd-party).
 
-## Per-render rendering pattern (since 2.1.0)
+## Render pattern (2.2.4)
 
-The hCaptcha / reCAPTCHA v2 services emit a per-render `<style>` block instead of inline-styled wrapper:
-
-```html
-<input type="hidden" name="<context>-nonce" value="<nonce>" />
-<div class="wbc_<provider>_field"><div id="<provider>-<context>-wbc" class="..." data-callback="<cb>" ... /></div>
-<style>
-  .wbc_<provider>_field { text-align: center; }
-  /* scaling only at non-compact size */
-  #<provider>-<context>-wbc { transform: scale(.89); transform-origin: 0 0; ... }
-</style>
-<script>
-  window.<provider>Callback_<context> = function(token) { /* re-enable submit + fire woo_<context>_captcha_verified */ };
-</script>
-```
-
-If you add a new provider with a checkbox-style widget, mirror this pattern — don't add inline `style="..."` to the wrapper.
+Services print the nonce field, a `<div class="wbc_<provider>_field">` wrapper and the callback through `wp_print_inline_script_tag()`. No per-render `<style>`: sizing lives in `public/css/recaptcha-for-buddypress-public.css` (normal-size v2/hCaptcha scaled 0.89, keyed on `data-size`). No-conflict mode is one implementation, `WBC_Captcha_Service_Base::handle_no_conflict_mode()`, for every provider.
 
 ## Important patterns
 

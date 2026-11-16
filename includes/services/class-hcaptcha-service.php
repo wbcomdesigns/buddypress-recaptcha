@@ -310,12 +310,4 @@ class WBC_HCaptcha_Service extends WBC_Captcha_Service_Base {
 		return $this->config['response_field'];
 	}
 
-	/**
-	 * Check if this service requires no-conflict mode
-	 *
-	 * @return bool
-	 */
-	public function requires_no_conflict() {
-		return false;
-	}
 }

@@ -60,15 +60,6 @@ abstract class WBC_Captcha_Service_Base implements WBC_Captcha_Service_Interface
 	abstract public function get_script_handle( $context = 'default' );
 
 	/**
-	 * Check if no-conflict mode is required
-	 *
-	 * @return bool
-	 */
-	public function requires_no_conflict() {
-		return false;
-	}
-
-	/**
 	 * Get the verification endpoint URL
 	 *
 	 * @return string

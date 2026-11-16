@@ -245,14 +245,6 @@ class WBC_Recaptcha_V2_Service extends WBC_Captcha_Service_Base {
 		return 'g-recaptcha-response';
 	}
 
-	/**
-	 * Check if this service requires no-conflict mode
-	 *
-	 * @return bool
-	 */
-	public function requires_no_conflict() {
-		return true;
-	}
 
 	/**
 	 * Get service-specific attributes for the captcha container
@@ -269,8 +261,6 @@ class WBC_Recaptcha_V2_Service extends WBC_Captcha_Service_Base {
 			'data-callback' => 'verifyCallback_' . str_replace( '-', '_', $context ),
 		);
 	}
-
-
 
 	/**
 	 * Get theme for context

@@ -24,30 +24,14 @@ $bprc_service_label = isset( $bprc_service_names[ $bprc_service ] )
 	? $bprc_service_names[ $bprc_service ]
 	: __( 'Not selected', 'buddypress-recaptcha' );
 
-// Determine whether the active service has its required keys configured.
+$bprc_key_error = get_transient( 'wbc_captcha_key_error' );
+$bprc_key_error = ( is_array( $bprc_key_error ) && ! empty( $bprc_key_error['service'] ) ) ? $bprc_key_error : null;
 
-$bprc_key_map    = array(
-	'recaptcha-v2' => array( 'wbc_recaptcha_v2_site_key', 'wbc_recaptcha_v2_secret_key' ),
-	'recaptcha-v3' => array( 'wbc_recaptcha_v3_site_key', 'wbc_recaptcha_v3_secret_key' ),
-	'turnstile'    => array( 'wbc_turnstile_site_key', 'wbc_turnstile_secret_key' ),
-	'hcaptcha'     => array( 'wbc_hcaptcha_site_key', 'wbc_hcaptcha_secret_key' ),
-	'altcha'       => array( 'wbc_altcha_hmac_key' ),
-);
-$bprc_configured = true;
-$bprc_key_error  = get_transient( 'wbc_captcha_key_error' );
-$bprc_key_error  = ( is_array( $bprc_key_error ) && ! empty( $bprc_key_error['service'] ) ) ? $bprc_key_error : null;
-if ( isset( $bprc_key_map[ $bprc_service ] ) ) {
-	foreach ( $bprc_key_map[ $bprc_service ] as $bprc_key_opt ) {
-		if ( '' === trim( (string) get_option( $bprc_key_opt, '' ) ) ) {
-			$bprc_configured = false;
-			break;
-		}
-	}
-}
-
-// A service with its keys saved can still be unable to run on this site (ALTCHA without HTTPS).
+// Keys saved, as the service itself judges them. A service can have its keys and
+// still be unable to run on this site (ALTCHA without HTTPS): that one says why.
 $bprc_service_obj     = WBC_Captcha_Service_Manager::get_instance()->get_active_service();
-$bprc_inactive_reason = ( $bprc_configured && $bprc_service_obj && method_exists( $bprc_service_obj, 'get_inactive_reason' ) ) ? $bprc_service_obj->get_inactive_reason() : '';
+$bprc_inactive_reason = ( $bprc_service_obj && method_exists( $bprc_service_obj, 'get_inactive_reason' ) ) ? $bprc_service_obj->get_inactive_reason() : '';
+$bprc_configured      = $bprc_service_obj && ( $bprc_service_obj->is_configured() || '' !== $bprc_inactive_reason );
 
 $bprc_rejections = WBC_Captcha_Service_Manager::get_recent_rejections();
 
