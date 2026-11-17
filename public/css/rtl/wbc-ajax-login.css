@@ -233,7 +233,7 @@
 .wbc-register-link a {
 	color: var(--wbc-link);
 	text-decoration: none;
-	font-size: 14px;
+	font-size: 15px;
 }
 
 .wbc-lost-password a:hover,
