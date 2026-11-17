@@ -206,6 +206,12 @@
 	cursor: not-allowed;
 }
 
+/* Keep [hidden] winning over a theme's `button span { display: inline-block }`. */
+.wbc-button-loader[hidden],
+.wbc-button-text[hidden] {
+	display: none;
+}
+
 /* Visible keyboard focus on every control. */
 .wbc-login-button:focus-visible,
 .wbc-lost-password a:focus-visible,
