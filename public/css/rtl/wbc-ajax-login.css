@@ -82,6 +82,14 @@
 	border-radius: 4px;
 }
 
+/* In a sidebar the theme widget is the card: no second box inside it. */
+.widget .wbc-login-widget-form,
+.widget .wbc-login-widget-logged-in {
+	padding: 0;
+	background: none;
+	border-radius: 0;
+}
+
 /* Form Messages */
 .wbc-form-messages {
 	margin-bottom: 15px;
@@ -128,7 +136,8 @@
 	border: 1px solid var(--wbc-input-border);
 	border-radius: 4px;
 	color: var(--wbc-input-fg);
-	font-size: 14px;
+	/* 16px: iOS Safari zooms the page on focus below this. */
+	font-size: 16px;
 	transition: border-color 0.3s ease;
 }
 
@@ -174,6 +183,7 @@
 
 .wbc-login-button {
 	width: 100%;
+	min-height: 45px;
 	padding: 12px 20px;
 	background: var(--wbc-button-bg);
 	color: var(--wbc-button-fg);
@@ -196,8 +206,14 @@
 	cursor: not-allowed;
 }
 
-.wbc-button-loader {
-	display: inline-block;
+/* Visible keyboard focus on every control. */
+.wbc-login-button:focus-visible,
+.wbc-lost-password a:focus-visible,
+.wbc-register-link a:focus-visible,
+.wbc-profile-link:focus-visible,
+.wbc-logout-link:focus-visible {
+	outline: 2px solid var(--wbc-focus);
+	outline-offset: 2px;
 }
 
 /* Links */
@@ -230,6 +246,13 @@
 	border-inline-start: 3px solid var(--wbc-button-bg);
 	border-radius: 3px;
 	font-size: 16px;
+}
+
+.widget .wbc-welcome-message {
+	padding: 0;
+	background: none;
+	border-inline-start: 0;
+	border-radius: 0;
 }
 
 .wbc-user-links {

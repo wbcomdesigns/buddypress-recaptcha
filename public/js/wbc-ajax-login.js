@@ -54,8 +54,8 @@
 
 			// Disable button and show loader
 			$button.prop( 'disabled', true );
-			$buttonText.hide();
-			$buttonLoader.show();
+			$buttonText.prop( 'hidden', true );
+			$buttonLoader.prop( 'hidden', false );
 			$messages.html( '' ).removeClass( 'wbc-error wbc-success' );
 
 			withFreshV3Token( $form ).then( function() {
@@ -86,8 +86,8 @@
 
 							// Re-enable button
 							$button.prop( 'disabled', false );
-							$buttonText.show();
-							$buttonLoader.hide();
+							$buttonText.prop( 'hidden', false );
+							$buttonLoader.prop( 'hidden', true );
 
 							resetFormCaptcha( $form );
 						}
@@ -100,8 +100,8 @@
 
 						// Re-enable button
 						$button.prop( 'disabled', false );
-						$buttonText.show();
-						$buttonLoader.hide();
+						$buttonText.prop( 'hidden', false );
+						$buttonLoader.prop( 'hidden', true );
 
 						resetFormCaptcha( $form );
 					}

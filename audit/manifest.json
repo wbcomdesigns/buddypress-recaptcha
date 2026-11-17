@@ -313,7 +313,7 @@
       "extends": "WP_Widget",
       "where": "includes/widgets/class-wbc-login-widget.php:21",
       "registered_at": "includes/class-recaptcha-for-buddypress.php:782 (register_widget)",
-      "purpose": "Classic-widget counterpart to the login block; shares WBC_AJAX_Login_Handler."
+      "purpose": "Classic-widget counterpart to the login block; shares WBC_AJAX_Login_Handler. Its static render_login_form() / render_logged_in_view() are the one markup source, also called by WBC_Login_Block::render_block."
     }
   ],
   "post_types": [],
@@ -1099,7 +1099,7 @@
         "nonce_action": "wbc_ajax_login_nonce",
         "field": "wbc_login_nonce",
         "verified_at": "includes/class-wbc-ajax-login-handler.php:28",
-        "rendered_at": "includes/class-wbc-login-block.php:157, includes/widgets/class-wbc-login-widget.php:147"
+        "rendered_at": "includes/widgets/class-wbc-login-widget.php:150 (WBC_Login_Widget::render_login_form, shared by the block)"
       },
       {
         "nonce_action": "bp_recaptcha_submit_nonce",
