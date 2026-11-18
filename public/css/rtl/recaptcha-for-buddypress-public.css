@@ -47,7 +47,7 @@ ALTCHA draws in the page, so it takes the theme's form colours
 (BuddyX / BuddyX Pro tokens, then Reign's, then the theme.json
 palette, then ALTCHA's default).
 Dark mode is the site's explicit toggle only, never
-prefers-color-scheme; color-scheme darkens its native checkbox.
+the OS setting; color-scheme darkens its native checkbox.
 --------------------------------------------------------------*/
 altcha-widget {
   --altcha-color-border: var(--bx-color-input-border, var(--reign-form-border-color, #a0a0a0));
