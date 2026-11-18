@@ -134,7 +134,8 @@ function wbc_migrate_option_names() {
 		// Get value from old option name.
 		$value = get_option( $old_name, null );
 
-		if ( null !== $value ) {
+		// Never overwrite a value already saved under the new name: a re-run (flag lost) must not restore stale settings.
+		if ( null !== $value && null === get_option( $new_name, null ) ) {
 			// Save to new option name.
 			update_option( $new_name, $value );
 			$migrated[] = $old_name . ' -> ' . $new_name;
