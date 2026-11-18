@@ -147,10 +147,8 @@ function wbc_migrate_option_names() {
 		}
 	}
 
-	// Mark migration as complete.
-	if ( ! empty( $migrated ) ) {
-		update_option( 'wbc_option_names_migrated', true );
-	}
+	// Mark migration as complete, even when nothing needed copying, so it does not re-run on every admin load.
+	update_option( 'wbc_option_names_migrated', true );
 
 	return $migrated;
 }

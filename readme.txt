@@ -245,7 +245,7 @@ Closes a classic checkout bypass and makes the fail-closed, no-conflict and IP w
 * Improve  - The Overview tab warns you when the provider rejects this site's keys.
 * Fix      - Sites upgraded from 1.x kept BuddyPress sign-up unprotected, and lost their per-form reCAPTCHA v3 score thresholds and reCAPTCHA v2 widget theme.
 * Fix      - With fail-closed off, a provider outage no longer blocks visitors who solved the CAPTCHA.
-* Fix      - The one-time option name migration no longer overwrites settings already saved under the new names if it runs again.
+* Fix      - The one-time option name migration runs once, and never overwrites settings already saved under the new names.
 * Fix      - The IP whitelist now skips the CAPTCHA on every protected form.
 * Fix      - The no-conflict option now removes CAPTCHA scripts loaded by other plugins for every provider, without removing this plugin's own scripts.
 * Fix      - Elementor Pro forms lost their CAPTCHA when Elementor's element cache was on.
