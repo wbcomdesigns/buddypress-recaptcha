@@ -56,6 +56,25 @@ class CF7_Form {
 	}
 
 	/**
+	 * CAPTCHA message for the visitor when this submission failed it.
+	 *
+	 * @var string
+	 */
+	private $failure_message = '';
+
+	/**
+	 * Show the CAPTCHA message instead of CF7's generic spam text, so the
+	 * visitor knows to solve the check.
+	 *
+	 * @param string $message Message CF7 is about to show.
+	 * @param string $status  CF7 status, 'spam' when the submission was blocked.
+	 * @return string
+	 */
+	public function display_cf7_captcha_message( $message, $status ) {
+		return ( 'spam' === $status && '' !== $this->failure_message ) ? $this->failure_message : $message;
+	}
+
+	/**
 	 * Treat a failed CAPTCHA as spam, the way CF7's own reCAPTCHA integration
 	 * does. (wpcf7_validate passes an array of tags, so invalidating it never
 	 * stopped the mail.)
@@ -70,11 +89,12 @@ class CF7_Form {
 		}
 
 		if ( ! wbc_verify_captcha( 'cf7' ) ) {
+			$this->failure_message = wbc_get_captcha_error_message( 'cf7', 'invalid' );
 			if ( $submission && method_exists( $submission, 'add_spam_log' ) ) {
 				$submission->add_spam_log(
 					array(
 						'agent'  => 'wbc-captcha',
-						'reason' => wbc_get_captcha_error_message( 'cf7', 'invalid' ),
+						'reason' => $this->failure_message,
 					)
 				);
 			}

@@ -249,6 +249,7 @@ Closes a classic checkout bypass and makes the fail-closed, no-conflict and IP w
 * Fix      - The no-conflict option now removes CAPTCHA scripts loaded by other plugins for every provider, without removing this plugin's own scripts.
 * Fix      - Elementor Pro forms lost their CAPTCHA when Elementor's element cache was on.
 * Fix      - Easy Digital Downloads checkout did not show the CAPTCHA after switching between payment gateways.
+* Fix      - Contact Form 7 shows the CAPTCHA message to a visitor who did not solve the check, instead of its generic send-error text.
 * Fix      - The login widget and block refused visitors whose page was served from a cache; the form nonce is now checked only when the strict nonce option is on.
 * Fix      - Login form fields no longer overflow the form on themes such as Twenty Twenty-Five.
 * Fix      - Removed the "Pay for Order" setting, which had no effect.
