@@ -73,11 +73,20 @@ class GravityForms_Form {
 			return $validation_result;
 		}
 
-		// Multi-page forms validate on every page step; the widget is only on
-		// the last page, so verify only on the final submit (target page 0).
+		// Multi-page forms validate on every page step and the widget is only on
+		// the last page, so skip steps before it. Decide from the page being
+		// submitted (source) vs the form's page count, never from the posted
+		// target page: GF recomputes the target itself, so a forged non-zero
+		// target on the last page would otherwise bypass the check.
 		$form_id     = isset( $validation_result['form']['id'] ) ? (int) $validation_result['form']['id'] : 0;
-		$target_page = isset( $_POST[ 'gform_target_page_number_' . $form_id ] ) ? absint( $_POST[ 'gform_target_page_number_' . $form_id ] ) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Gravity Forms handles its own nonce.
-		if ( 0 !== $target_page ) {
+		$last_page   = 1;
+		foreach ( (array) ( $validation_result['form']['fields'] ?? array() ) as $field ) {
+			if ( 'page' === ( is_object( $field ) ? $field->type : ( $field['type'] ?? '' ) ) ) {
+				++$last_page;
+			}
+		}
+		$source_page = isset( $_POST[ 'gform_source_page_number_' . $form_id ] ) ? absint( $_POST[ 'gform_source_page_number_' . $form_id ] ) : 1; // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Gravity Forms handles its own nonce.
+		if ( $source_page < $last_page ) {
 			return $validation_result;
 		}
 
@@ -90,11 +99,12 @@ class GravityForms_Form {
 				// Mark form as invalid.
 				$validation_result['is_valid'] = false;
 
-				// Add error message to the first field (or create a validation message).
-				$form = $validation_result['form'];
-				if ( ! empty( $form['fields'] ) ) {
-					$validation_result['form']['fields'][0]['failed_validation']  = true;
-					$validation_result['form']['fields'][0]['validation_message'] = $error_message;
+				// Attach the message to the last field so GF returns the visitor to the
+				// last page, where the widget is (field 0 would send them to page 1).
+				$last_key = array_key_last( (array) $validation_result['form']['fields'] );
+				if ( null !== $last_key ) {
+					$validation_result['form']['fields'][ $last_key ]['failed_validation']  = true;
+					$validation_result['form']['fields'][ $last_key ]['validation_message'] = $error_message;
 				}
 			}
 		}
