@@ -1,0 +1,76 @@
+<?xml version="1.0"?>
+<ruleset name="Wbcom CAPTCHA Manager">
+	<description>Coding standards for Wbcom Designs - Wbcom CAPTCHA Manager (buddypress-recaptcha). Legacy code carries a baseline of excluded sniffs; touched files must add no new findings.</description>
+
+	<file>.</file>
+
+	<arg name="extensions" value="php"/>
+	<arg name="colors"/>
+	<arg value="sp"/>
+	<arg name="parallel" value="8"/>
+
+	<!-- House rule: errors block the build, warnings are advisory. -->
+	<config name="ignore_warnings_on_exit" value="1"/>
+
+	<exclude-pattern>*/vendor/*</exclude-pattern>
+	<exclude-pattern>*/node_modules/*</exclude-pattern>
+	<exclude-pattern>*/languages/*</exclude-pattern>
+	<exclude-pattern>*/dist/*</exclude-pattern>
+	<!-- Standalone wp eval-file audit scripts, not shipped (.distignore). -->
+	<exclude-pattern>*/tests/*</exclude-pattern>
+	<!-- Vendored EDD licence SDK: not ours to patch. -->
+	<exclude-pattern>*/libs/edd-sl-sdk/*</exclude-pattern>
+
+	<rule ref="WordPress">
+		<!-- Baseline: legacy whitespace and layout. A phpcbf reformat is its own change, not part of tooling. -->
+		<exclude name="Generic.Classes.OpeningBraceSameLine.ContentAfterBrace"/><!-- Loader and activator class openers. -->
+		<exclude name="PSR2.Classes.ClassDeclaration.CloseBraceAfterBody"/><!-- ALTCHA and hCaptcha class endings. -->
+		<exclude name="Squiz.WhiteSpace.SuperfluousWhitespace.EmptyLines"/><!-- One blank-line run in the ALTCHA service. -->
+		<exclude name="Squiz.WhiteSpace.SuperfluousWhitespace.EndLine"/><!-- One trailing space in the module loader. -->
+		<exclude name="WordPress.Arrays.ArrayIndentation"/><!-- Four nested items in the BuddyPress settings module. -->
+
+		<!-- Baseline: legacy docblocks. Docs-only debt, no runtime effect. -->
+		<exclude name="Generic.Commenting.DocComment.LongNotCapital"/><!-- One Ninja Forms docblock. -->
+		<exclude name="Squiz.Commenting.ClassComment.Missing"/><!-- Settings module classes and the deactivator. -->
+		<exclude name="Squiz.Commenting.FunctionComment.Missing"/><!-- Bootstrap and option-compat helper functions. -->
+		<exclude name="Squiz.Commenting.FunctionComment.SpacingAfterParamType"/><!-- CF7 and Elementor Pro docblocks. -->
+		<exclude name="Squiz.Commenting.InlineComment.SpacingBefore"/><!-- One comment in the service manager. -->
+	</rule>
+
+	<rule ref="WordPress.WP.I18n">
+		<properties>
+			<property name="text_domain" type="array">
+				<element value="buddypress-recaptcha"/>
+			</property>
+		</properties>
+	</rule>
+
+	<!-- Shipped prefixes: WBC_ classes, wbc_ options, functions and hooks, RFB_ constants, BPRC_ admin shell. Renaming breaks sites and add-ons. -->
+	<rule ref="WordPress.NamingConventions.PrefixAllGlobals">
+		<properties>
+			<property name="prefixes" type="array">
+				<element value="wbc_"/>
+				<element value="rfb_"/>
+				<element value="bprc_"/>
+				<element value="recaptcha_for_buddypress"/>
+			</property>
+		</properties>
+	</rule>
+
+	<!-- Shipped integration class names (CF7_Form, Woocommerce_Login, Registrationbp, ...) loaded by name; renaming is a structural change. -->
+	<rule ref="WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedClassFound">
+		<exclude-pattern>public/*-classes/*</exclude-pattern>
+		<exclude-pattern>public/woocommerce-extra/*</exclude-pattern>
+		<exclude-pattern>public/bbPress/*</exclude-pattern>
+	</rule>
+	<!-- Renderer mirrors WC_Admin_Settings and fires the woocommerce_settings_* / woocommerce_update_option* hooks on purpose. -->
+	<rule ref="WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound">
+		<exclude-pattern>admin/includes/class-settings-renderer\.php$</exclude-pattern>
+		<!-- wbcom_hub_wrapper_helper_slugs is the shared filter every Wbcom plugin's admin hub reads. -->
+		<exclude-pattern>includes/admin/views/hub\.php$</exclude-pattern>
+	</rule>
+
+	<!-- PHP 8.1+ portfolio floor. -->
+	<config name="testVersion" value="8.1-"/>
+	<rule ref="PHPCompatibilityWP"/>
+</ruleset>

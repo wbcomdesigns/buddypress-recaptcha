@@ -23,5 +23,6 @@ package-lock.json
 gruntfile.js
 phpstan.neon
 phpstan-baseline.neon
+phpcs.xml
 *.md
 *.map

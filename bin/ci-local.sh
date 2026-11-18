@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Local CI: run before every push. Exits non-zero on the first class of failure.
 #   Q1 PHP lint (8.1 syntax floor) . Q2 version triangulation . Q3 PHPStan
-#   G  portfolio release gate (gate-check.sh), when installed on this machine
+#   Q4 PHPCS (phpcs.xml) . G  portfolio release gate (gate-check.sh), when installed on this machine
 set -uo pipefail
 
 cd "$(dirname "$0")/.."
@@ -26,6 +26,13 @@ if [ -x vendor/bin/phpstan ]; then
 	vendor/bin/phpstan analyse --no-progress --memory-limit=2G -c phpstan.neon || FAIL=1
 else
 	echo "skip: run composer install"
+fi
+
+section "Q4 PHPCS (phpcs.xml, errors block)"
+if command -v phpcs >/dev/null 2>&1; then
+	phpcs -q --report=summary || FAIL=1
+else
+	echo "skip: phpcs not installed"
 fi
 
 section "G release gate"
