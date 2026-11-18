@@ -160,7 +160,7 @@ if ( ! function_exists( 'wbc_get_captcha_error_message' ) ) {
 		// widget (no token posted) is told what to do instead.
 		if ( 'invalid' === $error_type && $service && is_callable( array( $service, 'get_response_field_name' ) ) ) {
 			$field = $service->get_response_field_name();
-			if ( $field && '' === trim( (string) ( $_POST[ $field ] ?? '' ) ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- read-only emptiness check.
+			if ( $field && '' === trim( (string) ( $_POST[ $field ] ?? '' ) ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- read-only emptiness check.
 				$error_type = 'blank';
 			}
 		}
