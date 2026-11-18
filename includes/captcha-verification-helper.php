@@ -156,6 +156,15 @@ if ( ! function_exists( 'wbc_get_captcha_error_message' ) ) {
 			$service = wbc_captcha_service_manager()->get_active_service();
 		}
 
+		// Callers report every failure as 'invalid'. A visitor who never solved the
+		// widget (no token posted) is told what to do instead.
+		if ( 'invalid' === $error_type && $service && is_callable( array( $service, 'get_response_field_name' ) ) ) {
+			$field = $service->get_response_field_name();
+			if ( $field && '' === trim( (string) ( $_POST[ $field ] ?? '' ) ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- read-only emptiness check.
+				$error_type = 'blank';
+			}
+		}
+
 		// Default messages.
 		$default_messages = array(
 			'blank'       => __( 'Please complete the security check to continue.', 'buddypress-recaptcha' ),

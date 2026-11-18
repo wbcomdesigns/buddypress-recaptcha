@@ -241,6 +241,7 @@ Closes a classic checkout bypass and makes the fail-closed, no-conflict and IP w
 
 * New      - Protect the BuddyPress Contact Me form for logged-out visitors with a new switch under Protection > BuddyPress Forms.
 * Improve  - The login widget, login block and every CAPTCHA message follow the light and dark mode of Reign, BuddyX and BuddyX Pro, and use the colour palette of block themes such as Twenty Twenty-Five.
+* Improve  - A visitor who never solved the CAPTCHA now sees "Please complete the security check" instead of the generic failure message.
 * Improve  - The Overview tab warns you when the provider rejects this site's keys.
 * Fix      - Sites upgraded from 1.x kept BuddyPress sign-up unprotected, and lost their per-form reCAPTCHA v3 score thresholds and reCAPTCHA v2 widget theme.
 * Fix      - With fail-closed off, a provider outage no longer blocks visitors who solved the CAPTCHA.
@@ -255,7 +256,7 @@ Closes a classic checkout bypass and makes the fail-closed, no-conflict and IP w
 * Fix      - Recent Rejections on the Overview tab names each form as the Protection tab does, for example "WordPress Forms: Login Form", and drops entries older than 7 days.
 * Fix      - The ALTCHA notice on sites without HTTPS no longer suggests .local or .test addresses, which cannot run ALTCHA either.
 * Fix      - ALTCHA on a site without HTTPS no longer locks everyone out of protected forms; it stays off and the admin is told why until the site uses HTTPS or localhost.
-* Security - A multi-page Gravity Forms form is now checked on the page that holds the CAPTCHA, whatever target page the browser posts, and a failed check returns the visitor to that page.
+* Security - A multi-page Gravity Forms form is always checked on its final submit, whatever page numbers the browser posts, and a failed check returns the visitor to the page with the CAPTCHA.
 * Security - The classic WooCommerce checkout could be submitted without a solved CAPTCHA; only real express payment requests (Stripe and WooPayments) skip it now, and the filters wbc_captcha_express_gateways and wbc_captcha_express_endpoints let you add others.
 * Security - Only the real Store API pay-for-order route skips the block checkout CAPTCHA.
 * Security - A solved ALTCHA challenge can be used only once, even when the same answer is sent in several requests at the same moment.
