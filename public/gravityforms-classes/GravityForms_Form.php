@@ -54,6 +54,43 @@ class GravityForms_Form {
 	}
 
 	/**
+	 * Whether this POST is a page step that cannot save an entry.
+	 *
+	 * True only when Gravity Forms itself reports a non-zero target page for the
+	 * (clamped) source page. A target of 0 is the final submit and is always
+	 * verified; so is any case where GF's classes or method are unavailable.
+	 *
+	 * @param array|object $form The form object.
+	 * @return bool
+	 */
+	public static function is_page_step( $form ) {
+		if ( ! class_exists( 'GFFormDisplay' ) || ! is_callable( array( 'GFFormDisplay', 'get_target_page' ) ) ) {
+			return false;
+		}
+
+		$form_id   = (int) ( is_object( $form ) ? $form->id : ( $form['id'] ?? 0 ) );
+		$fields    = (array) ( is_object( $form ) ? $form->fields : ( $form['fields'] ?? array() ) );
+		$last_page = 1;
+		foreach ( $fields as $field ) {
+			if ( 'page' === ( is_object( $field ) ? $field->type : ( $field['type'] ?? '' ) ) ) {
+				++$last_page;
+			}
+		}
+
+		$source = isset( $_POST[ 'gform_source_page_number_' . $form_id ] ) ? absint( $_POST[ 'gform_source_page_number_' . $form_id ] ) : 1; // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Gravity Forms handles its own nonce.
+		$source = max( 1, min( $source, $last_page ) );
+
+		$field_values = array();
+		if ( isset( $_POST['gform_field_values'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
+			wp_parse_str( sanitize_text_field( wp_unslash( $_POST['gform_field_values'] ) ), $field_values ); // phpcs:ignore WordPress.Security.NonceVerification.Missing
+		}
+
+		$target = GFFormDisplay::get_target_page( $form, $source, $field_values );
+
+		return is_numeric( $target ) && (int) $target > 0;
+	}
+
+	/**
 	 * Validate CAPTCHA for Gravity Forms submissions
 	 *
 	 * Validates the CAPTCHA response and adds validation errors.
@@ -73,20 +110,13 @@ class GravityForms_Form {
 			return $validation_result;
 		}
 
-		// Multi-page forms validate on every page step and the widget is only on
-		// the last page, so skip steps before it. Decide from the page being
-		// submitted (source) vs the form's page count, never from the posted
-		// target page: GF recomputes the target itself, so a forged non-zero
-		// target on the last page would otherwise bypass the check.
-		$form_id     = isset( $validation_result['form']['id'] ) ? (int) $validation_result['form']['id'] : 0;
-		$last_page   = 1;
-		foreach ( (array) ( $validation_result['form']['fields'] ?? array() ) as $field ) {
-			if ( 'page' === ( is_object( $field ) ? $field->type : ( $field['type'] ?? '' ) ) ) {
-				++$last_page;
-			}
-		}
-		$source_page = isset( $_POST[ 'gform_source_page_number_' . $form_id ] ) ? absint( $_POST[ 'gform_source_page_number_' . $form_id ] ) : 1; // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Gravity Forms handles its own nonce.
-		if ( $source_page < $last_page ) {
+		// Multi-page forms run this filter on every page step, but the widget is
+		// only on the last page. Skip ONLY a genuine intermediate step, and decide
+		// that from Gravity Forms' own computation of where this POST goes next,
+		// never from a posted page number: source and target are both client-set,
+		// so trusting either lets a final submit (target 0) through unchecked.
+		// If GF cannot answer, fall through and verify.
+		if ( self::is_page_step( $validation_result['form'] ?? array() ) ) {
 			return $validation_result;
 		}
 
