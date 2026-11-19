@@ -20,6 +20,7 @@
 	<exclude-pattern>*/tests/*</exclude-pattern>
 	<!-- Vendored EDD licence SDK: not ours to patch. -->
 	<exclude-pattern>*/libs/edd-sl-sdk/*</exclude-pattern>
+	<exclude-pattern>*/libs/package-signatures/*</exclude-pattern>
 
 	<rule ref="WordPress">
 		<!-- Baseline: legacy whitespace and layout. A phpcbf reformat is its own change, not part of tooling. -->

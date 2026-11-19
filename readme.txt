@@ -262,6 +262,8 @@ Closes a classic checkout bypass and makes the fail-closed, no-conflict and IP w
 * Security - The classic WooCommerce checkout could be submitted without a solved CAPTCHA; only real express payment requests (Stripe and WooPayments) skip it now, and the filters wbc_captcha_express_gateways and wbc_captcha_express_endpoints let you add others.
 * Security - Only the real Store API pay-for-order route skips the block checkout CAPTCHA.
 * Security - A solved ALTCHA challenge can be used only once, even when the same answer is sent in several requests at the same moment.
+* Security - Update packages now carry a release signature that your site checks before installing; a bad or missing signature is logged and the update still installs.
+* Dev      - Update and licence calls go to updates.wbcomdesigns.com and fall back to wbcomdesigns.com automatically, through the bundled Wbcom update SDK.
 
 = 2.2.3 - November 2026 =
 

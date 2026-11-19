@@ -25,14 +25,17 @@ parameters:
     paths:
         - .
     excludePaths:
+        analyse:
+            - libs
         analyseAndScan:
             - vendor
-            - libs
             - node_modules (?)
             - dist (?)
             - assets (?)
             - languages (?)
             - tests/gravityforms-page-step-check.php
+    scanDirectories:
+        - libs
     scanFiles:
         - vendor/gin0115/buddypress-stubs/buddypress-stubs.php
         - vendor/php-stubs/woocommerce-stubs/woocommerce-stubs.php

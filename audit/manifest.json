@@ -27,7 +27,7 @@
     "extension_hook_fired": "wbc_register_captcha_services",
     "edd_item_id": 1246648,
     "edd_registered_at": "recaptcha-for-buddypress.php:97-113",
-    "distribution": "wbcomdesigns.com (EDD SL SDK keyless auto-updates, item_name 'reCaptcha for BuddyPress')"
+    "distribution": "wbcomdesigns.com (signed updates via the Wbcom EDD SL SDK, preset key, item_id 1246648)"
   },
   "rest": {
     "namespaces": [
@@ -1163,7 +1163,7 @@
     "Settings UI is WooCommerce-style (uses woocommerce_admin_field_*, woocommerce_settings_* hooks even when WC is absent). The plugin makes ZERO live register_setting() calls — do not assume the Settings API.",
     "Per-context behavior dispatched via context-string maps (nonce/selector/option), not OOP polymorphism — see WBC_Captcha_Service_Base::get_context_option_map().",
     "An integration is only real when it has BOTH a public wiring class AND a settings module. Never advertise an integration in readme.txt without both — see integrations.explicitly_not_integrated for the four false claims removed on 2026-07-16.",
-    "EDD SL SDK is keyless (no license check) — plugin updates from the wbcomdesigns.com EDD store, item_id 1246648. Do not touch the SDK or its item_id.",
+    "Signed updates (2.2.4): libs/edd-sl-sdk and libs/package-signatures are Member Type 1.3.1 copies; all licence calls go through rfb_licence_request() to updates.wbcomdesigns.com with wbcomdesigns.com fallback; preset key, item_id 1246648. Do not touch the vendored libs or its item_id.",
     "ALTCHA is a vendored library at includes/lib/altcha/ — modifying its files is a deliberate fork (e.g. the 2.1.0 REMOTE_ADDR-only fix, and the deliberate non-loading of its settings.php/admin.php documented at class-altcha-lib.php:620-633).",
     "Text domain and directory name stay `buddypress-recaptcha` regardless of the product name — the text domain derives from the WP.org slug."
   ],
