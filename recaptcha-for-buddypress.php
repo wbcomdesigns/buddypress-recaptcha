@@ -15,7 +15,7 @@
  * Plugin Name:       Wbcom CAPTCHA Manager
  * Plugin URI:        https://wbcomdesigns.com/downloads/buddypress-recaptcha/
  * Description:       Complete CAPTCHA solution with support for reCAPTCHA v2, v3, Cloudflare Turnstile, hCaptcha, and ALTCHA. Protect WordPress, WooCommerce, BuddyPress, bbPress, and popular form builders from spam and bots with a modular, easy-to-manage interface.
- * Version:           2.2.3
+ * Version:           2.2.4
  * Requires at least: 6.5
  * Tested up to:      7.1
  * Requires PHP:      8.1
@@ -38,7 +38,12 @@ if ( ! defined( 'WPINC' ) ) {
  * Rename this for your plugin and update it as you release new versions.
  */
 if ( ! defined( 'RFB_PLUGIN_VERSION' ) ) {
-	define( 'RFB_PLUGIN_VERSION', '2.2.3' );
+	define( 'RFB_PLUGIN_VERSION', '2.2.4' );
+}
+
+// Licence and update host; the SDK falls back to the store when it cannot be reached. Overridable from wp-config.
+if ( ! defined( 'RFB_LICENCE_HOST' ) ) {
+	define( 'RFB_LICENCE_HOST', 'https://updates.wbcomdesigns.com' );
 }
 
 if ( ! defined( 'RFB_PLUGIN_FILE' ) ) {
@@ -99,19 +104,39 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-recaptcha-for-buddypress.p
 // only authorises update downloads.
 // ---------------------------------------------------------------------------
 
+/**
+ * One licence-server request (activate, deactivate, check or version). Goes through the bundled SDK, so it uses
+ * the same host as update checks and falls back to the store when that host cannot be reached.
+ *
+ * @param array $params EDD Software Licensing parameters (edd_action, license, item_id).
+ * @return object|false Decoded reply, or false when no host answered.
+ */
+//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound
+function rfb_licence_request( array $params ) {
+	if ( ! class_exists( \EasyDigitalDownloads\Updater\Requests\API::class ) ) {
+		return false;
+	}
+	// Name the fallback here too: on an early request the SDK registry has not run yet.
+	if ( method_exists( \EasyDigitalDownloads\Updater\Requests\API::class, 'set_fallback' ) ) {
+		\EasyDigitalDownloads\Updater\Requests\API::set_fallback( RFB_LICENCE_HOST, 'https://wbcomdesigns.com' );
+	}
+	return ( new \EasyDigitalDownloads\Updater\Requests\API( RFB_LICENCE_HOST ) )->make_request( $params );
+}
+
 add_action(
 	'edd_sl_sdk_registry',
 	function ( $registry ) {
 		$registry->register(
 			array(
-				'id'        => 'buddypress-recaptcha',
-				'url'       => 'https://wbcomdesigns.com',
-				'item_id'   => 1246648,
-				'item_name' => 'reCaptcha for BuddyPress',
-				'version'   => RFB_PLUGIN_VERSION,
-				'file'      => RFB_PLUGIN_FILE,
-				'license'   => 'd23187723b1423b54ef206a3588a1845',
-				'type'      => 'plugin',
+				'id'           => 'buddypress-recaptcha',
+				'url'          => RFB_LICENCE_HOST,
+				'fallback_url' => 'https://wbcomdesigns.com',
+				'item_id'      => 1246648,
+				'item_name'    => 'reCaptcha for BuddyPress',
+				'version'      => RFB_PLUGIN_VERSION,
+				'file'         => RFB_PLUGIN_FILE,
+				'license'      => 'd23187723b1423b54ef206a3588a1845',
+				'type'         => 'plugin',
 			)
 		);
 	}
@@ -129,13 +154,35 @@ if ( file_exists( $rfb_sdk_path )
 	&& file_exists( plugin_dir_path( __FILE__ ) . 'libs/edd-sl-sdk/src/Versions.php' ) ) {
 	require_once $rfb_sdk_path;
 } elseif ( is_admin() ) {
+	// Our own copy is missing, but another Wbcom plugin may bundle the SDK: the registry hook above
+	// still registers this item there and updates keep working. Warn only when no SDK is loaded at
+	// all, judged at render time (admin_notices runs after every plugin has loaded).
 	add_action(
 		'admin_notices',
 		function () {
+			if ( class_exists( '\\EasyDigitalDownloads\\Updater\\Versions' ) ) {
+				return;
+			}
 			echo '<div class="notice notice-warning"><p>'
 				. esc_html__( 'Wbcom CAPTCHA Manager: the bundled update SDK is incomplete, so automatic updates are turned off. Reinstall the plugin from a complete package to restore them. Every other feature works normally.', 'buddypress-recaptcha' )
 				. '</p></div>';
 		}
+	);
+}
+
+// Each update package must carry its release signature. Warn mode: the result is logged (option
+// package_signatures_log) and the update installs either way. The product name is the store slug.
+if ( file_exists( plugin_dir_path( __FILE__ ) . 'libs/package-signatures/package-signatures.php' ) ) {
+	require_once plugin_dir_path( __FILE__ ) . 'libs/package-signatures/package-signatures.php';
+	package_signatures_register(
+		array(
+			'product'  => 'buddypress-recaptcha',
+			'plugin'   => plugin_basename( RFB_PLUGIN_FILE ),
+			'hosts'    => array( 'wbcomdesigns.com', 'updates.wbcomdesigns.com' ),
+			'keys'     => array( 'wbcom-2026-1' => 'kr+2P1WqRbENpZw0BXZmwFnA2tMLi6MlHbBa6jB13U4=' ),
+			'mode'     => 'warn',
+			'fallback' => 'https://wbcomdesigns.com/package-signatures/{product}/{version}/',
+		)
 	);
 }
 
@@ -168,21 +215,15 @@ add_action(
 		update_option( $option, $preset_key, false );
 		set_site_transient( $lock, 1, 12 * HOUR_IN_SECONDS );
 
-		$response = wp_remote_post(
-			'https://wbcomdesigns.com',
+		$response = rfb_licence_request(
 			array(
-				'timeout' => 15,
-				'body'    => array(
-					'edd_action' => 'activate_license',
-					'license'    => $preset_key,
-					'item_id'    => 1246648,
-					'url'        => home_url(),
-				),
+				'edd_action' => 'activate_license',
+				'license'    => $preset_key,
+				'item_id'    => 1246648,
 			)
 		);
 
-		$body = is_wp_error( $response ) ? null : json_decode( wp_remote_retrieve_body( $response ), true );
-		if ( ! is_array( $body ) || empty( $body['license'] ) ) {
+		if ( ! is_object( $response ) || empty( $response->license ) ) {
 			return; // No usable answer: the lock stays, so the next try is 12 hours away.
 		}
 

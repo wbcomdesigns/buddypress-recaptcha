@@ -1,6 +1,6 @@
 {
   "name": "buddypress-recaptcha",
-  "version": "2.2.3",
+  "version": "2.2.4",
   "url": "https://github.com/wbcomdesigns/buddypress-recaptcha",
   "license": "GPL-2.0+",
   "description": "Complete CAPTCHA solution with support for multiple CAPTCHA services. Protect your WordPress, WooCommerce, BuddyPress, bbPress, and 10+ popular form builders from spam and bots.",
@@ -10,7 +10,7 @@
     "minify": "grunt cssmin uglify",
     "makepot": "grunt makepot",
     "watch": "grunt watch",
-    "clean": "grunt clean:pre"
+    "clean": "grunt clean:maps"
   },
   "devDependencies": {
     "grunt": "^1.6.1",

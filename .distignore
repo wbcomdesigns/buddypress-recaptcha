@@ -1,0 +1,28 @@
+# Paths left out of the release zip. bin/build-release.sh packages the
+# committed tree with `git archive`, and each line here becomes a pathspec
+# relative to the plugin root: a bare name ("src", "vendor") matches only the
+# top-level path, so libs/edd-sl-sdk/src and libs/edd-sl-sdk/vendor still ship.
+# A line with a wildcard ("*.md") matches at any depth.
+.github
+.gitignore
+.distignore
+.wbcom-i18n.json
+.contract-audit-baseline.json
+.gate-check-allow
+audit
+bin
+dist
+docs
+node_modules
+tests
+vendor
+composer.json
+composer.lock
+package.json
+package-lock.json
+gruntfile.js
+phpstan.neon
+phpstan-baseline.neon
+phpcs.xml
+*.md
+*.map

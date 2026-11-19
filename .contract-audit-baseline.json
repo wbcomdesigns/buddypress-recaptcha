@@ -116,6 +116,10 @@
       "id": "option-read-never-written:wbc_recaptcha_skip_comment_for_logged_in",
       "reason": "Advanced no-UI toggle read in the comment/order paths. Unset resolves falsy, i.e. logged-in users are still challenged - the MORE protective direction, so an absent writer cannot weaken security. Settable via `wp option update`. Surfacing a settings field is a product decision, tracked separately.",
       "severity": "error"
+    },
+    {
+      "id": "option-read-never-written:wbc_recapcha_no_conflict_v3",
+      "reason": "Back-compat read of the pre-2.0 reCAPTCHA v3 no-conflict key. Sites upgraded from 1.x may still carry it; the plugin never writes it (checked in recaptcha-helper-functions.php wbc_get_no_conflict_option() and class-settings-migration.php, which copies it to wbc_recapcha_no_conflict)."
     }
   ]
 }

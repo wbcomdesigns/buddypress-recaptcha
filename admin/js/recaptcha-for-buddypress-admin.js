@@ -31,20 +31,6 @@
 		return strings[ key ] || fallback;
 	}
 
-	/**
-	 * Fill a single %s placeholder.
-	 *
-	 * Keeps the whole phrase in one translatable string so translators control
-	 * word order (never build a sentence by concatenating fragments).
-	 *
-	 * @param {string} template String containing one %s.
-	 * @param {string} value    Replacement value.
-	 * @return {string} Interpolated string.
-	 */
-	function sprintf1( template, value ) {
-		return String( template ).replace( '%s', value );
-	}
-
 	$(document).ready(function () {
 		// Initialize on page load
 		wbcInitializeServiceSettings();
@@ -111,126 +97,15 @@
 		}
 
 		/**
-		 * Handle form validation
-		 */
-		$('form').on('submit', function(e) {
-			var activeService = $('#wbc_captcha_service').val();
-			var isValid = true;
-			var errors = [];
-			
-			var siteKeyRequired   = t( 'siteKeyRequired', '%s Site Key is required' );
-			var secretKeyRequired = t( 'secretKeyRequired', '%s Secret Key is required' );
-
-			// Validate service-specific required fields
-			switch(activeService) {
-				case 'recaptcha_v2':
-					var providerV2 = t( 'providerV2', 'Google reCAPTCHA v2' );
-					if (!$('#wc_settings_tab_recapcha_site_key').val()) {
-						errors.push( sprintf1( siteKeyRequired, providerV2 ) );
-						isValid = false;
-					}
-					if (!$('#wc_settings_tab_recapcha_secret_key').val()) {
-						errors.push( sprintf1( secretKeyRequired, providerV2 ) );
-						isValid = false;
-					}
-					break;
-
-				case 'recaptcha_v3':
-					var providerV3 = t( 'providerV3', 'Google reCAPTCHA v3' );
-					if (!$('#wc_settings_tab_recapcha_site_key_v3').val()) {
-						errors.push( sprintf1( siteKeyRequired, providerV3 ) );
-						isValid = false;
-					}
-					if (!$('#wc_settings_tab_recapcha_secret_key_v3').val()) {
-						errors.push( sprintf1( secretKeyRequired, providerV3 ) );
-						isValid = false;
-					}
-					break;
-
-				case 'turnstile':
-					var providerTurnstile = t( 'providerTurnstile', 'Cloudflare Turnstile' );
-					if (!$('#wbc_turnstile_site_key').val()) {
-						errors.push( sprintf1( siteKeyRequired, providerTurnstile ) );
-						isValid = false;
-					}
-					if (!$('#wbc_turnstile_secret_key').val()) {
-						errors.push( sprintf1( secretKeyRequired, providerTurnstile ) );
-						isValid = false;
-					}
-					break;
-			}
-			
-			// Show validation errors if any
-			if (!isValid) {
-				e.preventDefault();
-				
-				// Remove existing error messages
-				$('.wbc-validation-error').remove();
-				
-				// Display error message
-				var $errorNotice = $( '<div class="notice notice-error wbc-validation-error"><p><strong></strong></p><ul></ul></div>' );
-				$errorNotice.find( 'strong' ).text( t( 'fixErrors', 'Please fix the following errors:' ) );
-				var $errorList = $errorNotice.find( 'ul' );
-				errors.forEach(function(error) {
-					$errorList.append( $( '<li></li>' ).text( error ) );
-				});
-
-				$('h1').first().after($errorNotice);
-				
-				// Scroll to top to show errors
-				$('html, body').animate({
-					scrollTop: 0
-				}, 'fast');
-			}
-		});
-		
-		/**
-		 * Add helper links for getting API keys
-		 */
-		function wbcAddHelperLinks() {
-			/**
-			 * Build a "Get your keys here" link for a provider's console.
-			 *
-			 * @param {string} url Provider console URL.
-			 * @return {jQuery} Link element with translated text.
-			 */
-			function wbcKeysLink( url ) {
-				return $( '<a target="_blank"></a>' )
-					.attr( 'href', url )
-					.text( t( 'getKeysHere', 'Get your keys here' ) );
-			}
-
-			// reCAPTCHA v2 helper
-			$('#wc_settings_tab_recapcha_site_key').closest('tr').find('.description').append(
-				' ', wbcKeysLink( 'https://www.google.com/recaptcha/admin/create' )
-			);
-
-			// reCAPTCHA v3 helper
-			$('#wc_settings_tab_recapcha_site_key_v3').closest('tr').find('.description').append(
-				' ', wbcKeysLink( 'https://www.google.com/recaptcha/admin/create' )
-			);
-
-			// Turnstile helper
-			$('#wbc_turnstile_site_key').closest('tr').find('.description').append(
-				' ', wbcKeysLink( 'https://dash.cloudflare.com/sign-up?to=/:account/turnstile' )
-			);
-		}
-
-		// Add helper links on page load
-		wbcAddHelperLinks();
-
-		/**
 		 * Generate random HMAC key for ALTCHA
 		 */
 		$('.wbc-generate-hmac-key').on('click', function(e) {
 			e.preventDefault();
 
 			// Generate a random 64-character hex string (32 bytes)
-			var key = '';
-			var chars = '0123456789abcdef';
-			for (var i = 0; i < 64; i++) {
-				key += chars.charAt(Math.floor(Math.random() * chars.length));
-			}
+			var bytes = new Uint8Array(32);
+			window.crypto.getRandomValues(bytes);
+			var key = Array.prototype.map.call(bytes, function(b) { return ('0' + b.toString(16)).slice(-2); }).join('');
 
 			// Set the generated key
 			$('#wbc_altcha_hmac_key').val(key);
@@ -273,137 +148,20 @@
 		}
 		
 		/**
-		 * Add masked display and copy to clipboard functionality for keys
+		 * Copy-to-clipboard button for every site key field (secrets are never printed back)
 		 */
-		$('input[type="text"][id*="site_key"], input[type="password"][id*="secret_key"]').each(function() {
+		$('input[type="text"][id*="site_key"]').each(function() {
 			var $input = $(this);
-			var $wrapper = $input.closest('td');
-			var originalValue = $input.val();
-			var isMasked = true;
-			var realValue = '';
-
-			// For secret keys, create a masked display system
-			if ($input.attr('type') === 'password') {
-				// Change to text input for consistent styling
-				$input.attr('type', 'text');
-				$input.addClass('wbc-secret-key-input');
-
-				// The CSS handles styling - no need for inline styles
-
-				// Create masked value showing only last 4-6 characters
-				function wbcGetMaskedValue(value) {
-					if (!value || value === '') return '';
-
-					// Show last 4-6 characters based on length
-					var visibleChars = 4;
-					if (value.length >= 40) {
-						visibleChars = 6;
-					} else if (value.length >= 20) {
-						visibleChars = 5;
-					}
-
-					if (value.length <= visibleChars) {
-						return value;
-					}
-
-					// Use bullet character for masking
-					var masked = '';
-					for (var i = 0; i < value.length - visibleChars; i++) {
-						masked += '•';
-					}
-					masked += value.slice(-visibleChars);
-					return masked;
-				}
-
-				// Set initial state based on whether field has value
-				if (originalValue) {
-					realValue = originalValue;
-					$input.val(wbcGetMaskedValue(originalValue));
-					$input.data('real-value', originalValue);
-					isMasked = true;
-				} else {
-					// No initial value - allow direct typing
-					isMasked = false;
-				}
-
-				// Handle focus - unmask for editing if field has value
-				$input.on('focus', function() {
-					if (isMasked && realValue) {
-						// Unmask for editing
-						$input.val(realValue);
-						isMasked = false;
-					}
-				});
-
-				// Handle blur - mask value if present
-				$input.on('blur', function() {
-					var currentValue = $(this).val();
-					if (currentValue) {
-						realValue = currentValue;
-						$input.data('real-value', realValue);
-						$input.val(wbcGetMaskedValue(realValue));
-						isMasked = true;
-					}
-				});
-
-				// Handle input changes - track real value
-				$input.on('input paste', function() {
-					realValue = $(this).val();
-					$input.data('real-value', realValue);
-				});
-
-				// Add toggle visibility button
-				var $toggleBtn = $('<button type="button" class="button button-secondary wbc-toggle-visibility">👁</button>')
-					.attr( 'title', t( 'toggleVisibility', 'Toggle visibility' ) );
-				$input.after($toggleBtn);
-
-				$toggleBtn.on('click', function(e) {
-					e.preventDefault();
-
-					if (isMasked && realValue) {
-						// Show real value
-						$input.val(realValue);
-						isMasked = false;
-						$(this).attr( 'title', t( 'hideSecretKey', 'Hide Secret Key' ) );
-						$(this).html('🙈');
-					} else if (!isMasked && realValue) {
-						// Hide value
-						$input.val(wbcGetMaskedValue(realValue));
-						isMasked = true;
-						$(this).attr( 'title', t( 'showSecretKey', 'Show Secret Key' ) );
-						$(this).html('👁');
-					}
-
-					// Focus the input after toggling
-					$input.focus();
-				});
-
-				// Store the real value before form submission
-				$input.closest('form').on('submit', function() {
-					if (isMasked && realValue) {
-						$input.val(realValue);
-					}
-				});
-			}
 
 			// Add copy button for all key fields
 			var $copyBtn = $('<button type="button" class="button button-secondary wbc-copy-key">📋</button>')
 				.attr( 'title', t( 'copyToClipboard', 'Copy to Clipboard' ) );
 
-			$wrapper.find('.wbc-toggle-visibility').length ?
-				$wrapper.find('.wbc-toggle-visibility').after($copyBtn) :
-				$input.after($copyBtn);
+			$input.after($copyBtn);
 
 			$copyBtn.on('click', function(e) {
 				e.preventDefault();
-				var valueToCopy;
-
-				// For masked fields, copy the real value
-				if ($input.hasClass('wbc-secret-key-input')) {
-					valueToCopy = $input.data('real-value') || realValue || $input.val();
-				} else {
-					valueToCopy = $input.val();
-				}
+				var valueToCopy = $input.val();
 
 				// Use modern clipboard API if available
 				if (navigator.clipboard && window.isSecureContext) {

@@ -40,6 +40,9 @@ class WBC_Login_Widget extends WP_Widget {
 	 * @param array $instance Saved values from database.
 	 */
 	public function widget( $args, $instance ) {
+		wp_enqueue_style( 'wbc-ajax-login' );
+		wp_enqueue_script( 'wbc-ajax-login' );
+
 		echo wp_kses_post( $args['before_widget'] );
 
 		if ( ! empty( $instance['title'] ) ) {
@@ -47,20 +50,20 @@ class WBC_Login_Widget extends WP_Widget {
 		}
 
 		if ( is_user_logged_in() ) {
-			$this->render_logged_in_view( $instance );
+			self::render_logged_in_view( $instance );
 		} else {
-			$this->render_login_form( $instance );
+			self::render_login_form( $instance );
 		}
 
 		echo wp_kses_post( $args['after_widget'] );
 	}
 
 	/**
-	 * Render logged in view
+	 * Render logged in view. Shared with the login block.
 	 *
 	 * @param array $instance Widget instance.
 	 */
-	private function render_logged_in_view( $instance ) {
+	public static function render_logged_in_view( $instance ) {
 		$current_user    = wp_get_current_user();
 		$welcome_message = ! empty( $instance['welcome_message'] ) ? $instance['welcome_message'] : __( 'Welcome back, {username}!', 'buddypress-recaptcha' );
 		$welcome_message = str_replace( '{username}', '<strong>' . esc_html( $current_user->display_name ) . '</strong>', $welcome_message );
@@ -83,11 +86,11 @@ class WBC_Login_Widget extends WP_Widget {
 	}
 
 	/**
-	 * Render login form
+	 * Render login form. Shared with the login block.
 	 *
 	 * @param array $instance Widget instance.
 	 */
-	private function render_login_form( $instance ) {
+	public static function render_login_form( $instance ) {
 		$redirect_url = ! empty( $instance['redirect_url'] ) ? $instance['redirect_url'] : home_url();
 		?>
 		<div class="wbc-login-widget-form">
@@ -122,7 +125,7 @@ class WBC_Login_Widget extends WP_Widget {
 				<p class="wbc-login-submit">
 					<button type="submit" class="wbc-login-button">
 						<span class="wbc-button-text"><?php esc_html_e( 'Login', 'buddypress-recaptcha' ); ?></span>
-						<span class="wbc-button-loader" style="display:none;"><?php esc_html_e( 'Please wait...', 'buddypress-recaptcha' ); ?></span>
+						<span class="wbc-button-loader" hidden><?php esc_html_e( 'Please wait...', 'buddypress-recaptcha' ); ?></span>
 					</button>
 				</p>
 

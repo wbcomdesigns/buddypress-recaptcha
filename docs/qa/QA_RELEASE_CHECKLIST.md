@@ -32,7 +32,7 @@ Wbcom CAPTCHA Manager keeps the version in multiple places. Every place must mat
 - [ ] `readme.txt` `Stable tag: 2.2.0` matches (if .org plugin)
 - [ ] `package.json` `version` matches (if present)
 - [ ] `composer.json` `version` matches (if present)
-- [ ] `CHANGELOG.md` has a `## 2.2.0 — YYYY-MM-DD` entry with real release notes
+- [ ] `readme.txt` has a `= X.Y.Z - Month YYYY =` changelog entry with real release notes
 
 Fast check:
 ```bash
@@ -58,7 +58,7 @@ vendor/bin/phpcs --standard=phpcs.xml.dist --report=summary
 ### PHPStan
 
 - [ ] `composer phpstan` — level 5 clean, or only entries in the baseline
-- [ ] Baseline not grown this release (or the diff is documented in CHANGELOG)
+- [ ] Baseline not grown this release (or the diff is documented in the readme.txt changelog)
 
 ```bash
 vendor/bin/phpstan analyse --memory-limit=2G
@@ -176,7 +176,7 @@ wp i18n make-pot /Users/varundubey/Local Sites/wbcom-free/app/public/wp-content/
 
 ### Internal docs
 
-- [ ] `CHANGELOG.md` updated (human-readable, customer-facing)
+- [ ] `readme.txt` changelog updated (human-readable, customer-facing)
 - [ ] `docs/qa/AGENT_SMOKE_RUNBOOK.md` section D updated with any new regression guards from this release
 - [ ] `docs/architecture/` updated if architecture changed
 - [ ] Any new public hooks documented in `docs/hooks.md` (or equivalent)
@@ -232,7 +232,7 @@ On a **third clean** site with the **previous stable version** installed + real 
 
 - [ ] Git tag created: `v2.2.0` (annotated, not lightweight — `git tag -a v2.2.0 -m "..."`)
 - [ ] Tag points at the release-branch commit (not `main` yet)
-- [ ] GitHub Release drafted with changelog copied from `CHANGELOG.md`
+- [ ] GitHub Release drafted with changelog copied from `readme.txt`
 - [ ] Release zip attached to GitHub Release
 
 ## 12 — Post-tag checks (first push)

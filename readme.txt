@@ -4,7 +4,7 @@ Donate link: https://wbcomdesigns.com/donate/
 Tags: captcha, recaptcha, spam protection, security, woocommerce
 Requires at least: 6.5
 Tested up to: 7.1
-Stable tag: 2.2.3
+Stable tag: 2.2.4
 Requires PHP: 8.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -33,7 +33,7 @@ Four of the five providers need free API keys from the provider. ALTCHA does not
 **Protects 14 integrations**
 * WordPress core: login, registration, lost password, and comments. Password logins over XML-RPC are blocked while login protection is on; application passwords keep working.
 * WooCommerce: customer login, registration, lost password, product reviews, and checkout for guests and logged-in customers, on both the block checkout and the classic checkout.
-* BuddyPress: member registration and group creation.
+* BuddyPress: member registration, group creation, and the BuddyPress Contact Me form.
 * bbPress: new topics and replies.
 * Form builders: Contact Form 7, WPForms, Gravity Forms, Ninja Forms, Forminator, Elementor Pro Forms, and Divi Builder contact forms.
 * E-commerce and membership: Easy Digital Downloads (checkout, login, registration), MemberPress (login, registration), and Ultimate Member (login, registration, password reset).
@@ -150,6 +150,7 @@ ALTCHA needs no keys and no account. It is self-hosted and generates its own HMA
 
 * WordPress 6.5 or higher
 * PHP 8.1 or higher
+* BuddyPress 12.0 or higher, for the BuddyPress forms (optional)
 * API keys from your chosen provider (not required for ALTCHA)
 
 == Frequently Asked Questions ==
@@ -216,6 +217,10 @@ Yes. A POT file is included, along with a WPML configuration file.
 
 == Upgrade Notice ==
 
+= 2.2.4 =
+
+Security release. Closes a classic WooCommerce checkout CAPTCHA bypass and restores protection that sites upgraded from 1.x had lost.
+
 = 2.2.3 =
 
 Security release. Closes CAPTCHA bypasses on login, checkout and several form plugins, and fixes forms that blocked real visitors. Requires PHP 8.1.
@@ -229,6 +234,36 @@ Fixes lockouts introduced in 2.1.0. Login from a Login/Logout block, login widge
 Security update: comment, lost-password and login forms are now verified on sites without WooCommerce, where they previously did nothing. Recommended for every site.
 
 == Changelog ==
+
+= 2.2.4 - November 2026 =
+
+Closes a classic checkout bypass and makes the fail-closed, no-conflict and IP whitelist settings do what they say.
+
+* New      - Protect the BuddyPress Contact Me form for logged-out visitors with a new switch under Protection > BuddyPress Forms.
+* Improve  - The login widget, login block and every CAPTCHA message follow the light and dark mode of Reign, BuddyX and BuddyX Pro, and use the colour palette of block themes such as Twenty Twenty-Five.
+* Improve  - A visitor who never solved the CAPTCHA now sees "Please complete the security check" instead of the generic failure message.
+* Improve  - The Overview tab warns you when the provider rejects this site's keys.
+* Fix      - Sites upgraded from 1.x kept BuddyPress sign-up unprotected, and lost their per-form reCAPTCHA v3 score thresholds and reCAPTCHA v2 widget theme.
+* Fix      - With fail-closed off, a provider outage no longer blocks visitors who solved the CAPTCHA.
+* Fix      - The one-time option name migration runs once, and never overwrites settings already saved under the new names.
+* Fix      - The IP whitelist now skips the CAPTCHA on every protected form.
+* Fix      - The no-conflict option now removes CAPTCHA scripts loaded by other plugins for every provider, without removing this plugin's own scripts.
+* Fix      - Elementor Pro forms lost their CAPTCHA when Elementor's element cache was on.
+* Fix      - Easy Digital Downloads checkout did not show the CAPTCHA after switching between payment gateways.
+* Fix      - Contact Form 7 shows the CAPTCHA message to a visitor who did not solve the check, instead of its generic send-error text.
+* Fix      - The login widget and block refused visitors whose page was served from a cache; the form nonce is now checked only when the strict nonce option is on.
+* Fix      - Login form fields no longer overflow the form on themes such as Twenty Twenty-Five.
+* Fix      - Removed the "Pay for Order" setting, which had no effect.
+* Fix      - Admin save messages and confirmation dialogs showed without their colours, so the dialog was see-through and its main button looked like plain text.
+* Fix      - Recent Rejections on the Overview tab names each form as the Protection tab does, for example "WordPress Forms: Login Form", and drops entries older than 7 days.
+* Fix      - The ALTCHA notice on sites without HTTPS no longer suggests .local or .test addresses, which cannot run ALTCHA either.
+* Fix      - ALTCHA on a site without HTTPS no longer locks everyone out of protected forms; it stays off and the admin is told why until the site uses HTTPS or localhost.
+* Security - A multi-page Gravity Forms form is always checked on its final submit, whatever page numbers the browser posts, and a failed check returns the visitor to the page with the CAPTCHA.
+* Security - The classic WooCommerce checkout could be submitted without a solved CAPTCHA; only real express payment requests (Stripe and WooPayments) skip it now, and the filters wbc_captcha_express_gateways and wbc_captcha_express_endpoints let you add others.
+* Security - Only the real Store API pay-for-order route skips the block checkout CAPTCHA.
+* Security - A solved ALTCHA challenge can be used only once, even when the same answer is sent in several requests at the same moment.
+* Security - Update packages now carry a release signature that your site checks before installing; a bad or missing signature is logged and the update still installs.
+* Dev      - Update and licence calls go to updates.wbcomdesigns.com and fall back to wbcomdesigns.com automatically, through the bundled Wbcom update SDK.
 
 = 2.2.3 - November 2026 =
 

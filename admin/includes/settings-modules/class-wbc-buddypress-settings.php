@@ -46,10 +46,7 @@ class WBC_BuddyPress_Settings extends WBC_Settings_Module_Abstract {
 	 * @return array
 	 */
 	protected function get_settings_array() {
-		return $this->create_settings_section(
-			'wbc_bp_protection',
-			__( 'BuddyPress Forms', 'buddypress-recaptcha' ),
-			array(
+		$fields = array(
 				array(
 					'id'      => 'wbc_recaptcha_enable_on_buddypress',
 					'label'   => __( 'Member Registration', 'buddypress-recaptcha' ),
@@ -62,8 +59,31 @@ class WBC_BuddyPress_Settings extends WBC_Settings_Module_Abstract {
 					'desc'    => __( 'Protect group creation form from spam', 'buddypress-recaptcha' ),
 					'default' => 'no',
 				),
-			)
 		);
+
+		if ( self::contact_me_active() ) {
+			$fields[] = array(
+				'id'      => 'wbc_recaptcha_enable_on_contact_me',
+				'label'   => __( 'Contact Me Form', 'buddypress-recaptcha' ),
+				'desc'    => __( 'Protect the BuddyPress Contact Me form for logged-out visitors. When off, Contact Me uses its own math question.', 'buddypress-recaptcha' ),
+				'default' => 'no',
+			);
+		}
+
+		return $this->create_settings_section(
+			'wbc_bp_protection',
+			__( 'BuddyPress Forms', 'buddypress-recaptcha' ),
+			$fields
+		);
+	}
+
+	/**
+	 * Whether BuddyPress Contact Me is active, so its switch is only shown when it can do something.
+	 *
+	 * @return bool
+	 */
+	private static function contact_me_active() {
+		return defined( 'BUDDYPRESS_CONTACT_ME_VERSION' );
 	}
 
 	/**
@@ -75,6 +95,7 @@ class WBC_BuddyPress_Settings extends WBC_Settings_Module_Abstract {
 		return array(
 			'wbc_recaptcha_enable_on_buddypress',
 			'wbc_recaptcha_enable_on_bp_group_create',
+			'wbc_recaptcha_enable_on_contact_me',
 		);
 	}
 }

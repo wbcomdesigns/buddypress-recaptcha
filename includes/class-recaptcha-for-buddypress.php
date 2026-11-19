@@ -245,6 +245,7 @@ class Recaptcha_For_BuddyPress {
 
 		// Run option migration.
 		$this->loader->add_action( 'plugins_loaded', $this, 'run_option_migration' );
+		add_action( 'update_option_wbc_recaptcha_v3_score_threshold', array( 'WBC_Option_Migration', 'forget_1x_thresholds' ), 10, 2 );
 	}
 
 	/**
@@ -294,9 +295,7 @@ class Recaptcha_For_BuddyPress {
 	 */
 	private function define_public_hooks() {
 
-		$plugin_public = new Recaptcha_For_BuddyPress_Public( $this->get_plugin_name(), $this->get_version() );
-
-		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
+		$plugin_public = new Recaptcha_For_BuddyPress_Public();
 
 		// Load style, js language.
 		add_action( 'wp_enqueue_scripts', array( $plugin_public, 'woo_recaptcha_load_styles_and_js' ), 9999 );
@@ -402,7 +401,6 @@ class Recaptcha_For_BuddyPress {
 		add_action( 'init', array( $this, 'register_shared_scripts' ) );
 		add_action( 'widgets_init', array( $this, 'register_login_widget' ) );
 		add_action( 'init', array( $this, 'register_login_block' ) );
-		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_login_widget_assets' ) );
 		add_action( 'wp_ajax_wbc_ajax_login', array( $this, 'handle_ajax_login' ) );
 		add_action( 'wp_ajax_nopriv_wbc_ajax_login', array( $this, 'handle_ajax_login' ) );
 
@@ -518,6 +516,7 @@ class Recaptcha_For_BuddyPress {
 
 		// Validate CAPTCHA on CF7 form submission.
 		add_filter( 'wpcf7_spam', array( $cf7_form, 'validate_cf7_captcha' ), 10, 2 );
+		add_filter( 'wpcf7_display_message', array( $cf7_form, 'display_cf7_captcha_message' ), 10, 2 );
 	}
 
 	/**
@@ -679,6 +678,7 @@ class Recaptcha_For_BuddyPress {
 
 		// Render CAPTCHA in Elementor Pro forms (priority 10).
 		add_filter( 'elementor/widget/render_content', array( $elementorpro_form, 'render_elementorpro_captcha' ), 10, 2 );
+		add_filter( 'elementor/element/is_dynamic_content', array( $elementorpro_form, 'keep_form_out_of_element_cache' ), 10, 3 );
 
 		// Validate CAPTCHA on Elementor Pro form submission.
 		add_action( 'elementor_pro/forms/validation', array( $elementorpro_form, 'validate_elementorpro_captcha' ), 10, 2 );
@@ -723,6 +723,7 @@ class Recaptcha_For_BuddyPress {
 
 		// Render CAPTCHA in EDD forms.
 		add_action( 'edd_purchase_form_before_submit', array( $edd_form, 'render_edd_checkout_captcha' ), 10 );
+		add_action( 'wp_enqueue_scripts', array( $edd_form, 'enqueue_checkout_assets' ), 20 );
 		add_action( 'edd_login_fields_after', array( $edd_form, 'render_edd_login_captcha' ), 10 );
 		// Standalone [edd_register] form. Registration inside checkout is covered by the checkout CAPTCHA.
 		add_action( 'edd_register_form_fields_before_submit', array( $edd_form, 'render_edd_register_captcha' ), 10 );
@@ -801,9 +802,9 @@ class Recaptcha_For_BuddyPress {
 	}
 
 	/**
-	 * Register the script every CAPTCHA widget relies on to reset or re-render
-	 * itself after an AJAX submit or a form refresh. Enqueued by the service
-	 * manager whenever a widget renders.
+	 * Register the front-end assets. Each is enqueued only where it is used: the
+	 * CAPTCHA ones by the service manager when a widget renders, the AJAX login
+	 * ones by the login widget and block.
 	 *
 	 * @since 2.2.3
 	 */
@@ -823,33 +824,18 @@ class Recaptcha_For_BuddyPress {
 			$this->version,
 			true
 		);
-	}
 
-	/**
-	 * Enqueue login widget assets
-	 *
-	 * @since     2.0.0
-	 */
-	public function enqueue_login_widget_assets() {
-		// Enqueue CSS.
-		wp_enqueue_style(
-			'wbc-ajax-login',
-			plugin_dir_url( __DIR__ ) . 'public/css/wbc-ajax-login.css',
-			array(),
-			$this->version,
-			'all'
-		);
+		/*
+		 * Widget styles (disabled submit, ALTCHA colours, the HTTPS notice) and the
+		 * script that makes provider widgets follow the site's dark mode. Enqueued
+		 * by the service manager only where a CAPTCHA renders, never site-wide.
+		 */
+		wp_register_style( 'buddypress-recaptcha', plugin_dir_url( __DIR__ ) . 'public/css/recaptcha-for-buddypress-public.css', array(), $this->version );
+		wp_register_script( 'wbc-captcha-theme', plugin_dir_url( __DIR__ ) . 'public/js/wbc-captcha-theme.js', array(), $this->version, true );
 
-		// Enqueue JavaScript.
-		wp_enqueue_script(
-			'wbc-ajax-login',
-			plugin_dir_url( __DIR__ ) . 'public/js/wbc-ajax-login.js',
-			array( 'jquery', 'wbc-captcha-refresh' ),
-			$this->version,
-			true
-		);
-
-		// Localize script.
+		// AJAX login widget and block: enqueued by their own render.
+		wp_register_style( 'wbc-ajax-login', plugin_dir_url( __DIR__ ) . 'public/css/wbc-ajax-login.css', array(), $this->version );
+		wp_register_script( 'wbc-ajax-login', plugin_dir_url( __DIR__ ) . 'public/js/wbc-ajax-login.js', array( 'jquery', 'wbc-captcha-refresh' ), $this->version, true );
 		wp_localize_script(
 			'wbc-ajax-login',
 			'wbcAjaxLogin',

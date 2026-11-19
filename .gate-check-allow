@@ -1,0 +1,2 @@
+# Allowed gate-check findings, one "ID path-fragment  # reason" per line.
+P9 includes/class-captcha-service-base.php  # provider siteverify call: checking the visitor's token with the provider is the CAPTCHA itself and must happen in the request

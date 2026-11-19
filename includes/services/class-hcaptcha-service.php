@@ -139,7 +139,7 @@ class WBC_HCaptcha_Service extends WBC_Captcha_Service_Base {
 		// Render HTML.
 		?>
 		<input type="hidden" autocomplete="off" name="<?php echo esc_attr( $nonce_action ); ?>" value="<?php echo esc_attr( wp_create_nonce( $nonce_action ) ); ?>" />
-		<div class="wbc_captcha_field wbc_hcaptcha_field input">
+		<div class="wbc_captcha_field wbc_hcaptcha_field">
 			<div id="<?php echo esc_attr( $div_id ); ?>"
 				class="h-captcha"
 				data-sitekey="<?php echo esc_attr( $site_key ); ?>"
@@ -147,29 +147,7 @@ class WBC_HCaptcha_Service extends WBC_Captcha_Service_Base {
 				data-size="<?php echo esc_attr( $size ); ?>"
 				data-callback="<?php echo esc_attr( $callback ); ?>"></div>
 		</div>
-		<?php
-		/*
-		 * Per-widget styling.
-		 *  - `text-align:center` on the wrapper visually balances the widget
-		 *    inside the form (the iframe is inline-block at every size).
-		 *  - Scaling is applied ONLY at the default "normal" size — applying
-		 *    it to "compact" / "invisible" produces a misaligned widget. The
-		 *    `transform-origin: 0 0` mirrors the reCAPTCHA v2 service so the
-		 *    widget stays aligned with surrounding fields without needing a
-		 *    negative-margin hack.
-		 */
-		?>
-		<style type="text/css">
-		.wbc_hcaptcha_field{ text-align:center; }
-		<?php if ( 'compact' !== $size && 'invisible' !== $size ) : ?>
-		#<?php echo esc_attr( $div_id ); ?>{
-			display:inline-block;
-			transform:scale(0.89);-webkit-transform:scale(0.89);
-			transform-origin:0 0;-webkit-transform-origin:0 0;
-		}
-		<?php endif; ?>
-		</style>
-		<script type="text/javascript">
+		<?php ob_start(); // Printed inline, beside the widget: form builders buffer this markup into their own (often AJAX-loaded) HTML. ?>
 		(function () {
 			var solved = false;
 			window.<?php echo esc_js( $callback ); ?> = function (response) {
@@ -200,8 +178,8 @@ class WBC_HCaptcha_Service extends WBC_Captcha_Service_Base {
 			}
 			<?php endif; ?>
 		})();
-		</script>
 		<?php
+		wp_print_inline_script_tag( ob_get_clean() );
 	}
 
 	/**
@@ -332,12 +310,4 @@ class WBC_HCaptcha_Service extends WBC_Captcha_Service_Base {
 		return $this->config['response_field'];
 	}
 
-	/**
-	 * Check if this service requires no-conflict mode
-	 *
-	 * @return bool
-	 */
-	public function requires_no_conflict() {
-		return false;
-	}
 }

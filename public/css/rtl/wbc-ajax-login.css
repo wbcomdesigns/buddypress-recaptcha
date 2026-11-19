@@ -5,12 +5,89 @@
  * @since      2.0.0
  */
 
+/* ===========================================================
+   Colour tokens.
+   Each one follows the active theme, in this order:
+   BuddyX / BuddyX Pro (--bx-color-*), then Reign (--reign-*), then the
+   theme.json palette (--wp--preset--color--*: primary, or contrast for
+   themes such as Twenty Twenty-Five that have no primary), then a
+   neutral literal.
+   The theme tokens already switch with the site's light/dark mode, so
+   the widget matches the page in both without a palette of its own.
+   =========================================================== */
+.wbc-login-widget-form,
+.wbc-login-widget-logged-in {
+	--wbc-surface: var(--bx-color-bg-elevated, var(--reign-site-sections-bg-color, var(--wp--preset--color--base, #fff)));
+	--wbc-surface-muted: var(--bx-color-bg-muted, var(--reign-site-secondary-bg-color, #f1f1f1));
+	--wbc-fg: var(--bx-color-fg, var(--reign-site-body-text-color, var(--wp--preset--color--contrast, #333)));
+	--wbc-input-bg: var(--bx-color-input-bg, var(--reign-form-background-color, var(--wp--preset--color--base, #fff)));
+	--wbc-input-border: var(--bx-color-input-border, var(--reign-form-border-color, #ddd));
+	--wbc-input-fg: var(--bx-color-input-fg, var(--reign-form-text-color, var(--wp--preset--color--contrast, #333)));
+	--wbc-input-placeholder: var(--bx-color-input-placeholder, var(--reign-form-placeholder-color, #757575));
+	--wbc-focus: var(--bx-color-input-focus-border, var(--reign-form-focus-border-color, var(--wp--preset--color--primary, var(--wp--preset--color--contrast, #007cba))));
+	--wbc-button-bg: var(--bx-color-button-bg, var(--reign-site-button-bg-color, var(--wp--preset--color--primary, var(--wp--preset--color--contrast, #007cba))));
+	--wbc-button-bg-hover: var(--bx-color-button-bg-hover, var(--reign-site-button-bg-hover-color, color-mix(in srgb, var(--wbc-button-bg) 85%, #000)));
+	--wbc-button-fg: var(--bx-color-button-fg, var(--reign-site-button-text-color, var(--wp--preset--color--base, #fff)));
+	--wbc-button-fg-hover: var(--bx-color-button-fg-hover, var(--reign-site-button-text-hover-color, var(--wbc-button-fg)));
+	--wbc-link: var(--bx-color-link, var(--reign-site-link-color, var(--wp--preset--color--primary, var(--wp--preset--color--contrast, #007cba))));
+	--wbc-link-hover: var(--bx-color-link-hover, var(--reign-site-link-hover-color, var(--wbc-link)));
+	/*
+	 * Status: only the hue comes from the theme. The surface is mixed from
+	 * it so it works in both modes (BuddyX's --bx-color-*-bg tokens have no
+	 * dark value and would glare on a dark page). Reign ships a mode-aware
+	 * error text token; elsewhere the text is the hue pulled toward --wbc-fg
+	 * for contrast.
+	 */
+	--wbc-error: var(--bx-color-error, var(--reign-color-error, #d63638));
+	--wbc-success: var(--bx-color-success, var(--reign-color-success, #00a32a));
+	--wbc-error-bg: color-mix(in srgb, var(--wbc-error) 14%, var(--wbc-surface));
+	--wbc-success-bg: color-mix(in srgb, var(--wbc-success) 14%, var(--wbc-surface));
+	--wbc-error-fg: var(--reign-color-error-text, color-mix(in srgb, var(--wbc-error) 65%, var(--wbc-fg)));
+	--wbc-success-fg: color-mix(in srgb, var(--wbc-success) 55%, var(--wbc-fg));
+}
+
+/*
+ * Dark mode: explicit selectors only - the site owner's dark toggle - never
+ * prefers-color-scheme, which would flip the widget on an OS preference the
+ * site never asked for. Only the last-resort literals change; a theme that
+ * defines the tokens above already supplies its dark values. The theme.json
+ * palette is skipped here: it holds light values only.
+ */
+[data-bx-mode="dark"] .wbc-login-widget-form,
+[data-bx-mode="dark"] .wbc-login-widget-logged-in,
+.buddyx-dark-theme .wbc-login-widget-form,
+.buddyx-dark-theme .wbc-login-widget-logged-in {
+	--wbc-surface: var(--bx-color-bg-elevated, var(--reign-site-sections-bg-color, #1e1e1e));
+	--wbc-surface-muted: var(--bx-color-bg-muted, var(--reign-site-secondary-bg-color, #262626));
+	--wbc-fg: var(--bx-color-fg, var(--reign-site-body-text-color, #f5f5f5));
+	--wbc-input-bg: var(--bx-color-input-bg, var(--reign-form-background-color, #262626));
+	--wbc-input-border: var(--bx-color-input-border, var(--reign-form-border-color, #3d3d3d));
+	--wbc-input-fg: var(--bx-color-input-fg, var(--reign-form-text-color, #f5f5f5));
+	--wbc-input-placeholder: var(--bx-color-input-placeholder, var(--reign-form-placeholder-color, #a0a0a0));
+	--wbc-focus: var(--bx-color-input-focus-border, var(--reign-form-focus-border-color, #72aee6));
+	--wbc-button-bg: var(--bx-color-button-bg, var(--reign-site-button-bg-color, #72aee6));
+	--wbc-button-bg-hover: var(--bx-color-button-bg-hover, var(--reign-site-button-bg-hover-color, color-mix(in srgb, var(--wbc-button-bg) 85%, #fff)));
+	--wbc-button-fg: var(--bx-color-button-fg, var(--reign-site-button-text-color, #1e1e1e));
+	--wbc-link: var(--bx-color-link, var(--reign-site-link-color, #72aee6));
+	/* Native controls (the Remember Me checkbox) render dark too. */
+	color-scheme: dark;
+}
+
 /* Login Form Container */
 .wbc-login-widget-form,
 .wbc-login-widget-logged-in {
 	padding: 15px;
-	background: #fff;
+	background: var(--wbc-surface);
+	color: var(--wbc-fg);
 	border-radius: 4px;
+}
+
+/* In a sidebar the theme widget is the card: no second box inside it. */
+.widget .wbc-login-widget-form,
+.widget .wbc-login-widget-logged-in {
+	padding: 0;
+	background: none;
+	border-radius: 0;
 }
 
 /* Form Messages */
@@ -25,15 +102,15 @@
 }
 
 .wbc-form-messages.wbc-error p {
-	background: #f8d7da;
-	border-right: 3px solid #dc3545;
-	color: #721c24;
+	background: var(--wbc-error-bg);
+	border-inline-start: 3px solid var(--wbc-error);
+	color: var(--wbc-error-fg);
 }
 
 .wbc-form-messages.wbc-success p {
-	background: #d4edda;
-	border-right: 3px solid #28a745;
-	color: #155724;
+	background: var(--wbc-success-bg);
+	border-inline-start: 3px solid var(--wbc-success);
+	color: var(--wbc-success-fg);
 }
 
 /* Form Fields */
@@ -48,22 +125,30 @@
 	display: block;
 	margin-bottom: 5px;
 	font-weight: 600;
-	color: #333;
+	color: var(--wbc-fg);
 }
 
 .wbc-input {
+	box-sizing: border-box;
 	width: 100%;
 	padding: 10px 15px;
-	border: 1px solid #ddd;
+	background: var(--wbc-input-bg);
+	border: 1px solid var(--wbc-input-border);
 	border-radius: 4px;
-	font-size: 14px;
+	color: var(--wbc-input-fg);
+	/* 16px: iOS Safari zooms the page on focus below this. */
+	font-size: 16px;
 	transition: border-color 0.3s ease;
+}
+
+.wbc-input::placeholder {
+	color: var(--wbc-input-placeholder);
 }
 
 .wbc-input:focus {
 	outline: none;
-	border-color: #007cba;
-	box-shadow: 0 0 0 1px #007cba;
+	border-color: var(--wbc-focus);
+	box-shadow: 0 0 0 1px var(--wbc-focus);
 }
 
 /* Remember Me Checkbox */
@@ -75,7 +160,8 @@
 }
 
 .wbc-login-remember input[type="checkbox"] {
-	margin-left: 8px;
+	margin-inline-end: 8px;
+	accent-color: var(--wbc-button-bg);
 }
 
 /* CAPTCHA Container */
@@ -97,9 +183,10 @@
 
 .wbc-login-button {
 	width: 100%;
+	min-height: 45px;
 	padding: 12px 20px;
-	background: #007cba;
-	color: #fff;
+	background: var(--wbc-button-bg);
+	color: var(--wbc-button-fg);
 	border: none;
 	border-radius: 4px;
 	font-size: 16px;
@@ -108,8 +195,10 @@
 	transition: background-color 0.3s ease;
 }
 
-.wbc-login-button:hover:not(:disabled) {
-	background: #005a87;
+.wbc-login-button:hover:not(:disabled),
+.wbc-login-button:focus-visible {
+	background: var(--wbc-button-bg-hover);
+	color: var(--wbc-button-fg-hover);
 }
 
 .wbc-login-button:disabled {
@@ -117,8 +206,20 @@
 	cursor: not-allowed;
 }
 
-.wbc-button-loader {
-	display: inline-block;
+/* Keep [hidden] winning over a theme's `button span { display: inline-block }`. */
+.wbc-button-loader[hidden],
+.wbc-button-text[hidden] {
+	display: none;
+}
+
+/* Visible keyboard focus on every control. */
+.wbc-login-button:focus-visible,
+.wbc-lost-password a:focus-visible,
+.wbc-register-link a:focus-visible,
+.wbc-profile-link:focus-visible,
+.wbc-logout-link:focus-visible {
+	outline: 2px solid var(--wbc-focus);
+	outline-offset: 2px;
 }
 
 /* Links */
@@ -130,13 +231,16 @@
 
 .wbc-lost-password a,
 .wbc-register-link a {
-	color: #007cba;
+	color: var(--wbc-link);
 	text-decoration: none;
-	font-size: 14px;
+	font-size: 15px;
 }
 
 .wbc-lost-password a:hover,
-.wbc-register-link a:hover {
+.wbc-lost-password a:focus,
+.wbc-register-link a:hover,
+.wbc-register-link a:focus {
+	color: var(--wbc-link-hover);
 	text-decoration: underline;
 }
 
@@ -144,10 +248,17 @@
 .wbc-welcome-message {
 	margin: 0 0 15px;
 	padding: 15px;
-	background: #f0f8ff;
-	border-right: 3px solid #007cba;
+	background: var(--wbc-surface-muted);
+	border-inline-start: 3px solid var(--wbc-button-bg);
 	border-radius: 3px;
 	font-size: 16px;
+}
+
+.widget .wbc-welcome-message {
+	padding: 0;
+	background: none;
+	border-inline-start: 0;
+	border-radius: 0;
 }
 
 .wbc-user-links {
@@ -166,24 +277,28 @@
 	transition: background-color 0.3s ease;
 }
 
-.wbc-profile-link {
-	background: #007cba;
-	color: #fff;
+.wbc-profile-link,
+.wbc-profile-link:visited {
+	background: var(--wbc-button-bg);
+	color: var(--wbc-button-fg);
 }
 
-.wbc-profile-link:hover {
-	background: #005a87;
-	color: #fff;
+.wbc-profile-link:hover,
+.wbc-profile-link:focus {
+	background: var(--wbc-button-bg-hover);
+	color: var(--wbc-button-fg-hover);
 }
 
-.wbc-logout-link {
-	background: #f1f1f1;
-	color: #333;
+.wbc-logout-link,
+.wbc-logout-link:visited {
+	background: var(--wbc-surface-muted);
+	color: var(--wbc-fg);
 }
 
-.wbc-logout-link:hover {
-	background: #e0e0e0;
-	color: #333;
+.wbc-logout-link:hover,
+.wbc-logout-link:focus {
+	background: var(--wbc-input-border);
+	color: var(--wbc-fg);
 }
 
 /* Responsive */
@@ -198,53 +313,4 @@
 .wp-block-wbc-login-widget .wbc-login-widget-logged-in {
 	max-width: 400px;
 	margin: 0 auto;
-}
-
-/* ===========================================================
-   Dark mode.
-   Explicit selectors only - the site owner's dark toggle - never
-   prefers-color-scheme, which would flip the widget on an OS
-   preference the site never asked for. Reign sets data-bx-mode but
-   does not define --bx-color-* tokens, so every var() below carries a
-   dark literal fallback.
-   =========================================================== */
-[data-bx-mode="dark"] .wbc-login-widget-form,
-[data-bx-mode="dark"] .wbc-login-widget-logged-in,
-.buddyx-dark-theme .wbc-login-widget-form,
-.buddyx-dark-theme .wbc-login-widget-logged-in {
-	background: var(--bx-color-bg-elevated, #1e1e1e);
-	color: var(--bx-color-fg, #f5f5f5);
-}
-
-[data-bx-mode="dark"] .wbc-login-username label,
-[data-bx-mode="dark"] .wbc-login-password label,
-.buddyx-dark-theme .wbc-login-username label,
-.buddyx-dark-theme .wbc-login-password label {
-	color: var(--bx-color-fg, #f5f5f5);
-}
-
-[data-bx-mode="dark"] .wbc-input,
-.buddyx-dark-theme .wbc-input {
-	background: var(--bx-color-bg-muted, #262626);
-	border-color: var(--bx-color-border, #3d3d3d);
-	color: var(--bx-color-fg, #f5f5f5);
-}
-
-[data-bx-mode="dark"] .wbc-input::placeholder,
-.buddyx-dark-theme .wbc-input::placeholder {
-	color: var(--bx-color-fg-muted, #a0a0a0);
-}
-
-/* Status messages: keep the semantic hue, darken the surface so it does
-   not glare, and lift the text back to an accessible contrast. */
-[data-bx-mode="dark"] .wbc-form-messages.wbc-error p,
-.buddyx-dark-theme .wbc-form-messages.wbc-error p {
-	background: #3b1d21;
-	color: #f5c2c7;
-}
-
-[data-bx-mode="dark"] .wbc-form-messages.wbc-success p,
-.buddyx-dark-theme .wbc-form-messages.wbc-success p {
-	background: #1d3b26;
-	color: #b7e4c7;
 }

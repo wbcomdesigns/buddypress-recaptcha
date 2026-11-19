@@ -216,6 +216,21 @@ class WBC_Settings_Module_Loader {  // phpcs:ignore WordPress.NamingConventions.
 	}
 
 	/**
+	 * Option id => form label from every active module, as shown on the Protection tab.
+	 *
+	 * @return array<string,string>
+	 */
+	public function get_protection_labels() {
+		$labels = array();
+		foreach ( $this->get_active_modules() as $module ) {
+			if ( method_exists( $module, 'get_protection_labels' ) ) {
+				$labels = array_merge( $labels, $module->get_protection_labels() );
+			}
+		}
+		return $labels;
+	}
+
+	/**
 	 * Get all checkbox IDs from active modules
 	 *
 	 * Returns array of all checkbox option names that need to be saved.

@@ -102,12 +102,49 @@ class WBC_Altcha_Service extends WBC_Captcha_Service_Base {
 	}
 
 	/**
-	 * ALTCHA is configured when its HMAC secret is set.
+	 * ALTCHA is configured when its HMAC secret is set AND the site can run it.
+	 *
+	 * On a site whose address is plain HTTP no browser can solve the challenge,
+	 * so enforcing it would lock every visitor (and the owner) out of each
+	 * protected form. Treating the service as not configured there makes the
+	 * manager skip render and verify and show the admin why.
 	 *
 	 * @return bool
 	 */
 	public function is_configured() {
-		return '' !== $this->get_secret_key();
+		return '' !== $this->get_secret_key() && $this->site_supports_altcha();
+	}
+
+	/**
+	 * Whether this site's own address gives browsers a secure context.
+	 *
+	 * Keyed on the configured site URLs, which only the owner controls, never on
+	 * the request (scheme or Host header), so a visitor cannot switch the check
+	 * off on an HTTPS site by posting over http or sending a loopback Host.
+	 *
+	 * @return bool
+	 */
+	public function site_supports_altcha() {
+		if ( wp_is_using_https() ) {
+			return true;
+		}
+
+		$host = strtolower( trim( (string) wp_parse_url( home_url(), PHP_URL_HOST ), '[]' ) );
+
+		return in_array( $host, array( 'localhost', '127.0.0.1', '::1' ), true ) || (bool) preg_match( '/\.localhost$/', $host );
+	}
+
+	/**
+	 * Why the service is inactive although its secret is saved, or '' if it is not.
+	 *
+	 * @return string
+	 */
+	public function get_inactive_reason() {
+		if ( '' === $this->get_secret_key() || $this->site_supports_altcha() ) {
+			return '';
+		}
+
+		return __( 'ALTCHA is switched off because this site\'s address does not use HTTPS, and browsers can only solve ALTCHA on HTTPS or localhost. Forms are not protected by a CAPTCHA until the site uses HTTPS or you choose another service.', 'buddypress-recaptcha' );
 	}
 
 	/**
@@ -149,6 +186,8 @@ class WBC_Altcha_Service extends WBC_Captcha_Service_Base {
 		if ( empty( $hmac_key ) ) {
 			return;
 		}
+
+		$this->handle_no_conflict_mode();
 
 		wp_enqueue_script(
 			$this->get_script_handle( $context ),
@@ -293,11 +332,11 @@ class WBC_Altcha_Service extends WBC_Captcha_Service_Base {
 			$current_host = ! empty( $current_host ) ? $current_host : 'unknown';
 			?>
 			<div class="wbc_captcha_field wbc_altcha_field">
-				<div class="wbc-altcha-warning" style="padding: 10px; background: #fff3cd; border: 1px solid #ffc107; border-radius: 4px; color: #856404;">
+				<div class="wbc-altcha-warning">
 					<strong><?php esc_html_e( 'ALTCHA requires HTTPS or localhost:', 'buddypress-recaptcha' ); ?></strong>
-					<p><?php esc_html_e( 'ALTCHA uses Web Crypto API which requires a secure context (HTTPS). For local development, use localhost or .local/.test domains.', 'buddypress-recaptcha' ); ?></p>
+					<p><?php esc_html_e( 'ALTCHA uses the browser\'s Web Crypto API, which works only on HTTPS or on localhost. A plain-HTTP address, including .local and .test sites, cannot solve the challenge.', 'buddypress-recaptcha' ); ?></p>
 					<p><strong><?php esc_html_e( 'Your current host:', 'buddypress-recaptcha' ); ?></strong> <?php echo esc_html( $current_host ); ?></p>
-					<p><?php esc_html_e( 'For production: Enable HTTPS. For local testing: Use localhost, 127.0.0.1, or .local domains.', 'buddypress-recaptcha' ); ?></p>
+					<p><?php esc_html_e( 'To fix it, turn on HTTPS for this site (Local, Valet and DevKinsta can enable it per site), or open the site at localhost, 127.0.0.1 or a *.localhost address.', 'buddypress-recaptcha' ); ?></p>
 				</div>
 			</div>
 			<?php
@@ -318,7 +357,7 @@ class WBC_Altcha_Service extends WBC_Captcha_Service_Base {
 		// Render HTML.
 		?>
 		<input type="hidden" autocomplete="off" name="<?php echo esc_attr( $nonce_action ); ?>" value="<?php echo esc_attr( wp_create_nonce( $nonce_action ) ); ?>" />
-		<div class="wbc_captcha_field wbc_altcha_field input">
+		<div class="wbc_captcha_field wbc_altcha_field">
 			<altcha-widget
 				id="<?php echo esc_attr( $widget_id ); ?>"
 				challengeurl="<?php echo esc_url( rest_url( self::REST_NAMESPACE . self::REST_ROUTE ) ); ?>"
@@ -421,13 +460,21 @@ class WBC_Altcha_Service extends WBC_Captcha_Service_Base {
 			return false;
 		}
 
-		// Single use: remember the signature until the challenge expires.
+		// Single use: claim the signature until the challenge expires. The claim must be
+		// atomic, or parallel requests replaying one solution all pass a read-then-write
+		// check. With a persistent object cache, wp_cache_add() is an atomic "add if absent".
+		// Without one, set_transient() stores the value with add_option(), whose
+		// INSERT ... ON DUPLICATE KEY UPDATE affects 0 rows (returns false) for every
+		// request after the first, because the value written is always the same.
 		$used_key = 'wbc_altcha_used_' . substr( $data['signature'], 0, 40 );
-		if ( get_transient( $used_key ) ) {
+		$ttl      = max( 60, $expires - time() );
+		$claimed  = wp_using_ext_object_cache()
+			? wp_cache_add( $used_key, 1, 'wbc_altcha_used', $ttl )
+			: set_transient( $used_key, 1, $ttl );
+		if ( ! $claimed ) {
 			$this->failure_reason = 'already-used';
 			return false;
 		}
-		set_transient( $used_key, 1, max( 60, $expires - time() ) );
 
 		return true;
 	}
@@ -450,12 +497,4 @@ class WBC_Altcha_Service extends WBC_Captcha_Service_Base {
 		return $this->config['response_field'];
 	}
 
-	/**
-	 * Check if this service requires no-conflict mode
-	 *
-	 * @return bool
-	 */
-	public function requires_no_conflict() {
-		return false;
-	}
 }

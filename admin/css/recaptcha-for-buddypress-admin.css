@@ -1,3 +1,11 @@
+:root {
+  /* Provider brand colours for the setup-guide boxes. Deliberately not mapped
+     onto --bprc-admin-accent: their job is to tell the vendors apart. */
+  --bprc-brand-cloudflare: #f48120;
+  --bprc-brand-hcaptcha: #7c3aed;
+  --bprc-brand-altcha: #10b981;
+}
+
 /*--------------------------------------------------------------
 >>> TABLE OF CONTENTS:
 ----------------------------------------------------------------
@@ -94,12 +102,10 @@
 .bprc-admin input[type="password"],
 .bprc-admin input[type="email"],
 .bprc-admin input[type="url"],
-.bprc-admin .wbc-secret-key-input,
 .rfw-tab-content input[type="text"],
 .rfw-tab-content input[type="password"],
 .rfw-tab-content input[type="email"],
-.rfw-tab-content input[type="url"],
-.rfw-tab-content .wbc-secret-key-input {
+.rfw-tab-content input[type="url"] {
     width: 100%;
     max-width: 100%;
     display: block;
@@ -159,7 +165,6 @@
 .bprc-admin input[type="email"]:focus,
 .bprc-admin input[type="url"]:focus,
 .bprc-admin input[type="number"]:focus,
-.bprc-admin .wbc-secret-key-input:focus,
 .bprc-admin .wbcom-settings-section-wrap textarea:focus,
 .rfw-tab-content input[type="text"]:focus,
 .rfw-tab-content input[type="password"]:focus,
@@ -167,15 +172,14 @@
 .rfw-tab-content input[type="url"]:focus,
 .rfw-tab-content input[type="number"]:focus,
 .wbcom-settings-section-wrap select:focus,
-.rfw-tab-content textarea:focus,
-.rfw-tab-content .wbc-secret-key-input:focus {
+.rfw-tab-content textarea:focus {
     border-color: var(--bprc-admin-accent);
     box-shadow: 0 0 0 1px var(--bprc-admin-accent);
     outline: 2px solid transparent;
 }
 
 /*
- * Key fields that carry an action button (copy / reveal / generate).
+ * Key fields that carry an action button (copy / generate).
  *
  * The renderer emits the button as a plain sibling of the input inside
  * .forminp. That worked while the input was a fixed-width inline-block, but
@@ -183,7 +187,6 @@
  * line. Make just those rows a flex pair so the button stays on the field.
  */
 .bprc-admin .forminp:has(> .wbc-copy-key),
-.bprc-admin .forminp:has(> .wbc-toggle-visibility),
 .bprc-admin .forminp:has(> .wbc-generate-hmac-key) {
   display: flex;
   align-items: center;
@@ -191,7 +194,6 @@
 }
 
 .bprc-admin .forminp:has(> .wbc-copy-key) > input,
-.bprc-admin .forminp:has(> .wbc-toggle-visibility) > input,
 .bprc-admin .forminp:has(> .wbc-generate-hmac-key) > input {
   flex: 1 1 auto;
   width: auto;
@@ -200,7 +202,6 @@
 
 /* gap already spaces the pair - the legacy margin would double it. */
 .bprc-admin .forminp > .wbc-copy-key,
-.bprc-admin .forminp > .wbc-toggle-visibility,
 .bprc-admin .forminp > .wbc-generate-hmac-key {
   margin-left: 0 !important;
   height: 36px !important;
@@ -229,17 +230,7 @@ h1.wbcom-plugin-heading {
   display: block !important;
 }
 
-/*--------------------------------------------------------------
-# Secret Key Input Styling
---------------------------------------------------------------*/
-.wbc-secret-key-input {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif !important;
-  letter-spacing: normal !important;
-  -webkit-text-security: none !important;
-}
-
-/* Style the toggle and copy buttons */
-.wbc-toggle-visibility,
+/* Style the copy and generate buttons */
 .wbc-copy-key,
 .wbc-generate-hmac-key {
   display: inline-block !important;
@@ -259,7 +250,6 @@ h1.wbcom-plugin-heading {
   white-space: nowrap !important;
 }
 
-.wbc-toggle-visibility:hover,
 .wbc-copy-key:hover,
 .wbc-generate-hmac-key:hover {
   background: var(--bprc-admin-surface-2) !important;
@@ -267,19 +257,11 @@ h1.wbcom-plugin-heading {
   color: var(--bprc-admin-text) !important;
 }
 
-.wbc-toggle-visibility:focus,
 .wbc-copy-key:focus,
 .wbc-generate-hmac-key:focus {
   border-color: var(--bprc-admin-accent) !important;
   box-shadow: 0 0 0 1px var(--bprc-admin-accent) !important;
   outline: 2px solid transparent !important;
-}
-
-/* Input and button container */
-.wbc-input-button-group {
-  display: flex !important;
-  align-items: center !important;
-  gap: 8px !important;
 }
 
 /* Ensure buttons stay inline with inputs */
@@ -293,12 +275,10 @@ h1.wbcom-plugin-heading {
 .wbc-settings-section-wrap td input[type="password"],
 .wbc-settings-section-wrap td input[type="email"],
 .wbc-settings-section-wrap td input[type="url"],
-.wbc-settings-section-wrap td .wbc-secret-key-input,
 .form-table td input[type="text"],
 .form-table td input[type="password"],
 .form-table td input[type="email"],
-.form-table td input[type="url"],
-.form-table td .wbc-secret-key-input {
+.form-table td input[type="url"] {
   display: inline-block !important;
   vertical-align: middle !important;
 }
@@ -309,14 +289,12 @@ h1.wbcom-plugin-heading {
   .bprc-admin input[type="password"],
   .bprc-admin input[type="email"],
   .bprc-admin input[type="url"],
-  .bprc-admin .wbc-secret-key-input,
   .bprc-admin .wbcom-settings-section-wrap textarea,
   .bprc-admin .wbcom-settings-section-wrap select,
   .rfw-tab-content input[type="text"],
   .rfw-tab-content input[type="password"],
   .rfw-tab-content input[type="email"],
   .rfw-tab-content input[type="url"],
-  .rfw-tab-content .wbc-secret-key-input,
   .rfw-tab-content textarea {
     width: 100%;
     max-width: 100%;
@@ -327,16 +305,11 @@ h1.wbcom-plugin-heading {
     white-space: normal;
   }
 
-  .wbc-toggle-visibility,
   .wbc-copy-key,
   .wbc-generate-hmac-key {
     margin-top: 8px !important;
     margin-left: 0 !important;
     margin-right: 8px !important;
-  }
-
-  .wbc-input-button-group {
-    flex-wrap: wrap !important;
   }
 }
 
@@ -543,14 +516,6 @@ h1.wbcom-plugin-heading {
   white-space: nowrap;
 }
 
-.wbc-service-keys {
-  transition: opacity 0.3s ease;
-}
-
-.wbc-service-keys[style*="display: none"] {
-  opacity: 0;
-}
-
 .wbc-service-docs {
   animation: fadeIn 0.3s ease;
 }
@@ -592,15 +557,15 @@ h1.wbcom-plugin-heading {
  * boxes look identical, which is the opposite of what they are for.
  */
 .wbc-guide-cloudflare {
-  border-left: 4px solid #f48120; /* Cloudflare orange */
+  border-left: 4px solid var(--bprc-brand-cloudflare);
 }
 
 .wbc-guide-hcaptcha {
-  border-left: 4px solid #7c3aed; /* hCaptcha purple */
+  border-left: 4px solid var(--bprc-brand-hcaptcha);
 }
 
 .wbc-guide-altcha {
-  border-left: 4px solid #10b981; /* ALTCHA green */
+  border-left: 4px solid var(--bprc-brand-altcha);
 }
 
 .wbc-guide-steps {

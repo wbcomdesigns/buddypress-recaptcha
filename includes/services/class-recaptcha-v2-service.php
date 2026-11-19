@@ -141,12 +141,12 @@ class WBC_Recaptcha_V2_Service extends WBC_Captcha_Service_Base {
 		// Render HTML.
 		?>
 		<input type="hidden" autocomplete="off" name="<?php echo esc_attr( $nonce_action ); ?>" value="<?php echo esc_attr( wp_create_nonce( $nonce_action ) ); ?>" />
-		<p class="wbc_recaptcha_field">
+		<div class="wbc_recaptcha_field">
 			<div name="<?php echo esc_attr( $div_name ); ?>" class="g-recaptcha" data-callback="<?php echo esc_attr( $callback ); ?>" data-sitekey="<?php echo esc_attr( $site_key ); ?>" data-theme="<?php echo esc_attr( $theme ); ?>" data-size="<?php echo esc_attr( $size ); ?>"></div>
 			<br/>
-		</p>
+		</div>
 		
-		<script type="text/javascript">
+		<?php ob_start(); // Printed inline, beside the widget: form builders buffer this markup into their own (often AJAX-loaded) HTML. ?>
 		(function () {
 			var solved = false;
 			window.<?php echo esc_js( $callback ); ?> = function (response) {
@@ -177,16 +177,8 @@ class WBC_Recaptcha_V2_Service extends WBC_Captcha_Service_Base {
 			}
 			<?php endif; ?>
 		})();
-		</script>
-		
-		<?php if ( 'compact' !== $size ) : ?>
-		<style type="text/css">
-		[name="<?php echo esc_attr( $div_name ); ?>"]{
-			transform:scale(0.89);-webkit-transform:scale(0.89);transform-origin:0 0;-webkit-transform-origin:0 0;
-		}
-		</style>
-			<?php
-		endif;
+		<?php
+		wp_print_inline_script_tag( ob_get_clean() );
 	}
 
 	/**
@@ -253,14 +245,6 @@ class WBC_Recaptcha_V2_Service extends WBC_Captcha_Service_Base {
 		return 'g-recaptcha-response';
 	}
 
-	/**
-	 * Check if this service requires no-conflict mode
-	 *
-	 * @return bool
-	 */
-	public function requires_no_conflict() {
-		return true;
-	}
 
 	/**
 	 * Get service-specific attributes for the captcha container
@@ -275,28 +259,6 @@ class WBC_Recaptcha_V2_Service extends WBC_Captcha_Service_Base {
 			'data-theme'    => $this->get_theme_for_context( $context ),
 			'data-size'     => $this->get_size_for_context( $context ),
 			'data-callback' => 'verifyCallback_' . str_replace( '-', '_', $context ),
-		);
-	}
-
-	/**
-	 * Get URLs that might conflict
-	 *
-	 * @return array
-	 */
-	protected function get_conflict_urls() {
-		return array( 'google.com/recaptcha', 'gstatic.com/recaptcha' );
-	}
-
-	/**
-	 * Get allowed script handles
-	 *
-	 * @return array
-	 */
-	protected function get_allowed_handles() {
-		return array(
-			'wbc-woo-captcha',
-			'wbc-bbpress-topic-captcha',
-			'wbc-bbpress-reply-captcha',
 		);
 	}
 

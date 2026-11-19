@@ -24,27 +24,20 @@ $bprc_service_label = isset( $bprc_service_names[ $bprc_service ] )
 	? $bprc_service_names[ $bprc_service ]
 	: __( 'Not selected', 'buddypress-recaptcha' );
 
-// Determine whether the active service has its required keys configured.
+$bprc_key_error = get_transient( 'wbc_captcha_key_error' );
+$bprc_key_error = ( is_array( $bprc_key_error ) && ! empty( $bprc_key_error['service'] ) ) ? $bprc_key_error : null;
 
-$bprc_key_map    = array(
-	'recaptcha-v2' => array( 'wbc_recaptcha_v2_site_key', 'wbc_recaptcha_v2_secret_key' ),
-	'recaptcha-v3' => array( 'wbc_recaptcha_v3_site_key', 'wbc_recaptcha_v3_secret_key' ),
-	'turnstile'    => array( 'wbc_turnstile_site_key', 'wbc_turnstile_secret_key' ),
-	'hcaptcha'     => array( 'wbc_hcaptcha_site_key', 'wbc_hcaptcha_secret_key' ),
-	'altcha'       => array( 'wbc_altcha_hmac_key' ),
-);
-$bprc_configured = true;
-if ( isset( $bprc_key_map[ $bprc_service ] ) ) {
-	foreach ( $bprc_key_map[ $bprc_service ] as $bprc_key_opt ) {
-		if ( '' === trim( (string) get_option( $bprc_key_opt, '' ) ) ) {
-			$bprc_configured = false;
-			break;
-		}
-	}
-}
+// Keys saved, as the service itself judges them. A service can have its keys and
+// still be unable to run on this site (ALTCHA without HTTPS): that one says why.
+$bprc_service_obj     = WBC_Captcha_Service_Manager::get_instance()->get_active_service();
+$bprc_inactive_reason = ( $bprc_service_obj && method_exists( $bprc_service_obj, 'get_inactive_reason' ) ) ? $bprc_service_obj->get_inactive_reason() : '';
+$bprc_configured      = $bprc_service_obj && ( $bprc_service_obj->is_configured() || '' !== $bprc_inactive_reason );
 
-$bprc_rejections = get_transient( WBC_Captcha_Service_Manager::REJECTIONS_TRANSIENT );
-$bprc_rejections = is_array( $bprc_rejections ) ? $bprc_rejections : array();
+$bprc_rejections = WBC_Captcha_Service_Manager::get_recent_rejections();
+
+// Name each form the way the Protection tab does, e.g. "WordPress Forms: Login Form".
+require_once RFB_PLUGIN_PATH . 'admin/includes/settings-modules/class-wbc-settings-module-loader.php';
+$bprc_form_labels = wbc_settings_module_loader()->get_protection_labels();
 
 // Plain-language hints for the reason codes owners ask about most.
 $bprc_reason_hints = array(
@@ -84,6 +77,32 @@ $bprc_protect_url = admin_url( 'admin.php?page=' . BPRC_Admin::MENU_SLUG . '&tab
 			?>
 		</span>
 	</div>
+<?php elseif ( $bprc_key_error ) : ?>
+	<div class="bprc-notice bprc-notice--warn">
+		<span class="dashicons dashicons-warning" aria-hidden="true"></span>
+		<span>
+			<?php
+			printf(
+				wp_kses(
+					/* translators: 1: CAPTCHA provider name, 2: provider error codes, 3: URL to the Quick Setup tab. */
+					__( '%1$s rejected this site\'s keys (%2$s). So nobody gets locked out, CAPTCHA checks are being let through until this is fixed. <a href="%3$s">Check the keys in Quick Setup</a>.', 'buddypress-recaptcha' ),
+					array( 'a' => array( 'href' => array() ) )
+				),
+				esc_html( $bprc_key_error['service'] ),
+				esc_html( implode( ', ', (array) $bprc_key_error['codes'] ) ),
+				esc_url( $bprc_setup_url )
+			);
+			?>
+		</span>
+	</div>
+<?php elseif ( '' !== $bprc_inactive_reason ) : ?>
+	<div class="bprc-notice bprc-notice--warn">
+		<span class="dashicons dashicons-warning" aria-hidden="true"></span>
+		<span>
+			<?php echo esc_html( $bprc_inactive_reason ); ?>
+			<a href="<?php echo esc_url( $bprc_setup_url ); ?>"><?php esc_html_e( 'Open Quick Setup', 'buddypress-recaptcha' ); ?></a>
+		</span>
+	</div>
 <?php else : ?>
 	<div class="bprc-notice bprc-notice--success">
 		<span class="dashicons dashicons-yes-alt" aria-hidden="true"></span>
@@ -99,7 +118,15 @@ $bprc_protect_url = admin_url( 'admin.php?page=' . BPRC_Admin::MENU_SLUG . '&tab
 	<div class="bprc-stat">
 		<p class="bprc-stat__label"><?php esc_html_e( 'Keys Status', 'buddypress-recaptcha' ); ?></p>
 		<p class="bprc-stat__value" style="font-size:16px;">
-			<?php echo $bprc_configured ? esc_html__( 'Configured', 'buddypress-recaptcha' ) : esc_html__( 'Incomplete', 'buddypress-recaptcha' ); ?>
+			<?php
+			if ( ! $bprc_configured ) {
+				esc_html_e( 'Incomplete', 'buddypress-recaptcha' );
+			} elseif ( '' !== $bprc_inactive_reason ) {
+				esc_html_e( 'Inactive on this site', 'buddypress-recaptcha' );
+			} else {
+				esc_html_e( 'Configured', 'buddypress-recaptcha' );
+			}
+			?>
 		</p>
 	</div>
 	<div class="bprc-stat">
@@ -110,8 +137,13 @@ $bprc_protect_url = admin_url( 'admin.php?page=' . BPRC_Admin::MENU_SLUG . '&tab
 
 <div class="bprc-card">
 	<div class="bprc-card__head">
-		<p class="bprc-card__title"><?php esc_html_e( 'Get Started', 'buddypress-recaptcha' ); ?></p>
-		<p class="bprc-card__desc"><?php esc_html_e( 'Choose a CAPTCHA service, add your keys, then turn on protection for the forms you want to guard.', 'buddypress-recaptcha' ); ?></p>
+		<?php if ( $bprc_configured ) : ?>
+			<p class="bprc-card__title"><?php esc_html_e( 'Manage', 'buddypress-recaptcha' ); ?></p>
+			<p class="bprc-card__desc"><?php esc_html_e( 'Change the CAPTCHA service or its keys, or choose which forms are protected.', 'buddypress-recaptcha' ); ?></p>
+		<?php else : ?>
+			<p class="bprc-card__title"><?php esc_html_e( 'Get Started', 'buddypress-recaptcha' ); ?></p>
+			<p class="bprc-card__desc"><?php esc_html_e( 'Choose a CAPTCHA service, add your keys, then turn on protection for the forms you want to guard.', 'buddypress-recaptcha' ); ?></p>
+		<?php endif; ?>
 	</div>
 	<div class="bprc-card__body">
 		<div class="bprc-save-bar" style="padding-top:0;">
@@ -158,8 +190,17 @@ $bprc_protect_url = admin_url( 'admin.php?page=' . BPRC_Admin::MENU_SLUG . '&tab
 						}
 						?>
 						<tr>
-							<td data-label="<?php esc_attr_e( 'Time', 'buddypress-recaptcha' ); ?>"><?php echo esc_html( wp_date( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), (int) $bprc_row['time'] ) ); ?></td>
-							<td data-label="<?php esc_attr_e( 'Form', 'buddypress-recaptcha' ); ?>"><code><?php echo esc_html( $bprc_row['context'] ); ?></code></td>
+							<td data-label="<?php esc_attr_e( 'Time', 'buddypress-recaptcha' ); ?>"><?php echo esc_html( wbc_date_label( (int) $bprc_row['time'], '-' ) ); ?></td>
+							<?php
+							$bprc_ctx_opt = $bprc_service_obj instanceof WBC_Captcha_Service_Base ? $bprc_service_obj->get_context_option( (string) $bprc_row['context'] ) : '';
+							?>
+							<td data-label="<?php esc_attr_e( 'Form', 'buddypress-recaptcha' ); ?>">
+								<?php if ( isset( $bprc_form_labels[ $bprc_ctx_opt ] ) ) : ?>
+									<?php echo esc_html( $bprc_form_labels[ $bprc_ctx_opt ] ); ?>
+								<?php else : ?>
+									<code><?php echo esc_html( $bprc_row['context'] ); ?></code>
+								<?php endif; ?>
+							</td>
 							<td data-label="<?php esc_attr_e( 'Service', 'buddypress-recaptcha' ); ?>"><?php echo esc_html( isset( $bprc_service_names[ $bprc_svc ] ) ? $bprc_service_names[ $bprc_svc ] : $bprc_svc ); ?></td>
 							<td data-label="<?php esc_attr_e( 'Reason', 'buddypress-recaptcha' ); ?>">
 								<code><?php echo esc_html( $bprc_reason ); ?></code>

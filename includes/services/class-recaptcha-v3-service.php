@@ -69,42 +69,6 @@ class WBC_Recaptcha_V3_Service extends WBC_Captcha_Service_Base {
 	}
 
 	/**
-	 * Check if no-conflict mode is required
-	 *
-	 * @return bool
-	 */
-	public function requires_no_conflict() {
-		return 'yes' === $this->get_no_conflict_setting();
-	}
-
-	/**
-	 * Resolve no-conflict mode across both option spellings.
-	 *
-	 * No-conflict was stored per provider as `wbc_recapcha_no_conflict_v3`, and
-	 * WBC_Settings_Migration consolidates it into `wbc_recapcha_no_conflict`. This
-	 * service read only the `_v3` spelling, so on any site that had been migrated -
-	 * i.e. the canonical key was the one holding the value - no-conflict mode was
-	 * silently off. Resolve exactly the way wbc_get_no_conflict_option() does.
-	 *
-	 * @since 2.2.0
-	 *
-	 * @return string 'yes' or 'no'.
-	 */
-	private function get_no_conflict_setting() {
-		if ( function_exists( 'wbc_get_no_conflict_option' ) ) {
-			return wbc_get_no_conflict_option();
-		}
-
-		foreach ( array( 'wbc_recapcha_no_conflict', 'wbc_recapcha_no_conflict_v3' ) as $key ) {
-			if ( 'yes' === get_option( $key ) ) {
-				return 'yes';
-			}
-		}
-
-		return 'no';
-	}
-
-	/**
 	 * Get the verification endpoint URL
 	 *
 	 * @return string
@@ -120,24 +84,6 @@ class WBC_Recaptcha_V3_Service extends WBC_Captcha_Service_Base {
 	 */
 	public function get_response_field_name() {
 		return 'g-recaptcha-response';
-	}
-
-	/**
-	 * Get URLs that might conflict
-	 *
-	 * @return array
-	 */
-	protected function get_conflict_urls() {
-		return array( 'google.com/recaptcha', 'gstatic.com/recaptcha' );
-	}
-
-	/**
-	 * Get allowed script handles
-	 *
-	 * @return array
-	 */
-	protected function get_allowed_handles() {
-		return array( 'wbc-recaptcha-v3', 'wbc-woo-captcha-v3' );
 	}
 
 	/**
@@ -177,18 +123,6 @@ class WBC_Recaptcha_V3_Service extends WBC_Captcha_Service_Base {
 			$secret_key = get_option( 'wbc_recaptcha-v3_secret_key', '' );
 		}
 		return $secret_key;
-	}
-
-	/**
-	 * Check if service is properly configured
-	 *
-	 * @return bool
-	 */
-	public function is_configured() {
-		$site_key   = $this->get_site_key();
-		$secret_key = $this->get_secret_key();
-
-		return ! empty( $site_key ) && ! empty( $secret_key );
 	}
 
 	/**
@@ -359,18 +293,18 @@ class WBC_Recaptcha_V3_Service extends WBC_Captcha_Service_Base {
 	private function get_score_threshold( $context ) {
 		// Primary source: the global threshold the admin UI actually saves
 		// (Advanced tab -> reCAPTCHA v3 score threshold). A single global value
-		// applies to every context unless a legacy per-context override exists.
+		// applies to every context unless a 1.x per-form override exists.
 		$global = get_option( 'wbc_recaptcha_v3_score_threshold', '' );
 		if ( '' === $global || false === $global ) {
 			$global = get_option( 'wbc_recaptcha_v3_score', '' ); // Where the 2.x migration put the 1.x score.
 		}
 
-		// Legacy per-context overrides (pre-2.1 typo-spelled keys). Kept only as a
-		// fallback so older installs that set these keep their tuned values.
+		// 1.x per-form overrides, under the exact keys 1.x saved, so upgraded
+		// sites keep their tuned values.
 		$legacy_map = array(
-			'wp_login'           => 'wbc_recapcha_login_score_threshold_v3',
+			'wp_login'           => 'wbc_recapcha_wp_login_score_threshold_v3',
 			'wp_register'        => 'wbc_recapcha_wp_register_score_threshold_v3',
-			'wp_lostpassword'    => 'wbc_recapcha_wp_lostpassword_score_threshold_v3',
+			'wp_lostpassword'    => 'wbc_recapcha_wp_lost_password_score_threshold_v3',
 			'woo_login'          => 'wbc_recapcha_login_score_threshold_v3',
 			'woo_register'       => 'wbc_recapcha_signup_score_threshold_v3',
 			'woo_lostpassword'   => 'wbc_recapcha_lostpassword_score_threshold_v3',
@@ -383,11 +317,13 @@ class WBC_Recaptcha_V3_Service extends WBC_Captcha_Service_Base {
 
 		$legacy = isset( $legacy_map[ $context ] ) ? get_option( $legacy_map[ $context ], '' ) : '';
 
-		// Prefer the global admin value; fall back to a legacy override; then 0.5.
-		if ( '' !== $global ) {
-			$threshold = $global;
-		} elseif ( '' !== $legacy ) {
+		// A per-form value the owner tuned in 1.x wins; then the global admin
+		// value; then 0.5. The global field shows 0.5 by default, so letting it
+		// win would reset every tuned form the first time any tab is saved.
+		if ( '' !== $legacy && false !== $legacy ) {
 			$threshold = $legacy;
+		} elseif ( '' !== $global && false !== $global ) {
+			$threshold = $global;
 		} else {
 			$threshold = '0.5';
 		}
@@ -546,10 +482,7 @@ class WBC_Recaptcha_V3_Service extends WBC_Captcha_Service_Base {
 
 		$site_key = $this->get_site_key();
 
-		// Check for no-conflict mode.
-		if ( 'yes' === $this->get_no_conflict_setting() ) {
-			$this->dequeue_conflicting_scripts();
-		}
+		$this->handle_no_conflict_mode();
 
 		/*
 		 * A form can render after the footer scripts have already printed (some
@@ -791,39 +724,5 @@ class WBC_Recaptcha_V3_Service extends WBC_Captcha_Service_Base {
 		}
 
 		wp_add_inline_script( 'wbc-recaptcha-v3', $script );
-	}
-
-	/**
-	 * Dequeue conflicting reCAPTCHA scripts
-	 *
-	 * @return void
-	 */
-	private function dequeue_conflicting_scripts() {
-		global $wp_scripts;
-
-		if ( ! isset( $wp_scripts->queue ) ) {
-			return;
-		}
-
-		$urls            = array( 'google.com/recaptcha', 'gstatic.com/recaptcha' );
-		$allowed_handles = array( 'wbc-recaptcha-v3', 'wbc-woo-captcha-v3' );
-
-		foreach ( $wp_scripts->queue as $handle ) {
-			if ( in_array( $handle, $allowed_handles, true ) ) {
-				continue;
-			}
-
-			if ( ! isset( $wp_scripts->registered[ $handle ] ) ) {
-				continue;
-			}
-
-			foreach ( $urls as $url ) {
-				if ( false !== strpos( $wp_scripts->registered[ $handle ]->src, $url ) ) {
-					wp_dequeue_script( $handle );
-					wp_deregister_script( $handle );
-					break;
-				}
-			}
-		}
 	}
 }

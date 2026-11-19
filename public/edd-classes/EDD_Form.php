@@ -45,6 +45,30 @@ class EDD_Form {
 	}
 
 	/**
+	 * Load the provider script with the checkout page.
+	 *
+	 * With more than one gateway, EDD loads the purchase form (and the widget
+	 * inside it) over AJAX after the gateway is picked. A script enqueued during
+	 * that AJAX response is never printed, so the widget stayed empty and every
+	 * purchase was rejected. Loading it with the page, plus the redraw on
+	 * edd_gateway_loaded in wbc-captcha-refresh.js, draws it every time.
+	 */
+	public function enqueue_checkout_assets() {
+		if ( ! function_exists( 'edd_is_checkout' ) || ! edd_is_checkout() || 'yes' !== get_option( 'wbc_recaptcha_enable_on_edd_checkout' ) ) {
+			return;
+		}
+		if ( WBC_Captcha_Service_Manager::is_disabled_by_constant() ) {
+			return;
+		}
+		$service = wbc_captcha_service_manager()->get_active_service();
+		if ( ! $service || ! $service->is_configured() ) {
+			return;
+		}
+		$service->enqueue_scripts( 'edd_checkout' );
+		wp_enqueue_script( 'wbc-captcha-refresh' );
+	}
+
+	/**
 	 * Render CAPTCHA in EDD login form
 	 *
 	 * Adds CAPTCHA HTML to the login form.

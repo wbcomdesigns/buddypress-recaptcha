@@ -186,6 +186,9 @@ class WBC_Captcha_Service_Manager {
 	 * @return WBC_Captcha_Service_Interface|null
 	 */
 	public function get_active_service() {
+		// Re-read the (autoloaded) option so a service saved earlier in this
+		// request, as on the Quick Setup save, is the one every caller sees.
+		$this->init_active_service();
 		return $this->active_service;
 	}
 
@@ -257,7 +260,10 @@ class WBC_Captcha_Service_Manager {
 				return;
 			}
 
-			// Enqueue scripts.
+			// Enqueue scripts. The theme script goes first so it sets data-theme
+			// before the provider script draws the widget.
+			wp_enqueue_style( 'buddypress-recaptcha' );
+			wp_enqueue_script( 'wbc-captcha-theme' );
 			if ( method_exists( $service, 'enqueue_scripts' ) ) {
 				$service->enqueue_scripts( $context );
 			}
@@ -336,6 +342,12 @@ class WBC_Captcha_Service_Manager {
 			return true; // Don't block if not enabled for this context.
 		}
 
+		// Allowlisted IPs skip verification for every provider, including ones
+		// registered by other plugins (render() already hides their widget).
+		if ( $this->is_ip_whitelisted() ) {
+			return true;
+		}
+
 		// Get response from POST if not provided.
 		if ( null === $response ) {
 			$field_name = $service->get_response_field_name();
@@ -351,6 +363,15 @@ class WBC_Captcha_Service_Manager {
 		try {
 			$result = $service->verify( $response, $args );
 			$reason = $service instanceof WBC_Captcha_Service_Base ? $service->pull_failure_reason() : '';
+
+			// The provider could not be reached or answered garbage: an outage,
+			// not a bad visitor. Let a submitted token through unless the owner
+			// chose "Block when the provider is down". An empty token never passes.
+			if ( ! $result && in_array( $reason, array( 'network-error', 'bad-response' ), true ) && '' !== (string) $response && ! $this->fail_closed( $context ) ) {
+				$this->log_error( 'Captcha provider unreachable (' . $reason . '); submission allowed because fail-closed is off', $context );
+				$this->verified_contexts[ $context ] = true;
+				return true;
+			}
 
 			if ( ! $result ) {
 				$this->log_info( 'Captcha verification failed for context: ' . $context );
@@ -393,8 +414,7 @@ class WBC_Captcha_Service_Manager {
 	 * @return void
 	 */
 	private function record_rejection( $context, $service, $reason ) {
-		$log = get_transient( self::REJECTIONS_TRANSIENT );
-		$log = is_array( $log ) ? $log : array();
+		$log = self::get_recent_rejections();
 		array_unshift(
 			$log,
 			array(
@@ -405,6 +425,25 @@ class WBC_Captcha_Service_Manager {
 			)
 		);
 		set_transient( self::REJECTIONS_TRANSIENT, array_slice( $log, 0, 20 ), WEEK_IN_SECONDS );
+	}
+
+	/**
+	 * The stored rejections from the last 7 days, newest first. Every write renews the
+	 * transient's expiry, so each row's own time is checked here.
+	 *
+	 * @return array
+	 */
+	public static function get_recent_rejections() {
+		$log    = get_transient( self::REJECTIONS_TRANSIENT );
+		$cutoff = time() - WEEK_IN_SECONDS;
+		return array_values(
+			array_filter(
+				is_array( $log ) ? $log : array(),
+				static function ( $row ) use ( $cutoff ) {
+					return is_array( $row ) && isset( $row['time'] ) && (int) $row['time'] >= $cutoff;
+				}
+			)
+		);
 	}
 
 	/**
@@ -455,6 +494,30 @@ class WBC_Captcha_Service_Manager {
 		// Live check, not a cached flag: the notice disappears the moment keys are saved.
 		$service = $this->get_active_service();
 		if ( $service && $service->is_configured() ) {
+			return;
+		}
+
+		// A service that has its keys but cannot run on this site says why.
+		$reason = ( $service && method_exists( $service, 'get_inactive_reason' ) ) ? $service->get_inactive_reason() : '';
+		if ( '' !== $reason ) {
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only tab check.
+			$on_setup = isset( $_GET['page'], $_GET['tab'] ) && 'buddypress-recaptcha' === $_GET['page'] && 'rfw-general' === $_GET['tab'];
+			if ( $on_setup ) {
+				echo '<div class="notice notice-warning wbc-captcha-config-notice"><p>' . esc_html( $reason ) . '</p></div>';
+				return;
+			}
+			echo '<div class="notice notice-warning wbc-captcha-config-notice"><p>';
+			echo wp_kses(
+				sprintf(
+					/* translators: 1: reason the CAPTCHA service is inactive, 2: opening anchor tag, 3: closing anchor tag */
+					__( '%1$s %2$sOpen settings%3$s.', 'buddypress-recaptcha' ),
+					esc_html( $reason ),
+					'<a href="' . esc_url( $settings_url ) . '">',
+					'</a>'
+				),
+				array( 'a' => array( 'href' => array() ) )
+			);
+			echo '</p></div>';
 			return;
 		}
 

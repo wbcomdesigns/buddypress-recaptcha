@@ -1,5 +1,7 @@
 # Hooks & Filters Reference
 
+> **Included in Free**
+
 Complete reference of all hooks and filters available in Wbcom CAPTCHA Manager.
 
 ## 📚 Table of Contents
@@ -400,16 +402,3 @@ add_filter( 'wbc_should_verify_captcha', 'my_early_exemption', 5, 3 );
 // Run after (e.g. to log the final decision)
 add_filter( 'wbc_should_verify_captcha', 'my_logging', 15, 3 );
 ```
-
----
-
-## More Resources
-
-- [Main Developer Guide](README.md) - Complete technical documentation
-- [Creating Custom Integrations](README.md#creating-custom-integrations)
-- [CAPTCHA Service API](README.md#captcha-service-api)
-- [Testing & Debugging](README.md#testing--debugging)
-
----
-
-**Need a hook that doesn't exist?** [Request it on GitHub](https://github.com/wbcomdesigns/buddypress-recaptcha/issues) or contact support.

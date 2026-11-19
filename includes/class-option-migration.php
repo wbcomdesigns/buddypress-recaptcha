@@ -27,6 +27,11 @@ class WBC_Option_Migration {
 	const MIGRATION_KEY = 'wbc_option_migration_v2_completed';
 
 	/**
+	 * One-time 1.x settings repair marker (2.2.4).
+	 */
+	const REPAIR_KEY = 'wbc_option_migration_1x_repair';
+
+	/**
 	 * Old to new option name mapping
 	 *
 	 * @var array
@@ -40,7 +45,8 @@ class WBC_Option_Migration {
 		'wbc_recapcha_enable_on_login'                => 'wbc_recaptcha_enable_on_login',
 		'wbc_recapcha_enable_on_signup'               => 'wbc_recaptcha_enable_on_signup',
 		'wbc_recapcha_enable_on_lostpassword'         => 'wbc_recaptcha_enable_on_lostpassword',
-		'wbc_recapcha_enable_on_signup_bp'            => 'wbc_recaptcha_enable_on_signup_bp',
+		// 1.x stored BuddyPress sign-up as signup_bp; 2.x reads and saves `buddypress`.
+		'wbc_recapcha_enable_on_signup_bp'            => 'wbc_recaptcha_enable_on_buddypress',
 		'wbc_recapcha_enable_on_guestcheckout'        => 'wbc_recaptcha_enable_on_guestcheckout',
 		'wbc_recapcha_enable_on_logincheckout'        => 'wbc_recaptcha_enable_on_logincheckout',
 		'wbc_recapcha_enable_on_comment'              => 'wbc_recaptcha_enable_on_comment',
@@ -69,6 +75,10 @@ class WBC_Option_Migration {
 	 * Run migration.
 	 */
 	public static function migrate() {
+		// Sites already on 2.x ran the rename before the 1.x keys were mapped
+		// correctly; repair them once, whatever the rename state.
+		self::repair_1x_settings();
+
 		// Check if migration already completed.
 		if ( get_option( self::MIGRATION_KEY ) ) {
 			return;
@@ -113,6 +123,84 @@ class WBC_Option_Migration {
 					$migrated_count
 				)
 			);
+		}
+	}
+
+	/**
+	 * Restore 1.x settings that the 2.0 rename left under keys nothing reads.
+	 *
+	 * Runs once (REPAIR_KEY). Each value is only added where the 2.x key is
+	 * still missing, so a choice the owner made after upgrading always wins.
+	 * Per-form v3 thresholds need no copy: the v3 service reads the 1.x keys.
+	 */
+	private static function repair_1x_settings() {
+		if ( get_option( self::REPAIR_KEY ) ) {
+			return;
+		}
+
+		// BuddyPress sign-up: 1.x key, or where the 2.0 rename wrongly put it.
+		foreach ( array( 'wbc_recapcha_enable_on_signup_bp', 'wbc_recaptcha_enable_on_signup_bp' ) as $old ) {
+			$value = get_option( $old );
+			if ( false !== $value ) {
+				add_option( 'wbc_recaptcha_enable_on_buddypress', $value );
+				break;
+			}
+		}
+
+		// reCAPTCHA v2 widget theme: 1.x stored one per form, 2.x has one. The
+		// login form's choice is what most visitors saw, so it leads.
+		if ( false === get_option( 'wbc_recaptcha_theme' ) ) {
+			$theme_keys = array(
+				'wbc_recapcha_wplogin_theme',
+				'wbc_recapcha_login_theme',
+				'wbc_recapcha_signup_theme_bp',
+				'wbc_recapcha_wpregister_theme',
+				'wbc_recapcha_signup_theme',
+				'wbc_recapcha_wplostpassword_theme',
+				'wbc_recapcha_lostpassword_theme',
+				'wbc_recapcha_guestcheckout_theme',
+				'wbc_recapcha_woo_comment_theme',
+				'wc_settings_tab_demo_recapcha_v2_theme',
+				'wbc_recaptcha_v2_theme',
+			);
+			foreach ( $theme_keys as $key ) {
+				$theme = get_option( $key );
+				if ( in_array( $theme, array( 'light', 'dark' ), true ) ) {
+					add_option( 'wbc_recaptcha_theme', $theme );
+					break;
+				}
+			}
+		}
+
+		update_option( self::REPAIR_KEY, '2.2.4', false );
+	}
+
+	/**
+	 * When the owner changes the global v3 threshold, drop the 1.x per-form
+	 * values so the new global applies to every form, as the field promises.
+	 * Saving the same value (any Quick Setup save) leaves them alone.
+	 *
+	 * @param mixed $old_value Previous threshold.
+	 * @param mixed $value     New threshold.
+	 */
+	public static function forget_1x_thresholds( $old_value, $value ) {
+		if ( (string) $old_value === (string) $value ) {
+			return;
+		}
+		$keys = array(
+			'wbc_recapcha_wp_login_score_threshold_v3',
+			'wbc_recapcha_wp_register_score_threshold_v3',
+			'wbc_recapcha_wp_lost_password_score_threshold_v3',
+			'wbc_recapcha_login_score_threshold_v3',
+			'wbc_recapcha_signup_score_threshold_v3',
+			'wbc_recapcha_lostpassword_score_threshold_v3',
+			'wbc_recapcha_checkout_score_threshold_v3',
+			'wbc_recapcha_signup_score_threshold_v3_bp',
+			'wbc_recapcha_bbpress_topic_score_threshold_v3',
+			'wbc_recapcha_bbpress_reply_score_threshold_v3',
+		);
+		foreach ( $keys as $key ) {
+			delete_option( $key );
 		}
 	}
 

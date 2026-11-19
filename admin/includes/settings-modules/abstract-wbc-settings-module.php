@@ -41,6 +41,13 @@ abstract class WBC_Settings_Module_Abstract implements WBC_Settings_Module_Inter
 	protected $module_name = '';
 
 	/**
+	 * Labels collected by create_settings_section(), keyed by option id.
+	 *
+	 * @var array<string,string>
+	 */
+	protected $protection_labels = array();
+
+	/**
 	 * Get module ID
 	 *
 	 * @return string
@@ -56,6 +63,17 @@ abstract class WBC_Settings_Module_Abstract implements WBC_Settings_Module_Inter
 	 */
 	public function get_module_name() {
 		return $this->module_name;
+	}
+
+	/**
+	 * Option id => "Section: Form" label, exactly as the Protection tab names each form.
+	 *
+	 * @return array<string,string>
+	 */
+	public function get_protection_labels() {
+		$this->protection_labels = array();
+		$this->get_protection_settings();
+		return $this->protection_labels;
 	}
 
 	/**
@@ -127,6 +145,11 @@ abstract class WBC_Settings_Module_Abstract implements WBC_Settings_Module_Inter
 	 * @return array Settings array.
 	 */
 	protected function create_settings_section( $section_id, $section_name, $checkboxes ) {
+		foreach ( $checkboxes as $checkbox ) {
+			/* translators: 1: settings section name, e.g. "WordPress Forms". 2: form name, e.g. "Login Form". */
+			$this->protection_labels[ $checkbox['id'] ] = sprintf( __( '%1$s: %2$s', 'buddypress-recaptcha' ), $section_name, $checkbox['label'] );
+		}
+
 		return array(
 			array(
 				'name' => esc_html( $section_name ),

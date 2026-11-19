@@ -60,15 +60,6 @@ abstract class WBC_Captcha_Service_Base implements WBC_Captcha_Service_Interface
 	abstract public function get_script_handle( $context = 'default' );
 
 	/**
-	 * Check if no-conflict mode is required
-	 *
-	 * @return bool
-	 */
-	public function requires_no_conflict() {
-		return false;
-	}
-
-	/**
 	 * Get the verification endpoint URL
 	 *
 	 * @return string
@@ -181,14 +172,24 @@ abstract class WBC_Captcha_Service_Base implements WBC_Captcha_Service_Interface
 	 * @return bool
 	 */
 	public function is_enabled_for_context( $context ) {
-		$option_map  = $this->get_context_option_map();
-		$option_name = isset( $option_map[ $context ] ) ? $option_map[ $context ] : '';
+		$option_name = $this->get_context_option( $context );
 
 		if ( empty( $option_name ) ) {
 			return false;
 		}
 
 		return 'yes' === get_option( $option_name );
+	}
+
+	/**
+	 * The option that switches protection on for a form context, e.g. wp_login.
+	 *
+	 * @param string $context The context identifier.
+	 * @return string Option name, or '' for an unknown context.
+	 */
+	public function get_context_option( $context ) {
+		$option_map = $this->get_context_option_map();
+		return isset( $option_map[ $context ] ) ? $option_map[ $context ] : '';
 	}
 
 	/**
@@ -206,6 +207,7 @@ abstract class WBC_Captcha_Service_Base implements WBC_Captcha_Service_Interface
 			'woo_lostpassword'     => 'wbc_recaptcha_enable_on_lostpassword',
 			'bp_register'          => 'wbc_recaptcha_enable_on_buddypress',  // Admin saves as 'buddypress' not 'signup_bp'.
 			'bp_group_create'      => 'wbc_recaptcha_enable_on_bp_group_create',
+			'contact_me'           => 'wbc_recaptcha_enable_on_contact_me',
 			'bbpress_topic'        => 'wbc_recaptcha_enable_on_bbpress_topic',
 			'bbpress_reply'        => 'wbc_recaptcha_enable_on_bbpress_reply',
 			'woo_checkout_guest'   => 'wbc_recaptcha_enable_on_guestcheckout',
@@ -237,9 +239,7 @@ abstract class WBC_Captcha_Service_Base implements WBC_Captcha_Service_Interface
 	 * @return void
 	 */
 	public function enqueue_scripts( $context ) {
-		if ( $this->requires_no_conflict() ) {
-			$this->handle_no_conflict_mode();
-		}
+		$this->handle_no_conflict_mode();
 
 		wp_enqueue_script( 'jquery' );
 
@@ -258,23 +258,29 @@ abstract class WBC_Captcha_Service_Base implements WBC_Captcha_Service_Interface
 	}
 
 	/**
-	 * Handle no-conflict mode
+	 * No-conflict mode (Advanced tab): remove CAPTCHA scripts that a theme or
+	 * another plugin enqueued, so only this plugin's widget runs. One
+	 * implementation for every provider; the toggle saves
+	 * `wbc_recapcha_no_conflict`, read through wbc_get_no_conflict_option().
 	 */
 	protected function handle_no_conflict_mode() {
-		$no_conflict = $this->get_option( 'no_conflict', 'no' );
-		if ( 'yes' !== $no_conflict ) {
+		if ( ! function_exists( 'wbc_get_no_conflict_option' ) || 'yes' !== wbc_get_no_conflict_option() ) {
 			return;
 		}
 
 		global $wp_scripts;
-		$urls            = $this->get_conflict_urls();
-		$allowed_handles = $this->get_allowed_handles();
+		if ( ! isset( $wp_scripts->queue ) ) {
+			return;
+		}
 
 		foreach ( $wp_scripts->queue as $handle ) {
-			foreach ( $urls as $url ) {
-				if ( false !== strpos( $wp_scripts->registered[ $handle ]->src, $url ) && ! in_array( $handle, $allowed_handles, true ) ) {
+			// Our own provider and helper scripts all use the wbc- prefix.
+			if ( 0 === strpos( $handle, 'wbc-' ) || ! isset( $wp_scripts->registered[ $handle ] ) ) {
+				continue;
+			}
+			foreach ( $this->get_conflict_urls() as $url ) {
+				if ( false !== strpos( (string) $wp_scripts->registered[ $handle ]->src, $url ) ) {
 					wp_dequeue_script( $handle );
-					wp_deregister_script( $handle );
 					break;
 				}
 			}
@@ -282,21 +288,19 @@ abstract class WBC_Captcha_Service_Base implements WBC_Captcha_Service_Interface
 	}
 
 	/**
-	 * Get URLs that might conflict
+	 * Script URL fragments of every CAPTCHA provider a theme or plugin may load.
 	 *
 	 * @return array
 	 */
 	protected function get_conflict_urls() {
-		return array();
-	}
-
-	/**
-	 * Get allowed script handles
-	 *
-	 * @return array
-	 */
-	protected function get_allowed_handles() {
-		return array();
+		return array(
+			'google.com/recaptcha',
+			'gstatic.com/recaptcha',
+			'recaptcha.net/recaptcha',
+			'hcaptcha.com/1/api.js',
+			'challenges.cloudflare.com/turnstile',
+			'altcha',
+		);
 	}
 
 	/**
@@ -356,6 +360,7 @@ abstract class WBC_Captcha_Service_Base implements WBC_Captcha_Service_Interface
 			'woo_lostpassword'     => '.woocommerce-ResetPassword',
 			'bp_register'          => '#signup_form',
 			'bp_group_create'      => '#create-group-form',
+			'contact_me'           => 'form.bcm-form',
 			'bbpress_topic'        => '#new-post',
 			'bbpress_reply'        => '#new-post',
 			'woo_checkout'         => 'form.checkout',
@@ -422,6 +427,7 @@ abstract class WBC_Captcha_Service_Base implements WBC_Captcha_Service_Interface
 			'woo_lostpassword'     => '.woocommerce-Button',
 			'bp_register'          => '#submit, #signup_submit',
 			'bp_group_create'      => '#group-creation-create',
+			'contact_me'           => 'form.bcm-form .bcm-submit',
 			'bbpress_topic'        => '#bbp_topic_submit',
 			'bbpress_reply'        => '#bbp_reply_submit',
 			'woo_checkout'         => '#place_order',

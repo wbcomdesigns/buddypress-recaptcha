@@ -23,20 +23,20 @@
 ## Quick reference
 
 - **Main file**: `recaptcha-for-buddypress.php`
-- **Version**: `2.2.3`
+- **Version**: `2.2.4`
 - **Requires PHP**: `8.1` (CI lints 8.1 through 8.5)
 - **Class prefixes**: `WBC_*`, `Recaptcha_For_BuddyPress*`, `BPRC_*` (no PSR-4 namespace)
 - **Requires at least**: `6.3` — set by `blocks/login-widget/block.json` `apiVersion 3`. This is the real code-justified floor; do not raise it without a code reason. (History: a truthful 5.9 was set 2026-06-04, then overwritten with an unjustified 6.9; corrected to 6.3 on 2026-07-16.)
 - **Text domain**: `buddypress-recaptcha`
 - **Repo**: https://github.com/wbcomdesigns/buddypress-recaptcha
-- **Distribution**: wbcomdesigns.com via the official EDD SL SDK with a **preset unlimited-activation key** (`d23187723b1423b54ef206a3588a1845`, baked into the registration + seeded/activated once per site on `admin_init` — BuddyNext pattern, owner decision 2026-08-04; replaced the earlier keyless mode). `item_id 1246648`. The SDK lives at **`libs/edd-sl-sdk/`** (uniform Wbcom layout, byte-identical `src/` to BuddyNext's copy which carries two fixes over upstream 1.0.3: a non-object API-response fatal guard in `Updaters/Plugin.php` and `plugins_url()`-based asset URLs in `Utilities/Path.php`). The require is guarded on `src/Versions.php` existing and degrades to a soft admin notice. Root `vendor/` is dev-only (gitignored, excluded from dist). **Do not touch the vendored SDK itself or the `item_id`; refresh it by copying BuddyNext's `libs/edd-sl-sdk/src`.**
+- **Distribution**: wbcomdesigns.com via the official EDD SL SDK with a **preset unlimited-activation key** (`d23187723b1423b54ef206a3588a1845`, baked into the registration + seeded/activated once per site on `admin_init` — BuddyNext pattern, owner decision 2026-08-04; replaced the earlier keyless mode). `item_id 1246648`. The SDK lives at **`libs/edd-sl-sdk/`** (uniform Wbcom layout, byte-identical `src/` to BuddyNext's copy which carries two fixes over upstream 1.0.3: a non-object API-response fatal guard in `Updaters/Plugin.php` and `plugins_url()`-based asset URLs in `Utilities/Path.php`). The require is guarded on `src/Versions.php` existing and degrades to a soft admin notice. Root `vendor/` is dev-only (gitignored, excluded from dist). **Signed updates (2.2.4):** `libs/edd-sl-sdk` and `libs/package-signatures` are byte-identical copies of Member Type 1.3.1's `libs/` (the signed Wbcom SDK fork; its `Path.php` resolves asset URLs symlink-safely with `plugins_url()` as fallback and `Updaters/Plugin.php` keeps the non-object guard). Licence host `RFB_LICENCE_HOST` (updates.wbcomdesigns.com, fallback wbcomdesigns.com), every licence call through `rfb_licence_request()`, signature product name = store slug `buddypress-recaptcha`. **Do not touch the vendored libs or the `item_id`; refresh them by copying Member Type's `libs/`.**
 - **Extends**: nothing (standalone — no Pro counterpart)
 
 ## Verification rules (2.2.3) - read before touching any integration
 
 - **Tokens are single-use.** Verify each submission exactly once. If a plugin runs its own AJAX pre-check before the real submit (EDD checkout, `edd_ajax`), skip the pre-check, never verify twice. `verified_contexts` in the manager dedupes within one request only.
 - **Hook the integration's own validation, not a render or after-save hook.** CF7 uses `wpcf7_spam`; Ninja Forms reads the token from `$form_data['extra']['wbc_captcha']` (sent by `wbc-captcha-refresh.js` on `before:submit`); Elementor Pro renders through `elementor/widget/render_content`; WP login runs on `authenticate` priority 99, which also covers XML-RPC (password logins blocked, application passwords pass, filter `wbc_allow_xmlrpc_password_login`).
-- **WooCommerce block checkout** posts through the Store API: the token travels as extension data under namespace `wbc-captcha` (`public/js/wbc-checkout-block.js`) and is verified on `woocommerce_store_api_checkout_update_order_from_request`, POST only. Express-pay skip is limited to gateways in `wbc_captcha_express_gateways` and can be turned off with `wbc_captcha_skip_express_checkout`.
+- **WooCommerce block checkout** posts through the Store API: the token travels as extension data under namespace `wbc-captcha` (`public/js/wbc-checkout-block.js`) and is verified on `woocommerce_store_api_checkout_update_order_from_request`, POST only. Express-pay skip is limited to gateways in `wbc_captcha_express_gateways` and can be turned off with `wbc_captcha_skip_express_checkout`. The classic checkout skips only inside a real express request (`doing_action( "wc_ajax_" . endpoint )`, endpoints from `wbc_captcha_express_endpoints`); a posted payment-request type alone never skips. Store API pay-for-order is skipped only on the real `/wc/store/checkout/{id}` route, never on a body `id`.
 - **Fail open only on owner mistakes.** `KEY_ERROR_CODES` (`missing-input-secret`, `invalid-input-secret`) let the submission through and show an admin notice; every visitor-side or token-dependent code fails closed. Do not add hCaptcha `sitekey-secret-mismatch` / `invalid-sitekey`: a forged token can trigger them. `WBC_CAPTCHA_DISABLE` in wp-config is the lockout escape hatch.
 - **ALTCHA challenges come from REST, never the page.** The widget uses `challengeurl` → `wbc-captcha/v1/altcha-challenge` (`Cache-Control: no-store`). Solutions are single-use (signature kept in a transient until expiry), so an embedded `challengejson` makes every retry and every cached-page visitor after the first fail as a replay. The HMAC key never leaves the server.
 - **Every rejection is logged for the owner.** A service sets `$this->failure_reason` (short code) before returning false; the manager pulls it after `verify()` and keeps the newest 20 in the `wbc_captcha_rejections` transient (7 days, shown on Overview). Never store the token, secret or IP. New failure paths set a code; unknown ones fall back to `rejected` / `missing-token`.
@@ -67,33 +67,17 @@ public function get_site_key();             // reads wbc_<provider>_site_key
 public function get_secret_key();           // reads wbc_<provider>_secret_key
 public function get_script_url();           // provider api.js (?hl=lang for hCaptcha + reCAPTCHA v2 since 2.1.0)
 public function get_script_handle( $context );
-public function render( $context, $args );  // emits HTML + per-render <style> + <script>
+public function render( $context, $args );  // emits HTML + inline <script> (wp_print_inline_script_tag)
 public function verify( $response, $args ); // calls /siteverify, applies wbc_captcha_verified filter
 public function get_verify_endpoint();
 public function get_response_field_name();  // e.g., 'h-captcha-response'
-public function requires_no_conflict();     // dequeue conflicting scripts?
 ```
 
 Adding a new provider = create `includes/services/class-<id>-service.php` + register it in `WBC_Captcha_Service_Manager::register_default_services()` OR via the `wbc_register_captcha_services` action (3rd-party).
 
-## Per-render rendering pattern (since 2.1.0)
+## Render pattern (2.2.4)
 
-The hCaptcha / reCAPTCHA v2 services emit a per-render `<style>` block instead of inline-styled wrapper:
-
-```html
-<input type="hidden" name="<context>-nonce" value="<nonce>" />
-<div class="wbc_<provider>_field"><div id="<provider>-<context>-wbc" class="..." data-callback="<cb>" ... /></div>
-<style>
-  .wbc_<provider>_field { text-align: center; }
-  /* scaling only at non-compact size */
-  #<provider>-<context>-wbc { transform: scale(.89); transform-origin: 0 0; ... }
-</style>
-<script>
-  window.<provider>Callback_<context> = function(token) { /* re-enable submit + fire woo_<context>_captcha_verified */ };
-</script>
-```
-
-If you add a new provider with a checkbox-style widget, mirror this pattern — don't add inline `style="..."` to the wrapper.
+Services print the nonce field, a `<div class="wbc_<provider>_field">` wrapper and the callback through `wp_print_inline_script_tag()`. No per-render `<style>`: sizing lives in `public/css/recaptcha-for-buddypress-public.css` (normal-size v2/hCaptcha scaled 0.89, keyed on `data-size`). No-conflict mode is one implementation, `WBC_Captcha_Service_Base::handle_no_conflict_mode()`, for every provider.
 
 ## Important patterns
 

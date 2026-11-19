@@ -1,0 +1,13 @@
+{
+  "product": "Wbcom CAPTCHA Manager",
+  "productType": "plugin",
+  "shortId": "wbc-captcha",
+  "sections": [
+    { "name": "Getting Started", "folder": "getting-started", "description": "Install the plugin, pick a provider and protect your first form." },
+    { "name": "Features", "folder": "features", "description": "The five providers, the forms they protect and the login widget and block." },
+    { "name": "Settings", "folder": "settings", "description": "Every option on the Quick Setup, Protection and Advanced tabs." },
+    { "name": "Developer Guide", "folder": "developer-guide", "description": "Actions and filters for adding a provider or changing when a CAPTCHA shows." },
+    { "name": "FAQ", "folder": "faq", "description": "Short answers to common questions." },
+    { "name": "Troubleshooting", "folder": "troubleshooting", "description": "Fixes for a CAPTCHA that does not show, blocks real visitors or fails to verify." }
+  ]
+}
