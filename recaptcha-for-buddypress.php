@@ -154,9 +154,15 @@ if ( file_exists( $rfb_sdk_path )
 	&& file_exists( plugin_dir_path( __FILE__ ) . 'libs/edd-sl-sdk/src/Versions.php' ) ) {
 	require_once $rfb_sdk_path;
 } elseif ( is_admin() ) {
+	// Our own copy is missing, but another Wbcom plugin may bundle the SDK: the registry hook above
+	// still registers this item there and updates keep working. Warn only when no SDK is loaded at
+	// all, judged at render time (admin_notices runs after every plugin has loaded).
 	add_action(
 		'admin_notices',
 		function () {
+			if ( class_exists( '\\EasyDigitalDownloads\\Updater\\Versions' ) ) {
+				return;
+			}
 			echo '<div class="notice notice-warning"><p>'
 				. esc_html__( 'Wbcom CAPTCHA Manager: the bundled update SDK is incomplete, so automatic updates are turned off. Reinstall the plugin from a complete package to restore them. Every other feature works normally.', 'buddypress-recaptcha' )
 				. '</p></div>';
