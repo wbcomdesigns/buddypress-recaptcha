@@ -4,12 +4,16 @@
 
 1. Check the Overview tab for a key or provider warning.
 2. Check the form's switch on the Protection tab.
-3. With ALTCHA, the site address must be HTTPS.
+3. With ALTCHA, the site address must be HTTPS (or localhost). On any other address ALTCHA stays off, forms are not locked, and the Overview tab says why.
 4. Turn off No-conflict mode if another script is being removed.
+
+## The Overview tab says the provider rejected the keys
+
+The provider refused this site's keys. Until you fix them, CAPTCHA checks are let through so nobody is locked out. The site key and secret key may not belong together, or may not be valid for this domain. Create a new key pair with the provider and save both again.
 
 ## Visitors see "Security verification failed"
 
-The token was rejected or already used. Reload the form and solve it again. The Overview tab lists recent rejections with the reason.
+The token was rejected or already used. Reload the form and solve it again. The Overview tab lists rejections from the last 7 days, naming each form as the Protection tab does, with the reason.
 
 ## Visitors see "Please complete the security check"
 

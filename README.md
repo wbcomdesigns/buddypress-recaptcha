@@ -1,83 +1,72 @@
 # Wbcom CAPTCHA Manager
 
-Complete CAPTCHA solution for WordPress — protect forms from spam with reCAPTCHA v2/v3, Cloudflare Turnstile, hCaptcha, and Altcha.
+Protect WordPress, WooCommerce, BuddyPress, bbPress and popular form builders from spam and bots with reCAPTCHA, Cloudflare Turnstile, hCaptcha or ALTCHA, from one settings screen.
 
-[![WordPress](https://img.shields.io/badge/WordPress-6.0%2B-blue.svg)](https://wordpress.org/)
-[![PHP](https://img.shields.io/badge/PHP-7.4%2B-purple.svg)](https://php.net/)
-[![License](https://img.shields.io/badge/License-GPLv2-green.svg)](https://www.gnu.org/licenses/gpl-2.0.html)
+Current release: 2.2.4. Free, GPLv2 or later.
 
-[**Get the Plugin**](https://wbcomdesigns.com/downloads/buddypress-recaptcha/) | [**Community Bundle**](https://wbcomdesigns.com/downloads/buddypress-community-bundle/) | [**All Products**](https://store.wbcomdesigns.com/)
+## What it does
 
----
+Pick one CAPTCHA provider, add its keys, and switch protection on per form. Every protected form follows the active provider. A form's settings only appear when its plugin is active.
 
-## Overview
+**Providers** (one active at a time)
 
-**Wbcom CAPTCHA Manager** is a free WordPress plugin that protects your site from spam and bots across WordPress core forms, WooCommerce, BuddyPress, bbPress, and 10+ popular form builders — all from a single, modular settings interface.
+- reCAPTCHA v2 (checkbox) and reCAPTCHA v3 (invisible, score based)
+- Cloudflare Turnstile
+- hCaptcha
+- ALTCHA: self-hosted proof of work, no account, no API keys, no third-party call. Needs a site on HTTPS (or localhost).
 
-## Supported CAPTCHA Services
+**Protected forms** (14 integrations)
 
-- **reCAPTCHA v2** (Checkbox)
-- **reCAPTCHA v3** (Invisible)
-- **Cloudflare Turnstile**
-- **hCaptcha**
-- **Altcha** (Privacy-first, self-hosted)
+| Integration | Forms |
+|---|---|
+| WordPress | Login, registration, lost password, comments |
+| WooCommerce | Login, registration, lost password, product reviews, checkout (block and classic) |
+| BuddyPress | Member registration, group creation, Contact Me |
+| bbPress | New topics, replies |
+| Form builders | Contact Form 7, WPForms, Gravity Forms, Ninja Forms, Forminator, Elementor Pro Forms, Divi contact forms |
+| Stores and memberships | Easy Digital Downloads, MemberPress, Ultimate Member |
 
-## Supported Integrations
+Also included: an AJAX login widget and Login block, per-form reCAPTCHA v3 score thresholds, an IP whitelist, optional fail-closed mode when the provider is down, editable error messages, and an Overview tab with key warnings and recent rejections.
 
-| Integration | Protected Forms |
-|-------------|----------------|
-| **WordPress** | Login, Registration, Lost Password, Comments |
-| **WooCommerce** | Login, Registration, Checkout, Lost Password, Reviews |
-| **BuddyPress / BuddyBoss** | Registration |
-| **bbPress** | New Topic, Reply |
-| **Contact Form 7** | All forms |
-| **WPForms** | All forms |
-| **Gravity Forms** | All forms |
-| **Ninja Forms** | All forms |
-| **Forminator** | All forms |
-| **Elementor Pro** | Form widget |
-| **Divi** | Contact form |
-| **Easy Digital Downloads** | Login, Registration |
-| **MemberPress** | Login, Registration |
-| **Ultimate Member** | Login, Registration |
+## Who it is for
+
+Site owners and agencies running membership, community, store or forum sites who want one CAPTCHA plugin instead of one per form plugin.
+
+## Get it
+
+- Store page: https://wbcomdesigns.com/downloads/buddypress-recaptcha/
+- Release notes: https://wbcomdesigns.com/release-notes/buddypress-recaptcha/
+
+## Documentation
+
+User guides and developer docs: https://docs.wbcomdesigns.com/woo-family/buddypress-recaptcha/. The same pages live in [docs/website](docs/website).
+
+## Requirements
+
+- WordPress 6.5 or higher (tested up to 7.1)
+- PHP 8.1 or higher
+- Free API keys from the provider (not needed for ALTCHA)
+- BuddyPress, WooCommerce, bbPress and the form plugins are optional
 
 ## Installation
 
-1. Upload the `buddypress-recaptcha` folder to `/wp-content/plugins/`
-2. Activate the plugin through the **Plugins** menu in WordPress
-3. Go to **WB Plugins > CAPTCHA Manager** to configure settings
-4. Enter your CAPTCHA service API keys
-5. Enable protection on the forms you want to secure
+1. Upload the `buddypress-recaptcha` folder to `/wp-content/plugins/`, or install the zip from Plugins > Add New > Upload Plugin.
+2. Activate the plugin.
+3. Open WB Plugins > CAPTCHA and go to the Quick Setup tab.
+4. Choose a provider and enter its keys.
+5. On the Protection tab, switch on the forms you want checked.
 
-## Features
+Locked out? Add `define( 'WBC_CAPTCHA_DISABLE', true );` to `wp-config.php`, fix the settings, then remove the line.
 
-- **One Plugin, Multiple Services** — Switch between CAPTCHA providers without changing settings
-- **Modular Architecture** — Integration modules auto-detect active plugins
-- **Setup Wizard** — Quick guided configuration on first activation
-- **AJAX Login Support** — CAPTCHA works with AJAX-powered login forms
-- **Login Widget & Block** — Built-in login widget and Gutenberg block with CAPTCHA
-- **Customizable** — Score thresholds, appearance, and per-form control
+## Developer information
 
-## More Products by Wbcom Designs
+- Text domain: `buddypress-recaptcha`
+- Hook prefix: `wbc_` (for example `wbc_register_captcha_services`, `wbc_should_render_captcha`, `wbc_should_verify_captcha`, `wbc_captcha_error_message`, `wbc_captcha_fail_closed`, `wbc_captcha_strict_nonce`)
+- Hooks reference: [docs/website/developer-guide/01-hooks-reference.md](docs/website/developer-guide/01-hooks-reference.md)
+- Login block: `wbc/login-widget`
 
-Building a community or membership site? Check out our other products at [**store.wbcomdesigns.com**](https://store.wbcomdesigns.com/):
+## Support and licence
 
-| Product | Description |
-|---------|-------------|
-| [**WPMediaVerse**](https://store.wbcomdesigns.com/) | Complete media management for WordPress communities |
-| [**Jetonomy**](https://store.wbcomdesigns.com/) | Token-based economy and rewards for your community |
-| [**WP Sell Services**](https://store.wbcomdesigns.com/) | Sell and manage services directly from WordPress |
-| [**WP Career Board**](https://store.wbcomdesigns.com/) | Job board and career portal for WordPress |
-| [**SnipShare**](https://store.wbcomdesigns.com/) | Code snippet sharing platform for developers |
-| [**WB Member Wiki**](https://store.wbcomdesigns.com/) | Collaborative wiki system for community members |
-| [**Dashboard for LearnDash**](https://store.wbcomdesigns.com/) | Enhanced student and instructor dashboard for LearnDash |
+Support: https://wbcomdesigns.com/contact/
 
-Save more with the [**BuddyPress Community Bundle**](https://wbcomdesigns.com/downloads/buddypress-community-bundle/) — get all our BuddyPress add-ons in one package.
-
-## Support
-
-Need help? [Contact us](https://wbcomdesigns.com/contact/) for support or custom development.
-
-## License
-
-GPLv2 or later. See [LICENSE](https://www.gnu.org/licenses/gpl-2.0.html).
+Licensed under GPLv2 or later. See [LICENSE.txt](LICENSE.txt).

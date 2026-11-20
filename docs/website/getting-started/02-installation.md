@@ -4,7 +4,7 @@
 
 ## Install
 
-1. Go to Plugins > Add New, search for "Wbcom CAPTCHA Manager", then click Install Now and Activate.
+1. Download the plugin zip from your Wbcom account. Go to Plugins > Add New > Upload Plugin, choose the zip, then click Install Now and Activate.
 2. Open WB Plugins > CAPTCHA.
 
 ## Choose a provider and add keys

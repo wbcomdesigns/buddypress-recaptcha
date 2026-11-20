@@ -206,7 +206,7 @@ add_filter( 'wbc_captcha_fail_closed', function( $fail_closed, $context ) {
 
 **Since:** 2.1.0
 
-**Description:** Overrides the `wbc_captcha_strict_nonce` option per request - when true, the per-context nonce is required. Wired in reCAPTCHA v2, hCaptcha and Turnstile only; it has no effect when reCAPTCHA v3 or ALTCHA is the active service.
+**Description:** Overrides the `wbc_captcha_strict_nonce` option per request - when true, the per-context nonce is required. Wired in reCAPTCHA v2, hCaptcha and Turnstile only; it has no effect when reCAPTCHA v3 or ALTCHA is the active service. The login widget and block check their form nonce only when this is on, so pages served from a cache still work by default.
 
 **Parameters:**
 - `bool $strict`
@@ -218,6 +218,48 @@ add_filter( 'wbc_captcha_fail_closed', function( $fail_closed, $context ) {
 add_filter( 'wbc_captcha_strict_nonce', function( $strict, $context, $service_id ) {
     return true;
 }, 10, 3 );
+```
+
+---
+
+#### `wbc_captcha_skip_express_checkout`
+
+**Since:** 2.2.4
+
+**Description:** Whether a WooCommerce express-pay order (Stripe or WooPayments buttons) skips the checkout CAPTCHA. Return `false` to check every order.
+
+**Parameters:**
+- `bool $skip` - default `true`
+- `string $type` - express type reported by the gateway
+
+---
+
+#### `wbc_captcha_express_gateways`
+
+**Since:** 2.2.4
+
+**Description:** Gateways allowed to claim an express order. Default: `stripe`, `woocommerce_payments`. Add a gateway ID here if its express button places orders through a real wc-ajax request.
+
+**Parameters:**
+- `array $gateways`
+
+---
+
+#### `wbc_captcha_express_endpoints`
+
+**Since:** 2.2.4
+
+**Description:** The wc-ajax handlers an express button places its order through. Default: `wc_stripe_create_order`, `wcpay_create_order`. The classic checkout skips the CAPTCHA only while WooCommerce is running one of these handlers; a request that merely claims to be express is always checked.
+
+**Parameters:**
+- `array $endpoints`
+
+**Example:**
+```php
+add_filter( 'wbc_captcha_express_endpoints', function( $endpoints ) {
+    $endpoints[] = 'my_gateway_create_order';
+    return $endpoints;
+} );
 ```
 
 ---
