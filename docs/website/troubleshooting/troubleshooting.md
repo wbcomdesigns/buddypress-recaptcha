@@ -10,6 +10,14 @@ Check three things in order:
 
 Also confirm the integration's plugin is active. A form builder toggle only exists when that form builder is active.
 
+## ALTCHA is not showing and forms are not locked
+
+ALTCHA needs the site address to be HTTPS (or localhost). On any other address ALTCHA stays off, forms are not locked, and the Overview tab says why. Turn on HTTPS for the site.
+
+## The Overview tab says the provider rejected the keys
+
+The provider refused this site's keys. Until you fix them, CAPTCHA checks are let through so nobody is locked out. The site key and secret key may not belong together, or may not be valid for this domain. Create a new key pair with the provider and save both again.
+
 ## Admin notice: the service is not configured
 
 The active provider is selected but has no keys saved, so forms are unprotected. Open the settings, add the site and secret keys, and save. This notice targets administrators only.
@@ -19,6 +27,8 @@ The active provider is selected but has no keys saved, so forms are unprotected.
 - With reCAPTCHA v3, this can happen if the form is submitted before the token has loaded. The plugin holds the submit briefly and sends once with a valid token, so retry after the page has fully loaded.
 - Confirm the v3 keys are v3 keys, not v2 keys. The two are not interchangeable.
 - If a competing CAPTCHA script from another plugin is on the page, enable no-conflict mode on the Advanced tab.
+
+The Overview tab lists rejections from the last 7 days, naming each form as the Protection tab does, with the reason.
 
 ## Real users blocked by reCAPTCHA v3
 

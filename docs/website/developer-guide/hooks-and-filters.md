@@ -52,7 +52,7 @@ Whether to block a submission when the provider is unreachable or unconfigured. 
 
 ### `wbc_captcha_strict_nonce`
 
-Whether the plugin nonce must be present and valid. Defaults to the `wbc_captcha_strict_nonce` option (off).
+Whether the plugin nonce must be present and valid. Defaults to the `wbc_captcha_strict_nonce` option (off). Wired in reCAPTCHA v2, hCaptcha and Turnstile only; it has no effect when reCAPTCHA v3 or ALTCHA is the active service. The login widget and block check their form nonce only when this is on, so pages served from a cache still work by default.
 
 `apply_filters( 'wbc_captcha_strict_nonce', bool $strict, string $context, string $service_id )`
 
@@ -71,6 +71,31 @@ Override the reCAPTCHA v3 score threshold for a context.
 Return true to pre-load the reCAPTCHA v3 script on a page the plugin cannot detect, for a form that renders very late.
 
 `apply_filters( 'wbc_recaptcha_v3_is_captcha_page', bool $is_captcha_page )`
+
+### `wbc_captcha_skip_express_checkout`
+
+Whether a WooCommerce express-pay order (Stripe or WooPayments buttons) skips the checkout CAPTCHA. Default `true`. Return `false` to check every order.
+
+`apply_filters( 'wbc_captcha_skip_express_checkout', bool $skip, string $type )`
+
+### `wbc_captcha_express_gateways`
+
+Gateways allowed to claim an express order. Default: `stripe`, `woocommerce_payments`. Add a gateway ID here if its express button places orders through a real wc-ajax request.
+
+`apply_filters( 'wbc_captcha_express_gateways', array $gateways )`
+
+### `wbc_captcha_express_endpoints`
+
+The wc-ajax handlers an express button places its order through. Default: `wc_stripe_create_order`, `wcpay_create_order`. The classic checkout skips the CAPTCHA only while WooCommerce is running one of these handlers; a request that merely claims to be express is always checked.
+
+`apply_filters( 'wbc_captcha_express_endpoints', array $endpoints )`
+
+```php
+add_filter( 'wbc_captcha_express_endpoints', function ( $endpoints ) {
+    $endpoints[] = 'my_gateway_create_order';
+    return $endpoints;
+} );
+```
 
 ## Admin filter
 

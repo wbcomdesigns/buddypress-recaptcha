@@ -3,11 +3,73 @@
   "productType": "plugin",
   "shortId": "bprecaptcha",
   "sections": [
-    { "name": "Getting Started", "folder": "getting-started" },
-    { "name": "Features", "folder": "features" },
-    { "name": "Usage", "folder": "usage" },
-    { "name": "Developer Guide", "folder": "developer-guide" },
-    { "name": "FAQ", "folder": "faq" },
-    { "name": "Troubleshooting", "folder": "troubleshooting" }
+    {
+      "name": "Getting Started",
+      "folder": "getting-started",
+      "pages": [
+        {
+          "slug": "overview"
+        },
+        {
+          "slug": "requirements"
+        },
+        {
+          "slug": "installation"
+        }
+      ]
+    },
+    {
+      "name": "Features",
+      "folder": "features",
+      "pages": [
+        {
+          "slug": "captcha-providers"
+        },
+        {
+          "slug": "protected-forms"
+        },
+        {
+          "slug": "security-and-appearance"
+        },
+        {
+          "slug": "login-widget-and-block"
+        }
+      ]
+    },
+    {
+      "name": "Usage",
+      "folder": "usage",
+      "pages": [
+        {
+          "slug": "select-provider-and-keys"
+        },
+        {
+          "slug": "enable-protection"
+        },
+        {
+          "slug": "advanced-settings"
+        }
+      ]
+    },
+    {
+      "name": "Developer Guide",
+      "folder": "developer-guide",
+      "pages": [
+        {
+          "slug": "hooks-and-filters"
+        },
+        {
+          "slug": "add-a-custom-provider"
+        }
+      ]
+    },
+    {
+      "name": "FAQ",
+      "folder": "faq"
+    },
+    {
+      "name": "Troubleshooting",
+      "folder": "troubleshooting"
+    }
   ]
 }

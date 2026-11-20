@@ -1,12 +1,10 @@
 # Installation
 
-## Automatic installation
+## Install from the zip
 
-1. Log in to your WordPress admin dashboard.
-2. Go to **Plugins > Add New**.
-3. Search for "Wbcom CAPTCHA Manager".
-4. Click **Install Now**, then **Activate**.
-5. On activation you are taken to the plugin settings. You can return any time from **WB Plugins > CAPTCHA**.
+1. Download the plugin zip from your Wbcom account.
+2. Go to **Plugins > Add New > Upload Plugin**, choose the zip, then click **Install Now** and **Activate**.
+3. On activation you are taken to the plugin settings. You can return any time from **WB Plugins > CAPTCHA**.
 
 ## Manual installation
 
